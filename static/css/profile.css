@@ -1,0 +1,44 @@
+body {
+    margin-top: 0px;
+    background-image: url('../images/leaf_01.jpg');
+    background-size: cover;
+
+}
+
+#userInfo_bg {
+    width: 80%;
+    margin-right: 10%;
+    margin-left: 10%;
+    background-color: #F7F1F1;
+    opacity: 0.8;
+}
+
+#userInfo {
+    width: 100%;
+}
+
+#firstColumn {
+    text-align: center;
+}
+
+#profilePic {
+    width: 200px;
+    height: 200px;
+    text-align: center;
+    background-image: url('../images/2471307.jpg');
+    background-size: cover;
+    display: inline-block;
+}
+
+table {
+    width: 100%;
+}
+
+td {
+    width: 50%;
+}
+
+.profileHeading {
+    background-color: darkslategrey;
+    color: #F7F1F1;
+}

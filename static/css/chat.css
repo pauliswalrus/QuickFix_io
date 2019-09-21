@@ -1,0 +1,177 @@
+/* Chat.css - Defines the styles for the Chat.html page */
+/* Author: Emma Hobden */
+
+
+/* Styles the body of the page */
+body {
+    margin-top: 0px;
+    background-image: url('../images/teamChat2.png');
+    background-size: cover;
+
+}
+
+/* Styles the python variable that holds the current local time date */
+#currDate {
+    font-size: 2em;
+    float: right;
+    padding-right: 1em;
+    font-family: 'Lato', sans-serif;
+}
+
+/* Styles the left column list of chat rooms & header */
+#sidebar {
+    margin-top: 2em;
+    float: left; /* Make this div as wide as its contents */
+    min-height: 60vh;
+    padding-left: 1em;
+    padding-top: 3em;
+    padding-right:1em;
+    border-right: 0.5px solid #898c91;
+}
+
+/* Styles the python variable that holds the list of rooms */
+#sidebar p {
+    padding-left: 2em;
+    padding-right: 2em;
+}
+
+/* Styles the hover on the list of rooms */
+#sidebar p:hover {
+    background-color: #E46D4E;
+    color: #F8F3F2;
+    cursor: pointer;
+}
+
+/* Styles the Heading4 in left column */
+#sidebar h4 {padding-left: 0.5em;}
+
+
+/* Right Panel of Chat Window */
+#rightside-panel {
+    overflow: hidden; /* Make this div take up the rest of the horizontal space, and no more */
+    padding: 10px;
+}
+
+
+/* Styles where messages are displayed */
+#display-message-section {
+    height: 450px;
+    width: 80%;
+    margin-right: 20%;
+    border: 2px solid #3F3D54;
+    overflow-y: auto; /*Make  this section scrollable */
+    padding: 5px;
+}
+
+/* Styles the div that holds the type msg & send msg */
+#input-area {
+    bottom: 0;
+    /*border: 2px solid green;*/
+    border: 2px solid #3F3D54;
+    width: 80%;
+    margin-right: 20%;
+}
+
+/* where user types msg */
+#user_message {
+    color: #3F3D54;
+    height: 30px;
+    width: 90%;
+}
+
+/* send button to send msg */
+#send_message {
+    color: white;
+    background-color: #3F3D54;
+    width: 10%;
+    height: 30px;
+    float: right;
+    border: 2px solid #3F3D54;
+}
+
+
+/* Room Name H1 */
+#room-name {
+    color: white;
+    font-size: 2em;
+}
+
+
+/* Current user's username in chat */
+.my-username {
+    font-weight: bold;
+    font-size: 1.4em;
+    color: white;
+    padding-right: 5px;
+}
+
+.timestamp {
+    color: white;
+    font-size:0.7em;
+}
+
+.my-msg {
+    color: white;
+    text-align: left;
+    border: 2px solid #807E93;
+    background-color: #807E93;
+    border-radius: 20px 20px 20px 0px;
+    padding-left: 10px;
+
+    width: 60%;
+    margin-right: 40%;
+}
+
+
+
+
+.other-username {
+    font-weight: bold;
+    font-size: 1.4em;
+    color: white;
+}
+
+.other-timestamp {
+    color: white;
+    font-size:0.7em;
+    padding-right: 5px;
+}
+
+.others-msg {
+    color: white;
+    text-align: right;
+    border: 2px solid #A2A1AF;
+    background-color: #A2A1AF;
+    border-radius: 20px 20px 0px 20px;
+    padding-right: 10px;
+
+    width: 60%;
+    margin-left: 40%;
+}
+
+
+
+
+
+
+
+/* Styles Room name Container */
+#chatWindowHeader {
+    border: 2px solid #3F3D54;
+    background-color: #3F3D54;
+
+    width: 80%;
+    margin-right: 20%;
+
+}
+
+/* Styles Room name and Date spans */
+#room-name, #date {
+    display: inline-block;
+}
+
+/* Styles Date */
+#date {
+    float: right;
+    font-size: 1.1em;
+}

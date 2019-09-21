@@ -1,0 +1,94 @@
+<html>
+    <head>
+        <title>Flask-SocketIO-Chat: {{ roomName }}</title>
+
+        <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/chat.css')}}">
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+    </head>
+    <body>
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+    <script type="text/javascript" >
+             var socket;
+            $(document).ready(function(){
+                socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
+                socket.on('connect', function() {
+                    socket.emit('joined', {});
+                });
+                socket.on('status', function(data) {
+                    $('#display-message-section').val($('#display-message-section').val() + '<' + data.msg + '>\n');
+                    $('#display-message-section').scrollTop($('#display-message-section')[0].scrollHeight);
+                });
+                socket.on('message', function(data) {
+                    $('#display-message-section').val($('#display-message-section').val() + data.msg + '\n');
+                    $('#display-message-section').scrollTop($('#display-message-section')[0].scrollHeight);
+                });
+
+
+                $('#user_message').keypress(function(e) {
+                    var code = e.keyCode || e.which;
+                    if (code == 13) {
+                        text = $('#user_message').val();
+                        $('#user_message').val('');
+                        socket.emit('text', {msg: text});
+                    }
+                });
+
+            });
+            function leave_room() {
+                socket.emit('left', {}, function() {
+                    socket.disconnect();
+
+                    // go back to the chat page
+                    window.location.href = "{{ url_for('chat') }}";
+                });
+            }
+
+            function close_room() {
+                socket.emit('close_room', {}, function() {
+                    socket.disconnect();
+                    // go back to the chat page
+                    window.location.href = "{{ url_for('chat') }}";
+                });
+            }
+        </script>
+        <h1>Flask-SocketIO-Chat: {{ roomName }}</h1>
+
+        <h2>Welcome : {{ userName }}</h2>
+
+        <nav id="sidebar">
+        <a href="#" onclick="leave_room();">Leave this room</a>
+        <a href="#" onclick="close_room();">Close this room</a>
+
+        </nav>
+
+        <div id="rightside-panel">
+        <textarea id="display-message-section" cols="80" rows="10" readonly>
+
+
+            {%  for msg in message_object %}
+
+                     {{ msg.username }}
+                     {{ msg.message }}
+                     {{ msg.room }}
+
+
+                {%  endfor %}
+        </textarea><br><br>
+
+        <input id="user_message" size="80" placeholder="Enter your message here"><br><br>
+
+    </div>
+
+
+    </body>
+
+
+
+</html>

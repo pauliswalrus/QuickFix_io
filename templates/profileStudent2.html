@@ -1,0 +1,77 @@
+<!-- HTML Template By: Emma Hobden -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile Page</title>
+
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/profile.css')}}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
+</head>
+<body>
+
+    <div class="navbar">
+        <a class="logo" href="{{ url_for('home', chtName=chtName) }}">Home</a>
+        <a href="{{ url_for('profileStudent', chtName=chtName) }}">{{ chtName }}</a>
+        <a href="#">Forums</a>
+        <a href="{{ url_for('sessions', chtName=chtName) }}" >Chat</a>
+        <a href="#">Saved</a>
+        <a href="{{ url_for('login') }}"> Logout </a>
+    </div>
+
+    <div id="userInfo_bg">
+        <div id="userInfo">
+
+            <table>
+                <tr>
+                    <td id="firstColumn">
+                        <h1>Hello {{ chtName }}</h1>
+
+                        <div id="profilePic"></div>
+
+                        {% for row in rows %}
+
+                            <h3> {{ row["User_firstName"] }} {{ row["User_lastName"] }}</h3>
+                            <h3>Program</h3>
+                            <h3>School: {{ schoolName }} <br> {{ schoolAdd }}</h3>
+
+                        {% endfor %}
+                    </td>
+
+                    <td>
+                        {% for row in rows %}
+                            <p>Remaining Credits: {{ credits }} <a href="#">Purchase More.</a></p>
+
+                            <h2 class="profileHeading">My Courses</h2>
+                            <p>Course 1<br>
+                            Course 2<br>
+                            Course 3</p>
+
+                            <br><br>
+
+                            <h2 class="profileHeading">About Me</h2>
+                            <p>{{ row["User_email"] }} <br>
+                            A little bio about yourself.</p>
+
+                            <br><br>
+
+                            <h2 class="profileHeading">History</h2>
+                            <p>History 1<br>
+                            History 2<br>
+                            History 3</p>
+
+                        {% endfor %}
+
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+</body>
+</html>

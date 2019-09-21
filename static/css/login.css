@@ -1,0 +1,179 @@
+
+/* Style the navigation menu */
+.navbar {
+    width: 100%;
+    background-color: darkslategrey;
+}
+
+/* Navigation links */
+.navbar a,
+.navbar a.active,
+.navbar a.visited {
+  float: left;
+  padding: 12px;
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+  width: 20%; /* 5 equal-width links */
+  text-align: center;
+}
+
+/* Add a background color on mouse-over */
+.navbar a:hover {
+    background-color: darkslategrey;
+    color: lightslategray;
+    text-decoration: none;
+}
+
+/* Add responsiveness - on screens less than 500px, make the navigation links appear on top of each other, instead of next to each other */
+@media screen and (max-width: 500px) {
+  .navbar a {
+    float: none;
+    display: block;
+    width: 100%;
+    text-align: left; /* If you want the text to be left-aligned on small screens */
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Styles login form */
+.navbar form {
+    margin-top: 10px;
+    margin-right: 20px;
+    float: right;
+}
+
+/* Class applied to username and password entry */
+.loginText {
+    background-color: white;
+    color: darkslategrey;
+    width: 33%;
+}
+
+/* Styles login button */
+.loginButton {
+    background-color: darkslategrey;
+    color: white;
+    border: none;
+}
+
+/* Styles login button mouse hover */
+.loginButton:hover {
+    color: lightslategray;
+}
+
+/* Styles login error msgs when invalid username or password is entered */
+.loginErrorMsg {
+    background-color: rgba(245, 78, 23, 0.64);
+    color: white;
+    padding: 2px;
+    width: 100%;
+    height: 30px;
+    text-align: center;
+    font-size: 16px;
+    position: relative;
+    top: -20px;
+    margin-bottom: -10px;
+}
+
+
+
+
+
+
+
+
+/* Styles body of page */
+body {
+    background-image: url('../images/home01.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 650px;
+}
+
+/* Styles box with website info */
+#content {
+    width: 95%;
+    margin-left: 5%;
+    margin-top: 100px;
+    text-align: left;
+}
+
+/* Styles table with info */
+#content_info {
+    width: 75%;
+    margin-right: 25%;
+    margin-top: 100px;
+    text-align: center;
+    font-size: 20px;
+    border: 2px solid red;
+}
+
+/* Styles table rows */
+#content_info tr {
+    height: 100px;
+}
+
+/* Styles table data */
+#content_info td {
+    width: 33.33%;
+    border: 10px solid white;
+}
+
+/* Styles website info heading 1 */
+#content h1 {
+    color: darkslategrey;
+    font-size: 50px;
+}
+
+/* Styles website info heading 3 */
+#content h3 {
+    color: #f56443;
+    font-size: 40px;
+}
+
+/* Styles register button */
+.regButton {
+    background-color: darkslategrey;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+/* Styles register button mouse hover */
+.regButton:hover {
+    color: darkslategrey;
+    background-color: white;
+}
+
+
+
+
+
+
+
+
+
+
+

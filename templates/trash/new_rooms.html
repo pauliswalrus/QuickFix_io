@@ -1,0 +1,142 @@
+<html lang=en>
+<head>
+    <meta charset=utf-8>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Beth+Ellen&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Dosis:200&display=swap');
+    </style>
+
+    <title> fixQuick Chatkit </title>
+
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/chat.css')}}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <a class="logo" href="{{ url_for('home', chtName=chtName) }}">Home</a>
+        <a href="{{ url_for('profileStudent', chtName=chtName) }}">{{ chtName }}</a>
+        <a href="#">Forums</a>
+        <a href="{{ url_for('sessions', chtName=chtName) }}" >Chat</a>
+        <a href="#">Saved</a>
+        <a href="{{ url_for('login') }}"> Logout </a>
+    </div>
+
+
+
+    <div id="chatInfo">
+        <h2> Hello {{ firstName }}</h2>
+        <h4>Current Time: 11:54pm | Running Session Time: 12m 14s</h4>
+        <h4 id="today-date"/> </h4>,<h4 id="today-time"/> </h4>
+
+
+    </div>
+
+    <h2> {{ chtName }}'s rooms: </h2>
+        <h3 id="room-to-pick"/> </h3>
+
+        <h2> Current Room: </h2>
+        <h3 id="room-name"/> </h3>
+
+        <h2> Rooms Available To Join: </h2>
+        <h3 id="room-to-join"/> </h3>
+
+
+
+    <div id="roomForm">
+        <form action = "{{ url_for('roomChat', roomID=roomID) }}" method="post">
+        <input type="text" name="roomID" placeholder="Room Name" value="{{
+            request.form.roomID }}"><br>
+        <br>
+
+        <input class="regButton" type="submit" value="Submit">
+    </form>
+    </div>
+
+    <script src="https://unpkg.com/@pusher/chatkit-client@1/dist/web/chatkit.js"></script>
+    <script>
+
+        var today = new Date();
+        var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+        document.getElementById("today-date").innerHTML = date;
+
+        var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        document.getElementById("today-time").innerHTML = time;
+
+      const tokenProvider = new Chatkit.TokenProvider({
+        url: "https://us1.pusherplatform.io/services/chatkit_token_provider/v1/36e16942-3b74-4479-ba38-9c645865e6e5/token"
+      });
+
+
+        //uses name variable as chatkit id. must already exist.
+      const chatManager = new Chatkit.ChatManager({
+        instanceLocator: "v1:us1:36e16942-3b74-4479-ba38-9c645865e6e5",
+        userId: "{{chtName}}",
+        tokenProvider: tokenProvider
+      });
+
+
+
+
+      chatManager
+        .connect()
+        .then(currentUser => {
+
+                   //gets users current rooms (already joined)
+                   var roomArray = [];
+
+                   roomArray = currentUser.rooms;
+                   var result = ""
+                   //var room_id = ""
+                   for (i = 0; i < roomArray.length; i++)
+                       //result = result + " <a href='" +"/private/" +roomArray[i].id.toString() + "'>"+ roomArray[i].id.toString() +"</a>";
+                       //result = result + " " +roomArray[i].name.toString() + " <a href='"+"/private/" +roomArray[i].id.toString() +"' <br />" ;
+                       result = result + " " +roomArray[i].name.toString() + " " +roomArray[i].id.toString() +" <br />" ;
+                       document.getElementById("room-to-pick").innerHTML = result;
+
+                //gets rooms joinable by user (not joined already)
+                currentUser.getJoinableRooms()
+                    .then(rooms => {
+
+                        var joinableRoomArray = [];
+
+                        joinableRoomArray = rooms;
+                        var result = ""
+                                //var room_id = ""
+                        for (i = 0; i < joinableRoomArray.length; i++)
+                        result = result + " " +joinableRoomArray[i].name.toString() + " " +" <br />" ;
+                        document.getElementById("room-to-join").innerHTML = result;
+
+                    })
+                    .catch(err => {
+                        console.log(`Error getting joinable rooms: ${err}`)
+                    })
+/*
+              currentUser.subscribeToRoomMultipart({
+
+                roomId: currentUser.rooms[0].id,
+                hooks: {
+
+
+                  onMessage: message => {
+
+                   document.getElementById("room-name").innerHTML = message.room.name;
+
+                  }
+                }
+              });
+*/
+
+        })
+        .catch(error => {
+          console.error("error:", error);
+        });
+
+
+    </script>
+  </body>
+</html>

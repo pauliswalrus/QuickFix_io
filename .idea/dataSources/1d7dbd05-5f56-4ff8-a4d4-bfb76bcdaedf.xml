@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="QuickFix-2">
+  <database-model serializer="dbm" dbms="SQLITE" family-id="SQLITE" format-version="4.14">
+    <root id="1">
+      <ServerVersion>3.25.1</ServerVersion>
+    </root>
+    <schema id="2" parent="1" name="main">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <collation id="3" parent="1" name="BINARY"/>
+    <collation id="4" parent="1" name="NOCASE"/>
+    <collation id="5" parent="1" name="RTRIM"/>
+    <table id="6" parent="2" name="Account"/>
+    <table id="7" parent="2" name="Administrator"/>
+    <table id="8" parent="2" name="Chat_Logs"/>
+    <table id="9" parent="2" name="Community_Forum"/>
+    <table id="10" parent="2" name="Course"/>
+    <table id="11" parent="2" name="Prog_Course"/>
+    <table id="12" parent="2" name="Program"/>
+    <table id="13" parent="2" name="Receipt"/>
+    <table id="14" parent="2" name="Role"/>
+    <table id="15" parent="2" name="School"/>
+    <table id="16" parent="2" name="Session"/>
+    <table id="17" parent="2" name="Student"/>
+    <table id="18" parent="2" name="Transaction"/>
+    <table id="19" parent="2" name="Tutor"/>
+    <table id="20" parent="2" name="User"/>
+    <table id="21" parent="2" name="sqlite_master">
+      <System>1</System>
+    </table>
+    <table id="22" parent="2" name="sqlite_sequence">
+      <System>1</System>
+    </table>
+    <column id="23" parent="6" name="Account_id">
+      <Position>1</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <key id="24" parent="6">
+      <ColNames>Account_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="25" parent="7" name="Administrator_id">
+      <Position>1</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="26" parent="7" name="User_id">
+      <Position>2</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="27" parent="7" name="Role_id">
+      <Position>3</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <key id="28" parent="7">
+      <ColNames>Administrator_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="29" parent="7">
+      <ColNames>User_id</ColNames>
+      <RefTableName>User</RefTableName>
+      <RefColNames>User_id</RefColNames>
+    </foreign-key>
+    <foreign-key id="30" parent="7">
+      <ColNames>Role_id</ColNames>
+      <RefTableName>Role</RefTableName>
+      <RefColNames>Role_id</RefColNames>
+    </foreign-key>
+    <column id="31" parent="8" name="Session_id">
+      <Position>1</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="32" parent="8" name="Student_id">
+      <Position>2</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="33" parent="8" name="Tutor_id">
+      <Position>3</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="34" parent="8" name="Session_date">
+      <Position>4</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="35" parent="8" name="Session_duration">
+      <Position>5</Position>
+      <DataType>REAL|0s</DataType>
+    </column>
+    <foreign-key id="36" parent="8">
+      <ColNames>Session_id</ColNames>
+      <RefTableName>Session</RefTableName>
+      <RefColNames>Session_id</RefColNames>
+    </foreign-key>
+    <foreign-key id="37" parent="8">
+      <ColNames>Student_id</ColNames>
+      <RefTableName>Student</RefTableName>
+      <RefColNames>Student_id</RefColNames>
+    </foreign-key>
+    <foreign-key id="38" parent="8">
+      <ColNames>Tutor_id</ColNames>
+      <RefTableName>Tutor</RefTableName>
+      <RefColNames>Tutor_id</RefColNames>
+    </foreign-key>
+    <foreign-key id="39" parent="8">
+      <ColNames>Session_date</ColNames>
+      <RefTableName>Session</RefTableName>
+      <RefColNames>Session_date</RefColNames>
+    </foreign-key>
+    <foreign-key id="40" parent="8">
+      <ColNames>Session_duration</ColNames>
+      <RefTableName>Session</RefTableName>
+      <RefColNames>Session_duration</RefColNames>
+    </foreign-key>
+    <column id="41" parent="9" name="Comm_id">
+      <Position>1</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="42" parent="9" name="Comm_title">
+      <Position>2</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="43" parent="9" name="Comm_topic">
+      <Position>3</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="44" parent="9" name="Comm_postDate">
+      <Position>4</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="45" parent="9" name="User_id">
+      <Position>5</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <foreign-key id="46" parent="9">
+      <ColNames>User_id</ColNames>
+      <RefTableName>User</RefTableName>
+      <RefColNames>User_id</RefColNames>
+    </foreign-key>
+    <column id="47" parent="10" name="Course_id">
+      <Position>1</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="48" parent="10" name="Course_name">
+      <Position>2</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="49" parent="10" name="School_id">
+      <Position>3</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <index id="50" parent="10" name="sqlite_autoindex_Course_1">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>Course_id</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="51" parent="10">
+      <ColNames>Course_id</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_Course_1</UnderlyingIndexName>
+    </key>
+    <foreign-key id="52" parent="10">
+      <ColNames>School_id</ColNames>
+      <RefTableName>School</RefTableName>
+      <RefColNames>School_id</RefColNames>
+    </foreign-key>
+    <column id="53" parent="11" name="Program_id">
+      <Position>1</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="54" parent="11" name="Course_id">
+      <Position>2</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="55" parent="11" name="School_id">
+      <Position>3</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <foreign-key id="56" parent="11">
+      <ColNames>Program_id</ColNames>
+      <RefTableName>Program</RefTableName>
+      <RefColNames>Program_id</RefColNames>
+    </foreign-key>
+    <foreign-key id="57" parent="11">
+      <ColNames>Course_id</ColNames>
+      <RefTableName>Course</RefTableName>
+      <RefColNames>Course_id</RefColNames>
+    </foreign-key>
+    <foreign-key id="58" parent="11">
+      <ColNames>School_id</ColNames>
+      <RefTableName>School</RefTableName>
+      <RefColNames>School_id</RefColNames>
+    </foreign-key>
+    <column id="59" parent="12" name="Program_id">
+      <Position>1</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="60" parent="12" name="Program_name">
+      <Position>2</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="61" parent="12" name="School_id">
+      <Position>3</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <index id="62" parent="12" name="sqlite_autoindex_Program_1">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>Program_id</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="63" parent="12">
+      <ColNames>Program_id</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_Program_1</UnderlyingIndexName>
+    </key>
+    <foreign-key id="64" parent="12">
+      <ColNames>School_id</ColNames>
+      <RefTableName>School</RefTableName>
+      <RefColNames>School_id</RefColNames>
+    </foreign-key>
+    <column id="65" parent="13" name="Receipt_id">
+      <Position>1</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="66" parent="13" name="Session_cost">
+      <Position>2</Position>
+      <DataType>REAL|0s</DataType>
+    </column>
+    <column id="67" parent="13" name="Receipt_date">
+      <Position>3</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <key id="68" parent="13">
+      <ColNames>Receipt_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="69" parent="13">
+      <ColNames>Session_cost</ColNames>
+      <RefTableName>Session</RefTableName>
+      <RefColNames>Session_cost</RefColNames>
+    </foreign-key>
+    <column id="70" parent="14" name="Role_id">
+      <Position>1</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="71" parent="14" name="Role_name">
+      <Position>2</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <key id="72" parent="14">
+      <ColNames>Role_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="73" parent="15" name="School_id">
+      <Position>1</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="74" parent="15" name="School_name">
+      <Position>2</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="75" parent="15" name="School_address">
+      <Position>3</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="76" parent="15" name="School_phone">
+      <Position>4</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <key id="77" parent="15">
+      <ColNames>School_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="78" parent="16" name="Session_id">
+      <Position>1</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="79" parent="16" name="Student_id">
+      <Position>2</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="80" parent="16" name="Tutor_id">
+      <Position>3</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="81" parent="16" name="Session_startTime">
+      <Position>4</Position>
+      <DataType>REAL|0s</DataType>
+    </column>
+    <column id="82" parent="16" name="Session_stopTime">
+      <Position>5</Position>
+      <DataType>REAL|0s</DataType>
+    </column>
+    <column id="83" parent="16" name="Session_duration">
+      <Position>6</Position>
+      <DataType>REAL|0s</DataType>
+    </column>
+    <column id="84" parent="16" name="Session_date">
+      <Position>7</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="85" parent="16" name="Session_cost">
+      <Position>8</Position>
+      <DataType>REAL|0s</DataType>
+    </column>
+    <key id="86" parent="16">
+      <ColNames>Session_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="87" parent="16">
+      <ColNames>Student_id</ColNames>
+      <RefTableName>Student</RefTableName>
+      <RefColNames>Student_id</RefColNames>
+    </foreign-key>
+    <foreign-key id="88" parent="16">
+      <ColNames>Tutor_id</ColNames>
+      <RefTableName>Tutor</RefTableName>
+      <RefColNames>Tutor_id</RefColNames>
+    </foreign-key>
+    <column id="89" parent="17" name="Student_id">
+      <Position>1</Position>
+      <DataType>INTEGER|0s</DataType>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="90" parent="17" name="School_id">
+      <Position>2</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="91" parent="17" name="Program_id">
+      <Position>3</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="92" parent="17" name="Student_aboutYou">
+      <Position>4</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="93" parent="17" name="Student_credits">
+      <Position>5</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="94" parent="17" name="Role_id">
+      <Position>6</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="95" parent="17" name="User_id">
+      <Position>7</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <key id="96" parent="17">
+      <ColNames>Student_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="97" parent="17">
+      <ColNames>School_id</ColNames>
+      <RefTableName>School</RefTableName>
+      <RefColNames>School_id</RefColNames>
+    </foreign-key>
+    <foreign-key id="98" parent="17">
+      <ColNames>Program_id</ColNames>
+      <RefTableName>Program</RefTableName>
+      <RefColNames>Program_id</RefColNames>
+    </foreign-key>
+    <foreign-key id="99" parent="17">
+      <ColNames>Role_id</ColNames>
+      <RefTableName>Role</RefTableName>
+      <RefColNames>Role_id</RefColNames>
+    </foreign-key>
+    <foreign-key id="100" parent="17">
+      <ColNames>User_id</ColNames>
+      <RefTableName>User</RefTableName>
+      <RefColNames>User_id</RefColNames>
+    </foreign-key>
+    <column id="101" parent="18" name="Transaction_id">
+      <Position>1</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="102" parent="18" name="Transaction_date">
+      <Position>2</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="103" parent="18" name="Transaction_cost">
+      <Position>3</Position>
+      <DataType>REAL|0s</DataType>
+    </column>
+    <key id="104" parent="18">
+      <ColNames>Transaction_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="105" parent="19" name="Tutor_id">
+      <Position>1</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <column id="106" parent="19" name="User_id">
+      <Position>2</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="107" parent="19" name="Role_id">
+      <Position>3</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <key id="108" parent="19">
+      <ColNames>Tutor_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="109" parent="19">
+      <ColNames>User_id</ColNames>
+      <RefTableName>User</RefTableName>
+      <RefColNames>User_id</RefColNames>
+    </foreign-key>
+    <foreign-key id="110" parent="19">
+      <ColNames>Role_id</ColNames>
+      <RefTableName>Role</RefTableName>
+      <RefColNames>Role_id</RefColNames>
+    </foreign-key>
+    <column id="111" parent="20" name="User_id">
+      <Position>1</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="112" parent="20" name="User_firstName">
+      <Position>2</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="113" parent="20" name="User_lastName">
+      <Position>3</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="114" parent="20" name="User_email">
+      <Position>4</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="115" parent="20" name="User_password">
+      <Position>5</Position>
+      <DataType>TEXT|0s</DataType>
+    </column>
+    <column id="116" parent="20" name="Role_id">
+      <Position>6</Position>
+      <DataType>INTEGER|0s</DataType>
+    </column>
+    <index id="117" parent="20" name="sqlite_autoindex_User_1">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>User_id</ColNames>
+      <ColumnCollations></ColumnCollations>
+      <Unique>1</Unique>
+    </index>
+    <key id="118" parent="20">
+      <ColNames>User_id</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_User_1</UnderlyingIndexName>
+    </key>
+    <foreign-key id="119" parent="20">
+      <ColNames>Role_id</ColNames>
+      <RefTableName>Role</RefTableName>
+      <RefColNames>Role_id</RefColNames>
+    </foreign-key>
+    <column id="120" parent="21" name="type">
+      <Position>1</Position>
+      <DataType>text|0s</DataType>
+    </column>
+    <column id="121" parent="21" name="name">
+      <Position>2</Position>
+      <DataType>text|0s</DataType>
+    </column>
+    <column id="122" parent="21" name="tbl_name">
+      <Position>3</Position>
+      <DataType>text|0s</DataType>
+    </column>
+    <column id="123" parent="21" name="rootpage">
+      <Position>4</Position>
+      <DataType>int|0s</DataType>
+    </column>
+    <column id="124" parent="21" name="sql">
+      <Position>5</Position>
+      <DataType>text|0s</DataType>
+    </column>
+    <column id="125" parent="22" name="name">
+      <Position>1</Position>
+    </column>
+    <column id="126" parent="22" name="seq">
+      <Position>2</Position>
+    </column>
+  </database-model>
+</dataSource>

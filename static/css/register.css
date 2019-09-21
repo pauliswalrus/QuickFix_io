@@ -1,0 +1,111 @@
+/* Style the navigation menu */
+.navbar {
+    width: 100%;
+    background-color: darkslategrey;
+}
+
+/* Navigation links */
+.navbar a,
+.navbar a.active,
+.navbar a.visited {
+  float: left;
+  padding: 12px;
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+  width: 20%; /* 5 equal-width links */
+  text-align: center;
+}
+
+/* Add a background color on mouse-over */
+.navbar a:hover {
+    background-color: darkslategrey;
+    color: lightslategray;
+    text-decoration: none;
+}
+
+/* Add responsiveness - on screens less than 500px, make the navigation links appear on top of each other, instead of next to each other */
+@media screen and (max-width: 500px) {
+  .navbar a {
+    float: none;
+    display: block;
+    width: 100%;
+    text-align: left; /* If you want the text to be left-aligned on small screens */
+  }
+}
+
+
+
+
+
+
+
+
+
+/* Styles body of page */
+body {
+    background-image: url('../images/whiteDesk_02.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 650px;
+}
+
+
+
+
+
+
+
+
+
+/* Styles the registration form */
+#regForm {
+    width: 50%;
+    margin-left: 10%;
+    margin-top: 10%;
+    text-align: center;
+    padding: 20px;
+
+}
+
+/* Styles register form inputs */
+#regForm input[type=text],
+#regForm input[type=password] {
+    width: 90%;
+    margin-bottom: 10px;
+    border: none;
+    border-bottom: 4px solid darkslategrey;
+    font-size: 20px;
+    background-color: #F8F9FB;
+    color: darkslategrey;
+}
+
+/* Styles register button */
+.regButton {
+    background-color: darkslategrey;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+/* Styles register button mouse hover */
+.regButton:hover {
+    color: darkslategrey;
+    background-color: white;
+}
+
+
+
+
+
+
+

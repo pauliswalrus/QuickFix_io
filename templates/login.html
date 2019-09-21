@@ -1,0 +1,67 @@
+<html>
+<head>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Beth+Ellen&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Dosis:200&display=swap');
+    </style>
+
+    <meta charset="UTF-8">
+    <title>QuickFix</title>
+
+    <link rel="stylesheet" href="{{url_for('static', filename='css/login.css')}}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <a>QuickFix Tutoring</a>
+        <a>How It Works</a>
+        <a>Contact</a>
+      <form action="{{ url_for('login') }}" method="post" id="loginForm">
+
+            {{ form.username(class_='loginText', placeholder='Username', autocomplete='off', autofocus=true) }}
+            {{ form.password(class_='loginText', placeholder='Password') }}
+            {{ form.submit_button(class='loginButton') }}
+            {{ form.csrf_token }}
+
+        </form>
+    </div>
+
+    {% for error in form.password.errors %}
+        <div class="loginErrorMsg">
+            {{ error }}. Need an account? <a href="{{ url_for('new_student') }}">Register now!</a>
+        </div>
+    {% endfor %}
+
+    {% for error in form.username.errors %}
+        <div class="loginErrorMsg">
+            {{ error }}
+        </div>
+    {% endfor %}
+
+    <div id="content">
+
+        <h1>Late night cram session?</h1>
+        <h3>We've got your back.</h3>
+
+        <table id="content_info">
+            <tr>
+                <td id="imgPanel01"><img src="../static/images/2471307.jpg" width="300px" height="207px"></td>
+                <td>Match with a qualified tutor</td>
+                <td>No time minimums - pay only for what you need!</td>
+            </tr>
+        </table>
+
+        <p><a class="regButton" href="{{ url_for('new_student') }}">Get started today</a></p>
+
+        {% if error %}
+            <p class="error"><strong>Error:</strong> {{ error }}
+        {% endif %}
+
+    </div>
+
+</body>
+</html>

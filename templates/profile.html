@@ -1,0 +1,63 @@
+<!-- HTML Template By: Emma Hobden -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile Page</title>
+
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/profile.css')}}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
+
+    <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+        var online_status = {{ status }}
+
+       if (online_status==1) {
+
+           document.querySelector('#online_stat').innerHTML = "Online"
+
+       }
+       else {
+
+           document.querySelector('#online_stat').innerHTML = "Offline"
+       }
+
+
+       document.querySelector('changeStatus').onclick = () => {
+
+       }
+    })
+    </script>
+<body>
+    <div class="navbar">
+        <a class="logo" a href="#">Home</a>
+        <a href="{{ url_for('profile') }}">{{ username }}</a>
+        <a href="#">Forums</a>
+        <a href="{{ url_for('chat') }}" >Chat</a>
+        <a href="#">Saved</a>
+        <a href="{{ url_for('logout') }}"> Logout </a>
+    </div>
+
+
+    <div id="userInfo_bg">
+        <div id="userInfo">
+            <h1>Hello {{ firstname }} {{ lastname }}</h1>
+
+            <h2>Username: {{ username }}</h2>
+            <h2>Email: {{ email }}</h2>
+
+            <h3>Credits: </h3>
+            <div id="online_stat"> </div>
+            <h3>Status: {{ status_string }} <button id="changeStatus">Button</button></h3>
+
+            <div id="profilePic"></div>
+
+        </div>
+    </div>
+</body>
+</html>

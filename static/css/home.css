@@ -1,0 +1,59 @@
+body {
+    background-image: url('../images/whiteDesk_03.jpg');
+    background-size: cover;
+    height: 650px;
+}
+
+#tutorInfo {
+    width: 60%;
+    padding-top: 100px;
+    padding-left: 100px;
+    text-align: center;
+}
+
+.tutorButton {
+    background-color: darkslategrey;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.tutorButton:hover {
+    color: darkslategrey;
+    background-color: white;
+}
+
+#tutorInfo h1 {
+    color: darkslategrey;
+}
+
+/* styles content of page */
+.content01 {
+    background-image: url('../images/home01.jpg');
+    background-size: cover;
+    height: 650px;
+}
+
+/* styles content of page */
+.content02 {
+    background-image: url('../images/home01.jpg');
+    background-size: cover;
+    height: 650px;
+}
+
+
+
+#dateTime {
+    border: 2px solid red;
+    width: 50%;
+    color: red;
+}

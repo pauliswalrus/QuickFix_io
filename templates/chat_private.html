@@ -1,0 +1,131 @@
+<html lang=en>
+<head>
+    <meta charset=utf-8>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Beth+Ellen&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Dosis:200&display=swap');
+    </style>
+
+    <title> fixQuick Chatkit </title>
+
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/chat.css')}}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <a class="logo" <href="#">Home</a>
+        <a href="{{ url_for('profile', username=username) }}">{{ username }}</a>
+        <a href="#">Forums</a>
+        <a href="#" >Chat</a>
+        <a href="#">Saved</a>
+        <a href="{{ url_for('logout') }}"> Logout </a>
+    </div>
+
+
+    <!--
+    <nav id="sidebar">
+
+            <h4>Pick A Room To Find A Tutor</h4>
+
+            Room to Join:
+
+            <input type="text" id="room_to_join">
+            <button id="join_room">Join Room</button>
+
+
+
+            <br>
+            <br>
+
+            General Room:
+
+            {% for room in new_room %}
+                <p class="select-room">{{ room|title }}</p>
+            {% endfor %}
+
+        </nav>
+
+
+        -->
+
+        <!-- Message area -->
+        <div id ="room-name">
+
+        </div>
+
+     <div id ="users-connected">
+
+        </div>
+
+
+
+        <!-- Message area -->
+        <div id="rightside-panel">
+            <!-- Display message -->
+           {%  for msg in message_object %}
+                    <li>{{ msg.username }}
+                        {{ msg.message }}
+                        {{ msg.room }}
+                    </li>
+
+                {%  endfor %}
+
+            <!-- Input message
+            <div id="input-area">
+                <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">
+                <button type="button" id="send_message">SEND</button>
+
+            </div>
+            -->
+            <div id="input-area">
+                <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">
+                <button type="button" id="send_message">SEND</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        const username = `{{ username }}`;
+    </script>
+    <!--<p id="some_id">{{ username }}</p> -->
+
+    <!-- Custom Chat JS -->
+    <script src="{{ url_for('static', filename='js/chat_page.js') }}">
+
+    </script>
+    <!-- SocketIO JS -->
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+
+    <!-- CustomSocketIO JS -->
+    <script src="{{ url_for('static', filename='js/socketio.js') }}">
+
+
+    </script>
+
+    <!--
+    <div id="chatInfo">
+        <h2> Hello {{ username }}</h2>
+        <h4>Current Time: 11:54pm | Running Session Time: 12m 14s</h4>
+    </div>
+
+
+    <div id="chatWindow">
+
+        <ul id="message-list"></ul>
+
+        <form id="message-form">
+            <input type='text' id='message-text'>
+            <input type="submit">
+        </form>
+    </div>
+
+    -->
+
+  </body>
+</html>
