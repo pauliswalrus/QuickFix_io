@@ -38,6 +38,14 @@
         <nav id="sidebar">
         <h4>Pick A Room To Find A Tutor</h4>
         Tutors Online:
+
+         Tutors Online:
+
+          <br>
+            {% for user in online_users %}
+                        {{ user.username }}
+                        {{ user.firstname }},
+            {%  endfor %}<br><br>
             Join Private Room:
 
            <form method="POST">
