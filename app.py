@@ -9,9 +9,6 @@ from dataModel import *
 
 app = Flask(__name__)
 
-
-#HELLLLOOOOOO CHANGE
-
 #secret key - required for socketio - will be changed at deployment
 app.config['SECRET_KEY'] = 'Replace later'
 
@@ -49,12 +46,10 @@ def login():
         return redirect(url_for('chat'))
 
     return render_template("login.html", form=login_form)
-#
-##
-###pulls up register page - currently users only
-##
-#
 
+
+
+###pulls up register page - currently users only
 @app.route('/register', methods=['GET','POST'])
 def new_student():
 
@@ -133,11 +128,8 @@ def profile():
     elif status == 2:
         status_string ="Online"
 
-
     return render_template('profile.html', username=current_user.username, firstname=firstname, lastname=lastname, email=email, status_string=status_string)
 
-#
-##
 ### socket.io events for private chat
 ##
 #
@@ -186,9 +178,6 @@ def close_room(data):
 #
 ##
 ### public socketio chat events join_chat.html - socketio.js file
-##
-#
-
 @socketio.on('message')
 def message(data):
     room = session.get('roomName')
