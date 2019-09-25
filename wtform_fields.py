@@ -37,6 +37,7 @@ class RegistrationForm(FlaskForm):
             raise ValidationError("Username already exists. Select a new username")
 
 
+#just placeholders for forms, not currently used
 class TutorRegistrationForm(FlaskForm):
     """ TutorRegistration form """
 
@@ -55,6 +56,7 @@ class TutorRegistrationForm(FlaskForm):
         if user_object:
             raise ValidationError("Username already exists. Select a new username")
 
+##see above
 class StudentRegistrationForm(FlaskForm):
     """ StudentRegistration form """
 
@@ -75,7 +77,6 @@ class StudentRegistrationForm(FlaskForm):
 
 class LoginForm(FlaskForm):
     """ Login form """
-
 
     username = StringField('username_label', validators=[InputRequired(message="Username required")])
     password = PasswordField('password_label', validators=[InputRequired(message="Password required"), invalid_credentials])

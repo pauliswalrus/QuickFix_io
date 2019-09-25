@@ -37,22 +37,18 @@
 
         <nav id="sidebar">
         <h4>Pick A Room To Find A Tutor</h4>
-        Tutors Online:
-
-         Tutors Online:
-
-          <br>
+            <h5>Tutors Online: </h5>
             {% for user in online_users %}
                         {{ user.username }},
-            {%  endfor %}<br><br>
-            Join Private Room:
+            {%  endfor %}<br>
+            <h5>Join Private Room: </h5>
 
            <form method="POST">
             {{ form.hidden_tag() }}
-            {{ form.room_made.label }}: {{ form.room_made() }} {% for error in form.room_made.errors %}{{ error }}{% endfor %}<br>
+            {{ form.room_made() }} {% for error in form.room_made.errors %}{{ error }}{% endfor %}
             {{ form.submit_button() }}
            </form>
-            Create Room to Join:
+           <!-- Create Room to Join:
 
 
             <input type="text" id="room_to_join" name="room_to_join">
@@ -60,9 +56,24 @@
 
             <br>
             <br>
+           -->
+            <h5>View Recent Room Posts:</h5>
 
-            General Rooms:
-            <br>
+            {% for post in posts %}
+            <div class="post-preview">
+                <a href="{{ url_for('post', post_id=post.id) }}">
+              <h2 class="post-title">
+                {{ post.title }}
+              </h2>
+              <h3 class="post-subtitle">
+                {{ post.subtitle }}
+              </h3>
+            </a>
+            <p class="post-meta">Posted by {{ post.author }} on {{ post.date_posted.strftime('%B %d, %Y') }}</p>
+          </div>
+          {% endfor %}
+
+            <h5>General Rooms:</h5>
             {% for room in rooms %}
                 <p class="select-room">{{ room|title }}</p>
             {% endfor %}

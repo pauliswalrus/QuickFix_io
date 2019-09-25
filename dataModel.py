@@ -33,3 +33,15 @@ class Message(db.Model):
     message = db.Column(db.Text)
     username = db.Column(db.String(25), nullable=False)
     room = db.Column(db.String(25), nullable=False)
+
+# data model for blogpost table recently added in heroku db
+class Blogpost(db.Model):
+    """ Blogpost Model"""
+
+    __tablename__= "blogpost"
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(50), nullable=False)
+    subtitle = db.Column(db.String(50), nullable=False)
+    author = db.Column(db.String(25), nullable=False)
+    date_posted = db.Column(db.DateTime)
+    content = db.Column(db.Text)

@@ -97,13 +97,17 @@ def chat():
     online_users = User.query.filter_by(status=one).all()
 
     print(online_users)
+
+    posts = Blogpost.query.order_by(Blogpost.date_posted.desc()).all()
+
+
     room_form = RoomCreate()
     if room_form.validate_on_submit():
         session['roomName'] = room_form.room_made.data
         session['userName'] = current_user.username
         return redirect(url_for('.private_chat'))
 
-    return render_template('chat_join.html', username=current_user.username, rooms=ROOMS, form=room_form, date_stamp=date_stamp, online_users=online_users)
+    return render_template('chat_join.html', username=current_user.username, rooms=ROOMS, form=room_form, date_stamp=date_stamp, online_users=online_users, posts=posts)
 
 #route for private chat established in chat route
 @app.route("/private", methods=['GET','POST'])
