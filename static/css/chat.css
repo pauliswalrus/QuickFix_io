@@ -4,60 +4,95 @@
 
 /* Styles the body of the page */
 body {
-    margin-top: 0px;
+    /*margin-top: 0px;*/
     background-image: url('../images/teamChat2.png');
     background-size: cover;
-
 }
 
-/* Styles the python variable that holds the current local time date */
-#currDate {
-    font-size: 2em;
-    float: right;
-    padding-right: 1em;
-    font-family: 'Lato', sans-serif;
+#main-section {
+    width: 100%;
+    border: 2px solid blue;
 }
+
+
+
+/* ------------------------------ LEFT SECTION ------------------------------ */
+
 
 /* Styles the left column list of chat rooms & header */
-#sidebar {
-    margin-top: 2em;
+#left_column {
+
     float: left; /* Make this div as wide as its contents */
-    min-height: 60vh;
-    padding-left: 1em;
-    padding-top: 3em;
-    padding-right:1em;
-    border-right: 0.5px solid #898c91;
+    /*min-height: 60vh;*/
+    /*padding-left: 1em;*/
+    /*padding-top: 3em;*/
+    /*padding-right:1em;*/
+    /*border-right: 0.5px solid #898c91;*/
+    border: 2px solid red;
+    width: 30%;
+    margin-right: 70%;
+    /*display: inline-block;*/
 }
 
 /* Styles the python variable that holds the list of rooms */
-#sidebar p {
+#left_column p {
     padding-left: 2em;
     padding-right: 2em;
 }
 
 /* Styles the hover on the list of rooms */
-#sidebar p:hover {
+#left_column p:hover {
     background-color: #E46D4E;
     color: #F8F3F2;
     cursor: pointer;
 }
 
 /* Styles the Heading4 in left column */
-#sidebar h4 {padding-left: 0.5em;}
+#left_column h4 {padding-left: 0.5em;}
 
 
-/* Right Panel of Chat Window */
-#rightside-panel {
-    overflow: hidden; /* Make this div take up the rest of the horizontal space, and no more */
+
+
+
+/* ------------------------------ MIDDLE SECTION ------------------------------ */
+
+/* middle panel that holds chat window */
+#middle_column {
+    /*overflow: hidden; /* Make this div take up the rest of the horizontal space, and no more */
+    /*overflow: hidden;*/
     padding: 10px;
+    border: 2px solid red;
+    width: 40%;
+    margin-right: 30%;
+    margin-left: 30%;
+    /*display: inline-block;*/
+
+    vertical-align:top;
+    display: inline-block;
+}
+
+/* Styles Room name Container */
+#chatWindowHeader {
+    border: 2px solid #3F3D54;
+    background-color: #3F3D54;
+    width: 100%;
+    height: 50px;
+
+    vertical-align:top;
+    display: inline-block;
+}
+
+/* Room Name H1 */
+#room-name {
+    color: white;
 }
 
 
 /* Styles where messages are displayed */
 #display-message-section {
     height: 450px;
-    width: 80%;
-    margin-right: 20%;
+    width: 100%;
+    /*margin-right: 20%;*/
     border: 2px solid #3F3D54;
     overflow-y: auto; /*Make  this section scrollable */
     padding: 5px;
@@ -68,8 +103,8 @@ body {
     bottom: 0;
     /*border: 2px solid green;*/
     border: 2px solid #3F3D54;
-    width: 80%;
-    margin-right: 20%;
+    width: 100%;
+    /*margin-right: 20%;*/
 }
 
 /* where user types msg */
@@ -90,11 +125,7 @@ body {
 }
 
 
-/* Room Name H1 */
-#room-name {
-    color: white;
-    font-size: 2em;
-}
+
 
 
 /* Current user's username in chat */
@@ -150,28 +181,41 @@ body {
 }
 
 
+/*!* Styles Room name and Date spans *!*/
+/*#room-name, #date {*/
+    /*display: inline-block;*/
+/*}*/
+
+/*!* Styles Date *!*/
+/*#date {*/
+    /*float: right;*/
+    /*font-size: 1.1em;*/
+/*}*/
 
 
 
 
+/* ------------------------------ RIGHT SECTION ------------------------------ */
 
-/* Styles Room name Container */
-#chatWindowHeader {
-    border: 2px solid #3F3D54;
-    background-color: #3F3D54;
+#right_column {
+    border: 2px solid red;
+    width: 30%;
+    margin-left: 70%;
+    /*display: inline-block;*/
+    /*float: right;*/
 
-    width: 80%;
-    margin-right: 20%;
-
-}
-
-/* Styles Room name and Date spans */
-#room-name, #date {
+    vertical-align:top;
     display: inline-block;
 }
 
-/* Styles Date */
-#date {
-    float: right;
-    font-size: 1.1em;
+/* Styles the python variable that holds the current local time date */
+#currDate {
+    font-size: 2em;
+    /*float: right;*/
+    padding-right: 1em;
+    font-family: 'Lato', sans-serif;
+}
+
+#blog-posts {
+
 }

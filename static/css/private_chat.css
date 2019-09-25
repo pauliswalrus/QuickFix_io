@@ -19,7 +19,7 @@ body {
 }
 
 /* Styles the left column list of chat rooms & header */
-#sidebar {
+#left_column {
     margin-top: 2em;
     float: left; /* Make this div as wide as its contents */
     min-height: 60vh;
@@ -30,24 +30,24 @@ body {
 }
 
 /* Styles the python variable that holds the list of rooms */
-#sidebar p {
+#left_column p {
     padding-left: 2em;
     padding-right: 2em;
 }
 
 /* Styles the hover on the list of rooms */
-#sidebar p:hover {
+#left_column p:hover {
     background-color: #E46D4E;
     color: #F8F3F2;
     cursor: pointer;
 }
 
 /* Styles the Heading4 in left column */
-#sidebar h4 {padding-left: 0.5em;}
+#left_column h4 {padding-left: 0.5em;}
 
 
 /* Right Panel of Chat Window */
-#rightside-panel {
+#middle_column {
     overflow: hidden; /* Make this div take up the rest of the horizontal space, and no more */
     padding: 10px;
 }

@@ -8,8 +8,8 @@
 
     <title> fixQuick Chatkit </title>
 
-    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/chat.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -17,126 +17,138 @@
 
 <body>
 
-    <div class="navbar">
-        <a class="logo" href="#">Home</a>
-        <a href="{{ url_for('profile', username=username) }}">{{ username }}</a>
-        <a href="#">Forums</a>
-        <a href="#" >Chat</a>
-        <a href="#">Saved</a>
-        <a href="{{ url_for('logout') }}"> Logout </a>
-    </div>
+<div class="navbar">
+    <a class="logo" href="#">Home</a>
+    <a href="{{ url_for('profile', username=username) }}">{{ username }}</a>
+    <a href="#">Forums</a>
+    <a href="#">Chat</a>
+    <a href="#">Saved</a>
+    <a href="{{ url_for('logout') }}"> Logout </a>
+</div>
 
 
-
-    <!-- <nav id="main-section"> -->
-    <div id="main-section">
-
-
-    <span id="currDate">{{ date_stamp }}</span>
+<!-- div main section starts -->
+<div id="main-section">
 
 
-        <nav id="sidebar">
+    <!-- floating right -->
+{#    <span id="currDate">{{ date_stamp }}</span>#}
+
+
+    <div id="left_column">
+
         <h4>Pick A Room To Find A Tutor</h4>
-            <h5>Tutors Online: </h5>
-            {% for user in online_users %}
-                        {{ user.username }},
-            {%  endfor %}<br>
-            <h5>Join Private Room: </h5>
 
-           <form method="POST">
+        <h5>Tutors Online: </h5>
+        {% for user in online_users %}
+            {{ user.username }},
+        {% endfor %}<br>
+
+        <h5>Join Private Room: </h5>
+        <form method="POST">
             {{ form.hidden_tag() }}
             {{ form.room_made() }} {% for error in form.room_made.errors %}{{ error }}{% endfor %}
             {{ form.submit_button() }}
-           </form>
-           <!-- Create Room to Join:
+        </form>
 
 
-            <input type="text" id="room_to_join" name="room_to_join">
-            <button type="submit" id="join_room">Join Room</button>
-
-            <br>
-            <br>
-           -->
-            <a href="{{ url_for('add_post') }}">Add</a>
-            <br>
-
-            <h5>View Recent Room Posts:</h5>
-
-            {% for post in posts %}
-            <div class="post-preview">
-                <a href="{{ url_for('post', post_id=post.id) }}">
-              <h2 class="post-title">
-                {{ post.title }}
-              </h2>
-              <h3 class="post-subtitle">
-                {{ post.subtitle }}
-              </h3>
-            </a>
-            <p class="post-meta">Posted by {{ post.author }} on {{ post.date_posted.strftime('%B %d, %Y') }}</p>
-          </div>
-          {% endfor %}
-
-            <h5>General Rooms:</h5>
-            {% for room in rooms %}
-                <p class="select-room">{{ room|title }}</p>
-            {% endfor %}
-
-        </nav>
-
-        <!-- Message area -->
-        <div id="rightside-panel">
+        <!-- Create Room to Join:
 
 
-        <div id="chatWindowHeader">
-                <span id="room-name"></span>
-                <span id="tester"></span>
-            </div>
-            <!-- Display message -->
-            <div id="display-message-section" >
-                {%  for msg in message_object %}
-                    <li>{{ msg.username }}
-                        {{ msg.message }}
-                        {{ msg.room }}
-                    </li>
+        <input type="text" id="room_to_join" name="room_to_join">
+        <button type="submit" id="join_room">Join Room</button>
 
-                {%  endfor %}
+        <br>
+        <br>
+       -->
 
-            </div>
 
-            <!-- Input message
-            <div id="input-area">
-                <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">
-                <button type="button" id="send_message">SEND</button>
 
-            </div>
-            -->
-            <div id="input-area">
-                <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">
-                <button type="button" id="send_message">SEND</button>
-            </div>
-        </div>
+
+        <h5>General Rooms:</h5>
+        {% for room in rooms %}
+            <p class="select-room">{{ room|title }}</p>
+        {% endfor %}
 
     </div>
 
+    <!-- Middle Column - Type Message area -->
+    <div id="middle_column">
+
+        <div id="chatWindowHeader">
+            <h1 id="room-name"></h1>
+        </div>
+
+        <!-- Display message -->
+        <div id="display-message-section">
+            {% for msg in message_object %}
+                <li>{{ msg.username }}
+                    {{ msg.message }}
+                    {{ msg.room }}
+                </li>
+            {% endfor %}
+        </div>
+
+        <!-- Input message
+        <div id="input-area">
+            <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">
+            <button type="button" id="send_message">SEND</button>
+
+        </div>
+        -->
+        <div id="input-area">
+            <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">
+            <button type="button" id="send_message">SEND</button>
+        </div>
+
+    </div><!-- end middle_column div -->
 
 
-    <script type="text/javascript">
-        const username = `{{ username }}`;
-        const mesage_object = `{{ message_object }}`
-    </script>
+    <!-- right_column div -->
+    <div id="right_column">
+        <span id="currDate">{{ date_stamp }}</span>
 
-    <!-- Custom Chat JS -->
-    <script src="{{ url_for('static', filename='js/chat_page.js') }}">
+        <div id="blog-posts">
+            <a href="{{ url_for('add_post') }}">Add</a> <br>
+            <h5>View Recent Room Posts:</h5>
 
-    </script>
-    <!-- SocketIO JS -->
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+            {% for post in posts %}
+                <div>
+                    <a href="{{ url_for('post', post_id=post.id) }}">
+                        <h5>{{ post.title }} {{ post.subtitle }}</h5>
+                        By {{ post.author }} on {{ post.date_posted.strftime('%B %d, %Y') }} </a>
+                </div>
 
-    <!-- CustomSocketIO JS -->
-    <script src="{{ url_for('static', filename='js/socketio.js') }}">
+            {% endfor %}
+
+        </div> <!-- end blog-posts div -->
+    </div><!-- end right_column div -->
 
 
-    </script>
 
-  </body>
+
+
+</div> <!--end main section-->
+
+
+<script type="text/javascript">
+    const username = `{{ username }}`;
+    const mesage_object = `{{ message_object }}`
+</script>
+
+<!-- Custom Chat JS -->
+<script src="{{ url_for('static', filename='js/chat_page.js') }}">
+
+</script>
+<!-- SocketIO JS -->
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
+        integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+
+<!-- CustomSocketIO JS -->
+<script src="{{ url_for('static', filename='js/socketio.js') }}">
+
+
+</script>
+
+</body>
 </html>

@@ -1,5 +1,6 @@
 import os
 from time import localtime, strftime
+from datetime import datetime
 from flask import Flask, render_template, redirect, url_for, request, flash, session
 from flask_login import LoginManager, login_user, current_user, login_required, logout_user
 from flask_socketio import SocketIO, send, emit, join_room, leave_room, close_room
@@ -86,20 +87,21 @@ def post(post_id):
 
 @app.route('/add', methods=['GET','POST'])
 def add_post():
-
-    #post_form = BlogPostForm()
-
-    author = current_user.username
-    date_time = strftime('%b-%d %I:%M%p', localtime())
-
     post_form = BlogPostForm()
+
     if post_form.validate_on_submit():
+
+
         title = post_form.title.data
         subtitle = post_form.subtitle.data
         content = post_form.content.data
 
+        author = current_user.username
+        date_time = datetime.now()
+
         # add user to database
         blog_post = BlogPost(title=title, subtitle=subtitle, author=author, date_posted=date_time, content=content)
+
         db.session.add(blog_post)
         db.session.commit()
 
