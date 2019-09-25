@@ -78,6 +78,35 @@ def new_student():
 
     return render_template("registrationStudent.html", form=reg_form)
 
+@app.route('/post/<int:post_id>')
+def post(post_id):
+    post = BlogPost.query.filter_by(id=post_id).one()
+
+    return render_template('post.html', post=post)
+
+@app.route('/add', methods=['GET','POST'])
+def add_post():
+
+    #post_form = BlogPostForm()
+
+    author = current_user.username
+    date_time = strftime('%b-%d %I:%M%p', localtime())
+
+    post_form = BlogPostForm()
+    if post_form.validate_on_submit():
+        title = post_form.title.data
+        subtitle = post_form.subtitle.data
+        content = post_form.content.data
+
+        # add user to database
+        blog_post = BlogPost(title=title, subtitle=subtitle, author=author, date_posted=date_time, content=content)
+        db.session.add(blog_post)
+        db.session.commit()
+
+        return redirect(url_for('chat'))
+
+    return render_template('add.html', username=current_user.username, post_form=post_form)
+
 #logout route
 @app.route("/logout", methods=['GET'])
 def logout():
@@ -98,7 +127,7 @@ def chat():
 
     print(online_users)
 
-    posts = Blogpost.query.order_by(Blogpost.date_posted.desc()).all()
+    posts = BlogPost.query.order_by(BlogPost.date_posted.desc()).all()
 
 
     room_form = RoomCreate()

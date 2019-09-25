@@ -35,7 +35,7 @@ class Message(db.Model):
     room = db.Column(db.String(25), nullable=False)
 
 # data model for blogpost table recently added in heroku db
-class Blogpost(db.Model):
+class BlogPost(db.Model):
     """ Blogpost Model"""
 
     __tablename__= "blogpost"
