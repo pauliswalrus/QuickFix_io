@@ -1,9 +1,8 @@
-import os
 from time import localtime, strftime
 from datetime import datetime
-from flask import Flask, render_template, redirect, url_for, request, flash, session
-from flask_login import LoginManager, login_user, current_user, login_required, logout_user
-from flask_socketio import SocketIO, send, emit, join_room, leave_room, close_room
+from flask import Flask, render_template, redirect, url_for, flash, session
+from flask_login import LoginManager, login_user, current_user, logout_user
+from flask_socketio import SocketIO, send, emit, join_room, leave_room
 
 from wtform_fields import *
 from dataModel import *
@@ -173,8 +172,8 @@ def chat_jq():
         print(post_Room)
 
         delpost = BlogPost.query.filter_by(subtitle=post_Room).first()
-        db.session.delete(delpost)
-        db.session.commit()
+        db.delete(delpost)
+        db.commit()
 
 
 
@@ -197,8 +196,8 @@ def private_chat():
     room_form = RoomJoin()
     if room_form.validate_on_submit():
         delpost = BlogPost.query.filter_by(subtitle=roomName).first()
-        db.session.delete(delpost)
-        db.session.commit()
+        db.delete(delpost)
+        db.commit()
         redirect(url_for('chat'))
 
     return render_template('private_room.html', userName=userName, roomName=roomName, message_object=message_object, room_form=room_form)
