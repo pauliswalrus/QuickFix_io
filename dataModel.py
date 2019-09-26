@@ -45,3 +45,4 @@ class BlogPost(db.Model):
     author = db.Column(db.String(25), nullable=False)
     date_posted = db.Column(db.DateTime)
     content = db.Column(db.Text)
+    type = db.Column(db.String(25))

@@ -1,37 +1,37 @@
-/* Chat.css - Defines the styles for the Chat.html page */
+/* Chat.css - Defines the styles for the chat_join.html page */
 /* Author: Emma Hobden */
 
+/* ---------------------------------------------------- GENERAL ---------------------------------------------------- */
 
 /* Styles the body of the page */
 body {
-    /*margin-top: 0px;*/
-    background-image: url('../images/teamChat2.png');
-    background-size: cover;
+    /*background-image: url('../images/teamChat2.png');*/
+    /*background-size: cover;*/
 }
 
+/* Styles the main-section div which holds all page content */
 #main-section {
     width: 100%;
-    border: 2px solid blue;
+    /*border: 2px solid blue;*/
 }
 
+/* Styles all three column divs on the page */
+#left_column,
+#middle_column,
+#right_column {
+    /*width: 33%;*/
+    display: inline-block;
+    /*border: 2px solid red;*/
+    height: 100%;
+    margin-top: 0px;
+    vertical-align: middle;
+}
 
+/* -------------------------------------------------- LEFT COLUMN -------------------------------------------------- */
 
-/* ------------------------------ LEFT SECTION ------------------------------ */
-
-
-/* Styles the left column list of chat rooms & header */
+/* Styles left column - online tutors, join room etc */
 #left_column {
-
-    float: left; /* Make this div as wide as its contents */
-    /*min-height: 60vh;*/
-    /*padding-left: 1em;*/
-    /*padding-top: 3em;*/
-    /*padding-right:1em;*/
-    /*border-right: 0.5px solid #898c91;*/
-    border: 2px solid red;
-    width: 30%;
-    margin-right: 70%;
-    /*display: inline-block;*/
+    width: 29%;
 }
 
 /* Styles the python variable that holds the list of rooms */
@@ -48,52 +48,36 @@ body {
 }
 
 /* Styles the Heading4 in left column */
-#left_column h4 {padding-left: 0.5em;}
+#left_column h4 {
+    padding-left: 0.5em;
+}
 
 
+/* ------------------------------------------------- MIDDLE COLUMN ------------------------------------------------- */
 
-
-
-/* ------------------------------ MIDDLE SECTION ------------------------------ */
-
-/* middle panel that holds chat window */
+/* Styles middle column - main chat window */
 #middle_column {
-    /*overflow: hidden; /* Make this div take up the rest of the horizontal space, and no more */
-    /*overflow: hidden;*/
-    padding: 10px;
-    border: 2px solid red;
     width: 40%;
-    margin-right: 30%;
-    margin-left: 30%;
-    /*display: inline-block;*/
-
-    vertical-align:top;
-    display: inline-block;
 }
 
-/* Styles Room name Container */
+/* Styles Room Name Container */
 #chatWindowHeader {
-    border: 2px solid #3F3D54;
-    background-color: #3F3D54;
-    width: 100%;
-    height: 50px;
-
-    vertical-align:top;
-    display: inline-block;
+    background-color: darkslategrey;
+    height: 60px;
+    top: 0px;
 }
 
-/* Room Name H1 */
+/* Styles Room Name p */
 #room-name {
     color: white;
+    font-size: 2.5em;
 }
 
-
-/* Styles where messages are displayed */
+/* Styles div where messages are displayed */
 #display-message-section {
     height: 450px;
     width: 100%;
-    /*margin-right: 20%;*/
-    border: 2px solid #3F3D54;
+    border: 2px solid darkslategray;
     overflow-y: auto; /*Make  this section scrollable */
     padding: 5px;
 }
@@ -101,20 +85,18 @@ body {
 /* Styles the div that holds the type msg & send msg */
 #input-area {
     bottom: 0;
-    /*border: 2px solid green;*/
-    border: 2px solid #3F3D54;
+    border: 2px solid darkslategray;
     width: 100%;
-    /*margin-right: 20%;*/
 }
 
-/* where user types msg */
+/* Styles the div where user types msg */
 #user_message {
-    color: #3F3D54;
+    color: darkslategray;
     height: 30px;
     width: 90%;
 }
 
-/* send button to send msg */
+/* Styles the button to send a msg */
 #send_message {
     color: white;
     background-color: #3F3D54;
@@ -124,10 +106,6 @@ body {
     border: 2px solid #3F3D54;
 }
 
-
-
-
-
 /* Current user's username in chat */
 .my-username {
     font-weight: bold;
@@ -136,11 +114,13 @@ body {
     padding-right: 5px;
 }
 
+/* Current user's msg timestamp */
 .timestamp {
     color: white;
     font-size:0.7em;
 }
 
+/* Current user's message bubble */
 .my-msg {
     color: white;
     text-align: left;
@@ -148,26 +128,25 @@ body {
     background-color: #807E93;
     border-radius: 20px 20px 20px 0px;
     padding-left: 10px;
-
     width: 60%;
     margin-right: 40%;
 }
 
-
-
-
+/* Other user's username in chat */
 .other-username {
     font-weight: bold;
     font-size: 1.4em;
     color: white;
 }
 
+/* Other user's msg timestamp */
 .other-timestamp {
     color: white;
     font-size:0.7em;
     padding-right: 5px;
 }
 
+/* Other user's message bubble */
 .others-msg {
     color: white;
     text-align: right;
@@ -175,37 +154,16 @@ body {
     background-color: #A2A1AF;
     border-radius: 20px 20px 0px 20px;
     padding-right: 10px;
-
     width: 60%;
     margin-left: 40%;
 }
 
 
-/*!* Styles Room name and Date spans *!*/
-/*#room-name, #date {*/
-    /*display: inline-block;*/
-/*}*/
+/* -------------------------------------------------- RIGHT COLUMN ------------------------------------------------- */
 
-/*!* Styles Date *!*/
-/*#date {*/
-    /*float: right;*/
-    /*font-size: 1.1em;*/
-/*}*/
-
-
-
-
-/* ------------------------------ RIGHT SECTION ------------------------------ */
-
+/* Styles right column - current date and time */
 #right_column {
-    border: 2px solid red;
-    width: 30%;
-    margin-left: 70%;
-    /*display: inline-block;*/
-    /*float: right;*/
-
-    vertical-align:top;
-    display: inline-block;
+    width: 29%;
 }
 
 /* Styles the python variable that holds the current local time date */
@@ -215,6 +173,7 @@ body {
     padding-right: 1em;
     font-family: 'Lato', sans-serif;
 }
+
 
 #blog-posts {
 

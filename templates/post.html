@@ -53,6 +53,14 @@
           </div>
         </div>
       </div>
+
+{#        <form method="POST">#}
+{#            {{ room_form.submit_button() }}#}
+{##}
+{#            {{ room_form.csrf_token }}#}
+{#        </form>#}
+
+        <a href="{{ url_for('private_chat', roomName=post.subtitle) }}"> Join Room Now</a>
     </article>
     </div>
 

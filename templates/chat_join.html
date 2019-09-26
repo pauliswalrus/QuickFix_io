@@ -31,10 +31,7 @@
 <div id="main-section">
 
 
-    <!-- floating right -->
-{#    <span id="currDate">{{ date_stamp }}</span>#}
-
-
+    <!-- Left Column - Join Room - Online Tutors etc -->
     <div id="left_column">
 
         <h4>Pick A Room To Find A Tutor</h4>
@@ -51,32 +48,18 @@
             {{ form.submit_button() }}
         </form>
 
-
-        <!-- Create Room to Join:
-
-
-        <input type="text" id="room_to_join" name="room_to_join">
-        <button type="submit" id="join_room">Join Room</button>
-
-        <br>
-        <br>
-       -->
-
-
-
-
         <h5>General Rooms:</h5>
         {% for room in rooms %}
             <p class="select-room">{{ room|title }}</p>
         {% endfor %}
 
-    </div>
+    </div> <!-- end of left column -->
 
     <!-- Middle Column - Type Message area -->
     <div id="middle_column">
 
         <div id="chatWindowHeader">
-            <h1 id="room-name"></h1>
+            <p id="room-name"></p>
         </div>
 
         <!-- Display message -->
@@ -89,13 +72,7 @@
             {% endfor %}
         </div>
 
-        <!-- Input message
-        <div id="input-area">
-            <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">
-            <button type="button" id="send_message">SEND</button>
 
-        </div>
-        -->
         <div id="input-area">
             <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">
             <button type="button" id="send_message">SEND</button>
@@ -108,20 +85,22 @@
     <div id="right_column">
         <span id="currDate">{{ date_stamp }}</span>
 
-        <div id="blog-posts">
+
+          <div id="blog-posts">
             <a href="{{ url_for('add_post') }}">Add</a> <br>
             <h5>View Recent Room Posts:</h5>
 
             {% for post in posts %}
                 <div>
                     <a href="{{ url_for('post', post_id=post.id) }}">
-                        <h5>{{ post.title }} {{ post.subtitle }}</h5>
+                        <h5>{{ post.type|upper }} : {{ post.title }} - {{ post.subtitle }}</h5>
                         By {{ post.author }} on {{ post.date_posted.strftime('%B %d, %Y') }} </a>
-                </div>
+         </div>
 
             {% endfor %}
 
-        </div> <!-- end blog-posts div -->
+        </div>
+
     </div><!-- end right_column div -->
 
 
@@ -152,3 +131,43 @@
 
 </body>
 </html>
+
+
+
+<!-- COMMENTS / OLD CODE / DONT DELETE YET -->
+
+
+
+    <!-- floating right -->
+    {#
+        <span id="currDate">{{ date_stamp }}</span>
+    #}
+
+
+
+
+        <!-- Input message
+        <div id="input-area">
+            <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">
+            <button type="button" id="send_message">SEND</button>
+
+        </div>
+        -->
+
+
+
+
+
+
+
+
+
+        <!-- Create Room to Join:
+
+
+        <input type="text" id="room_to_join" name="room_to_join">
+        <button type="submit" id="join_room">Join Room</button>
+
+        <br>
+        <br>
+       -->

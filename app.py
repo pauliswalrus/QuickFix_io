@@ -79,9 +79,16 @@ def new_student():
 
     return render_template("registrationStudent.html", form=reg_form)
 
-@app.route('/post/<int:post_id>')
+@app.route('/post/<int:post_id>', methods=['GET','POST'])
 def post(post_id):
     post = BlogPost.query.filter_by(id=post_id).one()
+
+    # room_form = RoomJoin()
+    # if room_form.validate_on_submit():
+    session['roomName'] = post.subtitle
+    session['userName'] = current_user.username
+    #     roomName = session.get('roomName')
+    #     return redirect(url_for('.private_room'),roomName=roomName)
 
     return render_template('post.html', post=post)
 
@@ -90,17 +97,15 @@ def add_post():
     post_form = BlogPostForm()
 
     if post_form.validate_on_submit():
-
-
         title = post_form.title.data
         subtitle = post_form.subtitle.data
         content = post_form.content.data
-
+        type = post_form.type.data
         author = current_user.username
         date_time = datetime.now()
 
-        # add user to database
-        blog_post = BlogPost(title=title, subtitle=subtitle, author=author, date_posted=date_time, content=content)
+        # add blogpost to database
+        blog_post = BlogPost(title=title, subtitle=subtitle, author=author, date_posted=date_time, content=content, type=type)
 
         db.session.add(blog_post)
         db.session.commit()
@@ -127,10 +132,7 @@ def chat():
     one = 1
     online_users = User.query.filter_by(status=one).all()
 
-    print(online_users)
-
     posts = BlogPost.query.order_by(BlogPost.date_posted.desc()).all()
-
 
     room_form = RoomCreate()
     if room_form.validate_on_submit():
@@ -141,12 +143,26 @@ def chat():
     return render_template('chat_join.html', username=current_user.username, rooms=ROOMS, form=room_form, date_stamp=date_stamp, online_users=online_users, posts=posts)
 
 #route for private chat established in chat route
+@app.route("/private/<roomName>", methods=['GET','POST'])
+def private_room(roomName):
+
+    roomName = session.get('roomName')
+    userName = session.get('userName')
+    #roomName = BlogPost.query.filter_by(roomName).first()
+    #userName = current_user.username
+
+    message_object = Message.query.all()
+
+    return render_template('private_room.html', userName=userName, roomName=roomName, message_object=message_object)
+
 @app.route("/private", methods=['GET','POST'])
 def private_chat():
 
     roomName = session.get('roomName')
     userName = session.get('userName')
-    message_object = Message.query.all()
+    #message_object = Message.query.all()
+
+    message_object = Message.query.filter_by(room=roomName).all()
 
     return render_template('private_room.html', userName=userName, roomName=roomName, message_object=message_object)
 
@@ -198,6 +214,7 @@ def text(data):
 def left(data):
     room = session.get('roomName')
     leave_room(room)
+    session['roomName']=""
     print('Connection on ' + room + ' with user ' + current_user.username + ' has been lost')
     emit('status', {'msg': current_user.username + ' has left the room ' + room}, room=room)
 

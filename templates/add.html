@@ -37,6 +37,10 @@
 
     <div id="regForm">
         <form action="{{ url_for('add_post')}}", method="post">
+
+            <div>
+                {{ post_form.type }}
+            </div>
             <div>
                 {{ post_form.title(class_='form-control', placeholder='Title', autocomplete='off', autofocus=true) }}
                 <ul>
@@ -47,7 +51,7 @@
             </div>
 
              <div>
-                {{ post_form.subtitle(class_='form-control', placeholder='SubTitle', autocomplete='off') }}
+                {{ post_form.subtitle(class_='form-control', placeholder='RoomName', autocomplete='off') }}
                 <ul>
                     {% for error in post_form.subtitle.errors %}
                         <li>{{ error }}</li>

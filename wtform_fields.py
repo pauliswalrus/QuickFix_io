@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, SelectField
 from wtforms.validators import InputRequired, Length, EqualTo, ValidationError, Email
 
 from passlib.hash import pbkdf2_sha256
@@ -92,7 +92,15 @@ class RoomCreate(FlaskForm):
 class BlogPostForm(FlaskForm):
     """ BlogPost Form """
 
+    type = SelectField('type_label', choices=[('Request', 'Request'), ('Offer', 'Offer')])
     title = StringField('title_label', validators=[InputRequired(message="Title required")])
-    subtitle = StringField('subtitle_label', validators=[InputRequired(message="Subtitle required")])
+    subtitle = StringField('subtitle_label', validators=[InputRequired(message="Room required")])
     content = TextAreaField('content_label', validators=[InputRequired(message="Post required")])
     submit_button = SubmitField('Add Post')
+
+
+class RoomJoin(FlaskForm):
+    """ Room Create """
+
+    room_made = StringField('Private Room ')
+    submit_button = SubmitField('Room')
