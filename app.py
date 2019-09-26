@@ -127,7 +127,11 @@ def all_users():
 
     allUsers = User.query.all()
 
-    return render_template('all_users.html', username=current_user.username, allUsers=allUsers)
+    one = 1
+    online_users = User.query.filter_by(status=one).all()
+
+
+    return render_template('all_users.html', username=current_user.username, allUsers=allUsers, online_users=online_users)
 
 #route for chat - displays public rooms and form to join(create rooms)
 @app.route("/chat", methods=['GET','POST'])

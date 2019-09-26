@@ -30,12 +30,39 @@
 
     <!-- <nav id="main-section"> -->
     <div id="main-section">
+        <div id="left_column">
 
+
+        </div>
+
+
+        <div id="middle_column">
+
+        <h4>All Users: </h4>
         {% for user in allUsers %}
-         <a href="{{ url_for('pub_profile', username=user.username)}}" >{{ user.username }} </a>
-        {% endfor %}<br>
+        <div>
+        <a href="{{ url_for('pub_profile', username=user.username)}}" >
+            <h4>{{ user.username }} </h4>
+            {{ user.firstname }} {{ user.lastname }}</a>
+        </div>
+
+        {% endfor %}
+
+        </div>
 
 
+        <div id="right_column">
+
+            <h4>All Online Users: </h4>
+        {% for user in online_users %}
+        <div>
+        <a href="{{ url_for('pub_profile', username=user.username)}}" >
+            <h4>{{ user.username }} </h4>
+            {{ user.firstname }} {{ user.lastname }}</a>
+        </div>
+
+        {% endfor %}
+        </div>
      </div>
 
 
