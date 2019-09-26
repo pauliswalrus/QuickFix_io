@@ -161,9 +161,11 @@ def chat_jq():
     user_now = current_user.username
 
     roomName = session.get('roomName')
+
+    message_object = Message.query.filter_by(room=roomName).all()
     #print(user_now)
 
-    return render_template('private_jq.html', username=current_user.username, rooms=ROOMS, date_stamp=date_stamp, roomName=roomName)
+    return render_template('private_jq.html', username=current_user.username, rooms=ROOMS, date_stamp=date_stamp, roomName=roomName, message_object=message_object)
 
 #route for private chat established in chat route
 @app.route("/private/<roomName>", methods=['GET','POST'])

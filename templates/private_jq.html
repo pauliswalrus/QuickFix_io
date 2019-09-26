@@ -17,6 +17,13 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
 
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+
+
+    <script src="{{ url_for('static', filename='js/chat_page.js') }}">
+
+
+    </script>
+
     </head>
 
     <script type="text/javascript" >
@@ -154,7 +161,7 @@
 
         <div class="navbar">
         <a class="logo" href="#">Home</a>
-        <a href="{{ url_for('profile', username=userName) }}">{{ userName }}</a>
+        <a href="{{ url_for('profile', username=username) }}">{{ username }}</a>
         <a href="#">Forums</a>
         <a href="#">Chat</a>
         <a href="{{ url_for('all_users') }}">Users</a>
@@ -170,8 +177,6 @@
             <button type="button" id="button_leave">Leave this room</button>
             <br>
             <button type="button" id="button_close">Close this room</button>
-            <br>
-            <a href="#" onclick="close_room();">Close this room</a>
             <br>
             </div>
 
@@ -201,6 +206,12 @@
         <div id="right_column">
         <span id="currDate">{{ date_stamp }}</span>
 
+            <textarea id="display-message-section" cols="8" rows="2" readonly>
+
+            {%  for msg in message_object %}
+                    {{ msg.username }} {{ msg.message }} {{ msg.room }}
+                {%  endfor %}
+        </textarea>
 
         </div>
 
