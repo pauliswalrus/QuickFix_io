@@ -53,7 +53,8 @@
 
         <div id="right_column">
 
-            <h4>All Online Users: </h4>
+
+        <h4>Online Users: </h4>
         {% for user in online_users %}
         <div>
         <a href="{{ url_for('pub_profile', username=user.username)}}" >
