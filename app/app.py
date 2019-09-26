@@ -83,6 +83,8 @@ def post(post_id):
     # if room_form.validate_on_submit():
     session['roomName'] = post.subtitle
     session['userName'] = current_user.username
+
+    session['author'] = post.author
     #     roomName = session.get('roomName')
     #     return redirect(url_for('.private_room'),roomName=roomName)
 
@@ -138,6 +140,9 @@ def chat():
     user_now = current_user.username
     #print(user_now)
 
+    this_user = User.query.filter_by(username=current_user.username)
+
+
     one = 1
     online_users = User.query.filter_by(status=one).all()
 
@@ -161,6 +166,8 @@ def chat_jq():
 
     roomName = session.get('roomName')
 
+    authorName = session.get('author')
+
     message_object = Message.query.filter_by(room=roomName).order_by(Message.id.desc()).all()
     #print(user_now)
 
@@ -174,12 +181,7 @@ def chat_jq():
         db.session.commit()
 
 
-
-
-
-
-
-    return render_template('private_jq.html', username=current_user.username, rooms=ROOMS, date_stamp=date_stamp, roomName=roomName, message_object=message_object, private_form=private_form)
+    return render_template('private_jq.html', username=current_user.username, rooms=ROOMS, date_stamp=date_stamp, roomName=roomName, message_object=message_object, private_form=private_form, authorName=authorName)
 
 #currently used!
 @app.route("/private", methods=['GET','POST'])

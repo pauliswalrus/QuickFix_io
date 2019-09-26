@@ -170,12 +170,15 @@
 
             <div id="left_column">
 
+            <h4>Room: {{ roomName }}</h4>
+            <h4>Creator: {{ authorName }}</h4>
+
             <h5>Room Actions: </h5>
             <button type="button" id="button_leave">Leave this room</button>
             <br><br>
             <button type="button" id="button_close">Close this room</button>
             <br>
-
+            <br>
            <div id="regForm">
             <form method="post">
                 {{ private_form.submit_button }}
