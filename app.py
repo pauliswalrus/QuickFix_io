@@ -155,7 +155,7 @@ def chat():
     return render_template('chat_join.html', username=current_user.username, rooms=ROOMS, form=room_form, date_stamp=date_stamp, online_users=online_users, posts=posts)
 
 #route for chat - displays public rooms and form to join(create rooms)
-@app.route("/ff", methods=['GET','POST'])
+@app.route("/private_session", methods=['GET','POST'])
 def chat_jq():
     date_stamp = strftime('%A, %B %d', localtime())
     user_now = current_user.username
@@ -166,17 +166,6 @@ def chat_jq():
     #print(user_now)
 
     return render_template('private_jq.html', username=current_user.username, rooms=ROOMS, date_stamp=date_stamp, roomName=roomName, message_object=message_object)
-
-#route for private chat established in chat route
-@app.route("/private/<roomName>", methods=['GET','POST'])
-def private_room(roomName):
-
-    roomName = session.get('roomName')
-    userName = session.get('userName')
-
-    message_object = Message.query.all()
-
-    return render_template('private_room.html', userName=userName, roomName=roomName, message_object=message_object)
 
 #currently used!
 @app.route("/private", methods=['GET','POST'])
