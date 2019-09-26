@@ -36,7 +36,7 @@
 <body>
     <div class="navbar">
         <a class="logo" a href="#">Home</a>
-        <a href="{{ url_for('profile') }}">{{ username }}</a>
+        <a href="{{ url_for('profile') }}">{{ thisUser }}</a>
         <a href="#">Forums</a>
         <a href="{{ url_for('chat') }}" >Chat</a>
         <a href="{{ url_for('all_users') }}">Users</a>
@@ -46,14 +46,14 @@
 
     <div id="userInfo_bg">
         <div id="userInfo">
-            <h1>Hello {{ firstname }} {{ lastname }}</h1>
+            <h1>{{ firstname }} {{ lastname }}'s Profile:</h1>
 
             <h2>Username: {{ username }}</h2>
             <h2>Email: {{ email }}</h2>
 
             <h3>Credits: </h3>
             <div id="online_stat"> </div>
-            <h3>Status: {{ status_string }} <button id="changeStatus">Button</button></h3>
+            <h3>Status: {{ status_string }} </h3>
 
             <div id="profilePic"></div>
 

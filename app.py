@@ -122,6 +122,13 @@ def logout():
     flash('You logged out!','success')
     return redirect(url_for('login'))
 
+@app.route("/users", methods=['GET','POST'])
+def all_users():
+
+    allUsers = User.query.all()
+
+    return render_template('all_users.html', username=current_user.username, allUsers=allUsers)
+
 #route for chat - displays public rooms and form to join(create rooms)
 @app.route("/chat", methods=['GET','POST'])
 def chat():
@@ -193,6 +200,31 @@ def profile():
 
 
     return render_template('profile.html', username=current_user.username, firstname=firstname, lastname=lastname, email=email, status_string=status_string, blog_posts=blog_posts)
+
+
+#public profile accessed by users from online user links.
+@app.route("/profile/<username>", methods=['GET','POST'])
+def pub_profile(username):
+
+    thisUser = current_user.username
+    user_object = User.query.filter_by(username=username).first()
+
+    firstname = user_object.firstname
+    lastname = user_object.lastname
+    email = user_object.email
+    status = user_object.status
+
+
+    blog_posts = BlogPost.query.filter_by(author=username).order_by(BlogPost.date_posted.desc()).all()
+
+
+    if status == 0:
+        status_string = "Offine"
+    elif status == 1:
+        status_string ="Online"
+
+
+    return render_template('pub_profile.html', thisUser=thisUser, username=username, firstname=firstname, lastname=lastname, email=email, status_string=status_string, blog_posts=blog_posts)
 
 #
 ##

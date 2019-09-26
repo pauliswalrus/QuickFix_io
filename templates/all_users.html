@@ -31,38 +31,10 @@
     <!-- <nav id="main-section"> -->
     <div id="main-section">
 
+        {% for user in allUsers %}
+         <a href="{{ url_for('pub_profile', username=user.username)}}" >{{ user.username }} </a>
+        {% endfor %}<br>
 
-     <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto">
-            <div class="post-heading">
-              <h1>{{ post.title }}</h1>
-              <h2 class="subheading">{{ post.subtitle }}</h2>
-              <span class="meta">Posted by
-                {{ post.author }}
-                on {{ post.date_posted.strftime('%b %d, %Y') }} at {{ post.date_posted.strftime('%I'':''%M %p') }}</span>
-            </div>
-          </div>
-        </div>
-     <!-- Post Content -->
-    <article>
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-md-10 mx-auto">
-            {{ post.content|safe }}
-          </div>
-        </div>
-      </div>
-
-{#        <form method="POST">#}
-{#            {{ room_form.submit_button() }}#}
-{##}
-{#            {{ room_form.csrf_token }}#}
-{#        </form>#}
-
-        <a href="{{ url_for('private_chat', roomName=post.subtitle) }}"> Join Room Now</a>
-    </article>
-    </div>
 
      </div>
 

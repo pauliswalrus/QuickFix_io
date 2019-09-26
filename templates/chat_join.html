@@ -22,7 +22,7 @@
     <a href="{{ url_for('profile', username=username) }}">{{ username }}</a>
     <a href="#">Forums</a>
     <a href="#">Chat</a>
-    <a href="#">Saved</a>
+    <a href="{{ url_for('all_users') }}">Users</a>
     <a href="{{ url_for('logout') }}"> Logout </a>
 </div>
 
@@ -38,7 +38,7 @@
 
         <h5>Tutors Online: </h5>
         {% for user in online_users %}
-            {{ user.username }},
+         <a href="{{ url_for('pub_profile', username=user.username)}}" >{{ user.username }} </a>
         {% endfor %}<br>
 
         <h5>Join Private Room: </h5>
@@ -94,7 +94,7 @@
                 <div>
                     <a href="{{ url_for('post', post_id=post.id) }}">
                         <h5>{{ post.type|upper }} : {{ post.title }} - {{ post.subtitle }}</h5>
-                        By {{ post.author }} on {{ post.date_posted.strftime('%B %d, %Y') }} </a>
+                        by {{ post.author }} on {{ post.date_posted.strftime('%b %d, %Y') }} at {{ post.date_posted.strftime('%I' ':' '%M %p') }} </a>
          </div>
 
             {% endfor %}
