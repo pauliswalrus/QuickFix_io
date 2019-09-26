@@ -139,6 +139,7 @@ def chat():
     one = 1
     online_users = User.query.filter_by(status=one).all()
 
+    #posts = BlogPost.query.filter_by(date_posted=datetime.today()).order_by(BlogPost.date_posted.desc()).all()
     posts = BlogPost.query.order_by(BlogPost.date_posted.desc()).all()
 
     room_form = RoomCreate()
@@ -256,7 +257,7 @@ def text(data):
 def left(data):
     room = session.get('roomName')
     leave_room(room)
-    session['roomName']=""
+    session['roomName'] = " "
     print('Connection on ' + room + ' with user ' + current_user.username + ' has been lost')
     emit('status', {'msg': current_user.username + ' has left the room ' + room}, room=room)
 
