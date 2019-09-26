@@ -144,6 +144,7 @@ def chat():
     #posts = BlogPost.query.filter_by(date_posted=datetime.today()).order_by(BlogPost.date_posted.desc()).all()
     posts = BlogPost.query.order_by(BlogPost.date_posted.desc()).all()
 
+
     # room_form = RoomCreate()
     # if room_form.validate_on_submit():
     #     session['roomName'] = room_form.room_made.data
