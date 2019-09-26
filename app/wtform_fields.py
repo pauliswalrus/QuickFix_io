@@ -103,4 +103,4 @@ class RoomJoin(FlaskForm):
     """ Room Create """
 
     room_private = StringField('Private Room')
-    submit_button = SubmitField('Room')
+    submit_button = SubmitField('Make This Room Private')
