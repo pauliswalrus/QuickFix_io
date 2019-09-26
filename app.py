@@ -130,8 +130,10 @@ def all_users():
     one = 1
     online_users = User.query.filter_by(status=one).all()
 
+    zero = 0
+    offline_users = User.query.filter_by(status=zero).all()
 
-    return render_template('all_users.html', username=current_user.username, allUsers=allUsers, online_users=online_users)
+    return render_template('all_users.html', username=current_user.username, allUsers=allUsers, online_users=online_users, offline_users=offline_users)
 
 #route for chat - displays public rooms and form to join(create rooms)
 @app.route("/chat", methods=['GET','POST'])
@@ -146,13 +148,13 @@ def chat():
     #posts = BlogPost.query.filter_by(date_posted=datetime.today()).order_by(BlogPost.date_posted.desc()).all()
     posts = BlogPost.query.order_by(BlogPost.date_posted.desc()).all()
 
-    room_form = RoomCreate()
-    if room_form.validate_on_submit():
-        session['roomName'] = room_form.room_made.data
-        session['userName'] = current_user.username
-        return redirect(url_for('.private_chat'))
+    # room_form = RoomCreate()
+    # if room_form.validate_on_submit():
+    #     session['roomName'] = room_form.room_made.data
+    #     session['userName'] = current_user.username
+    #     return redirect(url_for('.private_chat'))
 
-    return render_template('chat_join.html', username=current_user.username, rooms=ROOMS, form=room_form, date_stamp=date_stamp, online_users=online_users, posts=posts)
+    return render_template('chat_join.html', username=current_user.username, rooms=ROOMS, date_stamp=date_stamp, online_users=online_users, posts=posts)
 
 #route for chat - displays public rooms and form to join(create rooms)
 @app.route("/private_session", methods=['GET','POST'])
@@ -162,10 +164,21 @@ def chat_jq():
 
     roomName = session.get('roomName')
 
-    message_object = Message.query.filter_by(room=roomName).all()
+    message_object = Message.query.filter_by(room=roomName).order_by(Message.id.desc()).all()
     #print(user_now)
 
-    return render_template('private_jq.html', username=current_user.username, rooms=ROOMS, date_stamp=date_stamp, roomName=roomName, message_object=message_object)
+    private_form = RoomJoin()
+    if private_form.validate_on_submit():
+        post_Room = session.get('roomName')
+        print(post_Room)
+
+
+
+
+
+
+
+    return render_template('private_jq.html', username=current_user.username, rooms=ROOMS, date_stamp=date_stamp, roomName=roomName, message_object=message_object, private_form=private_form)
 
 #currently used!
 @app.route("/private", methods=['GET','POST'])

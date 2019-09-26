@@ -32,6 +32,7 @@
     <div id="main-section">
         <div id="left_column">
 
+         <h4>Filter users by subject: </h4>
 
         </div>
 
@@ -56,6 +57,16 @@
 
         <h4>Online Users: </h4>
         {% for user in online_users %}
+        <div>
+        <a href="{{ url_for('pub_profile', username=user.username)}}" >
+            <h4>{{ user.username }} </h4>
+            {{ user.firstname }} {{ user.lastname }}</a>
+        </div>
+
+        {% endfor %}
+
+        <h4>Offline Users: </h4>
+        {% for user in offline_users %}
         <div>
         <a href="{{ url_for('pub_profile', username=user.username)}}" >
             <h4>{{ user.username }} </h4>

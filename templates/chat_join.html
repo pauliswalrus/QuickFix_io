@@ -41,13 +41,6 @@
          <a href="{{ url_for('pub_profile', username=user.username)}}" >{{ user.username }} </a>
         {% endfor %}<br>
 
-        <h5>Join Private Room: </h5>
-        <form method="POST">
-            {{ form.hidden_tag() }}
-            {{ form.room_made() }} {% for error in form.room_made.errors %}{{ error }}{% endfor %}
-            {{ form.submit_button() }}
-        </form>
-
         <h5>General Rooms:</h5>
         {% for room in rooms %}
             <p class="select-room">{{ room|title }}</p>

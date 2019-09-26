@@ -81,6 +81,8 @@
 
     });
 
+
+
     //Room selection test
     document.querySelectorAll('.select-room').forEach(p => {
         p.onclick = () => {
@@ -131,12 +133,6 @@
     //join room
     function joinRoom(room) {
         socket.emit('join', {'username': username, 'room': roomname});
-
-        //document.querySelector('.select-room' + CSS.escape(room)).style.color = "#ffc107";
-        //document.querySelector('.select-room').style.backgroundColor = "white";
-
-        //document.querySelector('#sidebar').style.backgroundColor = "#ffc107";
-        //clear message area
         document.querySelector('#room-name').innerHTML = room;
         document.querySelector('#display-message-section').innerHTML = '';
         //document.querySelector('#user_message').focus();
@@ -163,7 +159,8 @@
         <a class="logo" href="#">Home</a>
         <a href="{{ url_for('profile', username=username) }}">{{ username }}</a>
         <a href="#">Forums</a>
-        <a href="#">Chat</a>
+        <a href="{{ url_for('chat', username=username) }}" >Chat</a>
+
         <a href="{{ url_for('all_users') }}">Users</a>
         <a href="{{ url_for('logout') }}"> Logout </a>
 
@@ -175,9 +172,18 @@
 
             <h5>Room Actions: </h5>
             <button type="button" id="button_leave">Leave this room</button>
-            <br>
+            <br><br>
             <button type="button" id="button_close">Close this room</button>
             <br>
+
+           <div id="regForm">
+            <form method="post">
+                {{ private_form.submit_button }}
+
+                {{ private_form.csrf_token }}
+
+                </form>
+            </div>
             </div>
 
         <div id="middle_column">
@@ -206,10 +212,12 @@
         <div id="right_column">
         <span id="currDate">{{ date_stamp }}</span>
 
-            <textarea id="display-message-section" cols="8" rows="2" readonly>
+        Chat Logs for Room : {{ roomName }}
+            <textarea id="display-message-section" cols="2" rows="1" readonly>
 
             {%  for msg in message_object %}
-                    {{ msg.username }} {{ msg.message }} {{ msg.room }}
+                {{ msg.message }}
+                {{ msg.username }}
                 {%  endfor %}
         </textarea>
 

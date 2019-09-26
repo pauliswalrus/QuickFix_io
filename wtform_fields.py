@@ -102,5 +102,5 @@ class BlogPostForm(FlaskForm):
 class RoomJoin(FlaskForm):
     """ Room Create """
 
-    room_made = StringField('Private Room ')
+    room_private = StringField('Private Room')
     submit_button = SubmitField('Room')
