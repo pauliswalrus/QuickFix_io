@@ -3,8 +3,8 @@ from flask import Flask, render_template, redirect, url_for, flash, session
 from flask_login import LoginManager, login_user, current_user, logout_user
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
 
-from wtform_fields import *
-from dataModel import *
+from app.wtform_fields import *
+from app.dataModel import *
 
 app = Flask(__name__)
 

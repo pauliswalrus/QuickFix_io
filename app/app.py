@@ -4,10 +4,8 @@ from flask import Flask, render_template, redirect, url_for, flash, session
 from flask_login import LoginManager, login_user, current_user, logout_user
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
 
-from wtform_fields import *
-from dataModel import *
-
-app = Flask(__name__)
+from app.wtform_fields import *
+from app.dataModel import *
 
 #secret key - required for socketio - will be changed at deployment
 app.config['SECRET_KEY'] = 'Replace later'
@@ -16,7 +14,6 @@ app.config['SECRET_KEY'] = 'Replace later'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://eeuyotcvqfkbua:361187423674645ecc0637ec587f8b9d11b12767c50aecf338a298e7dde8e64d@ec2-174-129-18-42.compute-1.amazonaws.com:5432/d4daah96ejr9e0'
 
 #db init
-db = SQLAlchemy(app)
 
 #socketio init
 socketio = SocketIO(app)
@@ -172,8 +169,8 @@ def chat_jq():
         print(post_Room)
 
         delpost = BlogPost.query.filter_by(subtitle=post_Room).first()
-        db.delete(delpost)
-        db.commit()
+        db.session.delete(delpost)
+        db.session.commit()
 
 
 
