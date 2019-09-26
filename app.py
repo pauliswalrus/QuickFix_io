@@ -90,7 +90,7 @@ def post(post_id):
     #     roomName = session.get('roomName')
     #     return redirect(url_for('.private_room'),roomName=roomName)
 
-    return render_template('post.html', post=post)
+    return render_template('post.html', post=post, username=current_user.username)
 
 @app.route('/add', methods=['GET','POST'])
 def add_post():
@@ -148,13 +148,12 @@ def private_room(roomName):
 
     roomName = session.get('roomName')
     userName = session.get('userName')
-    #roomName = BlogPost.query.filter_by(roomName).first()
-    #userName = current_user.username
 
     message_object = Message.query.all()
 
     return render_template('private_room.html', userName=userName, roomName=roomName, message_object=message_object)
 
+#currently used!
 @app.route("/private", methods=['GET','POST'])
 def private_chat():
 
@@ -164,7 +163,14 @@ def private_chat():
 
     message_object = Message.query.filter_by(room=roomName).all()
 
-    return render_template('private_room.html', userName=userName, roomName=roomName, message_object=message_object)
+    room_form = RoomJoin()
+    if room_form.validate_on_submit():
+        delpost = BlogPost.query.filter_by(subtitle=roomName).first()
+        db.session.delete(delpost)
+        db.session.commit()
+        redirect(url_for('chat'))
+
+    return render_template('private_room.html', userName=userName, roomName=roomName, message_object=message_object, room_form=room_form)
 
 #route for profile
 @app.route("/profile/", methods=['GET','POST'])
@@ -176,13 +182,17 @@ def profile():
     email = user_object.email
     status = user_object.status
 
+
+    blog_posts = BlogPost.query.filter_by(author=current_user.username).order_by(BlogPost.date_posted.desc()).all()
+
+
     if status == 1:
         status_string = "Offine"
     elif status == 2:
         status_string ="Online"
 
 
-    return render_template('profile.html', username=current_user.username, firstname=firstname, lastname=lastname, email=email, status_string=status_string)
+    return render_template('profile.html', username=current_user.username, firstname=firstname, lastname=lastname, email=email, status_string=status_string, blog_posts=blog_posts)
 
 #
 ##

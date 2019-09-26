@@ -57,6 +57,13 @@
 
             <div id="profilePic"></div>
 
+              {% for post in blog_posts %}
+                    <a href="{{ url_for('post', post_id=post.id) }}">
+                        <h5>{{ post.type|upper }} : {{ post.title }} - {{ post.subtitle }}</h5>
+                        By {{ post.author }} on {{ post.date_posted.strftime('%B %d, %Y') }} </a>
+
+            {% endfor %}
+
         </div>
     </div>
 </body>

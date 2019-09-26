@@ -66,6 +66,11 @@
         <a href="#" onclick="leave_room();">Leave this room</a>
         <a href="#" onclick="close_room();">Close this room</a>
 
+         <form method="POST">
+            {{ room_form.submit_button() }}
+             {{ room_form.csrf_token }}
+
+        </form>
         </nav>
 
         <div id="middle_column">
