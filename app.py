@@ -154,6 +154,17 @@ def chat():
 
     return render_template('chat_join.html', username=current_user.username, rooms=ROOMS, form=room_form, date_stamp=date_stamp, online_users=online_users, posts=posts)
 
+#route for chat - displays public rooms and form to join(create rooms)
+@app.route("/ff", methods=['GET','POST'])
+def chat_jq():
+    date_stamp = strftime('%A, %B %d', localtime())
+    user_now = current_user.username
+
+    roomName = session.get('roomName')
+    #print(user_now)
+
+    return render_template('private_jq.html', username=current_user.username, rooms=ROOMS, date_stamp=date_stamp, roomName=roomName)
+
 #route for private chat established in chat route
 @app.route("/private/<roomName>", methods=['GET','POST'])
 def private_room(roomName):
@@ -198,9 +209,9 @@ def profile():
     blog_posts = BlogPost.query.filter_by(author=current_user.username).order_by(BlogPost.date_posted.desc()).all()
 
 
-    if status == 1:
+    if status == 0:
         status_string = "Offine"
-    elif status == 2:
+    elif status == 1:
         status_string ="Online"
 
 
@@ -298,12 +309,19 @@ def message(data):
 def join(data):
     join_room(data['room'])
     #message_object = Message.query.filter_by(room='room').all()
+    print('Connection on ' + data['room'] + ' with user ' + current_user.username + ' has been established')
     send({'msg': data['username'] + " has joined the " + data['room'] + " room."}, room=data['room'])
 
 @socketio.on('leave')
 def leave(data):
     leave_room(data['room'])
+    print('Connection on ' + data['room'] + ' with user ' + current_user.username + ' has been lost')
     send({'msg': data['username'] + " has left the " + data['room'] + " room."}, room=data['room'])
+
+@socketio.on('close_room')
+def close_room(data):
+    room = data['room']
+    print('Tutor ' + current_user.username + ' has closed Room: ' + room + '.')
 
 if __name__ == '__main__':
     socketio.run(app)
