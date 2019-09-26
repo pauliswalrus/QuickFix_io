@@ -172,6 +172,10 @@ def chat_jq():
         post_Room = session.get('roomName')
         print(post_Room)
 
+        delpost = BlogPost.query.filter_by(subtitle=post_Room).first()
+        db.session.delete(delpost)
+        db.session.commit()
+
 
 
 
