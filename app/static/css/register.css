@@ -1,3 +1,13 @@
+/* register.css - Defines the style for the registration page */
+
+/* Styles the body of the page */
+body {
+    /*background-image: url('../images/whiteDesk_02.jpg');*/
+    /*background-repeat: no-repeat;*/
+    /*background-size: cover;*/
+    /*height: 650px;*/
+}
+
 /* Style the navigation menu */
 .navbar {
     width: 100%;
@@ -17,7 +27,7 @@
   text-align: center;
 }
 
-/* Add a background color on mouse-over */
+/* Add a background color to navbar on mouse-over */
 .navbar a:hover {
     background-color: darkslategrey;
     color: lightslategray;
@@ -34,78 +44,87 @@
   }
 }
 
-
-
-
-
-
-
-
-
-/* Styles body of page */
-body {
-    background-image: url('../images/whiteDesk_02.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    height: 650px;
+#main-section {
+    width: 60%;
+    margin-left: 20%;
+    margin-right: 20%;
+    border: 3px solid darkslategray;
 }
 
+/* Hides the student reg form until user clicks on it */
+#student_regForm {
+    display: none;
+}
 
+/* Hides the tutor reg form until user clicks on it */
+#tutor_regForm {
+    display: none;
+}
 
+/* Styles table that holds choose form links */
+#chooseFormType {
+    width: 100%;
+}
 
+/* Styles the choose form links */
+#chooseFormType p {
+    text-align: center;
+    background-color: darkslategray;
+    color: white;
+    font-size: 2em;
+}
 
-
-
-
+/* Styles the choose form links on mouse-over */
+#chooseFormType p:hover {
+    cursor: pointer;
+}
 
 /* Styles the registration form */
-#regForm {
-    width: 50%;
-    margin-left: 10%;
-    margin-top: 10%;
+#regForm,
+#tutor_regForm,
+#student_regForm {
+    width: 60%;
+    margin-left: 20%;
+    margin-right: 20%;
     text-align: center;
     padding: 20px;
-
+    /*background-color: darkslategray;*/
 }
 
 /* Styles register form inputs */
 #regForm input[type=text],
-#regForm input[type=password] {
-    width: 90%;
-    margin-bottom: 10px;
+#regForm input[type=password],
+
+#tutor_regForm input[type=text],
+#tutor_regForm input[type=password],
+
+#student_regForm input[type=text],
+#student_regForm input[type=password] {
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 20px;
     border: none;
-    border-bottom: 4px solid darkslategrey;
     font-size: 20px;
-    background-color: #F8F9FB;
+    background-color: white;
     color: darkslategrey;
 }
 
 /* Styles register button */
 .regButton {
-    background-color: darkslategrey;
-    border: none;
-    border-radius: 5px;
+    width: 30%;
+    margin-left: 35%;
+    margin-right: 35%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #f56443;
     color: white;
-    padding: 16px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    -webkit-transition-duration: 0.4s; /* Safari */
-    transition-duration: 0.4s;
-    cursor: pointer;
+    border: 3px solid #f56443;
 }
 
-/* Styles register button mouse hover */
+/* Styles register button on mouse-over */
 .regButton:hover {
-    color: darkslategrey;
     background-color: white;
+    color: #f56443;
+    border: 3px solid #f56443;
 }
-
-
-
-
-
-
-

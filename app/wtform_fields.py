@@ -44,7 +44,6 @@ class RegistrationForm(FlaskForm):
             raise ValidationError("Username already exists. Select a new username")
 
 
-#just placeholders for forms, not currently used
 class TutorRegistrationForm(FlaskForm):
     """ TutorRegistration form """
 
@@ -63,7 +62,7 @@ class TutorRegistrationForm(FlaskForm):
         if user_object:
             raise ValidationError("Username already exists. Select a new username")
 
-##see above
+
 class StudentRegistrationForm(FlaskForm):
     """ StudentRegistration form """
 
