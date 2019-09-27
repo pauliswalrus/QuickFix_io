@@ -8,9 +8,9 @@ from app.wtform_fields import *
 from app.dataModel import *
 
 ###     AUTHOR: AUSTIN PAUL
-###     DATE: SEPT 26 2019
+###     DATE: SEPT 27 2019
 ###     QUICKFIX_IO DIRTYBITS
-
+###     POST-SPRINT 3 BUILD
 
 # socketio init
 socketio = SocketIO(app)
