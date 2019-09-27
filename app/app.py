@@ -7,14 +7,6 @@ from flask_socketio import SocketIO, send, emit, join_room, leave_room
 from app.wtform_fields import *
 from app.dataModel import *
 
-# #secret key - required for socketio - will be changed at deployment
-# app.config['SECRET_KEY'] = 'Replace later'
-#
-# #db connect to postgress - changes at deployment
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://eeuyotcvqfkbua:361187423674645ecc0637ec587f8b9d11b12767c50aecf338a298e7dde8e64d@ec2-174-129-18-42.compute-1.amazonaws.com:5432/d4daah96ejr9e0'
-
-#db init
-
 #socketio init
 socketio = SocketIO(app)
 
@@ -79,15 +71,9 @@ def new_student():
 def post(post_id):
     post = BlogPost.query.filter_by(id=post_id).one()
 
-    # room_form = RoomJoin()
-    # if room_form.validate_on_submit():
     session['roomName'] = post.subtitle
     session['userName'] = current_user.username
-
     session['author'] = post.author
-    #     roomName = session.get('roomName')
-    #     return redirect(url_for('.private_room'),roomName=roomName)
-
     return render_template('post.html', post=post, username=current_user.username)
 
 @app.route('/add', methods=['GET','POST'])
@@ -142,19 +128,10 @@ def chat():
 
     this_user = User.query.filter_by(username=current_user.username)
 
-
     one = 1
     online_users = User.query.filter_by(status=one).all()
 
-    #posts = BlogPost.query.filter_by(date_posted=datetime.today()).order_by(BlogPost.date_posted.desc()).all()
     posts = BlogPost.query.order_by(BlogPost.date_posted.desc()).all()
-
-
-    # room_form = RoomCreate()
-    # if room_form.validate_on_submit():
-    #     session['roomName'] = room_form.room_made.data
-    #     session['userName'] = current_user.username
-    #     return redirect(url_for('.private_chat'))
 
     return render_template('chat_join.html', username=current_user.username, rooms=ROOMS, date_stamp=date_stamp, online_users=online_users, posts=posts)
 
