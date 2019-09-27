@@ -119,6 +119,31 @@
         window.location.href = "{{ url_for('chat') }}";
     }
 
+    var myTimer;
+
+    document.querySelector('#button_start').onclick = () => {
+        myTimer = setInterval(myClock, 1000);
+        var c = 5;
+
+        function myClock() {
+            document.getElementById("demo").innerHTML = --c;
+            if (c == 0) {
+                clearInterval(myTimer);
+                alert("Reached zero");
+            }
+        }
+    }
+
+    document.querySelector('#button_clear').onclick = () => {
+
+        clearInterval(myTimer);
+    }
+
+    document.querySelector('#button_restart').onclick = () => {
+
+        document.getElementById("demo").innerHTML = '5';
+    }
+
 
 
     //leave room
@@ -174,6 +199,11 @@
             <h4>Creator: {{ authorName }}</h4>
 
             <h5>Room Actions: </h5>
+            <button type="button" id="button_start">Start Timer</button>
+            <button type="button" id="button_clear">Pause Timer</button>
+            <button type="button" id="button_restart">Reset Timer</button>
+            <p id="demo">5</p>
+            <br><br>
             <button type="button" id="button_leave">Leave this room</button>
             <br><br>
             <button type="button" id="button_close">Close this room</button>

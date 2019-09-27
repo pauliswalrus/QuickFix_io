@@ -251,7 +251,7 @@ def pub_profile(username):
 
 #
 ##
-### socket.io events for private chat
+### socket.io events for private chat redundant, used in private_room.html
 ##
 #
 
