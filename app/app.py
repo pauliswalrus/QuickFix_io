@@ -167,7 +167,7 @@ def chat_jq():
 
     return render_template('private_jq.html', username=current_user.username, rooms=ROOMS, date_stamp=date_stamp, roomName=roomName, message_object=message_object, private_form=private_form, authorName=authorName)
 
-#currently used!
+#no longer used!
 @app.route("/private", methods=['GET','POST'])
 def private_chat():
 
@@ -195,15 +195,21 @@ def profile():
     lastname = user_object.lastname
     email = user_object.email
     status = user_object.status
+    role = user_object.role
+
+    if role == "S":
+        role_name = "Student"
+    else:
+        role_name = "Tutor"
 
     blog_posts = BlogPost.query.filter_by(author=current_user.username).order_by(BlogPost.date_posted.desc()).all()
 
     if status == 0:
         status_string = "Offine"
     elif status == 1:
-        status_string ="Online"
+        status_string = "Online"
 
-    return render_template('profile.html', username=current_user.username, firstname=firstname, lastname=lastname, email=email, status_string=status_string, blog_posts=blog_posts)
+    return render_template('profile.html', username=current_user.username, firstname=firstname, lastname=lastname, email=email, status_string=status_string, blog_posts=blog_posts, role_name=role_name)
 
 
 #public profile accessed by users from online user links.
@@ -217,6 +223,12 @@ def pub_profile(username):
     lastname = user_object.lastname
     email = user_object.email
     status = user_object.status
+    role = user_object.role
+
+    if role =="S":
+        role_name = "Student"
+    else:
+        role_name = "Tutor"
 
 
     blog_posts = BlogPost.query.filter_by(author=username).order_by(BlogPost.date_posted.desc()).all()
@@ -226,7 +238,7 @@ def pub_profile(username):
     elif status == 1:
         status_string ="Online"
 
-    return render_template('pub_profile.html', thisUser=thisUser, username=username, firstname=firstname, lastname=lastname, email=email, status_string=status_string, blog_posts=blog_posts)
+    return render_template('pub_profile.html', thisUser=thisUser, username=username, firstname=firstname, lastname=lastname, email=email, status_string=status_string, blog_posts=blog_posts, role_name=role_name)
 
 #
 ##

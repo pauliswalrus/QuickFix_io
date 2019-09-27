@@ -51,10 +51,13 @@
             <h2>Username: {{ username }}</h2>
             <h2>Email: {{ email }}</h2>
 
-            <h3>Credits: </h3>
+            <h3>Credits: 0</h3>
             <div id="online_stat"> </div>
             <h3>Status: {{ status_string }} <button id="changeStatus">Button</button></h3>
 
+
+
+            <h3>Role : {{ role_name }}</h3>
             <div id="profilePic"></div>
             <br>
             <h4><a href="{{ url_for('add_post') }}">Add New Post</a> </h4>
