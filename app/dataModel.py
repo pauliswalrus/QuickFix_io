@@ -18,7 +18,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(25), nullable=False)
     password = db.Column(db.String(), nullable=False)
     status = db.Column(db.Integer(), default=0)
-    role = db.Column(db.Text, nullable=True)
+    role = db.Column(db.Text, default="S")
 
 class History(db.Model):
     """ History Model """

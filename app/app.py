@@ -44,8 +44,6 @@ def login():
 @app.route('/register', methods=['GET','POST'])
 def new_student():
 
-    #reg_forum from wtform_fields.py
-
     reg_form = RegistrationForm()
     # Updates database if validation is successful
     if reg_form.validate_on_submit():
@@ -126,12 +124,16 @@ def chat():
     user_now = current_user.username
     #print(user_now)
 
-    this_user = User.query.filter_by(username=current_user.username)
+    this_user = User.query.filter_by(username=current_user.username).first()
 
     one = 1
     online_users = User.query.filter_by(status=one).all()
 
-    posts = BlogPost.query.order_by(BlogPost.date_posted.desc()).all()
+    #checks if Role is student, this only allows
+    if this_user.role == 'S':
+        posts = BlogPost.query.filter_by(type="Offer").order_by(BlogPost.date_posted.desc()).all()
+    else:
+        posts = BlogPost.query.order_by(BlogPost.date_posted.desc()).all()
 
     return render_template('chat_join.html', username=current_user.username, rooms=ROOMS, date_stamp=date_stamp, online_users=online_users, posts=posts)
 
@@ -189,15 +191,12 @@ def profile():
     email = user_object.email
     status = user_object.status
 
-
     blog_posts = BlogPost.query.filter_by(author=current_user.username).order_by(BlogPost.date_posted.desc()).all()
-
 
     if status == 0:
         status_string = "Offine"
     elif status == 1:
         status_string ="Online"
-
 
     return render_template('profile.html', username=current_user.username, firstname=firstname, lastname=lastname, email=email, status_string=status_string, blog_posts=blog_posts)
 
@@ -217,12 +216,10 @@ def pub_profile(username):
 
     blog_posts = BlogPost.query.filter_by(author=username).order_by(BlogPost.date_posted.desc()).all()
 
-
     if status == 0:
         status_string = "Offine"
     elif status == 1:
         status_string ="Online"
-
 
     return render_template('pub_profile.html', thisUser=thisUser, username=username, firstname=firstname, lastname=lastname, email=email, status_string=status_string, blog_posts=blog_posts)
 
