@@ -1,5 +1,8 @@
 from flask import Flask
 
+###     AUTHOR: AUSTIN PAUL
+###     DATE: SEPT 26 2019
+###     QUICKFIX_IO DIRTYBITS
 
 app = Flask(__name__)
 

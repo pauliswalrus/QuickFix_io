@@ -7,6 +7,11 @@ from flask_socketio import SocketIO, send, emit, join_room, leave_room
 from app.wtform_fields import *
 from app.dataModel import *
 
+###     AUTHOR: AUSTIN PAUL
+###     DATE: SEPT 26 2019
+###     QUICKFIX_IO DIRTYBITS
+
+
 #socketio init
 socketio = SocketIO(app)
 

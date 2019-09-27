@@ -5,6 +5,13 @@ from wtforms.validators import InputRequired, Length, EqualTo, ValidationError, 
 from passlib.hash import pbkdf2_sha256
 from app.dataModel import User
 
+
+###     AUTHOR: AUSTIN PAUL
+###     DATE: SEPT 26 2019
+###     QUICKFIX_IO DIRTYBITS
+
+
+
 def invalid_credentials(form, field):
     """ Username and password checker"""
 

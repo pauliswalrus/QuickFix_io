@@ -3,6 +3,11 @@ from flask_login import UserMixin
 
 from app import app
 
+
+###     AUTHOR: AUSTIN PAUL
+###     DATE: SEPT 26 2019
+###     QUICKFIX_IO DIRTYBITS
+
 db = SQLAlchemy(app)
 
 
