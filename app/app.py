@@ -272,7 +272,7 @@ def close_room(data):
     print('Tutor ' + current_user.username + ' has closed Room: ' + room + '.')
 
 #
-##
+###
 ### public socketio chat events join_chat.html - socketio.js file
 ##
 #
