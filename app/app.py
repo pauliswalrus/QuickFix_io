@@ -4,6 +4,7 @@ from flask import Flask, render_template, redirect, url_for, flash, session, req
 from flask_login import LoginManager, login_user, current_user, logout_user
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
 from io import BytesIO
+import random
 
 from app.wtform_fields import *
 from app.dataModel import *
@@ -53,7 +54,14 @@ def login():
 @app.route('/admin')
 def admin():
 
-    return render_template("admin.html")
+
+    users_list = User.query.all()
+
+    all_files = FileUpload.query.all()
+
+    blog_posts = BlogPost.query.all()
+
+    return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts)
 #
 ##
 ###pulls up register page - currently users only
@@ -222,7 +230,7 @@ def chat():
 
 
 # route for chat - displays public rooms and form to join(create rooms)
-@app.route("/private_session", methods=['GET', 'POST'])
+@app.route("/private_session/", methods=['GET', 'POST'])
 def chat_jq():
     date_stamp = strftime('%A, %B %d', localtime())
     user_now = current_user.username
@@ -249,24 +257,24 @@ def chat_jq():
 
 
 # no longer used!
-@app.route("/private", methods=['GET', 'POST'])
-def private_chat():
-    roomName = session.get('roomName')
-    userName = session.get('userName')
-    # message_object = Message.query.all()
-
-    message_object = Message.query.filter_by(room=roomName).all()
-
-    room_form = RoomJoin()
-    if room_form.validate_on_submit():
-        delpost = BlogPost.query.filter_by(subtitle=roomName).first()
-        db.delete(delpost)
-        db.commit()
-        redirect(url_for('chat'))
-
-    return render_template('private_room.html', userName=userName, roomName=roomName, message_object=message_object,
-                           room_form=room_form)
-
+# @app.route("/private", methods=['GET', 'POST'])
+# def private_chat():
+#     roomName = session.get('roomName')
+#     userName = session.get('userName')
+#     # message_object = Message.query.all()
+#
+#     message_object = Message.query.filter_by(room=roomName).all()
+#
+#     room_form = RoomJoin()
+#     if room_form.validate_on_submit():
+#         delpost = BlogPost.query.filter_by(subtitle=roomName).first()
+#         db.delete(delpost)
+#         db.commit()
+#         redirect(url_for('chat'))
+#
+#     return render_template('private_room.html', userName=userName, roomName=roomName, message_object=message_object,
+#                            room_form=room_form)
+#
 
 # route for profile
 @app.route("/profile/", methods=['GET', 'POST'])
@@ -293,7 +301,6 @@ def profile():
 
     user_files = FileUpload.query.filter_by(username=current_user.username).all()
 
-
     file_form = FileUploadForm()
 
     if file_form.validate_on_submit():
@@ -302,16 +309,15 @@ def profile():
         db.session.add(newFile)
         db.session.commit()
 
-
-
     return render_template('profile.html', username=current_user.username, firstname=firstname, lastname=lastname,
                            email=email, status_string=status_string, blog_posts=blog_posts, role_name=role_name, file_form=file_form, user_files=user_files)
 
 @app.route('/download')
 def download():
     #file_data = FileUpload.query.first()
-    file_data = FileUpload.query.first()
-    return send_file(BytesIO(file_data.data), attachment_filename='first_attachment.png', as_attachment=True)
+    file_data = FileUpload.query.filter_by(username=current_user.username).first()
+
+    return send_file(BytesIO(file_data.data), attachment_filename=file_data.file_name, as_attachment=True)
 
 # public profile accessed by users from online user links.
 @app.route("/profile/<username>", methods=['GET', 'POST'])
@@ -358,6 +364,8 @@ def pub_profile(username):
 # #     db.session.commit()
 #
 #     return file.filename
+
+#
 # ##
 # ### socket.io events for private chat redundant, used in private_room.html
 # ##

@@ -70,12 +70,10 @@
 
 
             {% for file in user_files %}
+               <a href="{{ url_for('download') }}">
+                   <h5>{{ file.file_name }} </h5> </a>
 
-
-               <a href="{{ url_for('download', file_name=file_name) }}">
-                        <h5>{{ file.file_name }} </h5>
-
-                {% endfor %}
+            {% endfor %}
             <div id="profilePic"></div>
             <br>
 

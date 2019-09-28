@@ -1,12 +1,127 @@
-<!DOCTYPE html>
-<html lang="en">
+<html lang=en>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset=utf-8>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Beth+Ellen&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Dosis:200&display=swap');
+    </style>
+
+    <title> Admin Portal </title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
 </head>
 
-
 <body>
-        welcome guys
+
+<div class="navbar">
+    <a class="logo" href="#">Home</a>
+    <a href="{{ url_for('profile', username=username) }}">{{ username }}</a>
+    <a href="#">Forums</a>
+    <a href="#">Chat</a>
+    <a href="{{ url_for('all_users') }}">Users</a>
+    <a href="{{ url_for('logout') }}"> Logout </a>
+</div>
+
+
+<!-- div main section starts -->
+<div id="main-section">
+
+
+    <!-- Left Column - Join Room - Online Tutors etc -->
+    <div id="left_column">
+
+        <h5>Tutors Online: </h5>
+        {% for user in online_users %}
+         <a href="{{ url_for('pub_profile', username=user.username)}}" >{{ user.username }} </a>
+        {% endfor %}<br>
+
+        <h5>General Rooms:</h5>
+        {% for room in rooms %}
+            <p class="select-room">{{ room|title }}</p>
+        {% endfor %}
+
+
+    </div> <!-- end of left column -->
+
+    <!-- Middle Column - Type Message area -->
+    <div id="middle_column">
+
+        <div id="chatWindowHeader">
+            <p id="room-name"></p>
+        </div>
+
+        <!-- Display message -->
+        <div id="display-message-section">
+            {% for msg in message_object %}
+                <li>{{ msg.username }}
+                    {{ msg.message }}
+                    {{ msg.room }}
+                </li>
+            {% endfor %}
+        </div>
+
+
+        <div id="input-area">
+            <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">
+            <button type="button" id="send_message">SEND</button>
+        </div>
+
+    </div><!-- end middle_column div -->
+
+
+    <!-- right_column div -->
+    <div id="right_column">
+        <span id="currDate">{{ date_stamp }}</span>
+
+
+          <div id="blog-posts">
+            <a href="{{ url_for('add_post') }}">Add A Room Post</a> <br>
+            <h5>View Recent Room Posts:</h5>
+
+            {% for post in blog_posts %}
+                <div>
+                    <a href="{{ url_for('post', post_id=post.id) }}">
+                        <h5>{{ post.type|upper }} : {{ post.title }} - {{ post.subtitle }}</h5>
+                        by {{ post.author }} on {{ post.date_posted.strftime('%b %d, %Y') }} at {{ post.date_posted.strftime('%I' ':' '%M %p') }} </a>
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div><!-- end right_column div -->
+
+
+
+
+
+</div> <!--end main section-->
+
+
+<script type="text/javascript">
+    const username = `{{ username }}`;
+    const mesage_object = `{{ message_object }}`
+</script>
+
+<!-- Custom Chat JS -->
+<script src="{{ url_for('static', filename='js/chat_page.js') }}">
+
+</script>
+<!-- SocketIO JS -->
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
+        integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+
+<!-- CustomSocketIO JS -->
+<script src="{{ url_for('static', filename='js/socketio.js') }}">
+
+
+</script>
+
 </body>
 </html>
+
+

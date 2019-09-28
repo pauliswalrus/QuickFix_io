@@ -129,7 +129,7 @@
             document.getElementById("demo").innerHTML = --c;
             if (c == 0) {
                 clearInterval(myTimer);
-                alert("Reached zero");
+                alert("Session zero");
             }
         }
     }
@@ -247,13 +247,13 @@
         <span id="currDate">{{ date_stamp }}</span>
 
         Chat Logs for Room : {{ roomName }}
-            <textarea id="display-message-section" cols="2" rows="1" readonly>
+            <ul id="display-message-section" cols="2" rows="1" readonly>
 
             {%  for msg in message_object %}
-                {{ msg.message }}
-                {{ msg.username }}
+                <li>{{ msg.username }} <br>{{ msg.message }} <br> {{ msg.room }} : {{ msg.created_at }}</li>
+                <br>
                 {%  endfor %}
-        </textarea>
+            </ul>
 
         </div>
 
