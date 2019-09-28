@@ -3,7 +3,7 @@ from wtforms import StringField, PasswordField, SubmitField, TextAreaField, Sele
 from wtforms.validators import InputRequired, Length, EqualTo, ValidationError, Email
 
 from passlib.hash import pbkdf2_sha256
-from app.dataModel import User
+from app.dataModel import User, FileUpload
 
 
 ###     AUTHOR: AUSTIN PAUL
@@ -108,10 +108,11 @@ class FileUploadForm(FlaskForm):
     """ file upload """
 
     file = FileField('file_upload', validators=[InputRequired(message="Select a file")])
-
+    submit_button = SubmitField('Add New File')
 
 class RoomJoin(FlaskForm):
     """ Room Create """
 
     room_private = StringField('Private Room')
     submit_button = SubmitField('Begin Private Chat')
+

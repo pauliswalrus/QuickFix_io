@@ -62,8 +62,9 @@
                 <form method="post" enctype="multipart/form-data">
                     {{ file_form.hidden_tag() }}
                     {{ file_form.file }}
+
+                    {{ file_form.submit_button }}
                     {{ file_form.csrf_token }}
-                    <input type="submit">
                 </form>
                 <br>
                 <br>

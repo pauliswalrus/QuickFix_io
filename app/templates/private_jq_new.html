@@ -1,0 +1,277 @@
+<html>
+    <head>
+         <meta charset=utf-8>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Beth+Ellen&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Dosis:200&display=swap');
+    </style>
+
+    <title> fixQuick Chatkit {{ roomName }}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/austins_private_jq.css') }}">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+        <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+
+         <script src="{{ url_for('static', filename='js/jquery.js') }}">
+
+    </script>
+
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+
+
+    <script src="{{ url_for('static', filename='js/chat_page.js') }}">
+
+
+    </script>
+
+    </head>
+
+    <script type="text/javascript" >
+    document.addEventListener('DOMContentLoaded', () => {
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+
+    //sets up socketio for chat_join.html page
+
+    let room = `{{ roomName }}`;
+    joinRoom(`{{ roomName }}`);
+
+    //Displays incoming messages
+    socket.on('message', data => {
+        const p = document.createElement('p');
+        const span_username = document.createElement('span');
+        const span_timestamp = document.createElement('span');
+
+        const br = document.createElement('br');
+
+        if (data.username == username) {
+
+            p.setAttribute("class", "my-msg");
+
+            span_username.setAttribute("class", "my-username");
+            span_username.innerHTML = data.username;
+
+            span_timestamp.setAttribute("class", "timestamp");
+            span_timestamp.innerHTML = data.time_stamp;
+            //span_title.innerHTML = " - student";
+
+            p.innerHTML = span_username.outerHTML + span_timestamp.outerHTML + br.outerHTML + data.msg;
+            //p.innerHTML = span_username.outerHTML + br.outerHTML + data.msg + br.outerHTML + span_timestamp.outerHTML;
+            document.querySelector('#display-message-section').append(p);
+            //console.log(`Message received: ${data}`)
+        }
+        else if (typeof data.username !=='undefined') {
+            p.setAttribute("class", "others-msg");
+
+            span_username.setAttribute("class", "other-username");
+            span_username.innerText = data.username;
+
+            span_timestamp.setAttribute("class", "other-timestamp");
+            span_timestamp.innerText = data.time_stamp;
+
+            p.innerHTML = span_timestamp.outerHTML + span_username.outerHTML + br.outerHTML + data.msg;
+            document.querySelector('#display-message-section').append(p);
+
+            //p.innerHTML = span_timestamp.outerHTML + span_username + br.outerHTML + data.msg;
+        }
+        else {
+            printSysMsg(data.msg);
+        }
+
+
+    });
+
+
+
+    //Room selection test
+    document.querySelectorAll('.select-room').forEach(p => {
+        p.onclick = () => {
+            let newRoom = p.innerHTML;
+            if (newRoom == room) {
+                msg = `You are already in ${room} room.`
+                printSysMsg(msg);
+            } else {
+                leaveRoom(room);
+                joinRoom(newRoom);
+                room = newRoom;
+            }
+        }
+    });
+
+      // send message
+    document.querySelector('#send_message').onclick = () => {
+        socket.send({'msg': document.querySelector('#user_message').value, 'username' : username, 'room': roomname });
+
+        //clear input area
+        document.querySelector('#user_message').value = '';
+
+    }
+
+    document.querySelector('#button_leave').onclick = () => {
+        socket.emit('leave', {'username': username, 'room': roomname});
+        socket.disconnect();
+        window.location.href = "{{ url_for('chat') }}";
+    }
+
+    document.querySelector('#button_close').onclick = () => {
+        socket.emit('close_room', {'username': username, 'room': roomname});
+        socket.disconnect();
+        window.location.href = "{{ url_for('chat') }}";
+    }
+
+    var myTimer;
+
+    document.querySelector('#button_start').onclick = () => {
+        myTimer = setInterval(myClock, 1000);
+        var c = 30;
+
+        function myClock() {
+            document.getElementById("demo").innerHTML = --c;
+            if (c == 0) {
+                clearInterval(myTimer);
+                alert("Session zero");
+            }
+        }
+    }
+
+    document.querySelector('#button_clear').onclick = () => {
+
+        clearInterval(myTimer);
+    }
+
+    document.querySelector('#button_restart').onclick = () => {
+
+        clearInterval(myTimer);
+        document.getElementById("demo").innerHTML = '30';
+    }
+
+
+
+    //leave room
+    function leaveRoom(room) {
+        socket.emit('leave', {'username': username, 'room': roomname});
+
+        window.location.href = "{{ url_for('chat') }}";
+
+
+    }
+
+    //join room
+    function joinRoom(room) {
+        socket.emit('join', {'username': username, 'room': roomname});
+        document.querySelector('#room-name').innerHTML = room;
+        document.querySelector('#display-message-section').innerHTML = '';
+        //document.querySelector('#user_message').focus();
+    }
+
+
+
+
+    function printSysMsg(msg) {
+        const p = document.createElement('p');
+        p.innerHTML = msg;
+        document.querySelector('#display-message-section').append(p);
+
+    }
+
+        })
+
+
+        </script>
+
+    <body>
+
+        <div class="navbar">
+        <a class="logo" href="#">Home</a>
+        <a href="{{ url_for('profile', username=username) }}">{{ username }}</a>
+        <a href="#" >Forums</a>
+        <a href="{{ url_for('chat', username=username) }}" >Chat</a>
+
+        <a href="{{ url_for('all_users') }}">Users</a>
+        <a href="{{ url_for('logout') }}"> Logout </a>
+
+        </div>
+
+        <div id="main-section">
+            <h1 id="fade">Connected To {{ roomName }} At: {{ connected_stamp }}</h1>
+            <div id="left_column">
+
+            <h4>Room: {{ roomName }}</h4>
+            <h4>Creator: {{ authorName }}</h4>
+
+            <h5>Room Actions: </h5>
+            <button type="button" id="button_start">Start Timer</button>
+            <button type="button" id="button_clear">Pause Timer</button>
+            <button type="button" id="button_restart">Reset Timer</button>
+            <p id="demo">30</p>
+            <br><br>
+            <button type="button" id="button_leave">Leave this room</button>
+            <br><br>
+            <button type="button" id="button_close">Close this room</button>
+            <br>
+            <br>
+           <div id="regForm">
+            <form method="post">
+                {{ private_form.submit_button }}
+
+                {{ private_form.csrf_token }}
+
+                </form>
+            </div>
+            </div>
+
+        <div id="middle_column">
+
+        <div id="chatWindowHeader">
+            <p id="room-name"> {{ roomName }}</p>
+        </div>
+
+         <div id="display-message-section">
+            {% for msg in message_object %}
+                <li>{{ msg.username }}
+                    {{ msg.message }}
+                    {{ msg.room }}
+                </li>
+            {% endfor %}
+        </div>
+
+
+        <div id="input-area">
+
+            <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">
+            <button type="submit" id="send_message">SEND</button>
+        </div>
+
+        </div>
+
+        <div id="right_column">
+        <span id="currDate">{{ date_stamp }}</span>
+
+        Chat Logs for Room : {{ roomName }}
+            <ul id="display-message-section" cols="2" rows="1" readonly>
+
+            {%  for msg in message_object %}
+                <li>{{ msg.username }} <br>{{ msg.message }} <br> {{ msg.room }} : {{ msg.created_at }}</li>
+                <br>
+                {%  endfor %}
+            </ul>
+
+        </div>
+
+        </div>
+
+    <script type="text/javascript">
+    const username = `{{ username }}`;
+    const mesage_object = `{{ message_object }}`
+    const roomname = `{{ roomName }}`;
+</script>
+    </body>
+
+
+
+</html>

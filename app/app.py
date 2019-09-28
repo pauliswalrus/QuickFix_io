@@ -233,6 +233,9 @@ def chat():
 @app.route("/private_session/", methods=['GET', 'POST'])
 def chat_jq():
     date_stamp = strftime('%A, %B %d', localtime())
+
+    connected_stamp = strftime('%I : %M %p', localtime())
+
     user_now = current_user.username
 
     roomName = session.get('roomName')
@@ -251,9 +254,9 @@ def chat_jq():
         db.session.delete(delpost)
         db.session.commit()
 
-    return render_template('private_jq.html', username=current_user.username, rooms=ROOMS, date_stamp=date_stamp,
+    return render_template('private_jq_new.html', username=current_user.username, rooms=ROOMS, date_stamp=date_stamp,
                            roomName=roomName, message_object=message_object, private_form=private_form,
-                           authorName=authorName)
+                           authorName=authorName, connected_stamp=connected_stamp)
 
 
 # no longer used!
@@ -275,6 +278,11 @@ def chat_jq():
 #     return render_template('private_room.html', userName=userName, roomName=roomName, message_object=message_object,
 #                            room_form=room_form)
 #
+
+@app.route("/jtest", methods=['GET', 'POST'])
+def test_jquery():
+
+    return render_template('test_jquery.html')
 
 # route for profile
 @app.route("/profile/", methods=['GET', 'POST'])
@@ -308,6 +316,8 @@ def profile():
         newFile = FileUpload(file_name=file.filename, username=current_user.username, data=file.read())
         db.session.add(newFile)
         db.session.commit()
+        return redirect(url_for('profile'))
+
 
     return render_template('profile.html', username=current_user.username, firstname=firstname, lastname=lastname,
                            email=email, status_string=status_string, blog_posts=blog_posts, role_name=role_name, file_form=file_form, user_files=user_files)
