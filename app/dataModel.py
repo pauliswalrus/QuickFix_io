@@ -40,6 +40,7 @@ class Message(db.Model):
     message = db.Column(db.Text)
     username = db.Column(db.String(25), nullable=False)
     room = db.Column(db.String(25), nullable=False)
+    created_at = db.Column(db.Text)
 
 # data model for blogpost table recently added in heroku db
 class BlogPost(db.Model):

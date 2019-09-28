@@ -177,16 +177,14 @@ def logout():
 
 @app.route("/users", methods=['GET', 'POST'])
 def all_users():
-    allUsers = User.query.all()
+    all_tutors = User.query.filter_by(role='T').all()
 
-    one = 1
-    online_users = User.query.filter_by(status=one).all()
+    online_tutors = User.query.filter_by(status=1, role='T').all()
 
-    zero = 0
-    offline_users = User.query.filter_by(status=zero).all()
+    student_users = User.query.filter_by(role='S').all()
 
-    return render_template('all_users.html', username=current_user.username, allUsers=allUsers,
-                           online_users=online_users, offline_users=offline_users)
+    return render_template('all_users.html', username=current_user.username, all_tutors=all_tutors,
+                           online_tutors=online_tutors, student_users=student_users)
 
 
 # route for chat - displays public rooms and form to join(create rooms)
@@ -375,7 +373,8 @@ def close_room(data):
 @socketio.on('message')
 def message(data):
     room = session.get('roomName')
-    message = Message(message=data['msg'], username=data['username'], room=data['room'])
+    message_time = strftime('%I:%M%p %m-%d-%Y', localtime())
+    message = Message(message=data['msg'], username=data['username'], room=data['room'], created_at=message_time)
     db.session.add(message)
     db.session.commit()
 

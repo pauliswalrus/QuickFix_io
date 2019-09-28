@@ -41,8 +41,8 @@
     <!-- Middle Column - List of All Users -->
     <div id="middle_column">
 
-        <h4 class="userHeadings">All Users: </h4>
-        {% for user in allUsers %}
+        <h4 class="userHeadings">All Tutors: </h4>
+        {% for user in all_tutors %}
             <div>
                 <a href="{{ url_for('pub_profile', username=user.username) }}">
                     <p>
@@ -60,8 +60,8 @@
     <!-- Right Column - Online / Offline Users -->
     <div id="right_column">
 
-        <h4 class="userHeadings">Online Users: </h4>
-        {% for user in online_users %}
+        <h4 class="userHeadings">Online Tutors: </h4>
+        {% for user in online_tutors %}
             <div>
                 <a href="{{ url_for('pub_profile', username=user.username) }}">
                     <p>
@@ -71,8 +71,8 @@
             </div>
         {% endfor %}
 
-        <h4 class="userHeadings">Offline Users: </h4>
-        {% for user in offline_users %}
+        <h4 class="userHeadings">All Students: </h4>
+        {% for user in student_users %}
             <div>
                 <a href="{{ url_for('pub_profile', username=user.username) }}">
                     <p>
