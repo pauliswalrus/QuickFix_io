@@ -1,6 +1,6 @@
 from time import localtime, strftime
 from datetime import datetime
-from flask import Flask, render_template, redirect, url_for, flash, session
+from flask import Flask, render_template, redirect, url_for, flash, session, request
 from flask_login import LoginManager, login_user, current_user, logout_user
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
 
@@ -279,8 +279,18 @@ def profile():
     elif status == 1:
         status_string = "Online"
 
+    file_form = FileUploadForm()
+
+    if file_form.validate_on_submit():
+        file = request.files[file_form.file.name]
+        newFile = FileUpload(file_name=file.filename, username=current_user.username, data=file.read())
+        db.session.add(newFile)
+        db.session.commit()
+
+
+
     return render_template('profile.html', username=current_user.username, firstname=firstname, lastname=lastname,
-                           email=email, status_string=status_string, blog_posts=blog_posts, role_name=role_name)
+                           email=email, status_string=status_string, blog_posts=blog_posts, role_name=role_name, file_form=file_form)
 
 
 # public profile accessed by users from online user links.
@@ -313,10 +323,25 @@ def pub_profile(username):
 
 
 #
-##
-### socket.io events for private chat redundant, used in private_room.html
-##
+## file upload test
 #
+
+# @app.route('/upload', methods=['GET','POST'])
+# def upload():
+#
+# #     file = request.files['inputFile']
+# #
+# #     print(file.filename)
+# # #
+# #     newFile = FileUpload(name=file.filename, data=file.read())
+# #     db.session.add(newFile)
+# #     db.session.commit()
+#
+#     return file.filename
+# ##
+# ### socket.io events for private chat redundant, used in private_room.html
+# ##
+# #
 
 # joins room
 @socketio.on('joined', namespace='/chat')

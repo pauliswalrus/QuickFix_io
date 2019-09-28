@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, TextAreaField, SelectField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField, SelectField, FileField
 from wtforms.validators import InputRequired, Length, EqualTo, ValidationError, Email
 
 from passlib.hash import pbkdf2_sha256
@@ -104,7 +104,10 @@ class BlogPostForm(FlaskForm):
     content = TextAreaField('content_label', validators=[InputRequired(message="Post required")])
     submit_button = SubmitField('Add Post')
 
+class FileUploadForm(FlaskForm):
+    """ file upload """
 
+    file = FileField('file_upload', validators=[InputRequired(message="Select a file")])
 class RoomJoin(FlaskForm):
     """ Room Create """
 

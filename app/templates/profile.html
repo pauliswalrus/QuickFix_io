@@ -58,6 +58,12 @@
 
 
             <h3>Role : {{ role_name }}</h3>
+
+                <form method="post" enctype="multipart/form-data">
+                    {{ file_form.hidden_tag() }}
+                    {{ file_form.file }}
+                    <input type="submit">
+                </form>
             <div id="profilePic"></div>
             <br>
             <h4><a href="{{ url_for('add_post') }}">Add New Post</a> </h4>

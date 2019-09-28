@@ -32,6 +32,16 @@ class History(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     message = db.Column(db.Text)
 
+
+class FileUpload(db.Model):
+
+    __tablename__="file_uploads"
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(25), nullable=False)
+    file_name = db.Column(db.Text, nullable=False)
+    data = db.Column(db.LargeBinary)
+
+
 class Message(db.Model):
     """ Message Model """
 
