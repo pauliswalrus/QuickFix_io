@@ -245,6 +245,8 @@ def chat_jq():
     message_object = Message.query.filter_by(room=roomName).order_by(Message.id.desc()).all()
     # print(user_now)
 
+    room_files = FileUpload.query.filter_by(username=authorName).all()
+
     private_form = RoomJoin()
     if private_form.validate_on_submit():
         post_Room = session.get('roomName')
@@ -254,9 +256,18 @@ def chat_jq():
         db.session.delete(delpost)
         db.session.commit()
 
+    file_form = FileUploadForm()
+
+    if file_form.validate_on_submit():
+        file = request.files[file_form.file.name]
+        newFile = FileUpload(file_name=file.filename, username=current_user.username, data=file.read())
+        db.session.add(newFile)
+        db.session.commit()
+        return redirect(url_for('chat_jq'))
+
     return render_template('private_jq_new.html', username=current_user.username, rooms=ROOMS, date_stamp=date_stamp,
                            roomName=roomName, message_object=message_object, private_form=private_form,
-                           authorName=authorName, connected_stamp=connected_stamp)
+                           authorName=authorName, connected_stamp=connected_stamp, file_form=file_form, room_files=room_files)
 
 
 # no longer used!

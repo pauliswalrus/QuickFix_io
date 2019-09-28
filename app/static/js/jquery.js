@@ -6,9 +6,9 @@ $(document).ready(function() {
        $('#fade').css('background-color', '#E46D4E');
        $('#fade').css('color', 'white');
 
-       $('#fade').fadeOut(1000);
-       $('#fade').fadeIn(1000);
-       $('#fade').fadeOut(1000);
+       $('#fade').fadeOut(500);
+       $('#fade').fadeIn(500);
+       $('#fade').fadeOut(500);
 
     //$('h1').css('color', 'red');
     //$('p').css('color', 'green');
@@ -42,8 +42,8 @@ $(document).ready(function() {
     });
 
     $('#send_message').on('click', function() {
-        $('#fade').fadeOut(1000);
-        $('#fade').fadeIn(1000);
+        $('#fade').fadeIn(500);
+        $('#fade').fadeOut(500);
     });
 
 });
