@@ -1,8 +1,9 @@
 from time import localtime, strftime
 from datetime import datetime
-from flask import Flask, render_template, redirect, url_for, flash, session, request
+from flask import Flask, render_template, redirect, url_for, flash, session, request, send_file
 from flask_login import LoginManager, login_user, current_user, logout_user
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
+from io import BytesIO
 
 from app.wtform_fields import *
 from app.dataModel import *
@@ -37,11 +38,22 @@ def login():
     if login_form.validate_on_submit():
         user_object = User.query.filter_by(username=login_form.username.data).first()
         login_user(user_object)
-        return redirect(url_for('chat'))
+
+        if user_object.role == "A":
+
+            return redirect(url_for('admin'))
+
+        else:
+
+            return redirect(url_for('chat'))
 
     return render_template("login.html", form=login_form)
 
+#### admin route, will contain links to all users info etc
+@app.route('/admin')
+def admin():
 
+    return render_template("admin.html")
 #
 ##
 ###pulls up register page - currently users only
@@ -279,6 +291,9 @@ def profile():
     elif status == 1:
         status_string = "Online"
 
+    user_files = FileUpload.query.filter_by(username=current_user.username).all()
+
+
     file_form = FileUploadForm()
 
     if file_form.validate_on_submit():
@@ -290,8 +305,13 @@ def profile():
 
 
     return render_template('profile.html', username=current_user.username, firstname=firstname, lastname=lastname,
-                           email=email, status_string=status_string, blog_posts=blog_posts, role_name=role_name, file_form=file_form)
+                           email=email, status_string=status_string, blog_posts=blog_posts, role_name=role_name, file_form=file_form, user_files=user_files)
 
+@app.route('/download')
+def download():
+    #file_data = FileUpload.query.first()
+    file_data = FileUpload.query.first()
+    return send_file(BytesIO(file_data.data), attachment_filename='first_attachment.png', as_attachment=True)
 
 # public profile accessed by users from online user links.
 @app.route("/profile/<username>", methods=['GET', 'POST'])

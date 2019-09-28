@@ -108,6 +108,7 @@ class FileUploadForm(FlaskForm):
     """ file upload """
 
     file = FileField('file_upload', validators=[InputRequired(message="Select a file")])
+
 class RoomJoin(FlaskForm):
     """ Room Create """
 

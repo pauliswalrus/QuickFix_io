@@ -62,10 +62,24 @@
                 <form method="post" enctype="multipart/form-data">
                     {{ file_form.hidden_tag() }}
                     {{ file_form.file }}
+                    {{ file_form.csrf_token }}
                     <input type="submit">
                 </form>
+                <br>
+                <br>
+
+
+            {% for file in user_files %}
+
+
+               <a href="{{ url_for('download', file_name=file_name) }}">
+                        <h5>{{ file.file_name }} </h5>
+
+                {% endfor %}
             <div id="profilePic"></div>
             <br>
+
+
             <h4><a href="{{ url_for('add_post') }}">Add New Post</a> </h4>
               {% for post in blog_posts %}
                     <a href="{{ url_for('post', post_id=post.id) }}">
