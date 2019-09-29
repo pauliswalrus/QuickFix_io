@@ -224,7 +224,7 @@
 
                 </form>
             </div>
-
+            <div>
                     <form method="post" enctype="multipart/form-data">
                     {{ file_form.hidden_tag() }}
                     {{ file_form.file }}
@@ -235,7 +235,7 @@
                 <br>
                 <br>
 
-
+            </div>
             {% for file in room_files %}
                <a href="{{ url_for('download', dl_name=file.file_name) }}">
                    <h5>{{ file.file_name }} </h5> </a>

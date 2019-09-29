@@ -245,22 +245,22 @@ def chat_jq():
     message_object = Message.query.filter_by(room=roomName).order_by(Message.id.desc()).all()
     # print(user_now)
 
-    room_files = FileUpload.query.filter_by(username=authorName).all()
+    room_files = RoomUpload.query.filter_by(room_name=roomName).all()
 
     private_form = RoomJoin()
-    if private_form.validate_on_submit():
-        post_Room = session.get('roomName')
-        print(post_Room)
-
-        delpost = BlogPost.query.filter_by(subtitle=post_Room).first()
-        db.session.delete(delpost)
-        db.session.commit()
+    # if private_form.validate_on_submit():
+    #     post_Room = session.get('roomName')
+    #     print(post_Room)
+    #
+    #     delpost = BlogPost.query.filter_by(subtitle=post_Room).first()
+    #     db.session.delete(delpost)
+    #     db.session.commit()
 
     file_form = FileUploadForm()
 
     if file_form.validate_on_submit():
         file = request.files[file_form.file.name]
-        newFile = FileUpload(file_name=file.filename, username=current_user.username, data=file.read())
+        newFile = RoomUpload(file_name=file.filename, room_name=roomName, username=current_user.username, data=file.read())
         db.session.add(newFile)
         db.session.commit()
         return redirect(url_for('chat_jq'))

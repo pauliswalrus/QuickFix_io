@@ -41,6 +41,15 @@ class FileUpload(db.Model):
     file_name = db.Column(db.Text, nullable=False)
     data = db.Column(db.LargeBinary)
 
+class RoomUpload(db.Model):
+
+    __tablename__="room_uploads"
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(25), nullable=False)
+    file_name = db.Column(db.Text, nullable=False)
+    room_name = db.Column(db.String(50), nullable=False)
+    data = db.Column(db.LargeBinary)
+
 
 class Message(db.Model):
     """ Message Model """
