@@ -44,7 +44,7 @@
         <h5>Users </h5>
         {% for user in users_list %}
          <a href="{{ url_for('pub_profile', username=user.username)}}" >{{ user.username }}
-            </a>{{ user.status }} {{ user.role }}<br>
+            </a>Status: {{ user.status }} Role: {{ user.role }}<br>
 
         {% endfor %}<br>
 

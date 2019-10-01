@@ -53,7 +53,7 @@ body {
 
 /* Hides the student reg form until user clicks on it */
 #student_regForm {
-    display: none;
+    /*display: none;*/
 }
 
 /* Hides the tutor reg form until user clicks on it */

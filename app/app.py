@@ -80,93 +80,11 @@ def updateRoom():
 ##
 #
 
-# @app.route('/register', methods=['GET', 'POST'])
-# def new_student():
-#     reg_form = RegistrationForm()
-#     # Updates database if validation is successful
-#     if reg_form.validate_on_submit():
-#         username = reg_form.username.data
-#         firstname = reg_form.firstname.data
-#         lastname = reg_form.lastname.data
-#         email = reg_form.email.data
-#         password = reg_form.password.data
-#         # hash password
-#         hashed_pswd = pbkdf2_sha256.hash(password)
-#
-#         # add user to database
-#         user = User(username=username, firstname=firstname, lastname=lastname, email=email, password=hashed_pswd)
-#         db.session.add(user)
-#         db.session.commit()
-#
-#         flash('Registered successfully. Please login', 'success')
-#         return redirect(url_for('login'))
-#
-#     return render_template("registrationStudent.html", form=reg_form)
-#
-
-# Use this to try both forms
-@app.route('/register2', methods=['GET', 'POST'])
-def new_student_test():
-
-    # Tutor Register Form from wtform_fields.py
-    tut_form = TutorRegistrationForm()
-
-    # Updates database if validation is successful
-    #if tut_form.validate_on_submit():
-    if tut_form.username.data and tut_form.validate():
-        username = tut_form.username.data
-        firstname = tut_form.firstname.data
-        lastname = tut_form.lastname.data
-        email = tut_form.email.data
-        #workplace = tut_form.workplace.data
-        occupation = tut_form.occupation.data
-        tutor_password = tut_form.password.data
-        role = "T"
-
-        # hash password
-        tutor_password_hashed = pbkdf2_sha256.hash(tutor_password)
-
-        user = User(username=username, firstname=firstname, lastname=lastname, email=email, password=tutor_password_hashed, role=role)
-
-        #
-        # tutor = Tutor(FirstName=firstname, LastName=lastname, Email=email, Workplace=workplace, Occupation=occupation,
-        #               User_ID=userid)
-        db.session.add(user)
-        db.session.commit()
-        return redirect(url_for('login'))
-
-        ################## TO DO: Add Tutor to DB ##################
-
-    # Student Register Form from wtform_fields.py
-    stud_form = StudentRegistrationForm()
-
-    # Updates database if validation is successful
-    #if stud_form.validate_on_submit():
-    if stud_form.username.data and stud_form.validate():
-        student_username = stud_form.username.data
-        student_firstname = stud_form.firstname.data
-        student_lastname = stud_form.lastname.data
-        student_email = stud_form.email.data
-        student_password = stud_form.password.data
-        role = "S"
-
-        # hash password
-        student_password_hashed = pbkdf2_sha256.hash(student_password)
-
-        user = User(username=student_username, firstname=student_firstname, lastname=student_lastname, email=student_email,
-                    password=student_password_hashed, role=role)
-
-        db.session.add(user)
-        db.session.commit()
-
-        return redirect(url_for('login'))
-
-    # reg_forum from wtform_fields.py
-    #original below:
+@app.route('/register', methods=['GET', 'POST'])
+def new_student():
     reg_form = RegistrationForm()
-
     # Updates database if validation is successful
-    if reg_form.validate():
+    if reg_form.validate_on_submit():
         username = reg_form.username.data
         firstname = reg_form.firstname.data
         lastname = reg_form.lastname.data
@@ -175,7 +93,6 @@ def new_student_test():
         # hash password
         hashed_pswd = pbkdf2_sha256.hash(password)
 
-
         # add user to database
         user = User(username=username, firstname=firstname, lastname=lastname, email=email, password=hashed_pswd)
         db.session.add(user)
@@ -183,6 +100,8 @@ def new_student_test():
 
         user_added = User.query.filter_by(username=username).first()
         user_id = user_added.id
+
+        # add student to db
         student = Student(user_id=user_id)
         db.session.add(student)
         db.session.commit()
@@ -190,8 +109,7 @@ def new_student_test():
         flash('Registered successfully. Please login', 'success')
         return redirect(url_for('login'))
 
-    return render_template("registrationStudent.html", form=reg_form, tut_form=tut_form, stud_form=stud_form)
-
+    return render_template("register_now.html", form=reg_form)
 
 @app.route('/post/<int:post_id>', methods=['GET', 'POST'])
 def post(post_id):
