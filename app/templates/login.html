@@ -27,7 +27,7 @@
                 {{ form.password(class_='loginText', placeholder='Password') }}
                 {{ form.submit_button(class='loginButton') }}
                 {{ form.csrf_token }}
-                <br><a href="{{ url_for('new_student_test') }}">Register a new account</a>
+                <br><a href="{{ url_for('new_student') }}">Register a new account</a>
             </form>
         </li>
     </ul>
@@ -39,7 +39,7 @@
 
     {% for error in form.password.errors %}
         <div class="loginErrorMsg">
-            {{ error }}. Need an account? <a href="{{ url_for('new_student_test') }}">Register now!</a>
+            {{ error }}. Need an account? <a href="{{ url_for('new_student') }}">Register now!</a>
         </div>
     {% endfor %}
 
@@ -79,7 +79,7 @@
     <hr>
 
     <BR><BR><BR>
-    <p><a class="regButton" href="{{ url_for('new_student_test') }}">Get started today</a></p>
+    <p><a class="regButton" href="{{ url_for('new_student') }}">Get started today</a></p>
 
 </div>
 
