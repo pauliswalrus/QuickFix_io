@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     //sets up socketio for chat_join.html page
 
-    let room = "Lounge";
-    joinRoom("Lounge");
+    // let room = "Lounge";
+    // joinRoom("Lounge");
 
     //Displays incoming messages
     socket.on('message', data => {

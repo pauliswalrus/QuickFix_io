@@ -1,6 +1,6 @@
 from time import localtime, strftime
 from datetime import datetime
-from flask import Flask, render_template, redirect, url_for, flash, session, request, send_file
+from flask import Flask, render_template, redirect, url_for, flash, session, request, send_file, jsonify
 from flask_login import LoginManager, login_user, current_user, logout_user
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
 from io import BytesIO
@@ -54,43 +54,55 @@ def login():
 @app.route('/admin')
 def admin():
 
-
     users_list = User.query.all()
-
     all_files = FileUpload.query.all()
-
     blog_posts = RoomPost.query.all()
 
     return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts)
+
+@app.route('/updateRoom', methods=['POST'])
+def updateRoom():
+
+    room = RoomPost.query.filter_by(id=request.form['id']).first()
+
+    room.title = request.form['name']
+    room.room_title = request.form['title']
+    room.content = request.form['content']
+    room.date_posted = date_time = datetime.now()
+
+    db.session.commit()
+
+    return jsonify({'result' : 'success', "room_name" : room.room_title})
+    #return render_template('section.html', room=room)
 #
 ##
 ###pulls up register page - currently users only
 ##
 #
 
-@app.route('/register', methods=['GET', 'POST'])
-def new_student():
-    reg_form = RegistrationForm()
-    # Updates database if validation is successful
-    if reg_form.validate_on_submit():
-        username = reg_form.username.data
-        firstname = reg_form.firstname.data
-        lastname = reg_form.lastname.data
-        email = reg_form.email.data
-        password = reg_form.password.data
-        # hash password
-        hashed_pswd = pbkdf2_sha256.hash(password)
-
-        # add user to database
-        user = User(username=username, firstname=firstname, lastname=lastname, email=email, password=hashed_pswd)
-        db.session.add(user)
-        db.session.commit()
-
-        flash('Registered successfully. Please login', 'success')
-        return redirect(url_for('login'))
-
-    return render_template("registrationStudent.html", form=reg_form)
-
+# @app.route('/register', methods=['GET', 'POST'])
+# def new_student():
+#     reg_form = RegistrationForm()
+#     # Updates database if validation is successful
+#     if reg_form.validate_on_submit():
+#         username = reg_form.username.data
+#         firstname = reg_form.firstname.data
+#         lastname = reg_form.lastname.data
+#         email = reg_form.email.data
+#         password = reg_form.password.data
+#         # hash password
+#         hashed_pswd = pbkdf2_sha256.hash(password)
+#
+#         # add user to database
+#         user = User(username=username, firstname=firstname, lastname=lastname, email=email, password=hashed_pswd)
+#         db.session.add(user)
+#         db.session.commit()
+#
+#         flash('Registered successfully. Please login', 'success')
+#         return redirect(url_for('login'))
+#
+#     return render_template("registrationStudent.html", form=reg_form)
+#
 
 # Use this to try both forms
 @app.route('/register2', methods=['GET', 'POST'])
@@ -100,17 +112,28 @@ def new_student_test():
     tut_form = TutorRegistrationForm()
 
     # Updates database if validation is successful
-    if tut_form.validate_on_submit():
-        tutor_username = tut_form.username.data
-        tutor_firstname = tut_form.firstname.data
-        tutor_lastname = tut_form.lastname.data
-        tutor_email = tut_form.email.data
-        tutor_workplace = tut_form.workplace.data
-        tutor_occupation = tut_form.occupation.data
+    #if tut_form.validate_on_submit():
+    if tut_form.username.data and tut_form.validate():
+        username = tut_form.username.data
+        firstname = tut_form.firstname.data
+        lastname = tut_form.lastname.data
+        email = tut_form.email.data
+        #workplace = tut_form.workplace.data
+        occupation = tut_form.occupation.data
         tutor_password = tut_form.password.data
+        role = "T"
 
         # hash password
         tutor_password_hashed = pbkdf2_sha256.hash(tutor_password)
+
+        user = User(username=username, firstname=firstname, lastname=lastname, email=email, password=tutor_password_hashed, role=role)
+
+        #
+        # tutor = Tutor(FirstName=firstname, LastName=lastname, Email=email, Workplace=workplace, Occupation=occupation,
+        #               User_ID=userid)
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('login'))
 
         ################## TO DO: Add Tutor to DB ##################
 
@@ -118,22 +141,32 @@ def new_student_test():
     stud_form = StudentRegistrationForm()
 
     # Updates database if validation is successful
-    if stud_form.validate_on_submit():
+    #if stud_form.validate_on_submit():
+    if stud_form.username.data and stud_form.validate():
         student_username = stud_form.username.data
         student_firstname = stud_form.firstname.data
         student_lastname = stud_form.lastname.data
         student_email = stud_form.email.data
         student_password = stud_form.password.data
+        role = "S"
 
         # hash password
         student_password_hashed = pbkdf2_sha256.hash(student_password)
+
+        user = User(username=student_username, firstname=student_firstname, lastname=student_lastname, email=student_email,
+                    password=student_password_hashed, role=role)
+
+        db.session.add(user)
+        db.session.commit()
+
+        return redirect(url_for('login'))
 
     # reg_forum from wtform_fields.py
     #original below:
     reg_form = RegistrationForm()
 
     # Updates database if validation is successful
-    if reg_form.validate_on_submit():
+    if reg_form.validate():
         username = reg_form.username.data
         firstname = reg_form.firstname.data
         lastname = reg_form.lastname.data
@@ -142,9 +175,16 @@ def new_student_test():
         # hash password
         hashed_pswd = pbkdf2_sha256.hash(password)
 
+
         # add user to database
         user = User(username=username, firstname=firstname, lastname=lastname, email=email, password=hashed_pswd)
         db.session.add(user)
+        db.session.commit()
+
+        user_added = User.query.filter_by(username=username).first()
+        user_id = user_added.id
+        student = Student(user_id=user_id)
+        db.session.add(student)
         db.session.commit()
 
         flash('Registered successfully. Please login', 'success')
@@ -175,7 +215,7 @@ def add_post():
         author = current_user.username
         date_time = datetime.now()
 
-        # add blogpost to database
+        # add roompost to database
         blog_post = RoomPost(title=title, room_title=subtitle, author=author, date_posted=date_time, content=content,
                              type=type)
 
@@ -197,15 +237,13 @@ def logout():
 
 @app.route("/users", methods=['GET', 'POST'])
 def all_users():
+
     all_tutors = User.query.filter_by(role='T').all()
-
     online_tutors = User.query.filter_by(status=1, role='T').all()
-
     student_users = User.query.filter_by(role='S').all()
 
     return render_template('all_users.html', username=current_user.username, all_tutors=all_tutors,
                            online_tutors=online_tutors, student_users=student_users)
-
 
 # route for chat - displays public rooms and form to join(create rooms)
 @app.route("/chat", methods=['GET', 'POST'])
@@ -236,10 +274,8 @@ def chat_jq():
 
     connected_stamp = strftime('%I : %M %p', localtime())
 
-    user_now = current_user.username
-
+    #user_now = current_user.username
     roomName = session.get('roomName')
-
     authorName = session.get('author')
 
     message_object = Message.query.filter_by(room=roomName).order_by(Message.id.desc()).all()
@@ -248,13 +284,6 @@ def chat_jq():
     room_files = RoomUpload.query.filter_by(room_name=roomName).all()
 
     private_form = RoomJoin()
-    # if private_form.validate_on_submit():
-    #     post_Room = session.get('roomName')
-    #     print(post_Room)
-    #
-    #     delpost = BlogPost.query.filter_by(subtitle=post_Room).first()
-    #     db.session.delete(delpost)
-    #     db.session.commit()
 
     file_form = FileUploadForm()
 
@@ -269,31 +298,10 @@ def chat_jq():
                            roomName=roomName, message_object=message_object, private_form=private_form,
                            authorName=authorName, connected_stamp=connected_stamp, file_form=file_form, room_files=room_files)
 
-
-# no longer used!
-# @app.route("/private", methods=['GET', 'POST'])
-# def private_chat():
-#     roomName = session.get('roomName')
-#     userName = session.get('userName')
-#     # message_object = Message.query.all()
+# @app.route("/jtest", methods=['GET', 'POST'])
+# def test_jquery():
 #
-#     message_object = Message.query.filter_by(room=roomName).all()
-#
-#     room_form = RoomJoin()
-#     if room_form.validate_on_submit():
-#         delpost = BlogPost.query.filter_by(subtitle=roomName).first()
-#         db.delete(delpost)
-#         db.commit()
-#         redirect(url_for('chat'))
-#
-#     return render_template('private_room.html', userName=userName, roomName=roomName, message_object=message_object,
-#                            room_form=room_form)
-#
-
-@app.route("/jtest", methods=['GET', 'POST'])
-def test_jquery():
-
-    return render_template('test_jquery.html')
+#     return render_template('test_jquery.html')
 
 # route for profile
 @app.route("/profile/", methods=['GET', 'POST'])
@@ -328,7 +336,6 @@ def profile():
         db.session.add(newFile)
         db.session.commit()
         return redirect(url_for('profile'))
-
 
     return render_template('profile.html', username=current_user.username, firstname=firstname, lastname=lastname,
                            email=email, status_string=status_string, blog_posts=blog_posts, role_name=role_name, file_form=file_form, user_files=user_files)

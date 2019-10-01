@@ -1,8 +1,5 @@
 $(document).ready(function() {
 
-    //alert('jquery is ready to go');
-
-    //$('h1').hide();
        $('#fade').css('background-color', '#E46D4E');
        $('#fade').css('color', 'white');
 
@@ -10,31 +7,6 @@ $(document).ready(function() {
        $('#fade').fadeIn(500);
        $('#fade').fadeOut(500);
 
-    //$('h1').css('color', 'red');
-    //$('p').css('color', 'green');
-
-    //$('div#one').css('color', 'orange');
-    //$('#two').css('color', 'purple');
-
-
-    //$('.content').css('color', 'red');
-    //$('p.nav').css('color', 'pink');
-
-
-    //$('#header').on('click', function() {
-
-
-        //$('#language').val('jQuery')
-
-    //});
-
-    // $('#language').on('change', function() {
-    //     var input_value = $(this).val();
-    //     alert('the input has been changed to ' + input_value);
-    //
-    // });
-
-    // $('#name').val('Anthony Herbert');
 
     $('#fade').on('click', function() {
         $('#fade').fadeOut(1000);
@@ -45,5 +17,49 @@ $(document).ready(function() {
         $('#fade').fadeIn(500);
         $('#fade').fadeOut(500);
     });
+
+    $('.updateButton').on('click',function () {
+
+        var post_id = $(this).attr('post_id');
+
+        var name = $('#nameInput'+post_id).val();
+
+        var title = $('#titleInput'+post_id).val()
+
+        var content = $('#contentInput'+post_id).val()
+
+        req = $.ajax({
+           url : '/updateRoom',
+           type : 'POST',
+           data : { name : name, title : title, content : content, id : post_id }
+
+        });
+
+        req.done(function(data) {
+
+            $('#roomSection'+post_id).fadeOut(1000).fadeIn(1000);
+            $('#memberNumber'+post_id).text(data.room_name);
+
+        });
+
+
+
+
+    })
+
+    $('.timerButton').on('click',function () {
+
+       var start = new Date;
+
+        setInterval(function() {
+        $('#timerValue').text((new Date - start) / 1000-2 + " Seconds");
+        }, 1000);
+
+        //var room_title = $('#room_Input'+post_id).val();
+
+    })
+
+
+
 
 });

@@ -1,0 +1,25 @@
+        <div class="panel-heading">
+          <h3 class="panel-title">Room Name: <span id="memberNumber{{ post.id }}">{{ post.room_title }} Creator: {{ post.author }}</span> </h3>
+        </div>
+
+        <div class="panel-body">
+          <div class="form-inline">
+
+              <b>ID:</b> {{ post.id }} <b>Type:</b> {{ post.type }}<br>
+            <div class="form-group">
+              <label for="nameInput{{ post.id }}">Title</label>
+              <input type="text" class="form-control" id="nameInput{{ post.id }}" value="{{ post.title }}">
+            </div>
+            <div class="form-group">
+              <label for="emailInput{{ post.id }}">Room Name</label>
+              <input type="text" class="form-control" id="titleInput{{ post.id }}" value="{{ post.room_title }}">
+            </div>
+
+            <div class="form-group">
+              <label for="contentInput{{ post.id }}">Content</label>
+              <input type="text" class="form-control" id="contentInput{{ post.id }}" value="{{ post.content }}">
+            </div><br>
+
+            <button class="btn btn-primary updateButton" post_id="{{ post.id }}">Update</button>
+          </div>
+        </div>

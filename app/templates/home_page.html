@@ -23,7 +23,6 @@
     <a href="#">Forums</a>
     <a href="#">Chat</a>
     <a href="{{ url_for('all_users') }}">Users</a>
-    <a href="{{ url_for('test_jquery') }}" >Jtest</a>
     <a href="{{ url_for('logout') }}"> Logout </a>
 </div>
 
@@ -87,7 +86,7 @@
             {% for post in posts %}
                 <div>
                     <a href="{{ url_for('post', post_id=post.id) }}">
-                        <h5>{{ post.type|upper }} : {{ post.title }} - {{ post.subtitle }}</h5>
+                        <h5>{{ post.type|upper }} : {{ post.title }} - {{ post.room_title }}</h5>
                         by {{ post.author }} on {{ post.date_posted.strftime('%b %d, %Y') }} at {{ post.date_posted.strftime('%I' ':' '%M %p') }} </a>
          </div>
 

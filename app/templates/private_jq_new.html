@@ -6,7 +6,7 @@
         @import url('https://fonts.googleapis.com/css?family=Dosis:200&display=swap');
     </style>
 
-    <title> fixQuick Chatkit {{ roomName }}</title>
+    <title> QuickFix Chat: {{ roomName }}</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/austins_private_jq.css') }}">
@@ -214,6 +214,11 @@
             <button type="button" id="button_leave">Leave this room</button>
             <br><br>
             <button type="button" id="button_close">Close this room</button>
+            <br>
+            <br>
+
+                <div id="timerValue"></div>
+                <button class="btn btn-primary timerButton">Timer date</button>
             <br>
             <br>
            <div id="regForm">

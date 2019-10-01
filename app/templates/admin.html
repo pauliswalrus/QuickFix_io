@@ -13,6 +13,13 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+
+         <script src="{{ url_for('static', filename='js/jquery.js') }}">
+
+    </script>
 </head>
 
 <body>
@@ -21,7 +28,7 @@
     <a class="logo" href="#">Home</a>
     <a href="{{ url_for('profile', username=username) }}">{{ username }}</a>
     <a href="#">Forums</a>
-    <a href="#">Chat</a>
+    <a href="{{ url_for('chat', username=username) }}">Chat</a>
     <a href="{{ url_for('all_users') }}">Users</a>
     <a href="{{ url_for('logout') }}"> Logout </a>
 </div>
@@ -34,15 +41,23 @@
     <!-- Left Column - Join Room - Online Tutors etc -->
     <div id="left_column">
 
-        <h5>Tutors Online: </h5>
-        {% for user in online_users %}
-         <a href="{{ url_for('pub_profile', username=user.username)}}" >{{ user.username }} </a>
+        <h5>Users </h5>
+        {% for user in users_list %}
+         <a href="{{ url_for('pub_profile', username=user.username)}}" >{{ user.username }}
+            </a>{{ user.status }} {{ user.role }}<br>
+
         {% endfor %}<br>
 
-        <h5>General Rooms:</h5>
-        {% for room in rooms %}
-            <p class="select-room">{{ room|title }}</p>
-        {% endfor %}
+        <div id="timerValue"></div>
+        <button class="btn btn-primary timerButton">Timer date</button>
+
+
+{#        <div id="roomSection{{ user.id }}" class="panel panel-default">#}
+{#        <div class="panel-heading">#}
+{#          <h3 class="panel-title">User Name: <span id="memberNumber{{ user.id }}">{{ user.username }} </span> Creator: {{ user.firstname }} </h3>#}
+{#        </div>#}
+{#        {% endfor %}<br>#}
+
 
 
 
@@ -50,26 +65,41 @@
 
     <!-- Middle Column - Type Message area -->
     <div id="middle_column">
+        {% for post in blog_posts %}
 
-        <div id="chatWindowHeader">
-            <p id="room-name"></p>
+            <a href="{{ url_for('post', post_id=post.id) }}">
+      <div id="roomSection{{ post.id }}" class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Room: <span id="memberNumber{{ post.id }}">{{ post.room_title }} </span> Creator: {{ post.author }} </h3>
         </div>
+            </a>
+        <div class="panel-body">
+          <div class="form-inline">
 
-        <!-- Display message -->
-        <div id="display-message-section">
-            {% for msg in message_object %}
-                <li>{{ msg.username }}
-                    {{ msg.message }}
-                    {{ msg.room }}
-                </li>
-            {% endfor %}
+
+                  <b>ID:</b> {{ post.id }} <b>Type:</b> {{ post.type }}<br>
+            <div class="form-group">
+              <label for="nameInput{{ post.id }}">Title</label>
+              <input type="text" class="form-control" id="nameInput{{ post.id }}" value="{{ post.title }}">
+            </div>
+            <div class="form-group">
+              <label for="emailInput{{ post.id }}">Room Name</label>
+              <input type="text" class="form-control" id="titleInput{{ post.id }}" value="{{ post.room_title }}">
+            </div>
+
+            <div class="form-group">
+              <label for="contentInput{{ post.id }}">Content</label>
+              <input type="text" class="form-control" id="contentInput{{ post.id }}" value="{{ post.content }}">
+            </div><br>
+
+            <button class="btn btn-primary updateButton" post_id="{{ post.id }}">Update</button>
+
+            <button class="btn btn-primary deleteButton" post_id="{{ post.id }}">Delete</button>
+          </div>
         </div>
+      </div>
 
-
-        <div id="input-area">
-            <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">
-            <button type="button" id="send_message">SEND</button>
-        </div>
+      {% endfor %}
 
     </div><!-- end middle_column div -->
 
@@ -86,7 +116,8 @@
             {% for post in blog_posts %}
                 <div>
                     <a href="{{ url_for('post', post_id=post.id) }}">
-                        <h5>{{ post.type|upper }} : {{ post.title }} - {{ post.subtitle }}</h5>
+                        <div id="memberNumber"></div>
+                        <h5>{{ post.type|upper }} : {{ post.room_title }} - {{ post.title }}</h5>
                         by {{ post.author }} on {{ post.date_posted.strftime('%b %d, %Y') }} at {{ post.date_posted.strftime('%I' ':' '%M %p') }} </a>
                 </div>
 
@@ -95,10 +126,6 @@
         </div>
 
     </div><!-- end right_column div -->
-
-
-
-
 
 </div> <!--end main section-->
 
@@ -113,8 +140,8 @@
 
 </script>
 <!-- SocketIO JS -->
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
-        integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+{#<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"#}
+{#        integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>#}
 
 <!-- CustomSocketIO JS -->
 <script src="{{ url_for('static', filename='js/socketio.js') }}">
