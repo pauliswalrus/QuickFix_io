@@ -62,13 +62,13 @@ class Message(db.Model):
     created_at = db.Column(db.Text)
 
 # data model for blogpost table recently added in heroku db
-class BlogPost(db.Model):
+class RoomPost(db.Model):
     """ Blogpost Model"""
 
-    __tablename__= "blogpost"
+    __tablename__= "roompost"
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False)
-    subtitle = db.Column(db.String(50), nullable=False)
+    room_title = db.Column(db.String(50), nullable=False)
     author = db.Column(db.String(25), nullable=False)
     date_posted = db.Column(db.DateTime)
     content = db.Column(db.Text)

@@ -59,7 +59,7 @@ def admin():
 
     all_files = FileUpload.query.all()
 
-    blog_posts = BlogPost.query.all()
+    blog_posts = RoomPost.query.all()
 
     return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts)
 #
@@ -155,9 +155,9 @@ def new_student_test():
 
 @app.route('/post/<int:post_id>', methods=['GET', 'POST'])
 def post(post_id):
-    post = BlogPost.query.filter_by(id=post_id).one()
+    post = RoomPost.query.filter_by(id=post_id).one()
 
-    session['roomName'] = post.subtitle
+    session['roomName'] = post.room_title
     session['userName'] = current_user.username
     session['author'] = post.author
     return render_template('post.html', post=post, username=current_user.username)
@@ -176,7 +176,7 @@ def add_post():
         date_time = datetime.now()
 
         # add blogpost to database
-        blog_post = BlogPost(title=title, subtitle=subtitle, author=author, date_posted=date_time, content=content,
+        blog_post = RoomPost(title=title, room_title=subtitle, author=author, date_posted=date_time, content=content,
                              type=type)
 
         db.session.add(blog_post)
@@ -221,11 +221,11 @@ def chat():
 
     # checks if Role is student, this only allows
     if this_user.role == 'S':
-        posts = BlogPost.query.filter_by(type="Offer").order_by(BlogPost.date_posted.desc()).all()
+        posts = RoomPost.query.filter_by(type="Offer").order_by(RoomPost.date_posted.desc()).all()
     else:
-        posts = BlogPost.query.order_by(BlogPost.date_posted.desc()).all()
+        posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
 
-    return render_template('chat_join.html', username=current_user.username, rooms=ROOMS, date_stamp=date_stamp,
+    return render_template('home_page.html', username=current_user.username, rooms=ROOMS, date_stamp=date_stamp,
                            online_users=online_users, posts=posts)
 
 
@@ -311,7 +311,7 @@ def profile():
     else:
         role_name = "Tutor"
 
-    blog_posts = BlogPost.query.filter_by(author=current_user.username).order_by(BlogPost.date_posted.desc()).all()
+    blog_posts = RoomPost.query.filter_by(author=current_user.username).order_by(RoomPost.date_posted.desc()).all()
 
     if status == 0:
         status_string = "Offine"
@@ -357,7 +357,7 @@ def pub_profile(username):
     else:
         role_name = "Tutor"
 
-    blog_posts = BlogPost.query.filter_by(author=username).order_by(BlogPost.date_posted.desc()).all()
+    blog_posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
 
     if status == 0:
         status_string = "Offine"

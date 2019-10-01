@@ -96,7 +96,7 @@ class RoomCreate(FlaskForm):
     submit_button = SubmitField('Room')
 
 class BlogPostForm(FlaskForm):
-    """ BlogPost Form """
+    """ RoomPost Form """
 
     type = SelectField('type_label', choices=[('Request', 'Request'), ('Offer', 'Offer')])
     title = StringField('title_label', validators=[InputRequired(message="Title required")])
