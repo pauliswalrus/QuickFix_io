@@ -242,7 +242,7 @@
 
             </div>
             {% for file in room_files %}
-               <a href="{{ url_for('download', dl_name=file.file_name) }}">
+               <a href="{{ url_for('room_download', dl_name=file.file_name) }}">
                    <h5>{{ file.file_name }} </h5> </a>
 
             {% endfor %}

@@ -340,6 +340,13 @@ def profile():
     return render_template('profile.html', username=current_user.username, firstname=firstname, lastname=lastname,
                            email=email, status_string=status_string, blog_posts=blog_posts, role_name=role_name, file_form=file_form, user_files=user_files)
 
+@app.route('/download_room/<string:dl_name>/')
+def room_download(dl_name):
+    #file_data = FileUpload.query.first()
+    file_data = RoomUpload.query.filter_by(file_name=dl_name).first()
+
+    return send_file(BytesIO(file_data.data), attachment_filename=file_data.file_name, as_attachment=True)
+
 @app.route('/download/<string:dl_name>/')
 def download(dl_name):
     #file_data = FileUpload.query.first()
