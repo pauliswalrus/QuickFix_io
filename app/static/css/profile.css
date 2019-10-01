@@ -1,6 +1,6 @@
 body {
     margin-top: 0px;
-    background-image: url('../images/leaf_01.jpg');
+    background-image: url('../images/trashImgs/leaf_01.jpg');
     background-size: cover;
 
 }
@@ -25,7 +25,7 @@ body {
     width: 200px;
     height: 200px;
     text-align: center;
-    background-image: url('../images/2471307.jpg');
+    background-image: url('../images/trashImgs/2471307.jpg');
     background-size: cover;
     display: inline-block;
 }

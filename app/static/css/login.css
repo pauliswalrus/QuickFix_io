@@ -40,7 +40,7 @@ body, html {
 
 /* Styles nav bar links on mouse over */
 #navigation a:hover {
-    color: darkslategray;
+    color: #395065;
     cursor: pointer;
     text-decoration: none;
 }
@@ -73,6 +73,8 @@ form {
     top: 30px;
     right: 400px;
 }
+
+
 
 /* Styles login error msgs when invalid username or password is entered */
 .loginErrorMsg {
@@ -117,7 +119,7 @@ form {
 
 /* Styles Section 1 - Desk bg image */
 #section_1 {
-    background-image: url('../images/messy_desk.png');
+    background-image: url('../images/login_deskMessy.png');
     height: 800px;
 
     /* Create the parallax scrolling effect */
@@ -180,7 +182,7 @@ form {
 
 /* Styles Section 3 */
 #section_3 {
-    background-image: url('../images/desk_charts.jpg');
+    background-image: url('../images/login_deskCharts.jpg');
     height: 800px;
 
     /* Create the parallax scrolling effect */
