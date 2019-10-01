@@ -1,14 +1,13 @@
 <html>
 <head>
     <style>
-        @import url('https://fonts.googleapis.com/css?family=Beth+Ellen&display=swap');
-        @import url('https://fonts.googleapis.com/css?family=Dosis:200&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Rock+Salt&display=swap');
     </style>
 
     <meta charset="UTF-8">
     <title>QuickFix</title>
 
-    <link rel="stylesheet" href="{{url_for('static', filename='css/login.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -16,19 +15,27 @@
 
 <body>
 
-    <div class="navbar">
-        <a>QuickFix Tutoring</a>
-        <a>How It Works</a>
-        <a>Contact</a>
-      <form action="{{ url_for('login') }}" method="post" id="loginForm">
+<!-- Navigation Bar / Login Form -->
+<div id="navigation">
+    <ul>
+        <li class="quickLinks"><a>QuickFix</a></li>
+        <li class="quickLinks"><a href="#section_2">How It Works</a></li>
+        <li class="quickLinks"><a>Contact</a></li>
+        <li>
+            <form action="{{ url_for('login') }}" method="post" id="loginForm">
+                {{ form.username(class_='loginText', placeholder='Username', autocomplete='off', autofocus=true) }}
+                {{ form.password(class_='loginText', placeholder='Password') }}
+                {{ form.submit_button(class='loginButton') }}
+                {{ form.csrf_token }}
+                <br><a href="{{ url_for('new_student_test') }}">Register a new account</a>
+            </form>
+        </li>
+    </ul>
+</div>
 
-            {{ form.username(class_='loginText', placeholder='Username', autocomplete='off', autofocus=true) }}
-            {{ form.password(class_='loginText', placeholder='Password') }}
-            {{ form.submit_button(class='loginButton') }}
-            {{ form.csrf_token }}
 
-        </form>
-    </div>
+<!-- Section 1 -->
+<div id="section_1">
 
     {% for error in form.password.errors %}
         <div class="loginErrorMsg">
@@ -42,26 +49,55 @@
         </div>
     {% endfor %}
 
-    <div id="content">
+    <p class="biggerText">Late night <span id="cram">cram</span> session?</p>
+    <p class="bigText">We've got your back.</p>
 
-        <h1>Late night cram session?</h1>
-        <h3>We've got your back.</h3>
 
-        <table id="content_info">
-            <tr>
-                <td id="imgPanel01"><img src="../static/images/2471307.jpg" width="300px" height="207px"></td>
-                <td>Match with a qualified tutor</td>
-                <td>No time minimums - pay only for what you need!</td>
-            </tr>
-        </table>
+</div>
 
-        <p><a class="regButton" href="{{ url_for('new_student_test') }}">Get started today</a></p>
+<!-- Section 2 -->
+<div id="section_2">
 
-        {% if error %}
-            <p class="error"><strong>Error:</strong> {{ error }}
-        {% endif %}
+    <table id="aboutIcons">
+        <tr>
+            <td id="icon1"><img src="../static/images/icon_tutor.gif" width="70px" height="70px"></td>
+            <td id="icon2"><img src="../static/images/icon_question.gif" width="70px" height="70px"></td>
+            <td id="icon3"><img src="../static/images/icon_time.gif" width="70px" height="70px"></td>
+        </tr>
+        <tr class="tableRow">
+            <td>Pre-Approved Tutors</td>
+            <td>One-on-One Sessions</td>
+            <td>24 Hour Service</td>
+        </tr>
+        <tr class="tableRow">
+            <td>Our tutors are qualified senior students who have done exceptionally well in their chosen subjects.</td>
+            <td>Every session with a tutor is private and tailored to your individual needs.</td>
+            <td>Don't wait until it's too late - connect with a tutor anytime, anywhere.</td>
+        </tr>
+    </table>
 
+    <hr>
+
+    <BR><BR><BR>
+    <p><a class="regButton" href="{{ url_for('new_student_test') }}">Get started today</a></p>
+
+</div>
+
+<!-- Section 3 -->
+<div id="section_3"></div>
+
+
+{% for error in form.username.errors %}
+    <div class="loginErrorMsg">
+        {{ error }}
     </div>
+{% endfor %}
+
+
+<!-- Error message for invalid login credentials -->
+{% if error %}
+    <p class="error"><strong>Error:</strong> {{ error }}
+{% endif %}
 
 </body>
 </html>
