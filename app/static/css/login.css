@@ -67,14 +67,11 @@ form {
     padding-top: 30px;
 }
 
-/* Styles the register new account link under the login form */
-.regLinkTop {
-    position: absolute;
-    top: 30px;
-    right: 400px;
+/*!* Styles the register new account link under the login form *!*/
+.smRegisterLink {
+    font-size: 0.9em;
+    padding-top: 2px;
 }
-
-
 
 /* Styles login error msgs when invalid username or password is entered */
 .loginErrorMsg {
@@ -172,6 +169,14 @@ form {
     width: 33%;
     height: 50px;
     /*border: 2px solid red;*/
+}
+
+.rightBorder {
+    border-right: 1px solid slategray;
+}
+
+.aboutHeadings {
+    font-weight: bold;
 }
 
 /* Styles the table data that holds the icon imgs */

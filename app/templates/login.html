@@ -27,7 +27,7 @@
                 {{ form.password(class_='loginText', placeholder='Password') }}
                 {{ form.submit_button(class='loginButton') }}
                 {{ form.csrf_token }}
-                <br><a href="{{ url_for('new_student') }}">Register a new account</a>
+                <br><a href="{{ url_for('new_student') }}" class="smRegisterLink">Don't have an account? Register here.</a>
             </form>
         </li>
     </ul>
@@ -65,9 +65,9 @@
             <td id="icon3"><img src="../static/images/login_icon3.gif" width="70px" height="70px"></td>
         </tr>
         <tr class="tableRow">
-            <td>Pre-Approved Tutors</td>
-            <td>One-on-One Sessions</td>
-            <td>24 Hour Service</td>
+            <td class="aboutHeadings" >Pre-Approved Tutors</td>
+            <td class="aboutHeadings" >One-on-One Sessions</td>
+            <td class="aboutHeadings">24 Hour Service</td>
         </tr>
         <tr class="tableRow">
             <td>Our tutors are qualified senior students who have done exceptionally well in their chosen subjects.</td>

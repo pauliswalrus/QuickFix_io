@@ -15,17 +15,25 @@
 </head>
 <body>
 
-    <div class="navbar">
-        <a href="#">QuickFix Tutoring</a>
-        <a href="#">How It Works</a>
-        <a href="#">Contact</a>
-        <a href="#"> </a>
-        <a href="{{ url_for('login') }}">Already have an account? Login</a>
-    </div>
+{#    <div class="navbar">#}
+{#        <a href="#">QuickFix Tutoring</a>#}
+{#        <a href="#">How It Works</a>#}
+{#        <a href="#">Contact</a>#}
+{#        <a href="#"> </a>#}
+{#        <a href="{{ url_for('login') }}">Already have an account? Login</a>#}
+{#    </div>#}
+
+
 
 
     <div id="regForm">
+
+        <div id="title">Create Account</div>
+
+        <hr>
+
         <form action="{{ url_for('new_student')}}", method="post">
+
             <div>
                 {{ form.username(class_='form-control', placeholder='Username', autocomplete='off', autofocus=true) }}
                 <ul>
@@ -81,12 +89,14 @@
                 </ul>
              </div>
             <div>
-                {{ form.submit_button }}
+                {{ form.submit_button(class_='regButton') }}
             </div>
 
 
             {{ form.csrf_token }}
         </form>
+
+    <a href="{{ url_for('login') }}">Already have an account? Login here.</a>
 
     </div>
 
