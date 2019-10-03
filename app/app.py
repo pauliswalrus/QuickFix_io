@@ -118,7 +118,13 @@ def post(post_id):
     session['roomName'] = post.room_title
     session['userName'] = current_user.username
     session['author'] = post.author
-    return render_template('post.html', post=post, username=current_user.username)
+
+    if current_user.role == 'S':
+        posts = RoomPost.query.filter_by(type="Offer").order_by(RoomPost.date_posted.desc()).all()
+    else:
+        posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
+
+    return render_template('viewPost.html', post=post, username=current_user.username, posts=posts)
 
 
 @app.route('/add', methods=['GET', 'POST'])
@@ -142,7 +148,7 @@ def add_post():
 
         return redirect(url_for('chat'))
 
-    return render_template('add.html', username=current_user.username, post_form=post_form)
+    return render_template('addNewPost.html', username=current_user.username, post_form=post_form)
 
 
 # logout route

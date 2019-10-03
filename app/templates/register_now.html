@@ -7,28 +7,18 @@
     <meta charset="UTF-8">
     <title>Register</title>
 
-    <link rel="stylesheet" href="{{url_for('static', filename='css/register.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/cardStyleForm.css')}}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
 
 </head>
 <body>
-
-{#    <div class="navbar">#}
-{#        <a href="#">QuickFix Tutoring</a>#}
-{#        <a href="#">How It Works</a>#}
-{#        <a href="#">Contact</a>#}
-{#        <a href="#"> </a>#}
-{#        <a href="{{ url_for('login') }}">Already have an account? Login</a>#}
-{#    </div>#}
-
-
-
+<div id="main-section">
 
     <div id="regForm">
 
-        <div id="title">Create Account</div>
+        <div id="formTitle">Create Account</div>
 
         <hr>
 
@@ -89,7 +79,7 @@
                 </ul>
              </div>
             <div>
-                {{ form.submit_button(class_='regButton') }}
+                {{ form.submit_button(class_='submitButton') }}
             </div>
 
 
@@ -101,6 +91,6 @@
     </div>
 
 
-
+</div>
 </body>
 </html>

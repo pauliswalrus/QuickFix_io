@@ -6,7 +6,7 @@ body {
 /* Style the navigation menu */
 .navbar {
     width: 100%;
-    background-color: darkslategrey;
+    background-color: slategrey;
     color: white;
 }
 
@@ -25,8 +25,8 @@ body {
 
 /* Add a background color on mouse-over */
 .navbar a:hover {
-    background-color: darkslategrey;
-    color: lightslategray;
+    /*background-color: darkslategrey;*/
+    color: #395065;
     text-decoration: none;
 }
 

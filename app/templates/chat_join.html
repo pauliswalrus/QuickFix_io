@@ -18,7 +18,7 @@
 <body>
 
 <div class="navbar">
-    <a class="logo" href="#">Home</a>
+    <a class="logo" href="{{ url_for('chat', username=username) }}">Home</a>
     <a href="{{ url_for('profile', username=username) }}">{{ username }}</a>
     <a href="#">Forums</a>
     <a href="#">Chat</a>

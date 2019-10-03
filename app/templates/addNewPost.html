@@ -1,0 +1,78 @@
+<html lang=en>
+<head>
+    <meta charset=utf-8>
+
+    <title>Add a Post</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cardStyleForm.css') }}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
+
+<body>
+
+<div class="navbar">
+    <a class="logo" href="{{ url_for('chat', username=username) }}">Home</a>
+    <a href="{{ url_for('profile', username=username) }}">{{ username }}</a>
+    <a href="#">Forums</a>
+    <a href="{{ url_for('chat', username=username) }}">Chat</a>
+    <a href="{{ url_for('all_users') }}">Users</a>
+    <a href="{{ url_for('logout') }}"> Logout </a>
+</div>
+
+<div id="main-section">
+
+    <div id="formTitle"> Add a post</div>
+
+    <form action="{{ url_for('add_post') }}" , method="post">
+
+        <div>{{ post_form.type }}</div>
+
+        <div>
+            {{ post_form.title(class_='form-control', placeholder='Title', autocomplete='off', autofocus=true) }}
+            <ul>
+                {% for error in post_form.title.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div>
+            {{ post_form.subtitle(class_='form-control', placeholder='RoomName', autocomplete='off') }}
+            <ul>
+                {% for error in post_form.subtitle.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div>
+            {{ post_form.content(class_='form-control', placeholder='Content', autocomplete='off') }}
+            <ul>
+                {% for error in post_form.content.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div>{{ post_form.submit_button(class_='submitButton') }}</div>
+
+        {{ post_form.csrf_token }}
+
+    </form>
+
+</div>
+
+
+<script type="text/javascript">
+    const username = `{{ username }}`;
+    const mesage_object = `{{ message_object }}`
+</script>
+
+<!-- SocketIO JS -->
+
+
+</body>
+</html>

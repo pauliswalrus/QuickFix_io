@@ -1,0 +1,94 @@
+#mainContent {
+    width: 100%;
+    /*border: 2px solid red;*/
+    display: inline-block;
+}
+
+/* Styles all three column divs on the page */
+#left_column,
+#right_column {
+    display: inline-block;
+    /*border: 2px solid red;*/
+    margin-top: 0px;
+    vertical-align: middle;
+}
+
+#left_column {
+    width: 69%;
+    height: 100%;
+
+}
+
+#right_column {
+    width: 30%;
+    margin-top: -50px;
+    height: 600px;
+    overflow-y: scroll;
+}
+
+
+#cardStyle {
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 5%;
+    text-align: center;
+    /*padding: 20px;*/
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+#postTitle {
+    width: 100%;
+    background-color: slategray;
+    height: 40px;
+    color: white;
+    font-size: 1.6em;
+    padding: 5px;
+}
+
+#authorDate {
+    /*border: 1px solid blue;*/
+    /*width: 100%;*/
+}
+
+#author,
+#dateTime {
+    width: 49%;
+    display: inline-block;
+    /*border: 2px solid red;*/
+    height: 30px;
+    margin-top: 0px;
+    vertical-align: middle;
+    text-sixe: 0.9em;
+    color: slategray;
+}
+
+#author {
+    text-align: left;
+}
+
+#dateTime {
+    text-align: right;
+}
+
+#content {
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    border: 1px solid slategrey;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    text-align: left;
+}
+
+#roomTitle {
+    text-align: left;
+    margin-left: 5%;
+    font-weight: bold;
+    color: #395065;
+}
+
+#joinRoomLink {
+    margin-bottom: 10%;
+}

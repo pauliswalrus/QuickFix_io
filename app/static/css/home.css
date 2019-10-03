@@ -1,59 +1,77 @@
+/* Chat.css - Defines the styles for the chat_join.html page */
+/* Author: Emma Hobden */
+
+/* ---------------------------------------------------- GENERAL ---------------------------------------------------- */
+
+/* Styles the body of the page */
 body {
-    background-image: url('../images/whiteDesk_03.jpg');
-    background-size: cover;
-    height: 650px;
+    /*background-image: url('../images/teamChat2.png');*/
+    /*background-size: cover;*/
 }
 
-#tutorInfo {
-    width: 60%;
-    padding-top: 100px;
-    padding-left: 100px;
-    text-align: center;
+/* Styles the main-section div which holds all page content */
+#main-section {
+    width: 100%;
+    border: 2px solid blue;
 }
 
-.tutorButton {
-    background-color: darkslategrey;
-    border: none;
-    border-radius: 5px;
-    color: white;
-    padding: 16px 32px;
-    text-align: center;
-    text-decoration: none;
+/* Styles all three column divs on the page */
+#left_column,
+#right_column {
+    /*width: 33%;*/
     display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    -webkit-transition-duration: 0.4s; /* Safari */
-    transition-duration: 0.4s;
+    border: 2px solid red;
+    height: 100%;
+    margin-top: 0px;
+    vertical-align: middle;
+}
+
+/* -------------------------------------------------- LEFT COLUMN -------------------------------------------------- */
+
+/* Styles left column - online tutors, join room etc */
+#left_column {
+    width: 49%;
+}
+
+/* Styles the python variable that holds the list of rooms */
+#left_column p {
+    padding-left: 2em;
+    padding-right: 2em;
+}
+
+/* Styles the hover on the list of rooms */
+#left_column p:hover {
+    background-color: #E46D4E;
+    color: #F8F3F2;
     cursor: pointer;
 }
 
-.tutorButton:hover {
-    color: darkslategrey;
-    background-color: white;
-}
-
-#tutorInfo h1 {
-    color: darkslategrey;
-}
-
-/* styles content of page */
-.content01 {
-    background-image: url('../images/login_deskWhiteLaptop.jpg');
-    background-size: cover;
-    height: 650px;
-}
-
-/* styles content of page */
-.content02 {
-    background-image: url('../images/login_deskWhiteLaptop.jpg');
-    background-size: cover;
-    height: 650px;
+/* Styles the Heading4 in left column */
+#left_column h4 {
+    padding-left: 0.5em;
 }
 
 
+/* ------------------------------------------------- MIDDLE COLUMN ------------------------------------------------- */
 
-#dateTime {
-    border: 2px solid red;
-    width: 50%;
-    color: red;
+
+
+/* -------------------------------------------------- RIGHT COLUMN ------------------------------------------------- */
+
+/* Styles right column - current date and time */
+#right_column {
+    width: 49%;
+}
+
+/* Styles the python variable that holds the current local time date */
+#currDate {
+    font-size: 2em;
+    /*float: right;*/
+    padding-right: 1em;
+    font-family: 'Lato', sans-serif;
+}
+
+
+#blog-posts {
+
 }
