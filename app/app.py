@@ -106,6 +106,24 @@ def new_student():
 
     return render_template("register_now.html", form=reg_form)
 
+### need to rename to user
+@app.route('/tutor_register', methods=['GET', 'POST'])
+def new_tutor():
+    tutor_form = TutorForm()
+    # Updates database if validation is successful
+    if tutor_form.validate_on_submit():
+        about_tutor = tutor_form.about_tutor.data
+        credentials_file = tutor_form.credentials_file
+
+        user_object = User.query.filter_by(username=current_user.username).first()
+        tutor_added = Tutor(user_id=user_object.id, about_tutor=about_tutor, credentials_file=credentials_file.data.read())
+        db.session.add(tutor_added)
+        db.session.commit()
+        flash('Registered successfully. Please login', 'success')
+        return redirect(url_for('chat'))
+
+    return render_template("tutor_application.html", form=tutor_form)
+
 @app.route('/post/<int:post_id>', methods=['GET', 'POST'])
 def post(post_id):
     post = RoomPost.query.filter_by(id=post_id).one()
@@ -209,7 +227,6 @@ def all_users():
 @app.route("/chat", methods=['GET', 'POST'])
 def chat():
     date_stamp = strftime('%A, %B %d', localtime())
-
     this_user = User.query.filter_by(username=current_user.username).first()
 
     one = 1

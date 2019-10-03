@@ -43,6 +43,16 @@ class Student(db.Model):
     program_id = db.Column(db.Integer)
     user_id = db.Column(db.Integer)
 
+class Tutor(db.Model):
+
+    __tablename__="tutor"
+
+    tutor_id = db.Column(db.Integer, primary_key=True)
+    about_tutor = db.Column(db.Text, nullable=False)
+    credentials_file = db.Column(db.LargeBinary, nullable=False)
+    user_id = db.Column(db.Integer)
+
+
 class FileUpload(db.Model):
 
     __tablename__="file_uploads"
