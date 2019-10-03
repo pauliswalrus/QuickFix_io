@@ -83,3 +83,14 @@ class RoomPost(db.Model):
     date_posted = db.Column(db.DateTime)
     content = db.Column(db.Text)
     type = db.Column(db.String(25))
+
+# data model for blogpost table recently added in heroku db
+class RoomComment(db.Model):
+    """ Comment Model"""
+
+    __tablename__= "commentpost"
+    id = db.Column(db.Integer, primary_key=True)
+    room_id = db.Column(db.Integer)
+    comment_author = db.Column(db.String(25), nullable=False)
+    date_posted = db.Column(db.DateTime)
+    content = db.Column(db.Text)

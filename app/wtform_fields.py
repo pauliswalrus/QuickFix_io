@@ -104,6 +104,14 @@ class BlogPostForm(FlaskForm):
     content = TextAreaField('content_label', validators=[InputRequired(message="Post required")])
     submit_button = SubmitField('Add Post')
 
+class CommentForm(FlaskForm):
+    """ RoomPost Form """
+
+    # type = SelectField('type_label', choices=[('Request', 'Request'), ('Offer', 'Offer')])
+    content = TextAreaField('content_label', validators=[InputRequired(message="Post required")])
+    submit_button = SubmitField('Add Comment')
+
+
 class FileUploadForm(FlaskForm):
     """ file upload """
 

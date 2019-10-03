@@ -207,19 +207,12 @@
         <h4>Creator: {{ authorName }}</h4>
 
         <h5>Room Actions: </h5>
-        <button type="button" id="button_start">Start Timer</button>
-        <button type="button" id="button_clear">Pause Timer</button>
-        <button type="button" id="button_restart">Reset Timer</button>
-        <p id="demo">30</p>
-        <br><br>
-        <button type="button" id="button_leave">Leave this room</button>
-        <br><br>
-        <button type="button" id="button_close">Close this room</button>
-        <br>
-        <br>
-
         <div id="timerValue"></div>
-        <button class="btn btn-primary timerButton">Timer date</button>
+        <button class="btn btn-primary timerButton">Timer Start</button>
+        <br>
+        <br>
+        <button type="button" id="button_leave" class="btn btn-light">Leave Room</button>
+        <button type="button" id="button_close" class="btn btn-light">Close Room</button>
         <br>
         <br>
 
@@ -232,7 +225,7 @@
                 {{ file_form.hidden_tag() }}
                 {{ file_form.file }}
 
-                {{ file_form.submit_button }}
+                <button type=submit class="btn btn-info" title="Submit">Add New File</button>
                 {{ file_form.csrf_token }}
             </form>
             <br>

@@ -74,36 +74,7 @@ def admin():
 
     return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts)
 
-@app.route('/updateRoom', methods=['POST'])
-def updateRoom():
-
-    room = RoomPost.query.filter_by(id=request.form['id']).first()
-
-    room.title = request.form['name']
-    room.room_title = request.form['title']
-    room.content = request.form['content']
-    #room.date_posted = date_time = datetime.now()
-    room.date_posted = datetime.now()
-
-    db.session.commit()
-
-    return jsonify({'result' : 'success', "room_name" : room.room_title})
-    #return render_template('section.html', room=room)
-#
-##
-###pulls up register page - currently users only
-##
-#
-
-@app.route('/privateRoom', methods=['POST'])
-def privateRoom():
-
-    room = RoomPost.query.filter_by(id=request.form['id']).first()
-    db.session.delete(room)
-    db.session.commit()
-
-    return jsonify({'result' : 'success'})
-
+### need to rename to user
 @app.route('/register', methods=['GET', 'POST'])
 def new_student():
     reg_form = RegistrationForm()
@@ -139,20 +110,67 @@ def new_student():
 def post(post_id):
     post = RoomPost.query.filter_by(id=post_id).one()
 
+    comments = RoomComment.query.filter_by(room_id=post_id).order_by(RoomComment.date_posted.desc()).all()
+
+    comment_form = CommentForm()
+
     session['roomName'] = post.room_title
     session['userName'] = current_user.username
     session['author'] = post.author
+
+    if comment_form.validate_on_submit():
+        room_id = post.id
+        comment_author = current_user.username
+        content = comment_form.content.data
+        date_time = datetime.now()
+        # add roompost to database
+        comment_post = RoomComment(room_id=room_id, comment_author=comment_author, date_posted=date_time, content=content)
+        db.session.add(comment_post)
+        db.session.commit()
+
+        return redirect(url_for('post',post_id=post.id))
 
     if current_user.role == 'S':
         posts = RoomPost.query.filter_by(type="Offer").order_by(RoomPost.date_posted.desc()).all()
     else:
         posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
 
-    return render_template('viewPost.html', post=post, username=current_user.username, posts=posts)
+    return render_template('viewPost.html', post=post, username=current_user.username, posts=posts, comment_form=comment_form, comments=comments)
 
 
 @app.route('/add', methods=['GET', 'POST'])
 def add_post():
+
+    post_form = BlogPostForm()
+
+
+    user_object = User.query.filter_by(username=current_user.username)
+
+    if post_form.validate_on_submit():
+        title = post_form.title.data
+        subtitle = post_form.subtitle.data
+        content = post_form.content.data
+        if current_user.role == 'S':
+            type = "Request"
+        else:
+            type = "Offer"
+        #type = post_form.type.data
+        author = current_user.username
+        date_time = datetime.now()
+
+        # add roompost to database
+        blog_post = RoomPost(title=title, room_title=subtitle, author=author, date_posted=date_time, content=content,
+                             type=type)
+
+        db.session.add(blog_post)
+        db.session.commit()
+
+        return redirect(url_for('chat'))
+
+    return render_template('addNewPost.html', username=current_user.username, post_form=post_form, user_object=user_object)
+
+@app.route('/add', methods=['GET', 'POST'])
+def add_comment():
 
     post_form = BlogPostForm()
 
@@ -177,17 +195,6 @@ def add_post():
 
         return redirect(url_for('chat'))
 
-    return render_template('addNewPost.html', username=current_user.username, post_form=post_form)
-
-
-# logout route
-# @app.route("/logout", methods=['GET'])
-# def logout():
-#     logout_user()
-#     flash('You logged out!', 'success')
-#     return redirect(url_for('login'))
-
-
 @app.route("/users", methods=['GET', 'POST'])
 def all_users():
 
@@ -202,15 +209,12 @@ def all_users():
 @app.route("/chat", methods=['GET', 'POST'])
 def chat():
     date_stamp = strftime('%A, %B %d', localtime())
-    user_now = current_user.username
-    # print(user_now)
 
     this_user = User.query.filter_by(username=current_user.username).first()
 
     one = 1
     online_users = User.query.filter_by(status=one).all()
 
-    # checks if Role is student, this only allows
     if this_user.role == 'S':
         posts = RoomPost.query.filter_by(type="Offer").order_by(RoomPost.date_posted.desc()).all()
     else:
@@ -224,18 +228,13 @@ def chat():
 @app.route("/private_session/", methods=['GET', 'POST'])
 def chat_jq():
     date_stamp = strftime('%A, %B %d', localtime())
-
     connected_stamp = strftime('%I : %M %p', localtime())
 
-    #user_now = current_user.username
     roomName = session.get('roomName')
     authorName = session.get('author')
 
     message_object = Message.query.filter_by(room=roomName).order_by(Message.id.desc()).all()
-    # print(user_now)
-
     room_files = RoomUpload.query.filter_by(room_name=roomName).all()
-
     room_object = RoomPost.query.filter_by(room_title=roomName).first()
 
     file_form = FileUploadForm()
@@ -251,24 +250,14 @@ def chat_jq():
                            roomName=roomName, message_object=message_object,
                            authorName=authorName, connected_stamp=connected_stamp, file_form=file_form, room_files=room_files, room=room_object)
 
-# @app.route("/jtest", methods=['GET', 'POST'])
-# def test_jquery():
-#
-#     return render_template('test_jquery.html')
-
-# route for profile
+# route for personal profile
 @app.route("/profile/", methods=['GET', 'POST'])
 def profile():
     user_object = User.query.filter_by(username=current_user.username).first()
 
-    firstname = user_object.firstname
-    lastname = user_object.lastname
-    email = user_object.email
     status = user_object.status
     role = user_object.role
-
     image_fp = user_object.user_photo
-
 
     image_form = ImageUploadForm()
 
@@ -299,8 +288,8 @@ def profile():
 
     if file_form.validate_on_submit():
         file = request.files[file_form.file.name]
-        newFile = FileUpload(file_name=file.filename, username=current_user.username, data=file.read())
-        db.session.add(newFile)
+        new_file = FileUpload(file_name=file.filename, username=current_user.username, data=file.read())
+        db.session.add(new_file)
         db.session.commit()
         return redirect(url_for('profile'))
 
@@ -354,6 +343,35 @@ def pub_profile(username):
                            lastname=lastname, email=email, status_string=status_string, blog_posts=blog_posts,
                            role_name=role_name)
 
+@app.route('/updateRoom', methods=['POST'])
+def updateRoom():
+
+    room = RoomPost.query.filter_by(id=request.form['id']).first()
+
+    room.title = request.form['name']
+    room.room_title = request.form['title']
+    room.content = request.form['content']
+    #room.date_posted = date_time = datetime.now()
+    room.date_posted = datetime.now()
+
+    db.session.commit()
+
+    return jsonify({'result' : 'success', "room_name" : room.room_title})
+    #return render_template('section.html', room=room)
+#
+##
+###pulls up register page - currently users only
+##
+#
+
+@app.route('/privateRoom', methods=['POST'])
+def privateRoom():
+
+    room = RoomPost.query.filter_by(id=request.form['id']).first()
+    db.session.delete(room)
+    db.session.commit()
+
+    return jsonify({'result' : 'success'})
 
 #
 ## file upload test
