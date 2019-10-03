@@ -46,10 +46,10 @@
 
     <div id="userInfo_bg">
         <div id="userInfo">
-            <h1>Hello {{ firstname }} {{ lastname }}</h1>
+            <h1>Hello {{ user_object.firstname }} {{ user_object.lastname }}</h1>
 
-            <h2>Username: {{ username }}</h2>
-            <h2>Email: {{ email }}</h2>
+            <h2>Username: {{ user_object.username }}</h2>
+            <h2>Email: {{ user_object.email }}</h2>
 
             <h3>Credits: 0</h3>
             <div id="online_stat"> </div>
@@ -57,25 +57,40 @@
 
 
 
-            <h3>Role : {{ role_name }}</h3>
+            <h3>Role : {{ user_object.role_name }}</h3>
 
 
-            <h4>Upload A New File</h4>
-                <form method="post" enctype="multipart/form-data">
-                    {{ file_form.hidden_tag() }}
-                    {{ file_form.file }}<br>
-                    {{ file_form.submit_button }}
-                    {{ file_form.csrf_token }}
-                </form>
-            <h4>Your Files </h4>
-            {% for file in user_files %}
-               <a href="{{ url_for('download', dl_name=file.file_name) }}">
-                   <h5>{{ file.file_name }} </h5> </a>
+{#            <h4>Upload A New File</h4>#}
+{#                <form method="post" enctype="multipart/form-data">#}
+{#                    {{ file_form.hidden_tag() }}#}
+{#                    {{ file_form.file }}<br>#}
+{#                    {{ file_form.submit_button }}#}
+{#                    {{ file_form.csrf_token }}#}
+{#                </form>#}
+{#            <h4>Your Files </h4>#}
+{#            {% for file in user_files %}#}
+{#               <a href="{{ url_for('download', dl_name=file.file_name) }}">#}
+{#                   <h5>{{ file.file_name }} </h5> </a>#}
+{##}
+{#            {% endfor %}#}
+        <div id="profilePic">
 
-            {% endfor %}
-            <div id="profilePic"></div>
+                  <img src="{{ url_for('uploaded_file', filename=user_object.user_photo)}}" height="400px" width="400px"/>
+
+        </div>
+
+{#            //<div id="profilePic"></div>#}
+{#        <img src="../static/images/womanWorking.jpg" width="100px" height="100px"/>#}
+{#        <img src="data:;base64,{{ image }}" width="400px" height="400px"/>#}
             <br>
 
+            <h4>Upload A New Profile Photo</h4>
+                <form method="post" enctype="multipart/form-data">
+                    {{ image_form.hidden_tag() }}
+                    {{ image_form.file }}<br>
+                    {{ image_form.submit_button }}
+                    {{ image_form.csrf_token }}
+                </form>
 
             <h4><a href="{{ url_for('add_post') }}">Add New Post</a> </h4>
               {% for post in blog_posts %}
