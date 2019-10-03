@@ -223,15 +223,10 @@
         <br>
         <br>
 
-        <div class="panel-body">
-          <div class="form-inline">
-            <div class="form-group">
-              <label for="nameInput{{ room.id }}" hidden>Title</label>
-              <input type="text" id="nameInput{{ room.id }}" value="{{ room.room_title }}" readonly hidden/>
-            </div>
-            <button class="btn btn-danger deleteButton" room_id="{{ room.id }}">Make Room Private</button>
-          </div>
-        </div>
+        <input type="text" id="nameInput{{ room.id }}" value="{{ room.room_title }}" readonly hidden/>
+        <button class="btn btn-danger deleteButton" room_id="{{ room.id }}">Make Room Private</button>
+        <br>
+        <br>
         <div>
             <form method="post" enctype="multipart/form-data">
                 {{ file_form.hidden_tag() }}
