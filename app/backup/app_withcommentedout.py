@@ -4,10 +4,7 @@ from flask import Flask, render_template, redirect, url_for, flash, session, req
 from flask_login import LoginManager, login_user, current_user, logout_user
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
 from io import BytesIO
-
-import os
-
-from flask_uploads import UploadSet, configure_uploads, IMAGES, send_from_directory
+import random
 
 from app.wtform_fields import *
 from app.dataModel import *
@@ -19,10 +16,6 @@ from app.dataModel import *
 
 # socketio init
 socketio = SocketIO(app)
-
-photos = UploadSet('photos', IMAGES)
-app.config['UPLOADED_PHOTOS_DEST'] = 'static/pictures'
-configure_uploads(app, photos)
 
 # rooms used at chat
 ROOMS = ["lounge", "student chat", "coding q & a", "general math"]
@@ -125,13 +118,7 @@ def post(post_id):
     session['roomName'] = post.room_title
     session['userName'] = current_user.username
     session['author'] = post.author
-
-    if current_user.role == 'S':
-        posts = RoomPost.query.filter_by(type="Offer").order_by(RoomPost.date_posted.desc()).all()
-    else:
-        posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
-
-    return render_template('viewPost.html', post=post, username=current_user.username, posts=posts)
+    return render_template('post.html', post=post, username=current_user.username)
 
 
 @app.route('/add', methods=['GET', 'POST'])
@@ -155,7 +142,7 @@ def add_post():
 
         return redirect(url_for('chat'))
 
-    return render_template('addNewPost.html', username=current_user.username, post_form=post_form)
+    return render_template('add.html', username=current_user.username, post_form=post_form)
 
 
 # logout route
@@ -216,8 +203,6 @@ def chat_jq():
 
     private_form = RoomJoin()
 
-
-
     file_form = FileUploadForm()
 
     if file_form.validate_on_submit():
@@ -247,20 +232,6 @@ def profile():
     status = user_object.status
     role = user_object.role
 
-    image_fp = user_object.user_photo
-
-
-    image_form = FileUploadForm()
-
-    if image_form.validate_on_submit():
-
-        image_filename = photos.save(request.files[image_form.file.name])
-        #user_object2 = User.query.filter_by(username=current_user.username).update(dict(user_photo=os.path.join(app.config['UPLOADED_PHOTOS_DEST'], image_filename)))
-        user_object2 = User.query.filter_by(username=current_user.username).update(dict(user_photo=image_filename))
-        db.session.commit()
-
-        return redirect(url_for('profile'))
-
     if role == "S":
         role_name = "Student"
     else:
@@ -284,11 +255,8 @@ def profile():
         db.session.commit()
         return redirect(url_for('profile'))
 
-    return render_template('profile.html', username=current_user.username, image_fp=image_fp, status_string=status_string, blog_posts=blog_posts, role_name=role_name, file_form=file_form, user_files=user_files, image_form=image_form, user_object=user_object)
-
-@app.route('/static/pictures/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOADED_PHOTOS_DEST'], filename)
+    return render_template('profile.html', username=current_user.username, firstname=firstname, lastname=lastname,
+                           email=email, status_string=status_string, blog_posts=blog_posts, role_name=role_name, file_form=file_form, user_files=user_files)
 
 @app.route('/download_room/<string:dl_name>/')
 def room_download(dl_name):
@@ -297,7 +265,6 @@ def room_download(dl_name):
 
     return send_file(BytesIO(file_data.data), attachment_filename=file_data.file_name, as_attachment=True)
 
-@app.route('/profile/')
 @app.route('/download/<string:dl_name>/')
 def download(dl_name):
     #file_data = FileUpload.query.first()
@@ -351,6 +318,58 @@ def pub_profile(username):
 # #     db.session.commit()
 #
 #     return file.filename
+
+#
+# ##
+# ### socket.io events for private chat redundant, used in private_room.html
+# ##
+# #
+
+# # joins room
+# @socketio.on('joined', namespace='/chat')
+# def joined(data):
+#     room = session.get('roomName')
+#     join_room(room)
+#     emit('status', {'msg': current_user.username + ' has entered the room ' + room}, room=room)
+#
+
+# # sends message to room
+# @socketio.on('text', namespace='/chat')
+# def text(data):
+#     room = session.get('roomName')
+#     username = session.get('userName')
+#     message_time = strftime('%b-%d %I:%M%p', localtime())
+#     message = Message(message=data['msg'], username=username, room=room)
+#     # message = History(message=data['msg'])
+#     db.session.add(message)
+#     db.session.commit()
+#     emit('message', {'msg': username + ' : ' + data['msg'] + ' : ' + room + ': ' + message_time}, room=room)
+
+
+# leaves room
+# @socketio.on('left', namespace='/chat')
+# def left(data):
+#     room = session.get('roomName')
+#     leave_room(room)
+#     session['roomName'] = " "
+#     print('Connection on ' + room + ' with user ' + current_user.username + ' has been lost')
+#     emit('status', {'msg': current_user.username + ' has left the room ' + room}, room=room)
+#
+
+# connection log print message
+# @socketio.on('connect', namespace='/chat')
+# def on_connect():
+#     room = session.get('roomName')
+#     userName = session.get('userName')
+#     print('Connection on ' + room + ' with user ' + userName + ' has been established')
+#
+
+# closes room - tutor only
+# @socketio.on('close_room', namespace='/chat')
+# def close_room(data):
+#     room = session.get('roomName')
+#     print('Tutor ' + current_user.username + ' has closed Room: ' + room + '.')
+#
 
 #
 ###

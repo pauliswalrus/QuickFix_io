@@ -23,6 +23,7 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(), nullable=False)
     status = db.Column(db.Integer(), default=0)
     role = db.Column(db.Text, default="S")
+    user_photo = db.Column(db.Text)
 
 class History(db.Model):
     """ History Model """
