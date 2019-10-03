@@ -82,23 +82,6 @@
                 printSysMsg(data.msg);
             }
 
-
-        });
-
-
-        //Room selection test
-        document.querySelectorAll('.select-room').forEach(p => {
-            p.onclick = () => {
-                let newRoom = p.innerHTML;
-                if (newRoom == room) {
-                    msg = `You are already in ${room} room.`
-                    printSysMsg(msg);
-                } else {
-                    leaveRoom(room);
-                    joinRoom(newRoom);
-                    room = newRoom;
-                }
-            }
         });
 
         // send message
@@ -206,36 +189,28 @@
         <h4>Room: {{ roomName }}</h4>
         <h4>Creator: {{ authorName }}</h4>
 
+        <div id="fade2" class="hiddenstamp">Message {{ roomName }} At: {{ connected_stamp }}</div>
+
         <h5>Room Actions: </h5>
-        <button type="button" id="button_start">Start Timer</button>
-        <button type="button" id="button_clear">Pause Timer</button>
-        <button type="button" id="button_restart">Reset Timer</button>
-        <p id="demo">30</p>
-        <br><br>
-        <button type="button" id="button_leave">Leave this room</button>
-        <br><br>
-        <button type="button" id="button_close">Close this room</button>
-        <br>
-        <br>
-
         <div id="timerValue"></div>
-        <button class="btn btn-primary timerButton">Timer date</button>
+        <button class="btn btn-primary timerButton">Timer Start</button>
         <br>
         <br>
-        <div id="regForm">
-            <form method="post">
-                {{ private_form.submit_button }}
+        <button type="button" id="button_leave" class="btn btn-light">Leave Room</button>
+        <button type="button" id="button_close" class="btn btn-light">Close Room</button>
+        <br>
+        <br>
 
-                {{ private_form.csrf_token }}
-
-            </form>
-        </div>
+        <input type="text" id="nameInput{{ room.id }}" value="{{ room.room_title }}" readonly hidden/>
+        <button class="btn btn-danger deleteButton" room_id="{{ room.id }}">Make Room Private</button>
+        <br>
+        <br>
         <div>
             <form method="post" enctype="multipart/form-data">
                 {{ file_form.hidden_tag() }}
                 {{ file_form.file }}
 
-                {{ file_form.submit_button }}
+                <button type=submit class="btn btn-info" title="Submit">Add New File</button>
                 {{ file_form.csrf_token }}
             </form>
             <br>
@@ -253,6 +228,7 @@
 
         <div id="chatWindowHeader">
             <p id="room-name"> {{ roomName }}</p>
+
         </div>
 
         <div id="display-message-section">
@@ -270,6 +246,9 @@
             <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">
             <button type="submit" id="send_message">SEND</button>
         </div>
+
+
+
 
     </div>
 

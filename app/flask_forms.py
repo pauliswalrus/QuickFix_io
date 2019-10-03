@@ -3,7 +3,7 @@ from wtforms import StringField, PasswordField, SubmitField, TextAreaField, Sele
 from wtforms.validators import InputRequired, Length, EqualTo, ValidationError, Email
 
 from passlib.hash import pbkdf2_sha256
-from app.dataModel import User, FileUpload
+from app.sqlalq_datamodels import User, FileUpload
 
 
 ###     AUTHOR: AUSTIN PAUL
@@ -44,42 +44,12 @@ class RegistrationForm(FlaskForm):
             raise ValidationError("Username already exists. Select a new username")
 
 
-class TutorRegistrationForm(FlaskForm):
+class TutorForm(FlaskForm):
     """ TutorRegistration form """
 
-    username = StringField('username_label', validators=[InputRequired(message="Username required"), Length(min=4, max=25, message="Username must be between 4 and 25 characters")])
-    firstname = StringField('firstname_label', validators=[InputRequired(message="First name required"), Length(min=4, max=25, message="First name must be between 4 and 25 characters")])
-    lastname = StringField('lastname_label', validators=[InputRequired(message="Last name required"), Length(min=4, max=25, message="Last name must be between 4 and 25 characters")])
-    email = StringField("email_label", validators=[InputRequired("Please enter your email address."), Email("This field requires a valid email address")])
-    #workplace = StringField('workplace_label', validators=[InputRequired("Please enter your workplace."), Length(min=4, max=25, message="Workplace must be between 4 and 25 characters")])
-    occupation = StringField('occupation_label', validators=[InputRequired("Please enter your occupation."), Length(min=4, max=25, message="Occupation must be between 4 and 25 characters")])
-    password = PasswordField('password_label', validators=[InputRequired(message="Password required"), Length(min=4, max=25, message="Password must be between 4 and 25 characters")])
-    confirm_pswd = PasswordField('confirm_pswd_label', validators=[InputRequired(message="Password required"), EqualTo('password', message="Passwords must match")])
-    submit_button2 = SubmitField('Create Account')
-
-    def validate_username(self, username):
-        user_object = User.query.filter_by(username=username.data).first()
-        if user_object:
-            raise ValidationError("Username already exists. Select a new username")
-
-
-class StudentRegistrationForm(FlaskForm):
-    """ StudentRegistration form """
-
-    username = StringField('username_label', validators=[InputRequired(message="Username required"), Length(min=4, max=25, message="Username must be between 4 and 25 characters")])
-    firstname = StringField('firstname_label', validators=[InputRequired(message="First name required"), Length(min=4, max=25, message="First name must be between 4 and 25 characters")])
-    lastname = StringField('lastname_label', validators=[InputRequired(message="Last name required"), Length(min=4, max=25, message="Last name must be between 4 and 25 characters")])
-    email = StringField("email_label", validators=[InputRequired("Please enter your email address."), Email("This field requires a valid email address")])
-    introduction = StringField('intro_label', validators=[InputRequired("Please enter your introduction."), Length(min=4, max=25, message="Intro must be between 4 and 25 characters")])
-    password = PasswordField('password_label', validators=[InputRequired(message="Password required"), Length(min=4, max=25, message="Password must be between 4 and 25 characters")])
-    confirm_pswd = PasswordField('confirm_pswd_label', validators=[InputRequired(message="Password required"), EqualTo('password', message="Passwords must match")])
-    submit_button1 = SubmitField('Create Account')
-
-    def validate_username(self, username):
-        user_object = User.query.filter_by(username=username.data).first()
-        if user_object:
-            raise ValidationError("Username already exists. Select a new username")
-
+    about_tutor = TextAreaField('about_label', validators=[InputRequired(message="Post required")])
+    credentials_file = FileField('file_upload', validators=[InputRequired(message="Select a file")])
+    submit_button = SubmitField('Create Account')
 
 class LoginForm(FlaskForm):
     """ Login form """
@@ -98,11 +68,19 @@ class RoomCreate(FlaskForm):
 class BlogPostForm(FlaskForm):
     """ RoomPost Form """
 
-    type = SelectField('type_label', choices=[('Request', 'Request'), ('Offer', 'Offer')])
+    # type = SelectField('type_label', choices=[('Request', 'Request'), ('Offer', 'Offer')])
     title = StringField('title_label', validators=[InputRequired(message="Title required")])
     subtitle = StringField('subtitle_label', validators=[InputRequired(message="Room required")])
     content = TextAreaField('content_label', validators=[InputRequired(message="Post required")])
     submit_button = SubmitField('Add Post')
+
+class CommentForm(FlaskForm):
+    """ RoomPost Form """
+
+    # type = SelectField('type_label', choices=[('Request', 'Request'), ('Offer', 'Offer')])
+    content = TextAreaField('content_label', validators=[InputRequired(message="Post required")])
+    submit_button = SubmitField('Add Comment')
+
 
 class FileUploadForm(FlaskForm):
     """ file upload """
@@ -110,9 +88,15 @@ class FileUploadForm(FlaskForm):
     file = FileField('file_upload', validators=[InputRequired(message="Select a file")])
     submit_button = SubmitField('Add New File')
 
+class ImageUploadForm(FlaskForm):
+    """ file upload """
+
+    image = FileField('image_upload', validators=[InputRequired(message="Select an image")])
+    submit_button1 = SubmitField('Add New Image')
+
 class RoomJoin(FlaskForm):
     """ Room Create """
 
     room_private = StringField('Private Room')
-    submit_button = SubmitField('Begin Private Chat')
+    submit_button2 = SubmitField('Begin Private Chat')
 

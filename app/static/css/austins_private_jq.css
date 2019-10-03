@@ -3,6 +3,10 @@
 
 /* ---------------------------------------------------- GENERAL ---------------------------------------------------- */
 
+.inputHide {
+    display: none;
+}
+
 /* Styles the body of the page */
 body {
     /*background-image: url('../images/teamChat2.png');*/

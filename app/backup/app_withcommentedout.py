@@ -6,8 +6,8 @@ from flask_socketio import SocketIO, send, emit, join_room, leave_room
 from io import BytesIO
 import random
 
-from app.wtform_fields import *
-from app.dataModel import *
+from app.flask_forms import *
+from app.sqlalq_datamodels import *
 
 ###     AUTHOR: AUSTIN PAUL
 ###     DATE: SEPT 27 2019
