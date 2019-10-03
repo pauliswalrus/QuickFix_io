@@ -57,22 +57,24 @@
 
 
 
-            <h3>Role : {{ user_object.role_name }}</h3>
+            <h3>Role : {{ role_name }}</h3>
 
 
-{#            <h4>Upload A New File</h4>#}
-{#                <form method="post" enctype="multipart/form-data">#}
-{#                    {{ file_form.hidden_tag() }}#}
-{#                    {{ file_form.file }}<br>#}
-{#                    {{ file_form.submit_button }}#}
-{#                    {{ file_form.csrf_token }}#}
-{#                </form>#}
-{#            <h4>Your Files </h4>#}
-{#            {% for file in user_files %}#}
-{#               <a href="{{ url_for('download', dl_name=file.file_name) }}">#}
-{#                   <h5>{{ file.file_name }} </h5> </a>#}
-{##}
-{#            {% endfor %}#}
+            <h4>Upload A New File</h4>
+                <form method="post" enctype="multipart/form-data">
+                    {{ file_form.hidden_tag() }}
+                    {{ file_form.file }}<br>
+                    {{ file_form.submit_button }}
+                    {{ file_form.csrf_token }}
+                </form>
+
+            <h4>Your Files </h4>
+            {% for file in user_files %}
+               <a href="{{ url_for('download', dl_name=file.file_name) }}">
+                   <h5>{{ file.file_name }} </h5> </a>
+
+            {% endfor %}
+
         <div id="profilePic">
             <img src="{{ url_for('uploaded_file', filename=user_object.user_photo)}}" height="200px" width="200px"/>
         </div>
