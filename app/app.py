@@ -456,6 +456,15 @@ def join(data):
     print('Connection on ' + data['room'] + ' with user ' + current_user.username + ' has been established')
     send({'msg': data['username'] + " has joined the " + data['room'] + " room."}, room=data['room'])
 
+@socketio.on('upload')
+def upload(data):
+    room = session.get('roomName')
+    #join_room(data['room'])
+    join_room(room)
+    # message_object = Message.query.filter_by(room='room').all()
+    print('Connection on ' + data['room'] + ' with user ' + current_user.username + ' has been established')
+    send({'msg': data['username'] + " has joined the " + data['room'] + " room."}, room=data['room'])
+
 
 @socketio.on('leave')
 def leave(data):
