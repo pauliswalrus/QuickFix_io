@@ -305,12 +305,12 @@ def profile():
 
     blog_posts = RoomPost.query.filter_by(author=current_user.username).order_by(RoomPost.date_posted.desc()).all()
 
+    user_files = FileUpload.query.filter_by(username=current_user.username).all()
+
     if status == 0:
         status_string = "Offine"
     elif status == 1:
         status_string = "Online"
-
-    user_files = FileUpload.query.filter_by(username=current_user.username).all()
 
     file_form = FileUploadForm()
 
@@ -328,6 +328,7 @@ def profile():
 #
 @app.route("/profile/<username>", methods=['GET', 'POST'])
 def pub_profile(username):
+
     thisUser = current_user.username
     user_object = User.query.filter_by(username=username).first()
 
@@ -337,12 +338,12 @@ def pub_profile(username):
     status = user_object.status
     role = user_object.role
 
+    blog_posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
+
     if role == "S":
         role_name = "Student"
     else:
         role_name = "Tutor"
-
-    blog_posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
 
     if status == 0:
         status_string = "Offine"
@@ -408,6 +409,7 @@ def privateRoom():
     db.session.commit()
 
     return jsonify({'result' : 'success'})
+
 
 #
 ## file upload test
