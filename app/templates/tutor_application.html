@@ -18,20 +18,19 @@
 
     <div id="regForm">
 
-        <div id="formTitle">Create Account</div>
+        <div id="formTitle">Tutor Application</div>
 
         <hr>
             <form method="post" enctype="multipart/form-data">
                 {{ form.hidden_tag() }}
-
-                {{ form.about_tutor }}
+                Tell us why you should join our team of tutors<br>
+                {{ form.about_tutor }}<br>
                 {{ form.credentials_file }}
-
-                <button type=submit class="btn btn-info" title="Submit">Apply</button>
+                <button type=submit class="btn btn-info">Apply</button>
                 {{ form.csrf_token }}
             </form>
 
-    <a href="{{ url_for('login') }}">Already have an account? Login here.</a>
+    <a href="{{ url_for('chat') }}">Change your mind? Return home.</a>
 
     </div>
 

@@ -3,7 +3,7 @@ from wtforms import StringField, PasswordField, SubmitField, TextAreaField, Sele
 from wtforms.validators import InputRequired, Length, EqualTo, ValidationError, Email
 
 from passlib.hash import pbkdf2_sha256
-from app.dataModel import User, FileUpload
+from app.sqlalq_datamodels import User, FileUpload
 
 
 ###     AUTHOR: AUSTIN PAUL

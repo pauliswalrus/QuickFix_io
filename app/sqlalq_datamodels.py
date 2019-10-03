@@ -5,11 +5,10 @@ from app import app
 
 
 ###     AUTHOR: AUSTIN PAUL
-###     DATE: SEPT 26 2019
+###     DATE: Oct 3, 2019
 ###     QUICKFIX_IO DIRTYBITS
 
 db = SQLAlchemy(app)
-
 
 class User(UserMixin, db.Model):
     """ User Model """
@@ -24,14 +23,6 @@ class User(UserMixin, db.Model):
     status = db.Column(db.Integer(), default=0)
     role = db.Column(db.Text, default="S")
     user_photo = db.Column(db.Text)
-
-class History(db.Model):
-    """ History Model """
-
-    __tablename__="history"
-
-    id = db.Column(db.Integer, primary_key=True)
-    message = db.Column(db.Text)
 
 class Student(db.Model):
 
@@ -49,8 +40,10 @@ class Tutor(db.Model):
 
     tutor_id = db.Column(db.Integer, primary_key=True)
     about_tutor = db.Column(db.Text, nullable=False)
-    credentials_file = db.Column(db.LargeBinary, nullable=False)
+    credentials_file_data = db.Column(db.LargeBinary, nullable=False)
+    credentials_file_name = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer)
+    tutor_status = db.Column(db.String(25))
 
 
 class FileUpload(db.Model):

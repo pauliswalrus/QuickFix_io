@@ -82,23 +82,6 @@
                 printSysMsg(data.msg);
             }
 
-
-        });
-
-
-        //Room selection test
-        document.querySelectorAll('.select-room').forEach(p => {
-            p.onclick = () => {
-                let newRoom = p.innerHTML;
-                if (newRoom == room) {
-                    msg = `You are already in ${room} room.`
-                    printSysMsg(msg);
-                } else {
-                    leaveRoom(room);
-                    joinRoom(newRoom);
-                    room = newRoom;
-                }
-            }
         });
 
         // send message
@@ -206,6 +189,8 @@
         <h4>Room: {{ roomName }}</h4>
         <h4>Creator: {{ authorName }}</h4>
 
+        <div id="fade2" class="hiddenstamp">Message {{ roomName }} At: {{ connected_stamp }}</div>
+
         <h5>Room Actions: </h5>
         <div id="timerValue"></div>
         <button class="btn btn-primary timerButton">Timer Start</button>
@@ -243,6 +228,7 @@
 
         <div id="chatWindowHeader">
             <p id="room-name"> {{ roomName }}</p>
+
         </div>
 
         <div id="display-message-section">

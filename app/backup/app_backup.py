@@ -3,8 +3,8 @@ from flask import Flask, render_template, redirect, url_for, flash, session
 from flask_login import LoginManager, login_user, current_user, logout_user
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
 
-from app.wtform_fields import *
-from app.dataModel import *
+from app.flask_forms import *
+from app.sqlalq_datamodels import *
 
 app = Flask(__name__)
 
@@ -50,7 +50,7 @@ def login():
 @app.route('/register', methods=['GET','POST'])
 def new_student():
 
-    #reg_forum from wtform_fields.py
+    #reg_forum from flask_forms.py
 
     reg_form = RegistrationForm()
     # Updates database if validation is successful

@@ -9,8 +9,8 @@ import os
 
 from flask_uploads import UploadSet, configure_uploads, IMAGES, send_from_directory
 
-from app.wtform_fields import *
-from app.dataModel import *
+from app.flask_forms import *
+from app.sqlalq_datamodels import *
 
 ###     AUTHOR: AUSTIN PAUL
 ###     DATE: SEPT 27 2019
@@ -71,12 +71,16 @@ def admin():
     users_list = User.query.all()
     all_files = FileUpload.query.all()
     blog_posts = RoomPost.query.all()
+    tutors = Tutor.query.all()
 
-    return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts)
+    tutor_users = User.query.filter_by(role="T").all()
+
+    return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts, tutors=tutors, tutor_users=tutor_users)
 
 ### need to rename to user
 @app.route('/register', methods=['GET', 'POST'])
 def new_student():
+
     reg_form = RegistrationForm()
     # Updates database if validation is successful
     if reg_form.validate_on_submit():
@@ -88,8 +92,10 @@ def new_student():
         # hash password
         hashed_pswd = pbkdf2_sha256.hash(password)
 
+        user_photo = "default.jpg"
+
         # add user to database
-        user = User(username=username, firstname=firstname, lastname=lastname, email=email, password=hashed_pswd)
+        user = User(username=username, firstname=firstname, lastname=lastname, email=email, password=hashed_pswd, user_photo=user_photo)
         db.session.add(user)
         db.session.commit()
 
@@ -109,14 +115,18 @@ def new_student():
 ### need to rename to user
 @app.route('/tutor_register', methods=['GET', 'POST'])
 def new_tutor():
+
     tutor_form = TutorForm()
     # Updates database if validation is successful
     if tutor_form.validate_on_submit():
         about_tutor = tutor_form.about_tutor.data
-        credentials_file = tutor_form.credentials_file
+
+        credentials_file = request.files[tutor_form.credentials_file.name]
 
         user_object = User.query.filter_by(username=current_user.username).first()
-        tutor_added = Tutor(user_id=user_object.id, about_tutor=about_tutor, credentials_file=credentials_file.data.read())
+
+        user_object.role = "T"
+        tutor_added = Tutor(user_id=user_object.id, about_tutor=about_tutor, credentials_file_name=credentials_file.filename, credentials_file_data=credentials_file.read())
         db.session.add(tutor_added)
         db.session.commit()
         flash('Registered successfully. Please login', 'success')
@@ -129,7 +139,6 @@ def post(post_id):
     post = RoomPost.query.filter_by(id=post_id).one()
 
     comments = RoomComment.query.filter_by(room_id=post_id).order_by(RoomComment.date_posted.desc()).all()
-
     comment_form = CommentForm()
 
     session['roomName'] = post.room_title
@@ -146,7 +155,7 @@ def post(post_id):
         db.session.add(comment_post)
         db.session.commit()
 
-        return redirect(url_for('post',post_id=post.id))
+        return redirect(url_for('post', post_id=post.id))
 
     if current_user.role == 'S':
         posts = RoomPost.query.filter_by(type="Offer").order_by(RoomPost.date_posted.desc()).all()
@@ -156,11 +165,10 @@ def post(post_id):
     return render_template('viewPost.html', post=post, username=current_user.username, posts=posts, comment_form=comment_form, comments=comments)
 
 
-@app.route('/add', methods=['GET', 'POST'])
+@app.route('/add_post', methods=['GET', 'POST'])
 def add_post():
 
     post_form = BlogPostForm()
-
 
     user_object = User.query.filter_by(username=current_user.username)
 
@@ -186,8 +194,8 @@ def add_post():
         return redirect(url_for('chat'))
 
     return render_template('addNewPost.html', username=current_user.username, post_form=post_form, user_object=user_object)
-
-@app.route('/add', methods=['GET', 'POST'])
+#add comment
+@app.route('/add_comment', methods=['GET', 'POST'])
 def add_comment():
 
     post_form = BlogPostForm()
@@ -212,7 +220,7 @@ def add_comment():
         db.session.commit()
 
         return redirect(url_for('chat'))
-
+#all users page
 @app.route("/users", methods=['GET', 'POST'])
 def all_users():
 
@@ -226,6 +234,7 @@ def all_users():
 # route for chat - displays public rooms and form to join(create rooms)
 @app.route("/chat", methods=['GET', 'POST'])
 def chat():
+
     date_stamp = strftime('%A, %B %d', localtime())
     this_user = User.query.filter_by(username=current_user.username).first()
 
@@ -244,6 +253,7 @@ def chat():
 # route for chat - displays public rooms and form to join(create rooms)
 @app.route("/private_session/", methods=['GET', 'POST'])
 def chat_jq():
+
     date_stamp = strftime('%A, %B %d', localtime())
     connected_stamp = strftime('%I : %M %p', localtime())
 
@@ -270,6 +280,7 @@ def chat_jq():
 # route for personal profile
 @app.route("/profile/", methods=['GET', 'POST'])
 def profile():
+
     user_object = User.query.filter_by(username=current_user.username).first()
 
     status = user_object.status
@@ -312,27 +323,9 @@ def profile():
 
     return render_template('profile.html', username=current_user.username, image_fp=image_fp, status_string=status_string, blog_posts=blog_posts, role_name=role_name, file_form=file_form, user_files=user_files, image_form=image_form, user_object=user_object)
 
-@app.route('/static/pictures/<filename>')
-def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOADED_PHOTOS_DEST'], filename)
-
-@app.route('/download_room/<string:dl_name>/')
-def room_download(dl_name):
-    #file_data = FileUpload.query.first()ffd
-    file_data = RoomUpload.query.filter_by(file_name=dl_name).first()
-
-    return send_file(BytesIO(file_data.data), attachment_filename=file_data.file_name, as_attachment=True)
-
-@app.route('/profile/')
-@app.route('/download/<string:dl_name>/')
-def download(dl_name):
-    #file_data = FileUpload.query.first()
-    file_data = FileUpload.query.filter_by(file_name=dl_name).first()
-
-    return send_file(BytesIO(file_data.data), attachment_filename=file_data.file_name, as_attachment=True)
-
+# p
 # public profile accessed by users from online user links.
-# ddd
+#
 @app.route("/profile/<username>", methods=['GET', 'POST'])
 def pub_profile(username):
     thisUser = current_user.username
@@ -359,6 +352,32 @@ def pub_profile(username):
     return render_template('pub_profile.html', thisUser=thisUser, username=username, firstname=firstname,
                            lastname=lastname, email=email, status_string=status_string, blog_posts=blog_posts,
                            role_name=role_name)
+
+#gets uploaded files
+@app.route('/static/pictures/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOADED_PHOTOS_DEST'], filename)
+#download room file from chat page
+@app.route('/download_room/<string:dl_name>/')
+def room_download(dl_name):
+    #file_data = FileUpload.query.first()ffd
+    file_data = RoomUpload.query.filter_by(file_name=dl_name).first()
+
+    return send_file(BytesIO(file_data.data), attachment_filename=file_data.file_name, as_attachment=True)
+#download user file on profile page
+@app.route('/download/<string:dl_name>/')
+def download(dl_name):
+    #file_data = FileUpload.query.first()
+    file_data = FileUpload.query.filter_by(file_name=dl_name).first()
+
+    return send_file(BytesIO(file_data.data), attachment_filename=file_data.file_name, as_attachment=True)
+#download tutor credit
+@app.route('/credentials/<string:dl_name>/')
+def download_cred(dl_name):
+    #file_data = FileUpload.query.first()
+    file_data = Tutor.query.filter_by(credentials_file_name=dl_name).first()
+
+    return send_file(BytesIO(file_data.credentials_file_data), attachment_filename=file_data.credentials_file_name, as_attachment=True)
 
 @app.route('/updateRoom', methods=['POST'])
 def updateRoom():

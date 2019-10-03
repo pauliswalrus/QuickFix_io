@@ -7,6 +7,9 @@ $(document).ready(function() {
        $('#fade').fadeIn(500);
        $('#fade').fadeOut(500);
 
+       $('#fade2').css('background-color', '#E46D4E');
+       $('#fade2').css('color', 'white');
+
 
     $('#fade').on('click', function() {
         $('#fade').fadeOut(1000);
@@ -14,8 +17,12 @@ $(document).ready(function() {
     });
 
     $('#send_message').on('click', function() {
-        $('#fade').fadeIn(500);
-        $('#fade').fadeOut(500);
+        $('#fade2').fadeIn(500);
+        $('#fade2').fadeOut(500);
+        $('#fade2').fadeIn(500);
+
+
+
     });
 
     $('.updateButton').on('click',function () {
@@ -34,8 +41,6 @@ $(document).ready(function() {
            data : { name : name, title : title, content : content, id : post_id }
 
         });
-
-
 
         req.done(function(data) {
 
@@ -68,6 +73,25 @@ $(document).ready(function() {
 
 
     })
+
+    // $('.approveButton').on('click',function () {
+    //
+    //     var room_id = $(this).attr('room_id');
+    //
+    //     var name = $('#nameInput'+room_id).val();
+    //
+    //     req = $.ajax({
+    //        url : '/aproveTutor',
+    //        type : 'POST',
+    //        data : { name : name, id : room_id }
+    //
+    //     });
+    //     alert("this room is private!")
+    //     $('.deleteButton').fadeOut(200);
+    //
+    //
+    //
+    // })
 
     $('.timerButton').on('click',function () {
 
