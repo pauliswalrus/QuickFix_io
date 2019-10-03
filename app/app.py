@@ -57,6 +57,13 @@ def login():
 
     return render_template("login.html", form=login_form)
 
+# logout route
+@app.route("/logout", methods=['GET'])
+def logout():
+    logout_user()
+    flash('You logged out!', 'success')
+    return redirect(url_for('login'))
+
 #### admin route, will contain links to all users info etc
 @app.route('/admin')
 def admin():
@@ -75,7 +82,8 @@ def updateRoom():
     room.title = request.form['name']
     room.room_title = request.form['title']
     room.content = request.form['content']
-    room.date_posted = date_time = datetime.now()
+    #room.date_posted = date_time = datetime.now()
+    room.date_posted = datetime.now()
 
     db.session.commit()
 
@@ -86,6 +94,15 @@ def updateRoom():
 ###pulls up register page - currently users only
 ##
 #
+
+@app.route('/privateRoom', methods=['POST'])
+def privateRoom():
+
+    room = RoomPost.query.filter_by(id=request.form['id']).first()
+    db.session.delete(room)
+    db.session.commit()
+
+    return jsonify({'result' : 'success'})
 
 @app.route('/register', methods=['GET', 'POST'])
 def new_student():
@@ -136,13 +153,18 @@ def post(post_id):
 
 @app.route('/add', methods=['GET', 'POST'])
 def add_post():
+
     post_form = BlogPostForm()
 
     if post_form.validate_on_submit():
         title = post_form.title.data
         subtitle = post_form.subtitle.data
         content = post_form.content.data
-        type = post_form.type.data
+        if current_user.role == 'S':
+            type = "Request"
+        else:
+            type = "Offer"
+        #type = post_form.type.data
         author = current_user.username
         date_time = datetime.now()
 
@@ -159,11 +181,11 @@ def add_post():
 
 
 # logout route
-@app.route("/logout", methods=['GET'])
-def logout():
-    logout_user()
-    flash('You logged out!', 'success')
-    return redirect(url_for('login'))
+# @app.route("/logout", methods=['GET'])
+# def logout():
+#     logout_user()
+#     flash('You logged out!', 'success')
+#     return redirect(url_for('login'))
 
 
 @app.route("/users", methods=['GET', 'POST'])
@@ -214,9 +236,7 @@ def chat_jq():
 
     room_files = RoomUpload.query.filter_by(room_name=roomName).all()
 
-    private_form = RoomJoin()
-
-
+    room_object = RoomPost.query.filter_by(room_title=roomName).first()
 
     file_form = FileUploadForm()
 
@@ -228,8 +248,8 @@ def chat_jq():
         return redirect(url_for('chat_jq'))
 
     return render_template('private_jq_new.html', username=current_user.username, rooms=ROOMS, date_stamp=date_stamp,
-                           roomName=roomName, message_object=message_object, private_form=private_form,
-                           authorName=authorName, connected_stamp=connected_stamp, file_form=file_form, room_files=room_files)
+                           roomName=roomName, message_object=message_object,
+                           authorName=authorName, connected_stamp=connected_stamp, file_form=file_form, room_files=room_files, room=room_object)
 
 # @app.route("/jtest", methods=['GET', 'POST'])
 # def test_jquery():
@@ -250,11 +270,11 @@ def profile():
     image_fp = user_object.user_photo
 
 
-    image_form = FileUploadForm()
+    image_form = ImageUploadForm()
 
     if image_form.validate_on_submit():
 
-        image_filename = photos.save(request.files[image_form.file.name])
+        image_filename = photos.save(request.files[image_form.image.name])
         #user_object2 = User.query.filter_by(username=current_user.username).update(dict(user_photo=os.path.join(app.config['UPLOADED_PHOTOS_DEST'], image_filename)))
         user_object2 = User.query.filter_by(username=current_user.username).update(dict(user_photo=image_filename))
         db.session.commit()
@@ -292,7 +312,7 @@ def uploaded_file(filename):
 
 @app.route('/download_room/<string:dl_name>/')
 def room_download(dl_name):
-    #file_data = FileUpload.query.first()
+    #file_data = FileUpload.query.first()ffd
     file_data = RoomUpload.query.filter_by(file_name=dl_name).first()
 
     return send_file(BytesIO(file_data.data), attachment_filename=file_data.file_name, as_attachment=True)

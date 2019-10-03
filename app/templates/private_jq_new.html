@@ -222,13 +222,15 @@
         <button class="btn btn-primary timerButton">Timer date</button>
         <br>
         <br>
-        <div id="regForm">
-            <form method="post">
-                {{ private_form.submit_button }}
 
-                {{ private_form.csrf_token }}
-
-            </form>
+        <div class="panel-body">
+          <div class="form-inline">
+            <div class="form-group">
+              <label for="nameInput{{ room.id }}" hidden>Title</label>
+              <input type="text" id="nameInput{{ room.id }}" value="{{ room.room_title }}" readonly hidden/>
+            </div>
+            <button class="btn btn-danger deleteButton" room_id="{{ room.id }}">Make Room Private</button>
+          </div>
         </div>
         <div>
             <form method="post" enctype="multipart/form-data">
@@ -270,6 +272,9 @@
             <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">
             <button type="submit" id="send_message">SEND</button>
         </div>
+
+
+
 
     </div>
 

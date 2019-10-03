@@ -35,6 +35,8 @@ $(document).ready(function() {
 
         });
 
+
+
         req.done(function(data) {
 
             $('#roomSection'+post_id).fadeOut(1000).fadeIn(1000);
@@ -42,6 +44,26 @@ $(document).ready(function() {
 
         });
 
+
+
+
+    })
+
+
+    $('.deleteButton').on('click',function () {
+
+        var room_id = $(this).attr('room_id');
+
+        var name = $('#nameInput'+room_id).val();
+
+        req = $.ajax({
+           url : '/privateRoom',
+           type : 'POST',
+           data : { name : name, id : room_id }
+
+        });
+        alert("this room is private!")
+        $('.deleteButton').fadeOut(200);
 
 
 

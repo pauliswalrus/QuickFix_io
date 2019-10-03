@@ -98,7 +98,7 @@ class RoomCreate(FlaskForm):
 class BlogPostForm(FlaskForm):
     """ RoomPost Form """
 
-    type = SelectField('type_label', choices=[('Request', 'Request'), ('Offer', 'Offer')])
+    # type = SelectField('type_label', choices=[('Request', 'Request'), ('Offer', 'Offer')])
     title = StringField('title_label', validators=[InputRequired(message="Title required")])
     subtitle = StringField('subtitle_label', validators=[InputRequired(message="Room required")])
     content = TextAreaField('content_label', validators=[InputRequired(message="Post required")])
@@ -110,9 +110,15 @@ class FileUploadForm(FlaskForm):
     file = FileField('file_upload', validators=[InputRequired(message="Select a file")])
     submit_button = SubmitField('Add New File')
 
+class ImageUploadForm(FlaskForm):
+    """ file upload """
+
+    image = FileField('image_upload', validators=[InputRequired(message="Select an image")])
+    submit_button1 = SubmitField('Add New Image')
+
 class RoomJoin(FlaskForm):
     """ Room Create """
 
     room_private = StringField('Private Room')
-    submit_button = SubmitField('Begin Private Chat')
+    submit_button2 = SubmitField('Begin Private Chat')
 

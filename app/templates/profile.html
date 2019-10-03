@@ -87,8 +87,8 @@
             <h4>Upload A New Profile Photo</h4>
                 <form method="post" enctype="multipart/form-data">
                     {{ image_form.hidden_tag() }}
-                    {{ image_form.file }}<br>
-                    {{ image_form.submit_button }}
+                    {{ image_form.image }}<br>
+                    {{ image_form.submit_button1 }}
                     {{ image_form.csrf_token }}
                 </form>
 
