@@ -21,7 +21,7 @@ from app.sqlalq_datamodels import *
 socketio = SocketIO(app)
 
 photos = UploadSet('photos', IMAGES)
-app.config['UPLOADED_PHOTOS_DEST'] = 'static/pictures'
+app.config['UPLOADED_PHOTOS_DEST'] = 'uploads/pictures'
 configure_uploads(app, photos)
 
 # rooms used at chat
@@ -126,7 +126,7 @@ def new_tutor():
         user_object = User.query.filter_by(username=current_user.username).first()
 
         user_object.role = "T"
-        tutor_added = Tutor(user_id=user_object.id, about_tutor=about_tutor, credentials_file_name=credentials_file.filename, credentials_file_data=credentials_file.read())
+        tutor_added = Tutor(user_id=user_object.id, about_tutor=about_tutor, tutor_status="pending", credentials_file_name=credentials_file.filename, credentials_file_data=credentials_file.read())
         db.session.add(tutor_added)
         db.session.commit()
         flash('Registered successfully. Please login', 'success')
@@ -297,6 +297,7 @@ def profile():
 
     if image_form.validate_on_submit():
 
+
         image_filename = photos.save(request.files[image_form.image.name])
         #user_object2 = User.query.filter_by(username=current_user.username).update(dict(user_photo=os.path.join(app.config['UPLOADED_PHOTOS_DEST'], image_filename)))
         user_object2 = User.query.filter_by(username=current_user.username).update(dict(user_photo=image_filename))
@@ -329,7 +330,7 @@ def profile():
 
     return render_template('profile.html', username=current_user.username, image_fp=image_fp, status_string=status_string, blog_posts=blog_posts, role_name=role_name, file_form=file_form, user_files=user_files, image_form=image_form, user_object=user_object)
 
-# p
+#
 # public profile accessed by users from online user links.
 #
 @app.route("/profile/<username>", methods=['GET', 'POST'])
@@ -465,6 +466,15 @@ def message(data):
 
 @socketio.on('join')
 def join(data):
+    room = session.get('roomName')
+    #join_room(data['room'])
+    join_room(room)
+    # message_object = Message.query.filter_by(room='room').all()
+    print('Connection on ' + data['room'] + ' with user ' + current_user.username + ' has been established')
+    send({'msg': data['username'] + " has joined the " + data['room'] + " room."}, room=data['room'])
+
+@socketio.on('upload')
+def upload(data):
     room = session.get('roomName')
     #join_room(data['room'])
     join_room(room)
