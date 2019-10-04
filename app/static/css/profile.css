@@ -1,37 +1,102 @@
-#main-section {
-    width: 100%;
-    border: 2px solid red;
+/* Styles the left information bar */
+#leftSideBar {
+    width: 30%;
+    height: 100%;
+    background-color: #e4eaf0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
 }
 
-#left_column {
-    width: 50%;
+/* Create columns that float next to each other */
+.column {
     float: left;
-    text-align: center;
-    border: 1px solid blue;
+    height: 600px;
+    /*border: 1px solid black;*/
 }
 
-#right_column {
-    width: 50%;
-    float: right;
+/* Left Column */
+.left {
+    width: 30%;
     text-align: center;
-    border: 1px solid blue;
 }
 
+/* Right Column */
+.right {
+    width: 70%;
+}
+
+/*.middle {*/
+/*  width: 35%;*/
+/*}*/
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Makes div look like a card */
+.cardContainer {
+    height: 600px;
+    padding: 10px;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    overflow-y: scroll;
+}
+
+/* Responsive layout - when the screen is less than 600px wide, make the three columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+  }
+}
+
+/* Styles sub headings */
+.subheading {
+    color: #E46D4E;
+    font-size: 2em;
+    border-bottom: 2px solid #E46D4E;
+}
+
+/* Styles subheading links */
+.subheading a {
+    font-size: 12px;
+
+}
+
+/* Styles username */
 #mUsername {
     font-size: 2em;
     margin: 5px;
 }
 
+/* Styles button for uploading new image */
 .uploadPhotoButton {
-    background-color: white;
+    margin-top: 15px;
+    background-color: #e4eaf0;
     border: none;
     color: #26346f;
     font-size: 12px;
+    /*float: left;*/
 }
 
-#uploadPhotoButton:hover {
+/* Upload image button on mouse hover */
+.uploadPhotoButton:hover {
     text-decoration: underline;
 }
+
+/* Styles profile pic container div */
+.profilePic {
+    border-radius: 125px;
+    /*float: left;*/
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
 
 .chooseFile {
     /*background-color: red;*/
@@ -60,7 +125,7 @@
     background-color: white;
     border: none;
     color: #26346f;
-    font-size: 16px;
+    font-size: 12px;
 }
 
 .uploadDocsButton:hover {
@@ -116,38 +181,8 @@
 
 
 
-/*#main_section {*/
-/*    width: 100%;*/
-/*    border: 2px solid red;*/
-/*    display: inline-block;*/
-/*    height: 100%;*/
-/*}*/
 
-/*!* Styles all three column divs on the page *!*/
-/*#left_column,*/
-/*#right_column {*/
-/*    display: inline-block;*/
-/*    border: 2px solid blue;*/
-/*    margin-top: 0px;*/
-/*    vertical-align: middle;*/
 
-/*    !*width: 49%;*!*/
-/*    !*height: 100%;*!*/
-/*}*/
-
-/*#left_column {*/
-/*    width: 39%;*/
-/*    height: 100%;*/
-/*    margin-right: 60%;*/
-
-/*}*/
-
-/*#right_column {*/
-/*    width: 39%;*/
-/*    height: 100%;*/
-/*    margin-left: 60%;*/
-/*    !*overflow-y: scroll;*!*/
-/*}*/
 
 
 
@@ -160,82 +195,42 @@
 
 /*#main-section {*/
 /*    width: 100%;*/
-/*    border: 2px solid blue;*/
-/*    height: 100%;*/
-/*}*/
-
-
-/*#column1,*/
-/*#column2 {*/
-/*    display: inline-block;*/
-/*    border: 1px solid red;*/
-/*    margin-top: 0px;*/
-/*    vertical-align: middle;*/
-/*    width: 40%;*/
-/*}*/
-
-/*#column1 {*/
-/*    margin-right: 60%;*/
-/*    text-align: center;*/
-/*}*/
-
-/*#column2 {*/
-/*    margin-left: 60%;*/
-/*}*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*#userInfo_bg {*/
-/*    width: 80%;*/
-/*    margin-right: 10%;*/
-/*    margin-left: 10%;*/
-/*    !*background-color: #F7F1F1;*!*/
-/*    !*opacity: 0.8;*!*/
 /*    border: 2px solid red;*/
 /*}*/
 
-/*#userInfo {*/
-/*    width: 100%;*/
-/*}*/
-
-/*#firstColumn {*/
+/*#left_column {*/
+/*    width: 33%;*/
+/*    margin-right: 66%;*/
+/*    margin-left: 0%;*/
+/*    float: left;*/
 /*    text-align: center;*/
+/*    border: 1px solid blue;*/
 /*}*/
 
-/*#profilePic {*/
-/*    width: 200px;*/
-/*    height: 200px;*/
+/*#middle_column {*/
+/*    width: 33%;*/
+/*    margin-left: 33%;*/
+/*    margin-right: 33%;*/
+/*    border: 1px solid blue;*/
 /*    text-align: center;*/
-/*    background-image: url('../images/womanWorking.jpg');*/
-/*    background-size: cover;*/
-/*    display: inline-block;*/
+
 /*}*/
 
-/*table {*/
-/*    width: 100%;*/
+/*#right_column {*/
+/*    width: 33%;*/
+/*    margin-left: 66%;*/
+/*    margin-right: 0%;*/
+/*    float: right;*/
+/*    text-align: center;*/
+/*    border: 1px solid blue;*/
 /*}*/
 
-/*td {*/
-/*    width: 50%;*/
-/*}*/
-
-/*.profileHeading {*/
-/*    background-color: darkslategrey;*/
-/*    color: #F7F1F1;*/
+/*.container {*/
+/*    !*width: 80%;*!*/
+/*    !*margin-left: 10%;*!*/
+/*    !*margin-right: 10%;*!*/
+/*    !*margin-top: 5%;*!*/
+/*    text-align: center;*/
+/*    !*padding: 20px;*!*/
+/*    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
 /*}*/

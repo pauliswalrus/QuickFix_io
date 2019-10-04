@@ -39,104 +39,275 @@
     <a href="{{ url_for('logout') }}"> Logout </a>
 </div>
 
-<div id="main-section">
+<div id="leftSideBar"></div>
 
-    <!-- Left Column -->
-    <div id="left_column">
+<div class="row">
+    <div class="column left">
 
-        <div id="mUsername">{{ user_object.username }}</div>
+        <div>
 
-        <img src="{{ url_for('uploaded_file', filename=user_object.user_photo) }}" height="200px" width="200px"
-             class="profilePic"/>
+            <img src="{{ url_for('uploaded_file', filename=user_object.user_photo) }}" height="250px" width="250px"
+                 class="profilePic"/>
 
-        <br>
-
-        <!-- Trigger/Open The Modal -->
-        <button id="myBtn" class="myBtn uploadPhotoButton">Change</button>
-
-        <hr>
-
-        <div id="mFirstLast">{{ user_object.firstname }} {{ user_object.lastname }}</div>
-
-        <div id="mRole">Role: {{ role_name }}</div>
-
-        <div id="mEmail">Email: {{ user_object.email }}</div>
-
-        <div id="mCredits">Credits: 0</div>
-
-        <hr>
-
-
-        <div id="userUploads">
-
-            <h4 class="subHeading">Your Files </h4>
+            <br>
 
             <!-- Trigger/Open The Modal -->
-            <button id="myBtn" class="myBtn uploadDocsButton" >Upload Documents</button>
+            <button id="myBtn" class="myBtn uploadPhotoButton">Change</button>
 
-            {% for file in user_files %}
-                <a href="{{ url_for('download', dl_name=file.file_name) }}">
-                    <h5>{{ file.file_name }} </h5>
+            <div id="mUsername">{{ user_object.username }}</div>
+
+            <hr>
+
+            <div id="mFirstLast">{{ user_object.firstname }} {{ user_object.lastname }}</div>
+
+            <div id="mRole">Role: {{ role_name }}</div>
+
+            <div id="mEmail">Email: {{ user_object.email }}</div>
+
+            <div id="mCredits">Credits: 0</div>
+
+            <hr>
+
+            <div><a href="{{ url_for('new_tutor') }}">Apply to be a tutor</a></div>
+
+            <div>
+                <a href="{{ url_for('pub_profile', username=user_object.username) }}">
+                View My Public Profile</a>
+            </div>
+
+
+
+
+            <!-- UPLOAD NEW PROFILE PIC Modal -->
+            <div id="myModal" class="modal">
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h4>Upload A New Profile Photo</h4>
+                    <form method="post" enctype="multipart/form-data">
+                        {{ image_form.hidden_tag() }}
+                        {{ image_form.image(class_="chooseFile") }}<br>
+                        {{ image_form.submit_button1 }}
+                        {{ image_form.csrf_token }}
+                    </form>
+                </div>
+            </div> <!-- End Profile Pic Modal Div -->
+        </div>
+
+
+    </div>
+{##}
+{#    <div class="column middle">#}
+{#        <div class="cardContainer"></div>#}
+{#    </div>#}
+
+    <div class="column right">
+
+        <div class="cardContainer">
+
+            <div id="aboutMe">
+                <p class="subheading">About Me <a href="#">update</a></p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non ex quis massa cursus dictum eu
+                    eget leo. Pellentesque nulla erat, pellentesque ut tortor vel, malesuada vulputate tellus. Vivamus
+                    laoreet vestibulum velit, at venenatis mauris mollis nec. Cras ut fringilla ligula. Phasellus
+                    blandit
+                    lectus non sem placerat, ac venenatis nunc vestibulum. Pellentesque efficitur, magna ac varius
+                    lobortis,
+                    diam lacus consectetur mauris, vitae luctus urna justo scelerisque eros. Pellentesque accumsan nisl
+                    et dui mollis feugiat.
+                </p>
+            </div>
+
+
+            <div id="myCourses">
+                <p class="subheading">My Courses <a href="#">update</a></p>
+                <p>• Lorem ipsum dolor sit amet, consectetur adipiscing elit<br>
+                    • Nullam non ex quis massa cursus dictum eu eget leo. <br>
+                    • Pellentesque nulla eratpellentesque ut tortor vel <br>
+                    • malesuada vulputate tellus. Vivamus <br>
+                    • laoreet vestibulum velit, at venenatis mauris mollis
+                </p>
+            </div>
+
+            <p class="subheading">My Posts <a href="{{ url_for('add_post') }}">Add New Post</a></p>
+
+            {% for post in blog_posts %}
+                <a href="{{ url_for('post', post_id=post.id) }}">
+                    <p>[{{ post.type|upper }}] {{ post.title }} - {{ post.date_posted.strftime('%B %d, %Y') }}</p>
                 </a>
             {% endfor %}
 
-        </div>
+
+            <div id="userUploads">
+                <p class="subheading">My Uploads <button id="myBtn" class="myBtn uploadDocsButton">Upload More Documents</button></p>
+                <!-- Trigger/Open The Modal -->
+                {% for file in user_files %}
+                    <a href="{{ url_for('download', dl_name=file.file_name) }}">
+                        <h5>{{ file.file_name }} </h5>
+                    </a>
+                {% endfor %}
+            </div><!-- End User Uploads Div -->
 
 
-        <!-- UPLOAD NEW PROFILE PIC Modal -->
-        <div id="myModal" class="modal">
-
-            <!-- Modal content -->
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h4>Upload A New Profile Photo</h4>
-                <form method="post" enctype="multipart/form-data">
-                    {{ image_form.hidden_tag() }}
-                    {{ image_form.image(class_="chooseFile") }}<br>
-                    {{ image_form.submit_button1 }}
-                    {{ image_form.csrf_token }}
-                </form>
-            </div>
-
-        </div>
-
-
-        <!-- UPLOAD NEW DOCS Modal -->
-        <div id="myModal2" class="modal">
-
-            <!-- Modal content -->
-            <div class="modal2-content">
-                <span class="close">&times;</span>
-                <h4>Upload A New File</h4>
-                <form method="post" enctype="multipart/form-data">
-                    {{ file_form.hidden_tag() }}
-                    {{ file_form.file(class_="chooseFile") }}<br>
-                    {{ file_form.submit_button }}
-                    {{ file_form.csrf_token }}
-                </form>
-            </div>
+            <!-- UPLOAD NEW DOCS Modal -->
+            <div id="myModal2" class="modal">
+                <!-- Modal content -->
+                <div class="modal2-content">
+                    <span class="close">&times;</span>
+                    <h4>Upload A New File</h4>
+                    <form method="post" enctype="multipart/form-data">
+                        {{ file_form.hidden_tag() }}
+                        {{ file_form.file(class_="chooseFile") }}<br>
+                        {{ file_form.submit_button }}
+                        {{ file_form.csrf_token }}
+                    </form>
+                </div>
+            </div><!-- End Modal2 -->
 
         </div>
 
-
-    </div><!-- End Left Column -->
-
-
-    <!-- Right Column -->
-    <div id="right_column">
-
-        <h4><a href="{{ url_for('add_post') }}">Add New Post</a></h4>
-        {% for post in blog_posts %}
-            <a href="{{ url_for('post', post_id=post.id) }}">
-                <h5>{{ post.type|upper }} : {{ post.title }} - {{ post.subtitle }}</h5>
-                By {{ post.author }} on {{ post.date_posted.strftime('%B %d, %Y') }} </a>
-        {% endfor %}
-
-    </div><!-- End Right Column -->
-
+    </div>
 
 </div>
 
+
+{#<div id="main-section">#}
+{##}
+{#    <!-- Left Column -->#}
+{#    <div id="left_column">#}
+{##}
+{#        <div class="container">#}
+{##}
+{#            <img src="{{ url_for('uploaded_file', filename=user_object.user_photo) }}" height="250px" width="250px"#}
+{#                 class="profilePic"/>#}
+{##}
+{#            <br>#}
+{##}
+{##}
+{#            <!-- Trigger/Open The Modal -->#}
+{#            <button id="myBtn" class="myBtn uploadPhotoButton">Change</button>#}
+{##}
+{#            <div id="mUsername">{{ user_object.username }}</div>#}
+{##}
+{##}
+{#            <hr>#}
+{##}
+{#            <div id="mFirstLast">{{ user_object.firstname }} {{ user_object.lastname }}</div>#}
+{##}
+{#            <div id="mRole">Role: {{ role_name }}</div>#}
+{##}
+{#            <div id="mEmail">Email: {{ user_object.email }}</div>#}
+{##}
+{#            <div id="mCredits">Credits: 0</div>#}
+{##}
+{#            <hr>#}
+{##}
+{##}
+{#            <!-- UPLOAD NEW PROFILE PIC Modal -->#}
+{#            <div id="myModal" class="modal">#}
+{#                <!-- Modal content -->#}
+{#                <div class="modal-content">#}
+{#                    <span class="close">&times;</span>#}
+{#                    <h4>Upload A New Profile Photo</h4>#}
+{#                    <form method="post" enctype="multipart/form-data">#}
+{#                        {{ image_form.hidden_tag() }}#}
+{#                        {{ image_form.image(class_="chooseFile") }}<br>#}
+{#                        {{ image_form.submit_button1 }}#}
+{#                        {{ image_form.csrf_token }}#}
+{#                    </form>#}
+{#                </div>#}
+{#            </div> <!-- End Profile Pic Modal Div -->#}
+{##}
+{##}
+{#        </div><!-- End container div -->#}
+{#    </div><!-- End Left Column -->#}
+{##}
+{##}
+{#    <!-- Middle Column -->#}
+{#    <div id="middle_column">#}
+{##}
+{#        <div class="container">#}
+{##}
+{#            <div id="aboutMe">#}
+{#                <p>About Me</p>#}
+{#                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non ex quis massa cursus dictum eu#}
+{#                    eget#}
+{#                    leo. Pellentesque nulla erat, pellentesque ut tortor vel, malesuada vulputate tellus. Vivamus#}
+{#                    laoreet#}
+{#                    vestibulum velit, at venenatis mauris mollis nec. Cras ut fringilla ligula. Phasellus blandit lectus#}
+{#                    non#}
+{#                    sem placerat, ac venenatis nunc vestibulum. Pellentesque efficitur, magna ac varius lobortis, diam#}
+{#                    lacus#}
+{#                    consectetur mauris, vitae luctus urna justo scelerisque eros. Pellentesque accumsan nisl et dui#}
+{#                    mollis#}
+{#                    feugiat.</p>#}
+{#            </div>#}
+{##}
+{#            <hr>#}
+{##}
+{#            <div id="myCourses">#}
+{#                <p>My Courses</p>#}
+{#                <p>• Lorem ipsum dolor sit amet, consectetur adipiscing elit<br>#}
+{#                    • Nullam non ex quis massa cursus dictum eu eget leo. <br>#}
+{#                    • Pellentesque nulla eratpellentesque ut tortor vel <br>#}
+{#                    • malesuada vulputate tellus. Vivamus <br>#}
+{#                    • laoreet vestibulum velit, at venenatis mauris mollis#}
+{#                </p>#}
+{#            </div>#}
+{##}
+{#        </div>#}
+{#    </div><!-- End Middle Column -->#}
+{##}
+{##}
+{#    <!-- Right Column -->#}
+{#    <div id="right_column" >#}
+{##}
+{#        <div class="container">#}
+{##}
+{#            <h4><a href="{{ url_for('add_post') }}">Add New Post</a></h4>#}
+{#            {% for post in blog_posts %}#}
+{#                <a href="{{ url_for('post', post_id=post.id) }}">#}
+{#                    <h5>{{ post.type|upper }} : {{ post.title }} - {{ post.subtitle }}</h5>#}
+{#                    By {{ post.author }} on {{ post.date_posted.strftime('%B %d, %Y') }} </a>#}
+{#            {% endfor %}#}
+{##}
+{#            <hr>#}
+{##}
+{##}
+{#            <div id="userUploads">#}
+{#                <h4 class="subHeading">Your Uploads: </h4>#}
+{#                <!-- Trigger/Open The Modal -->#}
+{#                <button id="myBtn" class="myBtn uploadDocsButton">Upload More Documents</button>#}
+{##}
+{#                {% for file in user_files %}#}
+{#                    <a href="{{ url_for('download', dl_name=file.file_name) }}">#}
+{#                        <h5>{{ file.file_name }} </h5>#}
+{#                    </a>#}
+{#                {% endfor %}#}
+{#            </div><!-- End User Uploads Div -->#}
+{##}
+{##}
+{#            <!-- UPLOAD NEW DOCS Modal -->#}
+{#            <div id="myModal2" class="modal">#}
+{#                <!-- Modal content -->#}
+{#                <div class="modal2-content">#}
+{#                    <span class="close">&times;</span>#}
+{#                    <h4>Upload A New File</h4>#}
+{#                    <form method="post" enctype="multipart/form-data">#}
+{#                        {{ file_form.hidden_tag() }}#}
+{#                        {{ file_form.file(class_="chooseFile") }}<br>#}
+{#                        {{ file_form.submit_button }}#}
+{#                        {{ file_form.csrf_token }}#}
+{#                    </form>#}
+{#                </div>#}
+{#            </div><!-- End Modal2 -->#}
+{##}
+{#        </div>#}
+{##}
+{#    </div><!-- End Right Column -->#}
+{##}
+{##}
+{#</div>#}
 
 
 {#<div id="userInfo_bg">#}

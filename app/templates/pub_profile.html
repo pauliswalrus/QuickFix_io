@@ -7,7 +7,7 @@
     <title>Profile Page</title>
 
     <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/profile.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/pub_profile.css')}}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -43,28 +43,119 @@
         <a href="{{ url_for('logout') }}"> Logout </a>
     </div>
 
+    <div class="row">
+    <div class="column left">
 
-    <div id="userInfo_bg">
-        <div id="userInfo">
-            <h1>{{ firstname }} {{ lastname }}'s Profile:</h1>
+        <div>
 
-            <h2>Username: {{ username }}</h2>
-            <h2>Email: {{ email }}</h2>
+            <img src="{{ url_for('uploaded_file', filename=user_object.user_photo) }}" height="250px" width="250px"
+                 class="profilePic"/>
 
-            <div id="online_stat"> </div>
-            <h3>Status: {{ status_string }} </h3>
+            <br>
 
-            <h3>Role : {{ role_name }}</h3>
-            <div id="profilePic"></div>
+            <div id="mUsername">{{ username }}</div>
 
-              {% for post in blog_posts %}
-                    <a href="{{ url_for('post', post_id=post.id) }}">
-                        <h5>{{ post.type|upper }} : {{ post.title }} - {{ post.subtitle }}</h5>
-                        By {{ post.author }} on {{ post.date_posted.strftime('%B %d, %Y') }} </a>
+            <hr>
 
-            {% endfor %}
+            <div id="mFirstLast">{{ firstname }} {{ lastname }}</div>
+
+            <div id="mRole">Role: {{ role_name }}</div>
+
+            <div id="mEmail">Email: {{ email }}</div>
+
+            <div id="mCredits">Credits: 0</div>
+
+            <hr>
+
 
         </div>
+
+
     </div>
+
+    <div class="column middle">
+
+        <div class="cardContainer">
+
+            <div id="aboutMe">
+                <p class="subheading">About Me</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non ex quis massa cursus dictum eu
+                    eget leo. Pellentesque nulla erat, pellentesque ut tortor vel, malesuada vulputate tellus. Vivamus
+                    laoreet vestibulum velit, at venenatis mauris mollis nec. Cras ut fringilla ligula. Phasellus
+                    blandit
+                    lectus non sem placerat, ac venenatis nunc vestibulum. Pellentesque efficitur, magna ac varius
+                    lobortis,
+                    diam lacus consectetur mauris, vitae luctus urna justo scelerisque eros. Pellentesque accumsan nisl
+                    et dui mollis feugiat.
+                </p>
+            </div>
+
+
+            <div id="myCourses">
+                <p class="subheading">My Courses</p>
+                <p>• Lorem ipsum dolor sit amet, consectetur adipiscing elit<br>
+                    • Nullam non ex quis massa cursus dictum eu eget leo. <br>
+                    • Pellentesque nulla eratpellentesque ut tortor vel <br>
+                    • malesuada vulputate tellus. Vivamus <br>
+                    • laoreet vestibulum velit, at venenatis mauris mollis
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="column right">
+
+        <div class="cardContainer">
+
+            <p class="subheading">My Posts <a href="{{ url_for('add_post') }}">Add New Post</a></p>
+
+            {% for post in blog_posts %}
+                <a href="{{ url_for('post', post_id=post.id) }}">
+                    <h5>[{{ post.type|upper }}] {{ post.title }} - {{ post.date_posted.strftime('%B %d, %Y') }}</h5>
+                </a>
+            {% endfor %}
+
+            <div id="userUploads">
+                <p class="subheading">My Uploads</p>
+
+                {% for file in user_files %}
+                    <a href="{{ url_for('download', dl_name=file.file_name) }}">
+                        <h5>{{ file.file_name }} </h5>
+                    </a>
+                {% endfor %}
+            </div><!-- End User Uploads Div -->
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+{#    <div id="userInfo_bg">#}
+{#        <div id="userInfo">#}
+{#            <h1>{{ firstname }} {{ lastname }}'s Profile:</h1>#}
+{##}
+{#            <h2>Username: {{ username }}</h2>#}
+{#            <h2>Email: {{ email }}</h2>#}
+{##}
+{#            <div id="online_stat"> </div>#}
+{#            <h3>Status: {{ status_string }} </h3>#}
+{##}
+{#            <h3>Role : {{ role_name }}</h3>#}
+{#            <div id="profilePic"></div>#}
+{##}
+{#              {% for post in blog_posts %}#}
+{#                    <a href="{{ url_for('post', post_id=post.id) }}">#}
+{#                        <h5>{{ post.type|upper }} : {{ post.title }} - {{ post.subtitle }}</h5>#}
+{#                        By {{ post.author }} on {{ post.date_posted.strftime('%B %d, %Y') }} </a>#}
+{##}
+{#            {% endfor %}#}
+{##}
+{#        </div>#}
+{#    </div>#}
 </body>
 </html>

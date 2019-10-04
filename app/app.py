@@ -238,16 +238,22 @@ def chat():
     date_stamp = strftime('%A, %B %d', localtime())
     this_user = User.query.filter_by(username=current_user.username).first()
 
+
     one = 1
     online_users = User.query.filter_by(status=one).all()
 
     if this_user.role == 'S':
         posts = RoomPost.query.filter_by(type="Offer").order_by(RoomPost.date_posted.desc()).all()
+        role_name = "Student"
     else:
         posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
+        role_name = "Tutor"
 
-    return render_template('home_page.html', username=current_user.username, rooms=ROOMS, date_stamp=date_stamp,
-                           online_users=online_users, posts=posts)
+    offerhelp = RoomPost.query.filter_by(type="Offer").order_by(RoomPost.date_posted.desc()).all()
+    askforhelp = RoomPost.query.filter_by(type="Request").order_by(RoomPost.date_posted.desc()).all()
+
+    return render_template('home_page.html', username=current_user.username, role=current_user.role, rooms=ROOMS, date_stamp=date_stamp,
+                           online_users=online_users, posts=posts, offerhelp=offerhelp, askforhelp=askforhelp, role_name=role_name)
 
 
 # route for chat - displays public rooms and form to join(create rooms)
@@ -332,6 +338,17 @@ def pub_profile(username):
     thisUser = current_user.username
     user_object = User.query.filter_by(username=username).first()
 
+    image_form = ImageUploadForm()
+
+    if image_form.validate_on_submit():
+        image_filename = photos.save(request.files[image_form.image.name])
+        user_object2 = User.query.filter_by(username=current_user.username).update(dict(user_photo=image_filename))
+        db.session.commit()
+
+        return redirect(url_for('pub_profile'))
+
+    user_files = FileUpload.query.filter_by(username=user_object.username).all()
+
     firstname = user_object.firstname
     lastname = user_object.lastname
     email = user_object.email
@@ -352,7 +369,7 @@ def pub_profile(username):
 
     return render_template('pub_profile.html', thisUser=thisUser, username=username, firstname=firstname,
                            lastname=lastname, email=email, status_string=status_string, blog_posts=blog_posts,
-                           role_name=role_name)
+                           role_name=role_name, image_form=image_form, user_object=user_object, user_files=user_files)
 
 #gets uploaded files
 @app.route('/static/pictures/<filename>')

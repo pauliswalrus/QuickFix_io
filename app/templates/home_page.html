@@ -22,61 +22,150 @@
     <a href="{{ url_for('logout') }}"> Logout </a>
 </div>
 
+<div class="row">
 
-<!-- div main section starts -->
-<div id="main-section">
+    <div class="column left">
+        <div>
+            <span id="currDate">{{ date_stamp }}</span>
 
-    <!-- Left Column - Join Room - Online Tutors etc -->
-    <div id="left_column">
+            <div id="onlineTutors">
+                <h5 id="test">Current online tutors: </h5>
 
-        <span id="currDate">{{ date_stamp }}</span>
+                {% for user in online_users %}
+                    <a href="{{ url_for('pub_profile', username=user.username) }}">{{ user.username }} </a><br>
+                {% endfor %}
+            </div>
 
-        <div id="onlineTutors">
-            <h5>Current online tutors: </h5>
+            <hr>
 
-            {% for user in online_users %}
-                <a href="{{ url_for('pub_profile', username=user.username) }}">{{ user.username }} </a>
-            {% endfor %}
+            <a href="{{ url_for('add_post') }}">Add A Room Post</a>
+
+            <hr>
+
+            <a href="{{ url_for('new_tutor') }}">Apply to be a Tutor</a>
         </div>
-
-        <a href="{{ url_for('new_tutor') }}">Apple Today</a>
-
-    </div> <!-- end of left column -->
-
-{#    <!-- Middle Column - Type Message area -->#}
-{#    <div id="middle_column"></div><!-- end middle_column div -->#}
+    </div>
 
 
-    <!-- right_column div -->
-    <div id="right_column">
-        <span id="currDate">{{ date_stamp }}</span>
 
-
-        <div id="blog-posts">
-            <a href="{{ url_for('add_post') }}">Add A Room Post</a> <br>
-            <h5>View Recent Room Posts:</h5>
-
-            {% for post in posts %}
+    <div class="column middle" id="tutorPosts">
+        <div class="cardContainer">
+            <h3>Available Tutors:</h3>
+            {% for post in offerhelp %}
                 <div>
                     <a href="{{ url_for('post', post_id=post.id) }}">
-                        <h5>{{ post.type|upper }}: {{ post.title }} - {{ post.room_title }}</h5>
-                        by {{ post.author }} on {{ post.date_posted.strftime('%b %d, %Y') }}
-                        at {{ post.date_posted.strftime('%I' ':' '%M %p') }} </a>
+                        <div id="postTypeTitle">{{ post.title }} - {{ post.room_title }}</div>
+                        <div id="postAuthorTime">
+                            by {{ post.author }} on {{ post.date_posted.strftime('%b %d, %Y') }}
+                            at {{ post.date_posted.strftime('%I' ':' '%M %p') }}
+                        </div>
+                    </a>
+                    <hr>
                 </div>
 
             {% endfor %}
-
         </div>
-
-    </div><!-- end right_column div -->
-
-
-</div> <!--end main section-->
+    </div>
 
 
 
+    <div class="column right" id="studentPosts">
+        <div class="cardContainer">
+            <h3>These Students Need Help:</h3>
+            {% for post in askforhelp %}
+                <div>
+                    <a href="{{ url_for('post', post_id=post.id) }}">
+                        <div id="postTypeTitle">[{{ post.type|upper }}] {{ post.title }} - {{ post.room_title }}</div>
+                        <div id="postAuthorTime">
+                            by {{ post.author }} on {{ post.date_posted.strftime('%b %d, %Y') }}
+                            at {{ post.date_posted.strftime('%I' ':' '%M %p') }}
+                        </div>
+                    </a>
+                    <hr>
+                </div>
+
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
 
 
+{#<!-- div main section starts -->#}
+{#<div id="main-section">#}
+{##}
+{#    <!-- Left Column - Join Room - Online Tutors etc -->#}
+{#    <div id="left_column">#}
+{##}
+{#        <span id="currDate">{{ date_stamp }}</span>#}
+{##}
+{#        <div id="onlineTutors">#}
+{#            <h5>Current online tutors: </h5>#}
+{##}
+{#            {% for user in online_users %}#}
+{#                <a href="{{ url_for('pub_profile', username=user.username) }}">{{ user.username }} </a><br>#}
+{#            {% endfor %}#}
+{#        </div>#}
+{##}
+{#    <hr>#}
+{#        <a href="{{ url_for('new_tutor') }}">Apply to be a Tutor</a>#}
+{##}
+{#    </div> <!-- end of left column -->#}
+{##}
+{#    <!-- Middle Column - Type Message area -->#}
+{#    <div id="middle_column">#}
+{##}
+{##}
+{##}
+{#    </div><!-- end middle_column div -->#}
+{##}
+{##}
+{#    <!-- right_column div -->#}
+{#    <div id="right_column">#}
+{##}
+{#        <div id="blog-posts">#}
+{##}
+{##}
+{#            <a href="{{ url_for('add_post') }}">Add A Room Post</a> <br><br>#}
+{#            <h5>View Recent Room Posts:</h5>#}
+{##}
+{#            {% for post in posts %}#}
+{#                <div>#}
+{#                    <a href="{{ url_for('post', post_id=post.id) }}">#}
+{#                        <div id="postTypeTitle">[{{ post.type|upper }}] {{ post.title }} - {{ post.room_title }}</div>#}
+{#                        <div id="postAuthorTime">#}
+{#                            by {{ post.author }} on {{ post.date_posted.strftime('%b %d, %Y') }}#}
+{#                            at {{ post.date_posted.strftime('%I' ':' '%M %p') }}#}
+{#                        </div>#}
+{#                    </a>#}
+{#                <hr>#}
+{#                </div>#}
+{##}
+{#            {% endfor %}#}
+{##}
+{##}
+{##}
+{#            <h1>Offer Help:</h1>#}
+{#            {% for post in offerhelp %}#}
+{#                <div>#}
+{#                    <a href="{{ url_for('post', post_id=post.id) }}">#}
+{#                        <div id="postTypeTitle">[{{ post.type|upper }}] {{ post.title }} - {{ post.room_title }}</div>#}
+{#                        <div id="postAuthorTime">#}
+{#                            by {{ post.author }} on {{ post.date_posted.strftime('%b %d, %Y') }}#}
+{#                            at {{ post.date_posted.strftime('%I' ':' '%M %p') }}#}
+{#                        </div>#}
+{#                    </a>#}
+{#                <hr>#}
+{#                </div>#}
+{##}
+{#            {% endfor %}#}
+{##}
+{#        </div>#}
+{##}
+{#    </div><!-- end right_column div -->#}
+{##}
+{##}
+{#</div> <!--end main section-->#}
 
 
 <script type="text/javascript">
@@ -93,6 +182,44 @@
 
 <!-- CustomSocketIO JS -->
 <script src="{{ url_for('static', filename='js/socketio.js') }}"></script>
+
+
+<script>
+
+    let uRole = '{{ role_name }}';
+
+    window.onload = function (event) {
+
+       if (uRole == 'Student') {
+            document.getElementById('test').style.color = "purple";
+            document.getElementById('tutorPosts').style.display = "block";
+            document.getElementById('studentPosts').style.display = "none";
+        }
+       else if (uRole == 'Tutor') {
+           document.getElementById('test').style.color = "green";
+           document.getElementById('tutorPosts').style.display = "block";
+            document.getElementById('studentPosts').style.display = "block";
+       }
+    }
+
+
+
+
+    {##}
+    {##}
+    {#// Get the modal#}
+    {#let modal = document.getElementsByClassName('modal');#}
+    {##}
+    {#// When the user clicks the button, open the modal#}
+    {#btn[0].onclick = function () {#}
+    {#    modal[0].style.display = "block";#}
+    {##}
+    {##}
+    {#span[1].onclick = function () {#}
+    {#    modal[1].style.display = "none";#}
+    {##}
+
+</script>
 
 </body>
 </html>
@@ -127,44 +254,33 @@
 -->
 
 
-
-
-        {#        <h5>General Rooms:</h5>#}
-        {#        {% for room in rooms %}#}
-        {#            <p class="select-room">{{ room|title }}</p>#}
-        {#        {% endfor %}#}
-
-
-
-
-
-
-
-
-
+{#        <h5>General Rooms:</h5>#}
+{#        {% for room in rooms %}#}
+{#            <p class="select-room">{{ room|title }}</p>#}
+{#        {% endfor %}#}
 
 
 <!-- Middle Column - Type Message area -->
 {#    <div id="middle_column">#}
 
-        {#        <div id="chatWindowHeader">#}
-        {#            <p id="room-name"></p>#}
-        {#        </div>#}
-        {##}
-        {#        <!-- Display message -->#}
-        {#        <div id="display-message-section">#}
-        {#            {% for msg in message_object %}#}
-        {#                <li>{{ msg.username }}#}
-        {#                    {{ msg.message }}#}
-        {#                    {{ msg.room }}#}
-        {#                </li>#}
-        {#            {% endfor %}#}
-        {#        </div>#}
-        {##}
-        {##}
-        {#        <div id="input-area">#}
-        {#            <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">#}
-        {#            <button type="button" id="send_message">SEND</button>#}
-        {#        </div>#}
+{#        <div id="chatWindowHeader">#}
+{#            <p id="room-name"></p>#}
+{#        </div>#}
+{##}
+{#        <!-- Display message -->#}
+{#        <div id="display-message-section">#}
+{#            {% for msg in message_object %}#}
+{#                <li>{{ msg.username }}#}
+{#                    {{ msg.message }}#}
+{#                    {{ msg.room }}#}
+{#                </li>#}
+{#            {% endfor %}#}
+{#        </div>#}
+{##}
+{##}
+{#        <div id="input-area">#}
+{#            <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">#}
+{#            <button type="button" id="send_message">SEND</button>#}
+{#        </div>#}
 
 {#    </div><!-- end middle_column div -->#}
