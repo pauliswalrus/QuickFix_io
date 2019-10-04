@@ -1,8 +1,9 @@
 from flask import Flask
 
 ###     AUTHOR: AUSTIN PAUL
-###     DATE: SEPT 26 2019
+###     DATE: OCT 4
 ###     QUICKFIX_IO DIRTYBITS
+###     PRE-SPRINT 4 TURNIN OCT 4 BUILD
 
 app = Flask(__name__)
 

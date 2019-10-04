@@ -7,9 +7,9 @@ from app.sqlalq_datamodels import User, FileUpload
 
 
 ###     AUTHOR: AUSTIN PAUL
-###     DATE: SEPT 26 2019
+###     DATE: OCT 4
 ###     QUICKFIX_IO DIRTYBITS
-
+###     PRE-SPRINT 4 TURNIN OCT 4 BUILD
 
 
 def invalid_credentials(form, field):

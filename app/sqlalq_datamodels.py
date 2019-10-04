@@ -5,8 +5,9 @@ from app import app
 
 
 ###     AUTHOR: AUSTIN PAUL
-###     DATE: Oct 3, 2019
+###     DATE: OCT 4
 ###     QUICKFIX_IO DIRTYBITS
+###     PRE-SPRINT 4 TURNIN OCT 4 BUILD
 
 db = SQLAlchemy(app)
 

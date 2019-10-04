@@ -13,15 +13,15 @@ from app.flask_forms import *
 from app.sqlalq_datamodels import *
 
 ###     AUTHOR: AUSTIN PAUL
-###     DATE: SEPT 27 2019
+###     DATE: OCT 4
 ###     QUICKFIX_IO DIRTYBITS
-###     POST-SPRINT 3 BUILD
+###     PRE-SPRINT 4 TURNIN OCT 4 BUILD
 
 # socketio init
 socketio = SocketIO(app)
 
 photos = UploadSet('photos', IMAGES)
-app.config['UPLOADED_PHOTOS_DEST'] = 'uploads/pictures'
+app.config['UPLOADED_PHOTOS_DEST'] = 'static/pictures'
 configure_uploads(app, photos)
 
 # rooms used at chat

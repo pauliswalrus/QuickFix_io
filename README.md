@@ -2,7 +2,7 @@
 
 QuickFix_io Capstone Project
 
-Post-Sprint 3 Build - Sept 27 2019
+End of Sprint 4 - Oct 4 2019 Build
 
 Authors:
 Austin Paul, Emma Hobden, 
