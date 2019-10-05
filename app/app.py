@@ -231,7 +231,7 @@ def all_users():
     return render_template('all_users.html', username=current_user.username, all_tutors=all_tutors,
                            online_tutors=online_tutors, student_users=student_users)
 
-# route for chat - displays public rooms and form to join(create rooms)
+# route forff chat - displays public rooms and form to join(create rooms)
 @app.route("/chat", methods=['GET', 'POST'])
 def chat():
 
@@ -501,4 +501,5 @@ def close_room(data):
 
 
 if __name__ == '__main__':
-    socketio.run(app)
+    #socketio.run(app)
+    app.run()
