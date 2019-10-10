@@ -11,7 +11,6 @@ quickfix-io.herokuapp.com
 removed app directory file and changed
 import statements accordingly 
 
-
 Authors:
 Austin Paul, Emma Hobden, 
 Haley Walbourne, Sarthak Jain
