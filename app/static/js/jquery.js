@@ -74,6 +74,29 @@ $(document).ready(function() {
 
     })
 
+
+    $('.approveTutor').on('click',function () {
+
+        var user_id = $(this).attr('user_id');
+
+        req = $.ajax({
+           url : '/approveTutor',
+           type : 'POST',
+           data : { id : user_id }
+
+        });
+
+        req.done(function(data) {
+            alert(data.tutor_status)
+
+            $('#memberNumber'+user_id).text(data.tutor_status)
+            $('#tutorSection'+user_id).fadeOut(1000).fadeIn(1000);
+
+        });
+
+
+    })
+
     // $('.approveButton').on('click',function () {
     //
     //     var room_id = $(this).attr('room_id');

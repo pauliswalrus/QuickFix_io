@@ -125,30 +125,38 @@
 
             {% for tutor in tutors %}
 
-      <div id="tutorSection{{ tutor.tutor_id }}" class="panel panel-default">
+      <div id="tutorSection{{ tutor.user_id }}" class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Tutor: <span id="memberNumber{{ tutor.tutor_id }}"></span> </h3>
+          <h3 class="panel-title">Tutor: <span id="memberNumber{{ tutor.tutor_id }}">{{ tutor.tutor_status }}</span> </h3>
         </div>
             </a>
         <div class="panel-body">
           <div class="form-inline">
             <div class="form-group">
-              <label for="nameInput{{ tutor.tutor_id }}">Tutor Id</label>
-              <input type="text" class="form-control" id="nameInput{{ tutor.tutor_id }}" value="{{ tutor.tutor_id }}" readonly>
+              <label for="userID{{ tutor.user_id }}">User Id</label>
+              <input type="text" class="form-control" id="userID"{{ tutor.user_id }}" value="{{ tutor.user_id }}" readonly>
+            </div>
+
+              <div class="form-group">
+              <label for="tutID{{ tutor.tutor_id }}">Tutor Id</label>
+              <input type="text" class="form-control" id="tutID{{ tutor.tutor_id }}" value="{{ tutor.tutor_id }}" readonly>
             </div>
             <div class="form-group">
-              <label for="emailInput{{ tutor.tutor_id }}">Room Name</label>
-              <input type="text" class="form-control" id="titleInput{{ tutor.tutor_id }}" value="{{ tutor.about_tutor }}" readonly>
+              <label for="aboutTutor{{ tutor.user_id }}">Reason: </label>
+              <input type="text" class="form-control" id="aboutTutor{{ tutor.tutor_id }}" value="{{ tutor.about_tutor }}" readonly>
             </div>
-                {{ tutor.tutor_status }}
+
+            <div class="form-group">
+                <label for="statusTutor{{ tutor.tutor_status }}">Status: </label>
+                <input type="text" class="form-control" id="statusTutor{{ tutor.tutor_status }}" value="{{ tutor.tutor_status }}">
+            </div>
+{#                {{ tutor.tutor_status }}#}
              <div class="form-group">
-             Credentials: <a href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}<a/>
+             Credentials: <a href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>
 {#              <input type="text" class="form-control" id="titleInput{{ tutor.tutor_id }}" value="{{ tutor.credentials_file_name }}" y>#}
             </div>
 
-
-
-            <button class="btn btn-primary updateButton" tutor_id="{{ tutor.tutor_id }}">Update</button>
+            <button class="btn btn-primary approveTutor" user_id="{{ tutor.user_id }}">Approve</button>
 
           </div>
         </div>

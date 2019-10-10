@@ -125,7 +125,6 @@ def new_tutor():
 
         user_object = User.query.filter_by(username=current_user.username).first()
 
-        user_object.role = "T"
         tutor_added = Tutor(user_id=user_object.id, about_tutor=about_tutor, tutor_status="pending", credentials_file_name=credentials_file.filename, credentials_file_data=credentials_file.read())
         db.session.add(tutor_added)
         db.session.commit()
@@ -427,6 +426,23 @@ def privateRoom():
     db.session.commit()
 
     return jsonify({'result' : 'success'})
+
+
+@app.route('/approveTutor', methods=['POST'])
+def approveTutor():
+
+    user = User.query.filter_by(id=request.form['id']).first()
+
+    tutor = Tutor.query.filter_by(user_id=user.id).first()
+
+    user.role = "T"
+    tutor.tutor_status = "approved"
+    db.session.commit()
+
+    tutor1 = Tutor.query.filter_by(user_id=user.id).first()
+
+    return jsonify({'result' : 'success', "tutor_status" : tutor1.tutor_status})
+
 
 
 #
