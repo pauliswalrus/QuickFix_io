@@ -297,6 +297,8 @@ def profile():
     role = user_object.role
     image_fp = user_object.user_photo
 
+    setdbstatus = 0
+
     image_form = ImageUploadForm()
 
     if image_form.validate_on_submit():
@@ -332,7 +334,31 @@ def profile():
         db.session.commit()
         return redirect(url_for('profile'))
 
-    return render_template('profile.html', username=current_user.username, image_fp=image_fp, status_string=status_string, blog_posts=blog_posts, role_name=role_name, file_form=file_form, user_files=user_files, image_form=image_form, user_object=user_object)
+    ts_form = TutorStatus()
+
+    if ts_form.validate_on_submit():
+        s1 = ts_form.status.data
+        print(s1)
+
+        if(s1 == '0'):
+            setdbstatus = 0
+            status_string = 'Offline'
+            db_status = User.query.filter_by(username=current_user.username).update(dict(status=setdbstatus))
+            db.session.commit()
+        if(s1 == '1'):
+            setdbstatus = 1
+            status_string = 'Online'
+            db_status = User.query.filter_by(username=current_user.username).update(dict(status=setdbstatus))
+            db.session.commit()
+
+
+
+
+
+
+
+
+    return render_template('profile.html', username=current_user.username, image_fp=image_fp, status_string=status_string, blog_posts=blog_posts, role_name=role_name, file_form=file_form, user_files=user_files, image_form=image_form, user_object=user_object, status=status, ts_form=ts_form, setdbstatus=setdbstatus)
 
 #
 # public profile accessed by users from online user links.
@@ -368,13 +394,26 @@ def pub_profile(username):
         role_name = "Tutor"
 
     if status == 0:
-        status_string = "Offine"
+        status_string = "Offline"
     elif status == 1:
         status_string = "Online"
 
     return render_template('pub_profile.html', thisUser=thisUser, username=username, firstname=firstname,
                            lastname=lastname, email=email, status_string=status_string, blog_posts=blog_posts,
                            role_name=role_name, image_form=image_form, user_object=user_object, user_files=user_files)
+
+
+#gets User status and updates into database
+#@app.route("/profile/<username>", methods=['POST', 'GET'])
+#def tutor_status(username):
+#    username = username
+#    tutorstatus_form = TutorStatus()
+#    if request.method == 'POST':
+#        t_status = tutorstatus_form.status.data
+#        print(t_status)
+ #       return redirect(url_for('profile', username=username))
+ #       return render_template("/profile/<username>", username=username, tutorstatus_form=tutorstatus_form, t_status=t_status)
+
 
 #gets uploaded files
 @app.route('/static/pictures/<filename>')
