@@ -99,3 +99,27 @@ class RoomComment(db.Model):
     comment_author = db.Column(db.String(25), nullable=False)
     date_posted = db.Column(db.DateTime)
     content = db.Column(db.Text)
+
+
+# data model for blogpost table recently added in heroku db
+class StudentPost(db.Model):
+    """ Blogpost Model"""
+
+    __tablename__= "studentpost"
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(50), nullable=False)
+    author = db.Column(db.String(25), nullable=False)
+    date_posted = db.Column(db.DateTime)
+    content = db.Column(db.Text)
+    type = db.Column(db.String(25))
+
+# data model for blogpost table recently added in heroku db
+class StudentComment(db.Model):
+    """ Comment Model"""
+
+    __tablename__= "commentstudent"
+    id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer)
+    comment_author = db.Column(db.String(25), nullable=False)
+    date_posted = db.Column(db.DateTime)
+    content = db.Column(db.Text)
