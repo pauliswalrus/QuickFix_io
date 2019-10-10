@@ -53,8 +53,18 @@
 
             <!-- Trigger/Open The Modal -->
             <button id="myBtn" class="myBtn uploadPhotoButton">Change</button>
+            <br><br>
 
-            <div id="mUsername">{{ user_object.username }}</div>
+                  Status:
+            <form method="post" enctype="multipart/form-data">
+                <fieldset>
+                        {{ ts_form.hidden_tag() }}
+                        {{ ts_form.status }}<br>
+                        {{ ts_form.submit_button3 }}
+                        {{ ts_form.csrf_token }}
+                    </fieldset>
+                    </form>
+
 
             <hr>
 
@@ -74,6 +84,8 @@
                 <a href="{{ url_for('pub_profile', username=user_object.username) }}">
                 View My Public Profile</a>
             </div>
+
+            <h2>Your status is currently set to: {{ status_string }} </h2>
 
 
 

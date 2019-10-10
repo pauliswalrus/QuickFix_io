@@ -100,3 +100,9 @@ class RoomJoin(FlaskForm):
     room_private = StringField('Private Room')
     submit_button2 = SubmitField('Begin Private Chat')
 
+class TutorStatus(FlaskForm):
+    """ Status"""
+
+    status = SelectField('Status', choices=[('0', 'Offline'), ('1', 'Online')])
+    submit_button3 = SubmitField('Change Status')
+
