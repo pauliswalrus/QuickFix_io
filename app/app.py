@@ -79,9 +79,7 @@ def admin():
     blog_posts = RoomPost.query.all()
     tutors = Tutor.query.all()
 
-    tutor_users = User.query.filter_by(id=tutors.user_id).all()
-
-    return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts, tutors=tutors, tutor_users=tutor_users)
+    return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts, tutors=tutors)
 
 ### need to rename to user
 @app.route('/register', methods=['GET', 'POST'])
