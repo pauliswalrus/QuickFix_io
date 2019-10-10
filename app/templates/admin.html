@@ -43,7 +43,7 @@
 
         <h5>Users </h5>
 
-        <a href="{{ url_for('all_users') }}">Users Page</a>
+        <a href="{{ url_for('all_users') }}">Users Page</a><br>
 
         {% for user in users_list %}
          <a href="{{ url_for('pub_profile', username=user.username)}}" >{{ user.username }}
