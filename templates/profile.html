@@ -141,11 +141,11 @@
                 </p>
             </div>
 
-            <p class="subheading">My Posts <a href="{{ url_for('add_post') }}">Add New Post</a></p>
+            <p class="subheading">My Posts <a href="{{ url_for('add_room') }}">Add New Room</a></p>
 
-            {% for post in blog_posts %}
-                <a href="{{ url_for('post', post_id=post.id) }}">
-                    <p>[{{ post.type|upper }}] {{ post.title }} - {{ post.date_posted.strftime('%B %d, %Y') }}</p>
+            {% for room in room_posts %}
+                <a href="{{ url_for('room', room_id=room.id) }}">
+                    <p>[{{ room.type|upper }}] {{ room.title }} - {{ room.date_posted.strftime('%B %d, %Y') }}</p>
                 </a>
             {% endfor %}
 
@@ -221,7 +221,7 @@
 {#                <div class="modal-content">#}
 {#                    <span class="close">&times;</span>#}
 {#                    <h4>Upload A New Profile Photo</h4>#}
-{#                    <form method="post" enctype="multipart/form-data">#}
+{#                    <form method="room" enctype="multipart/form-data">#}
 {#                        {{ image_form.hidden_tag() }}#}
 {#                        {{ image_form.image(class_="chooseFile") }}<br>#}
 {#                        {{ image_form.submit_button1 }}#}
@@ -277,10 +277,10 @@
 {#        <div class="container">#}
 {##}
 {#            <h4><a href="{{ url_for('add_post') }}">Add New Post</a></h4>#}
-{#            {% for post in blog_posts %}#}
-{#                <a href="{{ url_for('post', post_id=post.id) }}">#}
-{#                    <h5>{{ post.type|upper }} : {{ post.title }} - {{ post.subtitle }}</h5>#}
-{#                    By {{ post.author }} on {{ post.date_posted.strftime('%B %d, %Y') }} </a>#}
+{#            {% for room in blog_posts %}#}
+{#                <a href="{{ url_for('room', post_id=room.id) }}">#}
+{#                    <h5>{{ room.type|upper }} : {{ room.title }} - {{ room.subtitle }}</h5>#}
+{#                    By {{ room.author }} on {{ room.date_posted.strftime('%B %d, %Y') }} </a>#}
 {#            {% endfor %}#}
 {##}
 {#            <hr>#}
@@ -305,7 +305,7 @@
 {#                <div class="modal2-content">#}
 {#                    <span class="close">&times;</span>#}
 {#                    <h4>Upload A New File</h4>#}
-{#                    <form method="post" enctype="multipart/form-data">#}
+{#                    <form method="room" enctype="multipart/form-data">#}
 {#                        {{ file_form.hidden_tag() }}#}
 {#                        {{ file_form.file(class_="chooseFile") }}<br>#}
 {#                        {{ file_form.submit_button }}#}
@@ -340,7 +340,7 @@
 {##}
 {##}
 {#        <h4>Upload A New File</h4>#}
-{#        <form method="post" enctype="multipart/form-data">#}
+{#        <form method="room" enctype="multipart/form-data">#}
 {#            {{ file_form.hidden_tag() }}#}
 {#            {{ file_form.file }}<br>#}
 {#            {{ file_form.submit_button }}#}
@@ -364,7 +364,7 @@
 {#        <br>#}
 {##}
 {#        <h4>Upload A New Profile Photo</h4>#}
-{#        <form method="post" enctype="multipart/form-data">#}
+{#        <form method="room" enctype="multipart/form-data">#}
 {#            {{ image_form.hidden_tag() }}#}
 {#            {{ image_form.file }}<br>#}
 {#            {{ image_form.submit_button }}#}
@@ -373,10 +373,10 @@
 {##}
 {##}
 {#        <h4><a href="{{ url_for('add_post') }}">Add New Post</a></h4>#}
-{#        {% for post in blog_posts %}#}
-{#            <a href="{{ url_for('post', post_id=post.id) }}">#}
-{#                <h5>{{ post.type|upper }} : {{ post.title }} - {{ post.subtitle }}</h5>#}
-{#                By {{ post.author }} on {{ post.date_posted.strftime('%B %d, %Y') }} </a>#}
+{#        {% for room in blog_posts %}#}
+{#            <a href="{{ url_for('room', post_id=room.id) }}">#}
+{#                <h5>{{ room.type|upper }} : {{ room.title }} - {{ room.subtitle }}</h5>#}
+{#                By {{ room.author }} on {{ room.date_posted.strftime('%B %d, %Y') }} </a>#}
 {#        {% endfor %}#}
 {##}
 {#    </div>#}

@@ -47,7 +47,7 @@ class RegistrationForm(FlaskForm):
 class TutorForm(FlaskForm):
     """ TutorRegistration form """
 
-    about_tutor = TextAreaField('about_label', validators=[InputRequired(message="Post required")])
+    about_tutor = TextAreaField('about_label', validators=[InputRequired(message="About Me required")])
     credentials_file = FileField('file_upload', validators=[InputRequired(message="Select a file")])
     submit_button = SubmitField('Create Account')
 
@@ -65,7 +65,7 @@ class RoomCreate(FlaskForm):
     room_made = StringField('Private Room ', validators=[InputRequired(message="Must enter a room name")])
     submit_button = SubmitField('Room')
 
-class BlogPostForm(FlaskForm):
+class RoomForm(FlaskForm):
     """ RoomPost Form """
 
     # type = SelectField('type_label', choices=[('Request', 'Request'), ('Offer', 'Offer')])

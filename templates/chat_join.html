@@ -83,7 +83,7 @@
             <a href="{{ url_for('add_post') }}">Add A Room Post</a> <br>
             <h5>View Recent Room Posts:</h5>
 
-            {% for post in posts %}
+            {% for room in posts %}
                 <div>
                     <a href="{{ url_for('post', post_id=post.id) }}">
                         <h5>{{ post.type|upper }} : {{ post.title }} - {{ post.subtitle }}</h5>

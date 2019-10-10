@@ -68,7 +68,7 @@
 
     <!-- Middle Column - Type Message area -->
     <div id="middle_column">
-        {% for post in blog_posts %}
+        {% for room in blog_posts %}
 
             <a href="{{ url_for('post', post_id=post.id) }}"/>
       <div id="roomSection{{ post.id }}" class="panel panel-default">
@@ -116,12 +116,12 @@
 {#            <a href="{{ url_for('add_post') }}">Add A Room Post</a> <br>#}
 {#            <h5>View Recent Room Posts:</h5>#}
 {##}
-{#            {% for post in blog_posts %}#}
+{#            {% for room in blog_posts %}#}
 {#                <div>#}
-{#                    <a href="{{ url_for('post', post_id=post.id) }}">#}
+{#                    <a href="{{ url_for('room', post_id=room.id) }}">#}
 {#                        <div id="memberNumber"></div>#}
-{#                        <h5>{{ post.type|upper }} : {{ post.room_title }} - {{ post.title }}</h5>#}
-{#                        by {{ post.author }} on {{ post.date_posted.strftime('%b %d, %Y') }} at {{ post.date_posted.strftime('%I' ':' '%M %p') }} </a>#}
+{#                        <h5>{{ room.type|upper }} : {{ room.room_title }} - {{ room.title }}</h5>#}
+{#                        by {{ room.author }} on {{ room.date_posted.strftime('%b %d, %Y') }} at {{ room.date_posted.strftime('%I' ':' '%M %p') }} </a>#}
 {#                </div>#}
 {##}
 {#            {% endfor %}#}
