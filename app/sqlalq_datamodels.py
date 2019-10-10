@@ -45,6 +45,7 @@ class Tutor(db.Model):
     credentials_file_name = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer)
     tutor_status = db.Column(db.String(25))
+    application_comments = db.Column(db.Text)
 
 
 class FileUpload(db.Model):

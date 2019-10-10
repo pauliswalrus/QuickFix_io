@@ -25,7 +25,7 @@ app.config['UPLOADED_PHOTOS_DEST'] = 'static/pictures'
 configure_uploads(app, photos)
 
 # rooms used at chat
-ROOMS = ["lounge", "student chat", "coding q & a", "general math"]
+# ROOMS = ["lounge", "student chat", "coding q & a", "general math"]
 
 # creates and inits Login
 login = LoginManager(app)
@@ -46,6 +46,9 @@ def login():
     if login_form.validate_on_submit():
         user_object = User.query.filter_by(username=login_form.username.data).first()
         login_user(user_object)
+
+        # session['userName'] = user_object.username
+        session['userRole'] = user_object.role
 
         if user_object.role == "A":
 
@@ -68,12 +71,15 @@ def logout():
 @app.route('/admin')
 def admin():
 
+    if session["userRole"] != "A":
+        return "You are not an authorized admin please go back"
+
     users_list = User.query.all()
     all_files = FileUpload.query.all()
     blog_posts = RoomPost.query.all()
     tutors = Tutor.query.all()
 
-    tutor_users = User.query.filter_by(role="T").all()
+    tutor_users = User.query.filter_by(id=tutors.user_id).all()
 
     return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts, tutors=tutors, tutor_users=tutor_users)
 
@@ -237,7 +243,6 @@ def chat():
     date_stamp = strftime('%A, %B %d', localtime())
     this_user = User.query.filter_by(username=current_user.username).first()
 
-
     one = 1
     online_users = User.query.filter_by(status=one).all()
 
@@ -251,7 +256,7 @@ def chat():
     offerhelp = RoomPost.query.filter_by(type="Offer").order_by(RoomPost.date_posted.desc()).all()
     askforhelp = RoomPost.query.filter_by(type="Request").order_by(RoomPost.date_posted.desc()).all()
 
-    return render_template('home_page.html', username=current_user.username, role=current_user.role, rooms=ROOMS, date_stamp=date_stamp,
+    return render_template('home_page.html', username=current_user.username, role=current_user.role, date_stamp=date_stamp,
                            online_users=online_users, posts=posts, offerhelp=offerhelp, askforhelp=askforhelp, role_name=role_name)
 
 
@@ -278,7 +283,7 @@ def chat_jq():
         db.session.commit()
         return redirect(url_for('chat_jq'))
 
-    return render_template('private_jq_new.html', username=current_user.username, rooms=ROOMS, date_stamp=date_stamp,
+    return render_template('private_jq_new.html', username=current_user.username, date_stamp=date_stamp,
                            roomName=roomName, message_object=message_object,
                            authorName=authorName, connected_stamp=connected_stamp, file_form=file_form, room_files=room_files, room=room_object)
 

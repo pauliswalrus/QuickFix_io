@@ -42,6 +42,9 @@
     <div id="left_column">
 
         <h5>Users </h5>
+
+        <a href="{{ url_for('all_users') }}">Users Page</a>
+
         {% for user in users_list %}
          <a href="{{ url_for('pub_profile', username=user.username)}}" >{{ user.username }}
             </a>Status: {{ user.status }} Role: {{ user.role }}<br>
@@ -67,7 +70,7 @@
     <div id="middle_column">
         {% for post in blog_posts %}
 
-            <a href="{{ url_for('post', post_id=post.id) }}">
+            <a href="{{ url_for('post', post_id=post.id) }}"/>
       <div id="roomSection{{ post.id }}" class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">Room: <span id="memberNumber{{ post.id }}">{{ post.room_title }} </span> Creator: {{ post.author }} </h3>
@@ -108,52 +111,57 @@
     <div id="right_column">
         <span id="currDate">{{ date_stamp }}</span>
 
-
-          <div id="blog-posts">
-            <a href="{{ url_for('add_post') }}">Add A Room Post</a> <br>
-            <h5>View Recent Room Posts:</h5>
-
-            {% for post in blog_posts %}
-                <div>
-                    <a href="{{ url_for('post', post_id=post.id) }}">
-                        <div id="memberNumber"></div>
-                        <h5>{{ post.type|upper }} : {{ post.room_title }} - {{ post.title }}</h5>
-                        by {{ post.author }} on {{ post.date_posted.strftime('%b %d, %Y') }} at {{ post.date_posted.strftime('%I' ':' '%M %p') }} </a>
-                </div>
-
-            {% endfor %}
+{##}
+{#          <div id="blog-posts">#}
+{#            <a href="{{ url_for('add_post') }}">Add A Room Post</a> <br>#}
+{#            <h5>View Recent Room Posts:</h5>#}
+{##}
+{#            {% for post in blog_posts %}#}
+{#                <div>#}
+{#                    <a href="{{ url_for('post', post_id=post.id) }}">#}
+{#                        <div id="memberNumber"></div>#}
+{#                        <h5>{{ post.type|upper }} : {{ post.room_title }} - {{ post.title }}</h5>#}
+{#                        by {{ post.author }} on {{ post.date_posted.strftime('%b %d, %Y') }} at {{ post.date_posted.strftime('%I' ':' '%M %p') }} </a>#}
+{#                </div>#}
+{##}
+{#            {% endfor %}#}
 
             {% for tutor in tutors %}
 
       <div id="tutorSection{{ tutor.user_id }}" class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Tutor: <span id="memberNumber{{ tutor.tutor_id }}">{{ tutor.tutor_status }}</span> </h3>
+          <h3 class="panel-title">Tutor Application<span id="memberNumber{{ tutor.tutor_id }}">User Id: {{ tutor.user_id }} {{ tutor.tutor_status }}</span> </h3>
         </div>
             </a>
         <div class="panel-body">
           <div class="form-inline">
             <div class="form-group">
               <label for="userID{{ tutor.user_id }}">User Id</label>
-              <input type="text" class="form-control" id="userID"{{ tutor.user_id }}" value="{{ tutor.user_id }}" readonly>
-            </div>
+              <span id="userID{{ tutor.user_id }}">{{ tutor.user_id }} </span>
+            </div><br>
 
               <div class="form-group">
               <label for="tutID{{ tutor.tutor_id }}">Tutor Id</label>
-              <input type="text" class="form-control" id="tutID{{ tutor.tutor_id }}" value="{{ tutor.tutor_id }}" readonly>
-            </div>
+                  <span id="tutID{{ tutor.tutor_id }}">{{ tutor.tutor_id }} </span>
+            </div><br>
             <div class="form-group">
               <label for="aboutTutor{{ tutor.user_id }}">Reason: </label>
-              <input type="text" class="form-control" id="aboutTutor{{ tutor.tutor_id }}" value="{{ tutor.about_tutor }}" readonly>
+              <span id="aboutTutor{{ tutor.tutor_id }}" value="{{ tutor.about_tutor }}">{{ tutor.about_tutor }}</span>
             </div>
-
+            <br>
             <div class="form-group">
                 <label for="statusTutor{{ tutor.tutor_status }}">Status: </label>
-                <input type="text" class="form-control" id="statusTutor{{ tutor.tutor_status }}" value="{{ tutor.tutor_status }}">
-            </div>
+                <span id="statusTutor{{ tutor.tutor_status }}">{{ tutor.tutor_status }} </span>
+            </div> <br>
 {#                {{ tutor.tutor_status }}#}
              <div class="form-group">
-             Credentials: <a href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>
+             <b>Credentials:</b> <a href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>
 {#              <input type="text" class="form-control" id="titleInput{{ tutor.tutor_id }}" value="{{ tutor.credentials_file_name }}" y>#}
+            </div>
+
+               <div class="form-group">
+                <label for="appComments{{ tutor.application_comments }}">Application Comments: </label>
+                <input type="text" class="form-control" id="appComments{{ tutor.application_comments }}" value="{{ tutor.application_comments }}">
             </div>
 
             <button class="btn btn-primary approveTutor" user_id="{{ tutor.user_id }}">Approve</button>
@@ -176,20 +184,20 @@
     const username = `{{ username }}`;
     const mesage_object = `{{ message_object }}`
 </script>
-
-<!-- Custom Chat JS -->
-<script src="{{ url_for('static', filename='js/chat_page.js') }}">
-
-</script>
-<!-- SocketIO JS -->
+{##}
+{#<!-- Custom Chat JS -->#}
+{#<script src="{{ url_for('static', filename='js/chat_page.js') }}">#}
+{##}
+{#</script>#}
+{#<!-- SocketIO JS -->#}
 {#<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"#}
 {#        integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>#}
-
-<!-- CustomSocketIO JS -->
-<script src="{{ url_for('static', filename='js/socketio.js') }}">
-
-
-</script>
+{##}
+{#<!-- CustomSocketIO JS -->#}
+{#<script src="{{ url_for('static', filename='js/socketio.js') }}">#}
+{##}
+{##}
+{#</script>#}
 
 </body>
 </html>
