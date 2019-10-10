@@ -1,0 +1,236 @@
+/* Styles the left information bar */
+#leftSideBar {
+    width: 30%;
+    height: 100%;
+    background-color: #e4eaf0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+/* Create columns that float next to each other */
+.column {
+    float: left;
+    height: 600px;
+    /*border: 1px solid black;*/
+}
+
+/* Left Column */
+.left {
+    width: 30%;
+    text-align: center;
+}
+
+/* Right Column */
+.right {
+    width: 70%;
+}
+
+/*.middle {*/
+/*  width: 35%;*/
+/*}*/
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* Makes div look like a card */
+.cardContainer {
+    height: 600px;
+    padding: 10px;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    overflow-y: scroll;
+}
+
+/* Responsive layout - when the screen is less than 600px wide, make the three columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+  }
+}
+
+/* Styles sub headings */
+.subheading {
+    color: #E46D4E;
+    font-size: 2em;
+    border-bottom: 2px solid #E46D4E;
+}
+
+/* Styles subheading links */
+.subheading a {
+    font-size: 12px;
+
+}
+
+/* Styles username */
+#mUsername {
+    font-size: 2em;
+    margin: 5px;
+}
+
+/* Styles button for uploading new image */
+.uploadPhotoButton {
+    margin-top: 15px;
+    background-color: #e4eaf0;
+    border: none;
+    color: #26346f;
+    font-size: 12px;
+    /*float: left;*/
+}
+
+/* Upload image button on mouse hover */
+.uploadPhotoButton:hover {
+    text-decoration: underline;
+}
+
+/* Styles profile pic container div */
+.profilePic {
+    border-radius: 125px;
+    /*float: left;*/
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+.chooseFile {
+    /*background-color: red;*/
+    width: 20%;
+    margin-left: 40%;
+    margin-right: 40%;
+}
+
+#mFirstLast {
+
+}
+
+#mRole {
+
+}
+
+#mEmail {
+
+}
+
+#mCredits {
+
+}
+
+.uploadDocsButton {
+    background-color: white;
+    border: none;
+    color: #26346f;
+    font-size: 12px;
+}
+
+.uploadDocsButton:hover {
+    text-decoration: underline;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content,
+.modal2-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*#main-section {*/
+/*    width: 100%;*/
+/*    border: 2px solid red;*/
+/*}*/
+
+/*#left_column {*/
+/*    width: 33%;*/
+/*    margin-right: 66%;*/
+/*    margin-left: 0%;*/
+/*    float: left;*/
+/*    text-align: center;*/
+/*    border: 1px solid blue;*/
+/*}*/
+
+/*#middle_column {*/
+/*    width: 33%;*/
+/*    margin-left: 33%;*/
+/*    margin-right: 33%;*/
+/*    border: 1px solid blue;*/
+/*    text-align: center;*/
+
+/*}*/
+
+/*#right_column {*/
+/*    width: 33%;*/
+/*    margin-left: 66%;*/
+/*    margin-right: 0%;*/
+/*    float: right;*/
+/*    text-align: center;*/
+/*    border: 1px solid blue;*/
+/*}*/
+
+/*.container {*/
+/*    !*width: 80%;*!*/
+/*    !*margin-left: 10%;*!*/
+/*    !*margin-right: 10%;*!*/
+/*    !*margin-top: 5%;*!*/
+/*    text-align: center;*/
+/*    !*padding: 20px;*!*/
+/*    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+/*}*/

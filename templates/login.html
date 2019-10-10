@@ -1,0 +1,103 @@
+<html>
+<head>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Rock+Salt&display=swap');
+    </style>
+
+    <meta charset="UTF-8">
+    <title>QuickFix</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
+
+<body>
+
+<!-- Navigation Bar / Login Form -->
+<div id="navigation">
+    <ul>
+        <li class="quickLinks"><a>QuickFix</a></li>
+        <li class="quickLinks"><a href="#section_2">How It Works</a></li>
+        <li class="quickLinks"><a>Contact</a></li>
+        <li>
+            <form action="{{ url_for('login') }}" method="post" id="loginForm">
+                {{ form.username(class_='loginText', placeholder='Username', autocomplete='off', autofocus=true) }}
+                {{ form.password(class_='loginText', placeholder='Password') }}
+                {{ form.submit_button(class='loginButton') }}
+                {{ form.csrf_token }}
+                <br><a href="{{ url_for('new_student') }}" class="smRegisterLink">Don't have an account? Register here.</a>
+            </form>
+        </li>
+    </ul>
+</div>
+
+
+<!-- Section 1 -->
+<div id="section_1">
+
+    {% for error in form.password.errors %}
+        <div class="loginErrorMsg">
+            {{ error }}. Need an account? <a href="{{ url_for('new_student') }}">Register now!</a>
+        </div>
+    {% endfor %}
+
+    {% for error in form.username.errors %}
+        <div class="loginErrorMsg">
+            {{ error }}
+        </div>
+    {% endfor %}
+
+    <p class="biggerText">Late night <span id="cram">cram</span> session?</p>
+    <p class="bigText">We've got your back.</p>
+
+
+</div>
+
+<!-- Section 2 -->
+<div id="section_2">
+
+    <table id="aboutIcons">
+        <tr>
+            <td id="icon1"><img src="../static/images/login_icon1.gif" width="70px" height="70px"></td>
+            <td id="icon2"><img src="../static/images/login_icon2.gif" width="70px" height="70px"></td>
+            <td id="icon3"><img src="../static/images/login_icon3.gif" width="70px" height="70px"></td>
+        </tr>
+        <tr class="tableRow">
+            <td class="aboutHeadings" >Pre-Approved Tutors</td>
+            <td class="aboutHeadings" >One-on-One Sessions</td>
+            <td class="aboutHeadings">24 Hour Service</td>
+        </tr>
+        <tr class="tableRow">
+            <td>Our tutors are qualified senior students who have done exceptionally well in their chosen subjects.</td>
+            <td>Every session with a tutor is private and tailored to your individual needs.</td>
+            <td>Don't wait until it's too late - connect with a tutor anytime, anywhere.</td>
+        </tr>
+    </table>
+
+    <hr>
+
+    <BR><BR><BR>
+    <p><a class="regButton" href="{{ url_for('new_student') }}">Get started today</a></p>
+
+</div>
+
+<!-- Section 3 -->
+<div id="section_3"></div>
+
+
+{% for error in form.username.errors %}
+    <div class="loginErrorMsg">
+        {{ error }}
+    </div>
+{% endfor %}
+
+
+<!-- Error message for invalid login credentials -->
+{% if error %}
+    <p class="error"><strong>Error:</strong> {{ error }}
+{% endif %}
+
+</body>
+</html>

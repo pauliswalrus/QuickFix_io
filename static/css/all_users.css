@@ -1,0 +1,23 @@
+
+/* Styles all three column divs on the page */
+#left_column,
+#middle_column,
+#right_column {
+    width: 33%;
+    display: inline-block;
+    /*border: 2px solid red;*/
+    height: 100%;
+    margin-top: 0px;
+    vertical-align: middle;
+}
+
+.userHeadings {
+    background-color: darkslategrey;
+    color: white;
+    padding: 5px;
+}
+
+.bold_username {
+    font-weight: bold;
+    font-size: 1.3em;
+}

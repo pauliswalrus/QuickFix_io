@@ -1,0 +1,99 @@
+<html lang=en>
+<head>
+    <meta charset=utf-8>
+
+    <title>QuickFix Members</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/all_users.css') }}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
+
+<body>
+
+<div class="navbar">
+    <a class="logo" href="{{ url_for('chat', username=username) }}">Home</a>
+    <a href="{{ url_for('profile', username=username) }}">{{ username }}</a>
+    <a href="#">Forums</a>
+    <a href="{{ url_for('chat', username=username) }}">Chat</a>
+    <a href="{{ url_for('all_users') }}">Users</a>
+    <a href="{{ url_for('logout') }}"> Logout </a>
+</div>
+
+
+<!-- <nav id="main-section"> -->
+<div id="main-section">
+
+
+
+
+
+    <!-- Left Column - Filter Users -->
+    <div id="left_column">
+        <h4 class="userHeadings">Filter users by subject: </h4>
+    </div> <!-- End left column div -->
+
+
+
+
+    <!-- Middle Column - List of All Users -->
+    <div id="middle_column">
+
+        <h4 class="userHeadings">All Tutors: </h4>
+        {% for user in all_tutors %}
+            <div>
+                <a href="{{ url_for('pub_profile', username=user.username) }}">
+                    <p>
+                        <span class="bold_username">{{ user.username }}</span> - {{ user.firstname }} {{ user.lastname }}
+                    </p>
+                </a>
+            </div>
+        {% endfor %}
+
+    </div> <!-- End middle column div -->
+
+
+
+
+    <!-- Right Column - Online / Offline Users -->
+    <div id="right_column">
+
+        <h4 class="userHeadings">Online Tutors: </h4>
+        {% for user in online_tutors %}
+            <div>
+                <a href="{{ url_for('pub_profile', username=user.username) }}">
+                    <p>
+                        <span class="bold_username">{{ user.username }}</span> - {{ user.firstname }} {{ user.lastname }}
+                    </p>
+                </a>
+            </div>
+        {% endfor %}
+
+        <h4 class="userHeadings">All Students: </h4>
+        {% for user in student_users %}
+            <div>
+                <a href="{{ url_for('pub_profile', username=user.username) }}">
+                    <p>
+                        <span class="bold_username">{{ user.username }}</span> - {{ user.firstname }} {{ user.lastname }}
+                    </p>
+                </a>
+            </div>
+        {% endfor %}
+
+    </div> <!-- End right column div -->
+
+</div> <!-- End main section div -->
+
+
+
+<script type="text/javascript">
+    const username = `{{ username }}`;
+    {#const mesage_object = `{{ message_object }}`#}
+</script>
+
+
+</body>
+
+</html>

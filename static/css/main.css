@@ -1,0 +1,41 @@
+/* styles body of page */
+body {
+    margin: 0px;
+}
+
+/* Style the navigation menu */
+.navbar {
+    width: 100%;
+    background-color: slategrey;
+    color: white;
+}
+
+/* Navigation links */
+.navbar a,
+.navbar a.active,
+.navbar a.visited {
+  float: left;
+  padding: 12px;
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+  width: 16.66%; /* 5 equal-width links */
+  text-align: center;
+}
+
+/* Add a background color on mouse-over */
+.navbar a:hover {
+    /*background-color: darkslategrey;*/
+    color: #395065;
+    text-decoration: none;
+}
+
+/* Add responsiveness - on screens less than 500px, make the navigation links appear on top of each other, instead of next to each other */
+@media screen and (max-width: 500px) {
+  .navbar a {
+    float: none;
+    display: block;
+    width: 100%;
+    text-align: left; /* If you want the text to be left-aligned on small screens */
+  }
+}

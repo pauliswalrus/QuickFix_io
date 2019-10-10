@@ -1,0 +1,91 @@
+<html lang=en>
+<head>
+    <meta charset=utf-8>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Beth+Ellen&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Dosis:200&display=swap');
+    </style>
+
+    <title> fixQuick Chatkit </title>
+
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/chat.css')}}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+</head>
+
+<body>
+
+    <div class="navbar">
+        <a class="logo" href="{{ url_for('home', chtName=chtName) }}">Home</a>
+        <a href="{{ url_for('profileStudent', chtName=chtName) }}">{{ chtName }}</a>
+        <a href="#">Forums</a>
+        <a href="{{ url_for('sessions', chtName=chtName) }}" >Chat</a>
+        <a href="#">Saved</a>
+        <a href="{{ url_for('login') }}"> Logout </a>
+    </div>
+
+
+
+    <div id="chatInfo">
+        <h2> Hello {{ firstName }}</h2>
+        <h4>Current Time: 11:54pm | Running Session Time: 12m 14s</h4>
+        <h4 id="today-date"/> </h4>,<h4 id="today-time"/> </h4>
+
+
+    </div>
+
+    <h3 style='color: #ccc;font-size: 30px;'> No message yet...</h3>
+    <div class="message_holder"></div>
+
+
+    <br>
+    <form action="" method="POST">
+      <input type="text" class="username" placeholder="{{chtName}}" value="{{chtName}}" readonly/>
+      <input type="text" class="message" placeholder="Messages"/>
+      <input type="submit"/>
+    </form>
+
+    <h2> {{ chtName }}'s rooms: </h2>
+        <h3 id="room-to-pick"/> </h3>
+
+
+
+    </div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf-8">
+
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+    socket.on('connect', function() {
+        socket.emit('my message', {
+            data: 'User Connected!'
+        })
+        var form = $('form').on('submit', function (e) {
+            e.preventDefault()
+
+            let user_name = $('input.username').val()
+            let user_input = $('input.message').val()
+            socket.emit('my event', {
+                user_name: user_name,
+                message: user_input
+            })
+            $('input.message').val('').focus()
+        }  )
+    } )
+
+      socket.on( 'my response', function( msg ) {
+        console.log( msg )
+        if( typeof msg.user_name !== 'undefined' ) {
+          $( 'h3' ).remove()
+          $( 'div.message_holder' ).append( '<div><b style="color: #000">'+msg.user_name+'</b> '+msg.message+'<br></div>' )
+        }
+      })
+
+</script>
+
+  </body>
+</html>
