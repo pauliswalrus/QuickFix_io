@@ -5,9 +5,9 @@ from __init__ import app
 
 
 ###     AUTHOR: AUSTIN PAUL
-###     DATE: OCT 4
+###     DATE: OCT 10
 ###     QUICKFIX_IO DIRTYBITS
-###     PRE-SPRINT 4 TURNIN OCT 4 BUILD
+###     PRE-SPRINT 5 TURNIN OCT 10 BUILD
 
 db = SQLAlchemy(app)
 
