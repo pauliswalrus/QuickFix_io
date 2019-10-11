@@ -223,6 +223,92 @@ def add_comment():
         db.session.commit()
 
         return redirect(url_for('chat'))
+
+@app.route('/studentpost/<int:studentpost_id>', methods=['GET', 'POST'])
+def studentpost(studentpost_id):
+
+    stdpost = StudentPost.query.filter_by(id=studentpost_id).one()
+
+    comments = PostComment.query.filter_by(post_id=studentpost_id).order_by(PostComment.date_posted.desc()).all()
+    comment_form = CommentForm()
+
+    session['postName'] = stdpost.title
+    session['userName'] = current_user.username
+    session['author'] = stdpost.author
+
+    if comment_form.validate_on_submit():
+        post_id = stdpost.id
+        comment_author = current_user.username
+        content = comment_form.content.data
+        date_time = datetime.now()
+        # add roompost to database
+        comment_post = PostComment(post_id=studentpost_id, comment_author=comment_author, date_posted=date_time, content=content)
+        db.session.add(comment_post)
+        db.session.commit()
+
+        return redirect(url_for('studentpost', studentpost_id=post_id))
+
+    # if current_user.role == 'S':
+    #     rooms = RoomPost.query.filter_by(type="Offer").order_by(RoomPost.date_posted.desc()).all()
+    # else:
+    #     rooms = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
+
+    return render_template('viewStudentPost.html', post=stdpost, username=current_user.username, comment_form=comment_form, comments=comments)
+
+
+@app.route('/add_student_post', methods=['GET', 'POST'])
+def add_student_post():
+
+    post_form = StudentPostForm()
+
+    user_object = User.query.filter_by(username=current_user.username)
+
+    if post_form.validate_on_submit():
+        title = post_form.title.data
+        content = post_form.content.data
+        if current_user.role == 'S':
+            type = "Request"
+        else:
+            type = "Offer"
+        #type = post_form.type.data
+        author = current_user.username
+        date_time = datetime.now()
+
+        # add roompost to database
+        blog_post = StudentPost(title=title, author=author, date_posted=date_time, content=content,
+                             type=type)
+
+        db.session.add(blog_post)
+        db.session.commit()
+
+        return redirect(url_for('chat'))
+
+    return render_template('addNewStudentPost.html', username=current_user.username, post_form=post_form, user_object=user_object)
+#add comment
+@app.route('/add_student_comment', methods=['GET', 'POST'])
+def add_student_comment():
+
+    post_form = StudentPostForm()
+
+    if post_form.validate_on_submit():
+        title = post_form.title.data
+        content = post_form.content.data
+        if current_user.role == 'S':
+            type = "Request"
+        else:
+            type = "Offer"
+        #type = post_form.type.data
+        author = current_user.username
+        date_time = datetime.now()
+
+        # add roompost to database
+        blog_post = StudentPost(title=title,  author=author, date_posted=date_time, content=content,
+                             type=type)
+
+        db.session.add(blog_post)
+        db.session.commit()
+
+        return redirect(url_for('chat'))
 #all users page
 @app.route("/users", methods=['GET', 'POST'])
 def all_users():
@@ -247,12 +333,15 @@ def chat():
     if this_user.role == 'S':
         posts = RoomPost.query.filter_by(type="Offer").filter_by(visible=True).order_by(RoomPost.date_posted.desc()).all()
         role_name = "Student"
+        tutorapplication = Tutor.query.filter_by(user_id=this_user.id).first()
+
     else:
         posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
         role_name = "Tutor"
 
     offerhelp = RoomPost.query.filter_by(type="Offer").filter_by(visible=True).order_by(RoomPost.date_posted.desc()).all()
-    askforhelp = RoomPost.query.filter_by(type="Request").filter_by(visible=True).order_by(RoomPost.date_posted.desc()).all()
+    #askforhelp = RoomPost.query.filter_by(type="Request").filter_by(visible=True).order_by(RoomPost.date_posted.desc()).all()
+    askforhelp = StudentPost.query.all()
 
     return render_template('home_page.html', username=current_user.username, role=current_user.role, date_stamp=date_stamp,
                            online_users=online_users, posts=posts, offerhelp=offerhelp, askforhelp=askforhelp, role_name=role_name)

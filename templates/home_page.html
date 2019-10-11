@@ -37,12 +37,22 @@
             </div>
 
             <hr>
-
-            <a href="{{ url_for('add_room') }}">Add A Room Post</a>
+            <div id="roomPost">
+            <a href="{{ url_for('add_room') }}">Create A New Room</a>
 
             <hr>
+            </div>
 
-            <a href="{{ url_for('new_tutor') }}">Apply to be a Tutor</a>
+            <div id="studentPost">
+            <a href="{{ url_for('add_student_post') }}">Add A Student Post</a>
+
+            <hr>
+            </div>
+
+            <div id="tutorApply">
+            <a href="{{ url_for('new_tutor') }}">Apply To Be A Tutor</a>
+            </div>
+
         </div>
     </div>
 
@@ -72,13 +82,13 @@
     <div class="column right" id="studentPosts">
         <div class="cardContainer">
             <h3>These Students Need Help:</h3>
-            {% for room in askforhelp %}
+            {% for post in askforhelp %}
                 <div>
-                    <a href="{{ url_for('room', room_id=room.id) }}">
-                        <div id="postTypeTitle">[{{ room.type|upper }}] {{ room.title }} - {{ room.room_title }}</div>
+                    <a href="{{ url_for('studentpost', studentpost_id=post.id) }}">
+                        <div id="postTypeTitle">[{{ post.type|upper }}] {{ post.title }}</div>
                         <div id="postAuthorTime">
-                            by {{ room.author }} on {{ room.date_posted.strftime('%b %d, %Y') }}
-                            at {{ room.date_posted.strftime('%I' ':' '%M %p') }}
+                            by {{ post.author }} on {{ post.date_posted.strftime('%b %d, %Y') }}
+                            at {{ post.date_posted.strftime('%I' ':' '%M %p') }}
                         </div>
                     </a>
                     <hr>
@@ -194,12 +204,17 @@
             document.getElementById('test').style.color = "purple";
             document.getElementById('tutorPosts').style.display = "block";
             document.getElementById('studentPosts').style.display = "none";
+            document.getElementById('roomPost').style.display = "none";
         }
        else if (uRole == 'Tutor') {
            document.getElementById('test').style.color = "green";
            document.getElementById('tutorPosts').style.display = "block";
             document.getElementById('studentPosts').style.display = "block";
+            document.getElementById('studentPost').style.display = "none";
+            document.getElementById('tutorApply').style.display = "none";
        }
+
+
     }
 
 

@@ -41,18 +41,22 @@
     <!-- Left Column - Join Room - Online Tutors etc -->
     <div id="left_column">
 
-        <h5>Users </h5>
+        <h4><a href="{{ url_for('all_users') }}">Users Page</a> </h4> <br>
 
-        <a href="{{ url_for('all_users') }}">Users Page</a><br>
+            <h5>View Recent Room Posts:</h5>
 
-        {% for user in users_list %}
-         <a href="{{ url_for('pub_profile', username=user.username)}}" >{{ user.username }}
-            </a>Status: {{ user.status }} Role: {{ user.role }}<br>
+            {% for room in blog_posts %}
+                <div>
+                    <a href="{{ url_for('room', room_id=room.id) }}">
+                        <div id="memberNumber"></div>
+                        <h5>{{ room.type|upper }} : {{ room.room_title }} - {{ room.title }}</h5>
+                        by {{ room.author }} on {{ room.date_posted.strftime('%b %d, %Y') }} at {{ room.date_posted.strftime('%I' ':' '%M %p') }} </a>
+                </div>
 
-        {% endfor %}<br>
+            {% endfor %}
 
-        <div id="timerValue"></div>
-        <button class="btn btn-primary timerButton">Timer date</button>
+
+
 
 
 {#        <div id="roomSection{{ user.id }}" class="panel panel-default">#}
@@ -63,41 +67,40 @@
 
 
 
-
     </div> <!-- end of left column -->
 
     <!-- Middle Column - Type Message area -->
     <div id="middle_column">
         {% for room in blog_posts %}
 
-            <a href="{{ url_for('post', post_id=post.id) }}"/>
-      <div id="roomSection{{ post.id }}" class="panel panel-default">
+            <a href="{{ url_for('room', room_id=room.id) }}"/>
+      <div id="roomSection{{ room.id }}" class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Room: <span id="memberNumber{{ post.id }}">{{ post.room_title }} </span> Creator: {{ post.author }} </h3>
+          <h3 class="panel-title">Room: <span id="memberNumber{{ room.id }}">{{ room.room_title }} </span> Creator: {{ room.author }} </h3>
         </div>
             </a>
         <div class="panel-body">
           <div class="form-inline">
 
 
-                  <b>ID:</b> {{ post.id }} <b>Type:</b> {{ post.type }}<br>
+                  <b>ID:</b> {{ room.id }} <b>Type:</b> {{ room.type }}<br>
             <div class="form-group">
-              <label for="nameInput{{ post.id }}">Title</label>
-              <input type="text" class="form-control" id="nameInput{{ post.id }}" value="{{ post.title }}">
+              <label for="nameInput{{ room.id }}">Title</label>
+              <input type="text" class="form-control" id="nameInput{{ room.id }}" value="{{ room.title }}">
             </div>
             <div class="form-group">
-              <label for="emailInput{{ post.id }}">Room Name</label>
-              <input type="text" class="form-control" id="titleInput{{ post.id }}" value="{{ post.room_title }}">
+              <label for="emailInput{{ room.id }}">Room Name</label>
+              <input type="text" class="form-control" id="titleInput{{ room.id }}" value="{{ room.room_title }}">
             </div>
 
             <div class="form-group">
-              <label for="contentInput{{ post.id }}">Content</label>
-              <input type="text" class="form-control" id="contentInput{{ post.id }}" value="{{ post.content }}">
+              <label for="contentInput{{ room.id }}">Content</label>
+              <input type="text" class="form-control" id="contentInput{{ room.id }}" value="{{ room.content }}">
             </div><br>
 
-            <button class="btn btn-primary updateButton" post_id="{{ post.id }}">Update</button>
+            <button class="btn btn-primary updateButton" room_id="{{ room.id }}">Update</button>
 
-            <button class="btn btn-primary deleteButton" post_id="{{ post.id }}">Delete</button>
+            <button class="btn btn-primary deleteButton" room_id="{{ room.id }}">Delete</button>
           </div>
         </div>
       </div>
@@ -130,7 +133,7 @@
 
       <div id="tutorSection{{ tutor.user_id }}" class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Tutor Application<span id="memberNumber{{ tutor.tutor_id }}">User Id: {{ tutor.user_id }} {{ tutor.tutor_status }}</span> </h3>
+          <h3 class="panel-title">Tutor Application <span id="memberNumber{{ tutor.tutor_id }}"> User Id: {{ tutor.user_id }} {{ tutor.tutor_status }}</span> </h3>
         </div>
             </a>
         <div class="panel-body">

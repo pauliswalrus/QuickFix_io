@@ -27,25 +27,25 @@ $(document).ready(function() {
 
     $('.updateButton').on('click',function () {
 
-        var post_id = $(this).attr('post_id');
+        var room_id = $(this).attr('room_id');
 
-        var name = $('#nameInput'+post_id).val();
+        var name = $('#nameInput'+room_id).val();
 
-        var title = $('#titleInput'+post_id).val()
+        var title = $('#titleInput'+room_id).val()
 
-        var content = $('#contentInput'+post_id).val()
+        var content = $('#contentInput'+room_id).val()
 
         req = $.ajax({
            url : '/updateRoom',
            type : 'POST',
-           data : { name : name, title : title, content : content, id : post_id }
+           data : { name : name, title : title, content : content, id : room_id }
 
         });
 
         req.done(function(data) {
 
-            $('#roomSection'+post_id).fadeOut(1000).fadeIn(1000);
-            $('#memberNumber'+post_id).text(data.room_name);
+            $('#roomSection'+room_id).fadeOut(1000).fadeIn(1000);
+            $('#memberNumber'+room_id).text(data.room_name);
 
         });
 
