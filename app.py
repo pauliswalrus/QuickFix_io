@@ -371,6 +371,8 @@ def chat_jq():
     connected_stamp = strftime('%I : %M %p', localtime())
     this_user = User.query.filter_by(username=current_user.username).first()
 
+    role_name = this_user.role
+
     roomName = session.get('roomName')
     authorName = session.get('author')
 
@@ -389,7 +391,7 @@ def chat_jq():
 
     return render_template('private_jq_new.html', username=current_user.username, date_stamp=date_stamp,
                            roomName=roomName, message_object=message_object,
-                           authorName=authorName, connected_stamp=connected_stamp, file_form=file_form, room_files=room_files, room=room_object, this_user=this_user)
+                           authorName=authorName, connected_stamp=connected_stamp, file_form=file_form, room_files=room_files, room=room_object, this_user=this_user, role_name=role_name)
 
 # route for personal profile
 @app.route("/profile/", methods=['GET', 'POST'])
@@ -669,5 +671,5 @@ def close_room(data):
 
 
 if __name__ == '__main__':
-    #socketio.run(app)
-    app.run()
+    socketio.run(app)
+    #app.run()

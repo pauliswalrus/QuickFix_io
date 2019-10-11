@@ -54,7 +54,7 @@
         <button type="button" id="button_close" class="btn btn-light">Close Room</button>
 
         <input type="text" id="nameInput{{ room.id }}" value="{{ room.room_title }}" readonly hidden/>
-        <button class="btn btn-danger deleteButton" room_id="{{ room.id }}">Make Room Private</button>
+        <button id="deleteButton" class="btn btn-danger deleteButton" room_id="{{ room.id }}">Make Room Private</button>
 
         <hr>
 
@@ -254,6 +254,33 @@
     window.onload=function () {
      let objDiv = document.getElementById("display-message-section");
      objDiv.scrollTop = objDiv.scrollHeight;
+
+
+    let uRole = '{{ role_name }}';
+       if (uRole == 'S') {
+            document.getElementById('button_close').style.display = "none";
+            document.getElementById('deleteButton').style.display = "none";
+        }
+
+
+
+
+
+    {##}
+    {##}
+    {#// Get the modal#}
+    {#let modal = document.getElementsByClassName('modal');#}
+    {##}
+    {#// When the user clicks the button, open the modal#}
+    {#btn[0].onclick = function () {#}
+    {#    modal[0].style.display = "block";#}
+    {##}
+    {##}
+    {#span[1].onclick = function () {#}
+    {#    modal[1].style.display = "none";#}
+    {##}
+
+
 }
 </script>
 
