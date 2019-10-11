@@ -1,141 +1,176 @@
 /* Chat.css - Defines the styles for the chat_join.html page */
 /* Author: Emma Hobden */
 
+
 /* ---------------------------------------------------- GENERAL ---------------------------------------------------- */
-
-.inputHide {
-    display: none;
+html, body {
+    height:100%;
 }
-
 /* Styles the body of the page */
 body {
     /*background-image: url('../images/teamChat2.png');*/
     /*background-size: cover;*/
 }
 
+/* Styles the python variable that holds the current local time date */
+#currDate {
+    font-size: 1.5em;
+}
+
 /* Styles the main-section div which holds all page content */
 #main-section {
+    padding: 10px 5px 10px 5px;
     width: 100%;
-    /*border: 2px solid blue;*/
-}
-
-/* Styles all three column divs on the page */
-#left_column,
-#middle_column,
-#right_column {
-    /*width: 33%;*/
-    display: inline-block;
-    /*border: 2px solid red;*/
+    /*border: 2px solid purple;*/
     height: 100%;
-    margin-top: 0px;
-    vertical-align: middle;
-}
-
-/* -------------------------------------------------- LEFT COLUMN -------------------------------------------------- */
-
-/* Styles left column - online tutors, join room etc */
-#left_column {
-    width: 29%;
-}
-
-/* Styles the python variable that holds the list of rooms */
-#left_column p {
-    padding-left: 2em;
-    padding-right: 2em;
-    background-color: #E46D4E;
-    color: white;
-}
-
-#demo {
-    background-color: #E46D4E;
-    color: white;
-    width: 100%;
-}
-
-/* Styles the hover on the list of rooms */
-
-/* Styles the Heading4 in left column */
-#left_column h4 {
-    padding-left: 0.5em;
-}
-
-
-/* ------------------------------------------------- MIDDLE COLUMN ------------------------------------------------- */
-
-/* Styles middle column - main chat window */
-#middle_column {
-    width: 40%;
 }
 
 /* Styles Room Name Container */
 #chatWindowHeader {
-    background-color: darkslategrey;
+    background-color: slategrey;
     height: 60px;
+    width: 100%;
     top: 0px;
 }
 
-/* Styles Room Name p */
+/* Styles Room Name p in #chatWindowHeader */
 #room-name {
     color: white;
     font-size: 2.5em;
 }
 
-/* Styles div where messages are displayed */
-#display-message-section {
-    height: 450px;
-    width: 100%;
-    border: 2px solid darkslategray;
+/* -------------------------------------------------- LEFT COLUMN -------------------------------------------------- */
+
+/* Styles Left Column - room info */
+#leftColumn {
+    width: 25%;
+    float: left;
+    height: 90%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     overflow-y: auto; /*Make  this section scrollable */
-    padding: 5px;
+    overflow-x: auto; /*Make  this section scrollable */
 }
 
-/* Styles the div that holds the type msg & send msg */
+
+/* -------------------------------------------------- RIGHT COLUMN ------------------------------------------------- */
+
+/* Styles Right Column - chat window */
+#rightColumn {
+    width: 70%;
+    float: right;
+    /*border: 2px solid red;*/
+}
+
+/* Styles div where messages are displayed */
+#display-message-section {
+    width: 100%;
+    height: 80%;
+    overflow-y: auto; /*Make  this section scrollable */
+    padding: 5px;
+    /*background-color: #F2F3F7;*/
+}
+
+/* Styles the div that holds the type msg & send msg & upload docs button */
 #input-area {
     bottom: 0;
-    border: 2px solid darkslategray;
     width: 100%;
+    margin-top: 10px;
+}
+
+/* Styles button that opens the upload form */
+#uploadNewDocs {
+    width: 40px;
+    height: 40px;
+    color: white;
+    background-color: slategray;
+    float: left;
+    border-style: none;
+    font-size: 1.5em;
+}
+
+#uploadNewDocs:hover {
+    color: #888888;
 }
 
 /* Styles the div where user types msg */
 #user_message {
     color: darkslategray;
-    height: 30px;
-    width: 90%;
+    height: 40px;
+    width: 80%;
 }
 
 /* Styles the button to send a msg */
 #send_message {
     color: white;
-    background-color: #3F3D54;
+    background-color: slategray;
     width: 10%;
-    height: 30px;
+    height: 40px;
     float: right;
-    border: 2px solid #3F3D54;
+    border-style: none;
 }
+
+/* Styles the window that holds upload docs form - hidden as default */
+#upload {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    width: 600px;
+    margin-left: 25%;
+    margin-right: 25%;
+    height: 200px;
+    left: 0;
+    top: 200px;
+    padding: 20px;
+    text-align: center;
+    overflow: auto; /* Enable scroll if needed */
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+}
+
+/* Styles the X to close the upload docs window */
+.closeWindow {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.closeWindow:hover,
+.closeWindow:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+
+
+
 
 /* Current user's username in chat */
 .my-username {
     font-weight: bold;
     font-size: 1.4em;
-    color: white;
+    color: #395065;
     padding-right: 5px;
 }
 
 /* Current user's msg timestamp */
 .timestamp {
-    color: white;
-    font-size:0.7em;
+    color: #395065;
+    font-size: 0.7em;
 }
 
 /* Current user's message bubble */
 .my-msg {
-    color: white;
+    color: #395065;
     text-align: left;
-    border: 2px solid #807E93;
-    background-color: #807E93;
+    border: 2px solid #E8EAEF;
+    background-color: #E8EAEF;
     border-radius: 20px 20px 20px 0px;
     padding-left: 10px;
-    width: 60%;
+    width: 55%;
     margin-right: 40%;
 }
 
@@ -143,45 +178,98 @@ body {
 .other-username {
     font-weight: bold;
     font-size: 1.4em;
-    color: white;
+    color: #395065;
 }
 
 /* Other user's msg timestamp */
 .other-timestamp {
-    color: white;
-    font-size:0.7em;
+    color: #395065;
+    font-size: 0.7em;
     padding-right: 5px;
 }
 
 /* Other user's message bubble */
 .others-msg {
-    color: white;
+    color: #395065;
     text-align: right;
-    border: 2px solid #A2A1AF;
-    background-color: #A2A1AF;
+    border: 2px solid #F2F3F7;
+    background-color: #F2F3F7;
     border-radius: 20px 20px 0px 20px;
     padding-right: 10px;
-    width: 60%;
+    width: 55%;
     margin-left: 40%;
 }
 
 
-/* -------------------------------------------------- RIGHT COLUMN ------------------------------------------------- */
-
-/* Styles right column - current date and time */
-#right_column {
-    width: 29%;
+.uploadDocsButton {
+    background-color: white;
+    border: none;
+    color: #26346f;
+    font-size: 12px;
 }
 
-/* Styles the python variable that holds the current local time date */
-#currDate {
-    font-size: 2em;
-    /*float: right;*/
-    padding-right: 1em;
-    font-family: 'Lato', sans-serif;
+.uploadDocsButton:hover {
+    text-decoration: underline;
 }
 
 
-#blog-posts {
+/*.inputHide {*/
+/*    display: none;*/
+/*}*/
 
-}
+
+/*!* Styles all three column divs on the page *!*/
+/*#left_column,*/
+/*#middle_column,*/
+/*#right_column {*/
+/*    !*width: 33%;*!*/
+/*    display: inline-block;*/
+/*    !*border: 2px solid red;*!*/
+/*    height: 100%;*/
+/*    margin-top: 0px;*/
+/*    vertical-align: middle;*/
+/*}*/
+
+
+/*!* Styles left column - online tutors, join room etc *!*/
+/*#left_column {*/
+/*    width: 29%;*/
+/*}*/
+
+/*!* Styles the python variable that holds the list of rooms *!*/
+/*#left_column p {*/
+/*    padding-left: 2em;*/
+/*    padding-right: 2em;*/
+/*    background-color: #E46D4E;*/
+/*    color: white;*/
+/*}*/
+
+/*#demo {*/
+/*    background-color: #E46D4E;*/
+/*    color: white;*/
+/*    width: 100%;*/
+/*}*/
+
+/* Styles the hover on the list of rooms */
+
+/*!* Styles the Heading4 in left column *!*/
+/*#left_column h4 {*/
+/*    padding-left: 0.5em;*/
+/*}*/
+
+
+/* ------------------------------------------------- MIDDLE COLUMN ------------------------------------------------- */
+
+/*!* Styles middle column - main chat window *!*/
+/*#middle_column {*/
+/*    width: 40%;*/
+/*}*/
+
+
+/*!* Styles right column - current date and time *!*/
+/*#right_column {*/
+/*    width: 29%;*/
+/*}*/
+
+
+

@@ -141,6 +141,9 @@ def new_tutor():
 def room(room_id):
     room = RoomPost.query.filter_by(id=room_id).one()
 
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+
     comments = RoomComment.query.filter_by(room_id=room_id).order_by(RoomComment.date_posted.desc()).all()
     comment_form = CommentForm()
 
@@ -165,7 +168,7 @@ def room(room_id):
     else:
         rooms = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
 
-    return render_template('viewRoom.html', room=room, username=current_user.username, rooms=rooms, comment_form=comment_form, comments=comments)
+    return render_template('viewRoom.html', room=room, username=current_user.username, rooms=rooms, comment_form=comment_form, comments=comments, this_user=this_user)
 
 
 @app.route('/add_room', methods=['GET', 'POST'])
@@ -174,6 +177,8 @@ def add_room():
     post_form = RoomForm()
 
     user_object = User.query.filter_by(username=current_user.username)
+
+    this_user = User.query.filter_by(username=current_user.username).first()
 
     if post_form.validate_on_submit():
         title = post_form.title.data
@@ -196,12 +201,14 @@ def add_room():
 
         return redirect(url_for('chat'))
 
-    return render_template('addNewRoom.html', username=current_user.username, post_form=post_form, user_object=user_object)
+    return render_template('addNewRoom.html', username=current_user.username, post_form=post_form, user_object=user_object, this_user=this_user)
 #add comment
 @app.route('/add_comment', methods=['GET', 'POST'])
 def add_comment():
 
     post_form = RoomForm()
+
+    this_user = User.query.filter_by(username=current_user.username).first()
 
     if post_form.validate_on_submit():
         title = post_form.title.data
@@ -217,7 +224,7 @@ def add_comment():
 
         # add roompost to database
         blog_post = RoomPost(title=title, room_title=subtitle, author=author, date_posted=date_time, content=content,
-                             type=type)
+                             type=type, this_user=this_user)
 
         db.session.add(blog_post)
         db.session.commit()
@@ -228,6 +235,8 @@ def add_comment():
 def studentpost(studentpost_id):
 
     stdpost = StudentPost.query.filter_by(id=studentpost_id).one()
+
+    this_user = User.query.filter_by(username=current_user.username).first()
 
     comments = PostComment.query.filter_by(post_id=studentpost_id).order_by(PostComment.date_posted.desc()).all()
     comment_form = CommentForm()
@@ -253,7 +262,7 @@ def studentpost(studentpost_id):
     # else:
     #     rooms = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
 
-    return render_template('viewStudentPost.html', post=stdpost, username=current_user.username, comment_form=comment_form, comments=comments)
+    return render_template('viewStudentPost.html', post=stdpost, username=current_user.username, comment_form=comment_form, comments=comments, this_user=this_user)
 
 
 @app.route('/add_student_post', methods=['GET', 'POST'])
@@ -262,6 +271,8 @@ def add_student_post():
     post_form = StudentPostForm()
 
     user_object = User.query.filter_by(username=current_user.username)
+
+    this_user = User.query.filter_by(username=current_user.username).first()
 
     if post_form.validate_on_submit():
         title = post_form.title.data
@@ -283,12 +294,14 @@ def add_student_post():
 
         return redirect(url_for('chat'))
 
-    return render_template('addNewStudentPost.html', username=current_user.username, post_form=post_form, user_object=user_object)
+    return render_template('addNewStudentPost.html', username=current_user.username, post_form=post_form, user_object=user_object, this_user=this_user)
 #add comment
 @app.route('/add_student_comment', methods=['GET', 'POST'])
 def add_student_comment():
 
     post_form = StudentPostForm()
+
+    this_user = User.query.filter_by(username=current_user.username).first()
 
     if post_form.validate_on_submit():
         title = post_form.title.data
@@ -303,7 +316,7 @@ def add_student_comment():
 
         # add roompost to database
         blog_post = StudentPost(title=title,  author=author, date_posted=date_time, content=content,
-                             type=type)
+                             type=type, this_user=this_user)
 
         db.session.add(blog_post)
         db.session.commit()
@@ -316,9 +329,10 @@ def all_users():
     all_tutors = User.query.filter_by(role='T').all()
     online_tutors = User.query.filter_by(status=1, role='T').all()
     student_users = User.query.filter_by(role='S').all()
+    this_user = User.query.filter_by(username=current_user.username).first()
 
     return render_template('all_users.html', username=current_user.username, all_tutors=all_tutors,
-                           online_tutors=online_tutors, student_users=student_users)
+                           online_tutors=online_tutors, student_users=student_users, this_user=this_user)
 
 # route for chat - displays public rooms and form to join(create rooms)
 @app.route("/chat", methods=['GET', 'POST'])
@@ -344,7 +358,7 @@ def chat():
     askforhelp = StudentPost.query.all()
 
     return render_template('home_page.html', username=current_user.username, role=current_user.role, date_stamp=date_stamp,
-                           online_users=online_users, posts=posts, offerhelp=offerhelp, askforhelp=askforhelp, role_name=role_name)
+                           online_users=online_users, posts=posts, offerhelp=offerhelp, askforhelp=askforhelp, role_name=role_name, this_user=this_user)
 
 
 # route for chat - displays public rooms and form to join(create rooms)
@@ -353,6 +367,7 @@ def chat_jq():
 
     date_stamp = strftime('%A, %B %d', localtime())
     connected_stamp = strftime('%I : %M %p', localtime())
+    this_user = User.query.filter_by(username=current_user.username).first()
 
     roomName = session.get('roomName')
     authorName = session.get('author')
@@ -372,13 +387,14 @@ def chat_jq():
 
     return render_template('private_jq_new.html', username=current_user.username, date_stamp=date_stamp,
                            roomName=roomName, message_object=message_object,
-                           authorName=authorName, connected_stamp=connected_stamp, file_form=file_form, room_files=room_files, room=room_object)
+                           authorName=authorName, connected_stamp=connected_stamp, file_form=file_form, room_files=room_files, room=room_object, this_user=this_user)
 
 # route for personal profile
 @app.route("/profile/", methods=['GET', 'POST'])
 def profile():
 
     user_object = User.query.filter_by(username=current_user.username).first()
+    this_user = User.query.filter_by(username=current_user.username).first()
 
     status = user_object.status
     role = user_object.role
@@ -445,7 +461,7 @@ def profile():
 
 
 
-    return render_template('profile.html', username=current_user.username, image_fp=image_fp, status_string=status_string, room_posts=room_posts, role_name=role_name, file_form=file_form, user_files=user_files, image_form=image_form, user_object=user_object, status=status, ts_form=ts_form, setdbstatus=setdbstatus)
+    return render_template('profile.html', username=current_user.username, image_fp=image_fp, status_string=status_string, room_posts=room_posts, role_name=role_name, file_form=file_form, user_files=user_files, image_form=image_form, user_object=user_object, this_user=this_user, status=status, ts_form=ts_form, setdbstatus=setdbstatus)
 
 #
 # public profile accessed by users from online user links.
@@ -455,6 +471,8 @@ def pub_profile(username):
 
     thisUser = current_user.username
     user_object = User.query.filter_by(username=username).first()
+
+    this_user = User.query.filter_by(username=current_user.username).first()
 
     image_form = ImageUploadForm()
 
@@ -487,7 +505,7 @@ def pub_profile(username):
 
     return render_template('pub_profile.html', thisUser=thisUser, username=username, firstname=firstname,
                            lastname=lastname, email=email, status_string=status_string, room_posts=room_posts,
-                           role_name=role_name, image_form=image_form, user_object=user_object, user_files=user_files)
+                           role_name=role_name, image_form=image_form, user_object=user_object, user_files=user_files, this_user=this_user)
 
 
 #gets User status and updates into database

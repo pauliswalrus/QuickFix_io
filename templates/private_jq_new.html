@@ -16,21 +16,136 @@
 
     <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
 
-    <script src="{{ url_for('static', filename='js/jquery.js') }}">
-
-    </script>
-
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
 
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
             integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
 
+    <script src="{{ url_for('static', filename='js/chat_page.js') }}"></script>
 
-    <script src="{{ url_for('static', filename='js/chat_page.js') }}">
-
-
-    </script>
+    <script src="https://kit.fontawesome.com/2f55668b75.js" crossorigin="anonymous"></script>
 
 </head>
+
+
+
+
+<body>
+{#{% extends "navbar.html" %}#}
+{#{% block content %}#}
+
+<div id="main-section">
+
+    <div id="chatWindowHeader">
+        <div id="room-name">{{ roomName }}</div>
+    </div>
+
+
+    <div id="leftColumn">
+        Room Information:
+        <div id="currDate">{{ date_stamp }}</div>
+        <div id="roomCreator">Created By: {{ authorName }}</div>
+        <div id="joined-stamp">Joined at {{ connected_stamp }}</div>
+
+        <hr>
+
+        <!-- To Do: Add Javascript to hide close room if student-->
+        <button type="button" id="button_leave" class="btn btn-light">Leave Room</button>
+        <button type="button" id="button_close" class="btn btn-light">Close Room</button>
+
+        <input type="text" id="nameInput{{ room.id }}" value="{{ room.room_title }}" readonly hidden/>
+        <button class="btn btn-danger deleteButton" room_id="{{ room.id }}">Make Room Private</button>
+
+        <hr>
+
+        {% for file in room_files %}
+            <a href="{{ url_for('room_download', dl_name=file.file_name) }}">
+                <h5>{{ file.file_name }} </h5></a>
+        {% endfor %}
+    </div>
+
+
+    <div id="rightColumn">
+
+        <div id="display-message-section">
+
+
+            {% for msg in message_object %}
+
+                {% if msg.username == username %}
+
+                <p class="my-msg">
+{#                    <img src="{{ url_for('uploaded_file', filename=this_user.user_photo) }}" height="50px" width="50px" class="profilePic_sm"/>#}
+                    <span class="my-username">{{ msg.username }}</span>
+                    <span class="timestamp">{{ msg.timestamp }}</span>
+                    <br>
+                    <span class="my-msg">{{ msg.message }}</span>
+                </p>
+
+                {% else %}
+
+                <p class="others-msg">
+{#                    <img src="{{ url_for('uploaded_file', filename=this_user.user_photo) }}" height="50px" width="50px" class="profilePic_sm"/>#}
+                    <span class="other-username">{{ msg.username }}</span>
+                    <span class="other-timestamp">{{ msg.timestamp }}</span>
+                    <br>
+                    <span class="others-msg">{{ msg.message }}</span>
+                </p>
+
+                {% endif %}
+
+
+            {% endfor %}
+
+
+        </div>
+
+        <div id="input-area">
+            <button class="fas fa-paperclip" id="uploadNewDocs"></button>
+{#            <button class="btn btn-info" id="uploadNewDocs">[+]</button>#}
+            <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">
+            <button type="submit" id="send_message">SEND</button>
+        </div>
+
+
+        <div id="upload">
+            <span class="closeWindow" onclick="testClose()">&times;</span><br>
+
+            <form method="post" enctype="multipart/form-data">
+                {{ file_form.hidden_tag() }}
+                {{ file_form.file }}
+                <button type=submit class="btn btn-info" title="Submit">Add New File</button>
+                {{ file_form.csrf_token }}
+            </form>
+        </div>
+
+
+    </div>
+
+</div><!-- End Main Section Div -->
+
+<script type="text/javascript">
+    const username = `{{ username }}`;
+    const mesage_object = `{{ message_object }}`
+    const roomname = `{{ roomName }}`;
+</script>
+
+<script type="text/javascript">
+
+    //show div upload on button click uploadNewDocs
+    let uploadForm = document.getElementById('upload');
+    let button = document.getElementById('uploadNewDocs');
+
+    button.onclick = function () {
+        uploadForm.style.display = "block";
+    }
+
+    function testClose() {
+        uploadForm.style.display = "none";
+    }
+
+</script>
+
 
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', () => {
@@ -44,27 +159,28 @@
 
         //Displays incoming messages
         socket.on('message', data => {
-            const p = document.createElement('p');
-            const span_username = document.createElement('span');
-            const span_timestamp = document.createElement('span');
 
-            const br = document.createElement('br');
+            const p = document.createElement('p'); // <p> tag
+            const span_username = document.createElement('span'); // <span> tag
+            const span_timestamp = document.createElement('span'); // <span> tag
+            const br = document.createElement('br'); // <br> tag
+
 
             if (data.username == username) {
 
-                p.setAttribute("class", "my-msg");
+                p.setAttribute("class", "my-msg"); // <p class="my-msg"></p>
 
-                span_username.setAttribute("class", "my-username");
-                span_username.innerHTML = data.username;
+                span_username.setAttribute("class", "my-username"); // <span class="my-username"></span>
+                span_username.innerHTML = data.username; // <span class="my-username"> { username } </span>
 
-                span_timestamp.setAttribute("class", "timestamp");
-                span_timestamp.innerHTML = data.time_stamp;
-                //span_title.innerHTML = " - student";
+                span_timestamp.setAttribute("class", "timestamp"); // <span class="timestamp"></span>
+                span_timestamp.innerHTML = data.time_stamp; // <span class="timestamp"> { timestamp } </span>
 
-                p.innerHTML = span_username.outerHTML + span_timestamp.outerHTML + br.outerHTML + data.msg;
+                p.innerHTML = span_username.outerHTML + span_timestamp.outerHTML + br.outerHTML + data.msg; // add username, timestamp, line break and message to the <p> tag
                 //p.innerHTML = span_username.outerHTML + br.outerHTML + data.msg + br.outerHTML + span_timestamp.outerHTML;
-                document.querySelector('#display-message-section').append(p);
+                document.querySelector('#display-message-section').append(p); // append <p> tag to message section
                 //console.log(`Message received: ${data}`)
+
             } else if (typeof data.username !== 'undefined') {
                 p.setAttribute("class", "others-msg");
 
@@ -91,48 +207,21 @@
             //clear input area
             document.querySelector('#user_message').value = '';
 
-        }
+        };
 
+        // on button click - leave the room
         document.querySelector('#button_leave').onclick = () => {
             socket.emit('leave', {'username': username, 'room': roomname});
             socket.disconnect();
             window.location.href = "{{ url_for('chat') }}";
-        }
+        };
 
+        // on button click - close the room
         document.querySelector('#button_close').onclick = () => {
             socket.emit('close_room', {'username': username, 'room': roomname});
             socket.disconnect();
             window.location.href = "{{ url_for('chat') }}";
-        }
-
-        var myTimer;
-
-        // Start Timer
-        document.querySelector('#button_start').onclick = () => {
-            myTimer = setInterval(myClock, 1000);
-            var c = 0;
-
-            function myClock() {
-                document.getElementById("demo").innerHTML = ++c;
-                if (c == 0) {
-                    clearInterval(myTimer);
-                    alert("Session zero");
-                }
-            }
-        }
-
-        // Clear Timer
-        document.querySelector('#button_clear').onclick = () => {
-
-            clearInterval(myTimer);
-        }
-
-        // Restart Timer
-        document.querySelector('#button_restart').onclick = () => {
-
-            clearInterval(myTimer);
-            document.getElementById("demo").innerHTML = '0';
-        }
+        };
 
 
         //leave room
@@ -148,7 +237,7 @@
         function joinRoom(room) {
             socket.emit('join', {'username': username, 'room': roomname});
             document.querySelector('#room-name').innerHTML = room;
-            document.querySelector('#display-message-section').innerHTML = '';
+            {#document.querySelector('#display-message-section').innerHTML = '';#}
             //document.querySelector('#user_message').focus();
         }
 
@@ -157,125 +246,17 @@
             const p = document.createElement('p');
             p.innerHTML = msg;
             document.querySelector('#display-message-section').append(p);
-
         }
-
     })
 
-
+</script>
+<script>
+    window.onload=function () {
+     let objDiv = document.getElementById("display-message-section");
+     objDiv.scrollTop = objDiv.scrollHeight;
+}
 </script>
 
-<body>
-
-<div class="navbar">
-    <a class="logo" href="#">Home</a>
-    <a href="{{ url_for('profile', username=username) }}">{{ username }}</a>
-    <a href="#">Forums</a>
-    <a href="{{ url_for('chat', username=username) }}">Chat</a>
-
-    <a href="{{ url_for('all_users') }}">Users</a>
-    <a href="{{ url_for('logout') }}"> Logout </a>
-
-</div>
-
-<div id="main-section">
-
-    <h1 id="fade">Connected To {{ roomName }} At: {{ connected_stamp }}</h1>
-    <h2 id="sent_fade"></h2>
-
-
-    <div id="left_column">
-
-        <h4>Room: {{ roomName }}</h4>
-        <h4>Creator: {{ authorName }}</h4>
-
-        <div id="fade2" class="hiddenstamp">Message {{ roomName }} At: {{ connected_stamp }}</div>
-
-        <h5>Room Actions: </h5>
-        <div id="timerValue"></div>
-        <button class="btn btn-primary timerButton">Timer Start</button>
-        <br>
-        <br>
-        <button type="button" id="button_leave" class="btn btn-light">Leave Room</button>
-        <button type="button" id="button_close" class="btn btn-light">Close Room</button>
-        <br>
-        <br>
-
-        <input type="text" id="nameInput{{ room.id }}" value="{{ room.room_title }}" readonly hidden/>
-        <button class="btn btn-danger deleteButton" room_id="{{ room.id }}">Make Room Private</button>
-        <br>
-        <br>
-        <div>
-            <form method="post" enctype="multipart/form-data">
-                {{ file_form.hidden_tag() }}
-                {{ file_form.file }}
-
-                <button type=submit class="btn btn-info" title="Submit">Add New File</button>
-                {{ file_form.csrf_token }}
-            </form>
-            <br>
-            <br>
-
-        </div>
-        {% for file in room_files %}
-            <a href="{{ url_for('room_download', dl_name=file.file_name) }}">
-                <h5>{{ file.file_name }} </h5></a>
-
-        {% endfor %}
-    </div>
-
-    <div id="middle_column">
-
-        <div id="chatWindowHeader">
-            <p id="room-name"> {{ roomName }}</p>
-
-        </div>
-
-        <div id="display-message-section">
-            {% for msg in message_object %}
-                <li>{{ msg.username }}
-                    {{ msg.message }}
-                    {{ msg.room }}
-                </li>
-            {% endfor %}
-        </div>
-
-
-        <div id="input-area">
-
-            <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">
-            <button type="submit" id="send_message">SEND</button>
-        </div>
-
-
-
-
-    </div>
-
-    <div id="right_column">
-
-        right column
-
-{#        <span id="currDate">{{ date_stamp }}</span>#}
-{##}
-{#        Chat Logs for Room : {{ roomName }}#}
-{#        <ul id="display-message-section" cols="2" rows="1" readonly>#}
-{##}
-{#            {% for msg in message_object %}#}
-{#                <li>{{ msg.username }} <br>{{ msg.message }} <br> {{ msg.room }} : {{ msg.created_at }}</li>#}
-{#                <br>#}
-{#            {% endfor %}#}
-{#        </ul>#}
-
-    </div>
-
-</div>
-
-<script type="text/javascript">
-    const username = `{{ username }}`;
-    const mesage_object = `{{ message_object }}`
-    const roomname = `{{ roomName }}`;
-</script>
 </body>
 
 

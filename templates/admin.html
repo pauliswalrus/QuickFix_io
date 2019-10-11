@@ -24,14 +24,17 @@
 
 <body>
 
-<div class="navbar">
-    <a class="logo" href="#">Home</a>
-    <a href="{{ url_for('profile', username=username) }}">{{ username }}</a>
-    <a href="#">Forums</a>
-    <a href="{{ url_for('chat', username=username) }}">Chat</a>
-    <a href="{{ url_for('all_users') }}">Users</a>
-    <a href="{{ url_for('logout') }}"> Logout </a>
-</div>
+{% extends "navbar.html" %}
+{% block content %}
+
+{#<div class="navbar">#}
+{#    <a class="logo" href="#">Home</a>#}
+{#    <a href="{{ url_for('profile', username=username) }}">{{ username }}</a>#}
+{#    <a href="#">Forums</a>#}
+{#    <a href="{{ url_for('chat', username=username) }}">Chat</a>#}
+{#    <a href="{{ url_for('all_users') }}">Users</a>#}
+{#    <a href="{{ url_for('logout') }}"> Logout </a>#}
+{#</div>#}
 
 
 <!-- div main section starts -->
@@ -202,6 +205,7 @@
 {##}
 {#</script>#}
 
+{% endblock %}
 </body>
 </html>
 
