@@ -194,9 +194,11 @@ def add_room():
         author = current_user.username
         date_time = datetime.now()
 
+        visible = True;
+
         # add roompost to database
         blog_post = RoomPost(title=title, room_title=subtitle, author=author, date_posted=date_time, content=content,
-                             type=type)
+                             type=type, visible=visible)
 
         db.session.add(blog_post)
         db.session.commit()
