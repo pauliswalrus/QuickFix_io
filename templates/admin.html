@@ -46,7 +46,7 @@
 
         <h4><a href="{{ url_for('all_users') }}">Users Page</a> </h4> <br>
 
-            <h5>View Recent Room Posts:</h5>
+            <h5>View Recent Room:</h5>
 
             {% for room in blog_posts %}
                 <div>
@@ -117,7 +117,12 @@
 
     <!-- right_column div -->
     <div id="right_column">
+
+
+
         <span id="currDate">{{ date_stamp }}</span>
+
+    <h5>Pending Tutor Applications:</h5>
 
 {##}
 {#          <div id="blog-posts">#}
@@ -134,8 +139,7 @@
 {##}
 {#            {% endfor %}#}
 
-            {% for tutor in tutors %}
-
+      {% for tutor in tutors %}
       <div id="tutorSection{{ tutor.user_id }}" class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">Tutor Application <span id="memberNumber{{ tutor.tutor_id }}"> User Id: {{ tutor.user_id }} {{ tutor.tutor_status }}</span> </h3>
