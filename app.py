@@ -378,7 +378,7 @@ def chat_jq():
     roomName = session.get('roomName')
     authorName = session.get('author')
 
-    message_object = Message.query.filter_by(room=roomName).order_by(Message.id.desc()).all()
+    message_object = Message.query.filter_by(room=roomName).order_by(Message.id.asc()).all()
     room_files = RoomUpload.query.filter_by(room_name=roomName).all()
     room_object = RoomPost.query.filter_by(room_title=roomName).first()
 
