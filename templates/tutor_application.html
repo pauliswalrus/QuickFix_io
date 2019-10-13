@@ -26,9 +26,10 @@
         <hr>
             <form method="post" enctype="multipart/form-data">
                 {{ form.hidden_tag() }}
-                Tell us why you should join our team of tutors<br>
-                {{ form.about_tutor }}<br>
-                {{ form.credentials_file }}
+                {{ form.about_tutor (class_='form-control', placeholder='Tell us why we should hire you!', autocomplete='off') }}<br>
+                <div>
+                    {{ form.credentials_file }}
+                </div>
                 <button type=submit class="btn btn-info">Apply</button>
                 {{ form.csrf_token }}
             </form>
