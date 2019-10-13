@@ -82,7 +82,7 @@ class RoomPost(db.Model):
     __tablename__= "roompost"
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False)
-    room_title = db.Column(db.String(50), nullable=False)
+    room_title = db.Column(db.String(50), unique=True, nullable=False)
     author = db.Column(db.String(25), nullable=False)
     date_posted = db.Column(db.DateTime)
     content = db.Column(db.Text)

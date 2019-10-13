@@ -27,25 +27,25 @@
 
 <div id="main-section">
 
+    <div id="regForm">
+
     <div id="formTitle"> Create A New Room</div>
 
-    <form action="{{ url_for('add_room') }}" , method="post">
-
-{#        <div>{{ post_form.type }}</div>#}
+    <form action="{{ url_for('add_room') }}", method="post">
 
         <div>
-            {{ post_form.title(class_='form-control', placeholder='Title', autocomplete='off', autofocus=true) }}
+            {{ post_form.subtitle(class_='form-control', placeholder='Room Name', autocomplete='off', autofocus=true) }}
             <ul>
-                {% for error in post_form.title.errors %}
+                {% for error in post_form.subtitle.errors %}
                     <li>{{ error }}</li>
                 {% endfor %}
             </ul>
         </div>
 
         <div>
-            {{ post_form.subtitle(class_='form-control', placeholder='RoomName', autocomplete='off') }}
+            {{ post_form.title(class_='form-control', placeholder='Title', autocomplete='off') }}
             <ul>
-                {% for error in post_form.subtitle.errors %}
+                {% for error in post_form.title.errors %}
                     <li>{{ error }}</li>
                 {% endfor %}
             </ul>
@@ -60,22 +60,25 @@
             </ul>
         </div>
 
-        <div>{{ post_form.submit_button(class_='submitButton') }}</div>
+        <div>
+            {{ post_form.submit_button(class_='submitButton') }}
+        </div>
 
         {{ post_form.csrf_token }}
 
     </form>
 
-</div>
+    </div>
 
-
-<script type="text/javascript">
-    const username = `{{ username }}`;
-    const mesage_object = `{{ message_object }}`
-</script>
+{##}
+{#<script type="text/javascript">#}
+{#    const username = `{{ username }}`;#}
+{#    const mesage_object = `{{ message_object }}`#}
+{#</script>#}
 
 <!-- SocketIO JS -->
 
 {% endblock %}
+</div>
 </body>
 </html>

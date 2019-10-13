@@ -145,7 +145,6 @@ def room(room_id):
 
     this_user = User.query.filter_by(username=current_user.username).first()
 
-
     comments = RoomComment.query.filter_by(room_id=room_id).order_by(RoomComment.date_posted.desc()).all()
     comment_form = CommentForm()
 
@@ -183,8 +182,8 @@ def add_room():
     this_user = User.query.filter_by(username=current_user.username).first()
 
     if post_form.validate_on_submit():
-        title = post_form.title.data
         subtitle = post_form.subtitle.data
+        title = post_form.title.data
         content = post_form.content.data
         if current_user.role == 'S':
             type = "Request"
@@ -193,8 +192,7 @@ def add_room():
         #type = post_form.type.data
         author = current_user.username
         date_time = datetime.now()
-
-        visible = True;
+        visible = True
 
         # add roompost to database
         blog_post = RoomPost(title=title, room_title=subtitle, author=author, date_posted=date_time, content=content,
