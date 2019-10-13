@@ -114,7 +114,7 @@
             <form method="post" enctype="multipart/form-data">
                 {{ file_form.hidden_tag() }}
                 {{ file_form.file }}
-                <button type=submit class="btn btn-info" title="Submit">Add New File</button>
+                <button id="file_upload" type=submit class="btn btn-info" title="Submit">Add New File</button>
                 {{ file_form.csrf_token }}
             </form>
         </div>
@@ -141,6 +141,7 @@
     }
 
     function testClose() {
+
         uploadForm.style.display = "none";
     }
 
@@ -221,6 +222,10 @@
             socket.emit('close_room', {'username': username, 'room': roomname});
             socket.disconnect();
             window.location.href = "{{ url_for('chat') }}";
+        };
+
+           document.querySelector('#file_upload').onclick = () => {
+               socket.emit('upload', {'username': username, 'room': roomname});
         };
 
 

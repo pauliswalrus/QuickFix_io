@@ -412,7 +412,6 @@ def profile():
 
     if image_form.validate_on_submit():
 
-
         image_filename = photos.save(request.files[image_form.image.name])
         #user_object2 = User.query.filter_by(username=current_user.username).update(dict(user_photo=os.path.join(app.config['UPLOADED_PHOTOS_DEST'], image_filename)))
         user_object2 = User.query.filter_by(username=current_user.username).update(dict(user_photo=image_filename))
@@ -459,13 +458,6 @@ def profile():
             status_string = 'Online'
             db_status = User.query.filter_by(username=current_user.username).update(dict(status=setdbstatus))
             db.session.commit()
-
-
-
-
-
-
-
 
     return render_template('profile.html', username=current_user.username, image_fp=image_fp, status_string=status_string, room_posts=room_posts, role_name=role_name, file_form=file_form, user_files=user_files, image_form=image_form, user_object=user_object, this_user=this_user, status=status, ts_form=ts_form, setdbstatus=setdbstatus)
 
@@ -588,13 +580,11 @@ def privateRoom():
 def approveTutor():
 
     user = User.query.filter_by(id=request.form['id']).first()
-
     tutor = Tutor.query.filter_by(user_id=user.id).first()
 
     user.role = "T"
     tutor.tutor_status = "approved"
     db.session.commit()
-
     tutor1 = Tutor.query.filter_by(user_id=user.id).first()
 
     return jsonify({'result' : 'success', "tutor_status" : tutor1.tutor_status})
@@ -651,8 +641,8 @@ def upload(data):
     #join_room(data['room'])
     join_room(room)
     # message_object = Message.query.filter_by(room='room').all()
-    print('Connection on ' + data['room'] + ' with user ' + current_user.username + ' has been established')
-    send({'msg': data['username'] + " has joined the " + data['room'] + " room."}, room=data['room'])
+    print(current_user.username + ' uploaded a file to ' + data['room'] + " room")
+    send({'msg': data['username'] + " sent a file to the " + data['room'] + " room."}, room=data['room'])
 
 
 @socketio.on('leave')
