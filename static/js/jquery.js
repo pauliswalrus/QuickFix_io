@@ -55,7 +55,7 @@ $(document).ready(function() {
     })
 
 
-    $('.deleteButton').on('click',function () {
+    $('.privateButton').on('click',function () {
 
         var room_id = $(this).attr('room_id');
 
@@ -68,7 +68,26 @@ $(document).ready(function() {
 
         });
         alert("this room is private!")
-        $('.deleteButton').fadeOut(200);
+        $('.privateButton').fadeOut(200);
+
+
+
+    })
+
+       $('.deleteButton').on('click',function () {
+
+        var room_id = $(this).attr('room_id');
+
+        var name = $('#nameInput'+room_id).val();
+
+        req = $.ajax({
+           url : '/deleteRoom',
+           type : 'POST',
+           data : { name : name, id : room_id }
+
+        });
+        alert("Room Deleted!")
+        location.reload();
 
 
 
@@ -89,11 +108,27 @@ $(document).ready(function() {
         req.done(function(data) {
             alert(data.tutor_status)
 
-            $('#memberNumber'+user_id).text(data.tutor_status)
+            $('#memberNumber'+user_id).text(data.tutor_status);
             $('#tutorSection'+user_id).fadeOut(1000).fadeIn(1000);
 
         });
 
+
+    })
+
+    $('.denyTutor').on('click',function () {
+
+        var user_id = $(this).attr('user_id');
+
+        var comments = $('#appComments').val();
+
+        req = $.ajax({
+           url : '/denyTutor',
+           type : 'POST',
+           data : { id : user_id, comments : comments}
+
+        });
+        location.reload();
 
     })
 

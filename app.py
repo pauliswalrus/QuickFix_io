@@ -77,7 +77,7 @@ def admin():
     users_list = User.query.all()
     all_files = FileUpload.query.all()
     blog_posts = RoomPost.query.all()
-    tutors = Tutor.query.all()
+    tutors = Tutor.query.filter_by(tutor_status="pending").all()
 
     this_user = User.query.filter_by(username=current_user.username).first()
 
@@ -121,7 +121,7 @@ def new_student():
 ### need to rename to user
 @app.route('/tutor_register', methods=['GET', 'POST'])
 def new_tutor():
-
+    this_user = User.query.filter_by(username=current_user.username).first()
     tutor_form = TutorForm()
     # Updates database if validation is successful
     if tutor_form.validate_on_submit():
@@ -137,7 +137,7 @@ def new_tutor():
         flash('Registered successfully. Please login', 'success')
         return redirect(url_for('chat'))
 
-    return render_template("tutor_application.html", form=tutor_form)
+    return render_template("tutor_application.html", form=tutor_form, this_user=this_user)
 
 @app.route('/room/<int:room_id>', methods=['GET', 'POST'])
 def room(room_id):
@@ -558,12 +558,15 @@ def updateRoom():
     db.session.commit()
 
     return jsonify({'result' : 'success', "room_name" : room.room_title})
-    #return render_template('section.html', room=room)
-#
-##
-###pulls up register page - currently users only
-##
-#
+
+@app.route('/deleteRoom', methods=['POST'])
+def deleteRoom():
+    room = RoomPost.query.filter_by(id=request.form['id']).first()
+    db.session.delete(room)
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
 
 @app.route('/privateRoom', methods=['POST'])
 def privateRoom():
@@ -588,6 +591,19 @@ def approveTutor():
     tutor1 = Tutor.query.filter_by(user_id=user.id).first()
 
     return jsonify({'result' : 'success', "tutor_status" : tutor1.tutor_status})
+
+@app.route('/denyTutor', methods=['POST'])
+def denyTutor():
+
+    user = User.query.filter_by(id=request.form['id']).first()
+    tutor = Tutor.query.filter_by(user_id=user.id).first()
+
+    tutor.application_comments = request.form['comments']
+
+    db.session.commit()
+    tutor1 = Tutor.query.filter_by(user_id=user.id).first()
+
+    return jsonify({'result' : 'success', "app_comments" : tutor1.application_comments})
 
 
 

@@ -86,7 +86,7 @@
           <div class="form-inline">
 
 
-                  <b>ID:</b> {{ room.id }} <b>Type:</b> {{ room.type }}<br>
+                  <b>ID:</b> {{ room.id }} <b>Type:</b> {{ room.type }} <b>Visible:</b> {{ room.visible }}<br>
             <div class="form-group">
               <label for="nameInput{{ room.id }}">Title</label>
               <input type="text" class="form-control" id="nameInput{{ room.id }}" value="{{ room.title }}">
@@ -101,9 +101,11 @@
               <input type="text" class="form-control" id="contentInput{{ room.id }}" value="{{ room.content }}">
             </div><br>
 
-            <button class="btn btn-primary updateButton" room_id="{{ room.id }}">Update</button>
 
-            <button class="btn btn-primary deleteButton" room_id="{{ room.id }}">Delete</button>
+            <button class="btn btn-primary updateButton" room_id="{{ room.id }}">Update Room</button>
+
+            <button class="btn btn-danger deleteButton" room_id="{{ room.id }}">Delete Room</button>
+
           </div>
         </div>
       </div>
@@ -172,7 +174,7 @@
 
             <button class="btn btn-primary approveTutor" user_id="{{ tutor.user_id }}">Approve</button>
 
-            <button class="btn btn-primary denyTutor" user_id="{{ tutor.user_id }}">Deny</button>
+            <button class="btn btn-warning denyTutor" user_id="{{ tutor.user_id }}">Deny</button>
 
           </div>
         </div>

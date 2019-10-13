@@ -30,7 +30,6 @@ class Student(db.Model):
     __tablename__="student"
 
     student_id = db.Column(db.Integer, primary_key=True)
-    about_me = db.Column(db.Text)
     school_id = db.Column(db.Integer)
     program_id = db.Column(db.Integer)
     user_id = db.Column(db.Integer)

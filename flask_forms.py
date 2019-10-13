@@ -3,7 +3,7 @@ from wtforms import StringField, PasswordField, SubmitField, TextAreaField, Sele
 from wtforms.validators import InputRequired, Length, EqualTo, ValidationError, Email
 
 from passlib.hash import pbkdf2_sha256
-from sqlalq_datamodels import User, FileUpload
+from sqlalq_datamodels import User, FileUpload, RoomPost
 
 
 ###     AUTHOR: AUSTIN PAUL
@@ -73,6 +73,11 @@ class RoomForm(FlaskForm):
     subtitle = StringField('subtitle_label', validators=[InputRequired(message="Room required"), Length(min=4, max=50, message="Room Name must be between 4 and 50 characters")])
     content = TextAreaField('content_label', validators=[InputRequired(message="Post required")])
     submit_button = SubmitField('Add Room')
+
+    def validate_roomname(self, subtitle):
+        room_object = RoomPost.query.filter_by(room_title=subtitle.data).first()
+        if room_object:
+            raise ValidationError("Room already exists. Pick a unique room name")
 
 class CommentForm(FlaskForm):
     """ RoomPost Form """
