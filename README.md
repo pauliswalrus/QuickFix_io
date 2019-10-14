@@ -2,14 +2,13 @@
 
 QuickFix_io Capstone Project
 
-Sprint 5 - Oct 10 2019 Build
+Sprint 6 - Oct 13 2019 Build
 
 deployed at:
 
 quickfix-io.herokuapp.com
 
-removed app directory file and changed
-import statements accordingly 
+major refactor see commit comments
 
 Authors:
 Austin Paul, Emma Hobden, 

@@ -5,9 +5,10 @@ from __init__ import app
 
 
 ###     AUTHOR: AUSTIN PAUL
-###     DATE: OCT 10
+###     DATE: OCT 13
 ###     QUICKFIX_IO DIRTYBITS
-###     PRE-SPRINT 5 TURNIN OCT 10 BUILD
+###     SPRINT 6 OCT 13 BUILD DEPLOYED AT
+###     quickfix-io.herokuapp.com
 
 db = SQLAlchemy(app)
 

@@ -7,9 +7,10 @@ from sqlalq_datamodels import User, FileUpload, RoomPost
 
 
 ###     AUTHOR: AUSTIN PAUL
-###     DATE: OCT 4
+###     DATE: OCT 13
 ###     QUICKFIX_IO DIRTYBITS
-###     PRE-SPRINT 4 TURNIN OCT 4 BUILD
+###     SPRINT 6 OCT 13 BUILD DEPLOYED AT
+###     quickfix-io.herokuapp.com
 
 
 def invalid_credentials(form, field):
