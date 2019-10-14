@@ -53,7 +53,7 @@ def login():
 
         else:
 
-            return redirect(url_for('chat'))
+            return redirect(url_for('home'))
 
     return render_template("login.html", form=login_form)
 
@@ -132,7 +132,7 @@ def new_tutor():
         db.session.add(tutor_added)
         db.session.commit()
         flash('Registered successfully. Please login', 'success')
-        return redirect(url_for('chat'))
+        return redirect(url_for('home'))
 
     return render_template("tutor_application.html", form=tutor_form, this_user=this_user)
 
@@ -198,7 +198,7 @@ def add_room():
         db.session.add(blog_post)
         db.session.commit()
 
-        return redirect(url_for('chat'))
+        return redirect(url_for('home'))
 
     return render_template('addNewRoom.html', username=current_user.username, post_form=post_form, user_object=user_object, this_user=this_user)
 #add comment
@@ -228,7 +228,7 @@ def add_comment():
         db.session.add(blog_post)
         db.session.commit()
 
-        return redirect(url_for('chat'))
+        return redirect(url_for('home'))
 
 @app.route('/studentpost/<int:studentpost_id>', methods=['GET', 'POST'])
 def studentpost(studentpost_id):
@@ -286,7 +286,7 @@ def add_student_post():
         db.session.add(blog_post)
         db.session.commit()
 
-        return redirect(url_for('chat'))
+        return redirect(url_for('home'))
 
     return render_template('addNewStudentPost.html', username=current_user.username, post_form=post_form, user_object=user_object, this_user=this_user)
 #add comment
@@ -315,7 +315,7 @@ def add_student_comment():
         db.session.add(blog_post)
         db.session.commit()
 
-        return redirect(url_for('chat'))
+        return redirect(url_for('home'))
 #all users page
 @app.route("/users", methods=['GET', 'POST'])
 def all_users():
@@ -329,8 +329,8 @@ def all_users():
                            online_tutors=online_tutors, student_users=student_users, this_user=this_user)
 
 # route for chat - displays public rooms and form to join(create rooms)
-@app.route("/chat", methods=['GET', 'POST'])
-def chat():
+@app.route("/home", methods=['GET', 'POST'])
+def home():
 
     date_stamp = strftime('%A, %B %d', localtime())
     this_user = User.query.filter_by(username=current_user.username).first()
@@ -357,7 +357,7 @@ def chat():
 
 # route for chat - displays public rooms and form to join(create rooms)
 @app.route("/private_session/", methods=['GET', 'POST'])
-def chat_jq():
+def private_chat():
 
     date_stamp = strftime('%A, %B %d', localtime())
     connected_stamp = strftime('%I : %M %p', localtime())
@@ -379,9 +379,9 @@ def chat_jq():
         newFile = RoomUpload(file_name=file.filename, room_name=roomName, username=current_user.username, data=file.read())
         db.session.add(newFile)
         db.session.commit()
-        return redirect(url_for('chat_jq'))
+        return redirect(url_for('private_chat'))
 
-    return render_template('private_room.html', username=current_user.username, date_stamp=date_stamp,
+    return render_template('private_chat.html', username=current_user.username, date_stamp=date_stamp,
                            roomName=roomName, message_object=message_object,
                            authorName=authorName, connected_stamp=connected_stamp, file_form=file_form, room_files=room_files, room=room_object, this_user=this_user, role_name=role_name)
 

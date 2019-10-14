@@ -214,14 +214,14 @@
         document.querySelector('#button_leave').onclick = () => {
             socket.emit('leave', {'username': username, 'room': roomname});
             socket.disconnect();
-            window.location.href = "{{ url_for('chat') }}";
+            window.location.href = "{{ url_for('home') }}";
         };
 
         // on button click - close the room
         document.querySelector('#button_close').onclick = () => {
             socket.emit('close_room', {'username': username, 'room': roomname});
             socket.disconnect();
-            window.location.href = "{{ url_for('chat') }}";
+            window.location.href = "{{ url_for('home') }}";
         };
 
            document.querySelector('#file_upload').onclick = () => {
@@ -233,7 +233,7 @@
         function leaveRoom(room) {
             socket.emit('leave', {'username': username, 'room': roomname});
 
-            window.location.href = "{{ url_for('chat') }}";
+            window.location.href = "{{ url_for('home') }}";
 
 
         }

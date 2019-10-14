@@ -47,7 +47,7 @@
 
             <div id="content">Post Content: {{ room.content|safe }}</div>
 
-            <div id="joinRoomLink"><a href="{{ url_for('chat_jq') }}">Join {{ room.room_title }}</a></div>
+            <div id="joinRoomLink"><a href="{{ url_for('private_chat') }}">Join {{ room.room_title }}</a></div>
 
 
                 <form method="post">
@@ -152,7 +152,7 @@
 {#                    </div>#}
 {#                </div>#}
 {#            </div>#}
-{#            <a href="{{ url_for('chat_jq') }}">Join This Room</a>#}
+{#            <a href="{{ url_for('private_chat') }}">Join This Room</a>#}
 {#        </article>#}
 {##}
 {#    </div><!-- End Container -->#}

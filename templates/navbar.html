@@ -13,7 +13,7 @@
 
     <div id="navBar"> <!-- whole nav bar -->
 
-        <a href="{{ url_for('chat') }}" class="fl_left logo">QuickFix</a>
+        <a href="{{ url_for('home') }}" class="fl_left logo">QuickFix</a>
         <span class="toggleMenu fl_left" onclick="showMenu(this)">
             <div class="menuIcon bar1"></div>
             <div class="menuIcon bar2"></div>
@@ -22,7 +22,7 @@
 
         <div id="menu" style="display:none">
             <a href="#">Forums</a>
-            <a href="{{ url_for('chat') }}" >Chat</a>
+            <a href="{{ url_for('home') }}" >Home</a>
             <a href="{{ url_for('all_users') }}">Users</a>
             <hr>
             <a href="#">Apply to be a Tutor</a>
