@@ -30,14 +30,17 @@
 
 <body>
 
-<div class="navbar">
-    <a class="logo" a href="#">Home</a>
-    <a href="{{ url_for('profile') }}">{{ username }}</a>
-    <a href="#">Forums</a>
-    <a href="{{ url_for('chat') }}">Chat</a>
-    <a href="{{ url_for('all_users') }}">Users</a>
-    <a href="{{ url_for('logout') }}"> Logout </a>
-</div>
+{% extends "navbar.html" %}
+{% block content %}
+
+{#<div class="navbar">#}
+{#    <a class="logo" a href="#">Home</a>#}
+{#    <a href="{{ url_for('profile') }}">{{ username }}</a>#}
+{#    <a href="#">Forums</a>#}
+{#    <a href="{{ url_for('chat') }}">Chat</a>#}
+{#    <a href="{{ url_for('all_users') }}">Users</a>#}
+{#    <a href="{{ url_for('logout') }}"> Logout </a>#}
+{#</div>#}
 
 <div id="leftSideBar"></div>
 
@@ -53,8 +56,18 @@
 
             <!-- Trigger/Open The Modal -->
             <button id="myBtn" class="myBtn uploadPhotoButton">Change</button>
+            <br><br>
 
-            <div id="mUsername">{{ user_object.username }}</div>
+                  Status:
+            <form method="post" enctype="multipart/form-data">
+                <fieldset>
+                        {{ ts_form.hidden_tag() }}
+                        {{ ts_form.status }}<br>
+                        {{ ts_form.submit_button3 }}
+                        {{ ts_form.csrf_token }}
+                    </fieldset>
+                    </form>
+
 
             <hr>
 
@@ -74,6 +87,8 @@
                 <a href="{{ url_for('pub_profile', username=user_object.username) }}">
                 View My Public Profile</a>
             </div>
+
+            <h2>Your status is currently set to: {{ status_string }} </h2>
 
 
 
@@ -129,11 +144,11 @@
                 </p>
             </div>
 
-            <p class="subheading">My Posts <a href="{{ url_for('add_post') }}">Add New Post</a></p>
+            <p class="subheading">My Posts <a href="{{ url_for('add_room') }}">Add New Room</a></p>
 
-            {% for post in blog_posts %}
-                <a href="{{ url_for('post', post_id=post.id) }}">
-                    <p>[{{ post.type|upper }}] {{ post.title }} - {{ post.date_posted.strftime('%B %d, %Y') }}</p>
+            {% for room in room_posts %}
+                <a href="{{ url_for('room', room_id=room.id) }}">
+                    <p>[{{ room.type|upper }}] {{ room.title }} - {{ room.date_posted.strftime('%B %d, %Y') }}</p>
                 </a>
             {% endfor %}
 
@@ -209,7 +224,7 @@
 {#                <div class="modal-content">#}
 {#                    <span class="close">&times;</span>#}
 {#                    <h4>Upload A New Profile Photo</h4>#}
-{#                    <form method="post" enctype="multipart/form-data">#}
+{#                    <form method="room" enctype="multipart/form-data">#}
 {#                        {{ image_form.hidden_tag() }}#}
 {#                        {{ image_form.image(class_="chooseFile") }}<br>#}
 {#                        {{ image_form.submit_button1 }}#}
@@ -265,10 +280,10 @@
 {#        <div class="container">#}
 {##}
 {#            <h4><a href="{{ url_for('add_post') }}">Add New Post</a></h4>#}
-{#            {% for post in blog_posts %}#}
-{#                <a href="{{ url_for('post', post_id=post.id) }}">#}
-{#                    <h5>{{ post.type|upper }} : {{ post.title }} - {{ post.subtitle }}</h5>#}
-{#                    By {{ post.author }} on {{ post.date_posted.strftime('%B %d, %Y') }} </a>#}
+{#            {% for room in blog_posts %}#}
+{#                <a href="{{ url_for('room', post_id=room.id) }}">#}
+{#                    <h5>{{ room.type|upper }} : {{ room.title }} - {{ room.subtitle }}</h5>#}
+{#                    By {{ room.author }} on {{ room.date_posted.strftime('%B %d, %Y') }} </a>#}
 {#            {% endfor %}#}
 {##}
 {#            <hr>#}
@@ -293,7 +308,7 @@
 {#                <div class="modal2-content">#}
 {#                    <span class="close">&times;</span>#}
 {#                    <h4>Upload A New File</h4>#}
-{#                    <form method="post" enctype="multipart/form-data">#}
+{#                    <form method="room" enctype="multipart/form-data">#}
 {#                        {{ file_form.hidden_tag() }}#}
 {#                        {{ file_form.file(class_="chooseFile") }}<br>#}
 {#                        {{ file_form.submit_button }}#}
@@ -328,7 +343,7 @@
 {##}
 {##}
 {#        <h4>Upload A New File</h4>#}
-{#        <form method="post" enctype="multipart/form-data">#}
+{#        <form method="room" enctype="multipart/form-data">#}
 {#            {{ file_form.hidden_tag() }}#}
 {#            {{ file_form.file }}<br>#}
 {#            {{ file_form.submit_button }}#}
@@ -352,7 +367,7 @@
 {#        <br>#}
 {##}
 {#        <h4>Upload A New Profile Photo</h4>#}
-{#        <form method="post" enctype="multipart/form-data">#}
+{#        <form method="room" enctype="multipart/form-data">#}
 {#            {{ image_form.hidden_tag() }}#}
 {#            {{ image_form.file }}<br>#}
 {#            {{ image_form.submit_button }}#}
@@ -361,10 +376,10 @@
 {##}
 {##}
 {#        <h4><a href="{{ url_for('add_post') }}">Add New Post</a></h4>#}
-{#        {% for post in blog_posts %}#}
-{#            <a href="{{ url_for('post', post_id=post.id) }}">#}
-{#                <h5>{{ post.type|upper }} : {{ post.title }} - {{ post.subtitle }}</h5>#}
-{#                By {{ post.author }} on {{ post.date_posted.strftime('%B %d, %Y') }} </a>#}
+{#        {% for room in blog_posts %}#}
+{#            <a href="{{ url_for('room', post_id=room.id) }}">#}
+{#                <h5>{{ room.type|upper }} : {{ room.title }} - {{ room.subtitle }}</h5>#}
+{#                By {{ room.author }} on {{ room.date_posted.strftime('%B %d, %Y') }} </a>#}
 {#        {% endfor %}#}
 {##}
 {#    </div>#}
@@ -405,5 +420,6 @@
     }
 </script>
 
+{% endblock %}
 </body>
 </html>

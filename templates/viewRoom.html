@@ -2,7 +2,7 @@
 <head>
     <meta charset=utf-8>
 
-    <title>View Post</title>
+    <title>{{ room.room_title }} Lobby</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/viewPost.css') }}">
@@ -13,14 +13,17 @@
 
 <body>
 
-<div class="navbar">
-    <a class="logo" href="#">Home</a>
-    <a href="{{ url_for('profile', username=username) }}">{{ username }}</a>
-    <a href="#">Forums</a>
-    <a href="{{ url_for('chat', username=username) }}">Chat</a>
-    <a href="{{ url_for('all_users') }}">Users</a>
-    <a href="{{ url_for('logout') }}"> Logout </a>
-</div>
+{% extends "navbar.html" %}
+{% block content %}
+
+{#<div class="navbar">#}
+{#    <a class="logo" href="#">Home</a>#}
+{#    <a href="{{ url_for('profile', username=username) }}">{{ username }}</a>#}
+{#    <a href="#">Forums</a>#}
+{#    <a href="{{ url_for('chat', username=username) }}">Chat</a>#}
+{#    <a href="{{ url_for('all_users') }}">Users</a>#}
+{#    <a href="{{ url_for('logout') }}"> Logout </a>#}
+{#</div>#}
 
 
 <!-- Main Section Div -->
@@ -31,20 +34,20 @@
 
         <div id="cardStyle">
 
-            <div id="postTitle">{{ post.title }} </div>
+            <div id="postTitle">{{ room.title }} </div>
 
 
 
             <div id="authorDate">
-                <div id="author">By: <a href="{{ url_for('pub_profile', username=post.author) }}"> {{ post.author }}</a></div>
-                <div id="dateTime">{{ post.date_posted.strftime('%b %d, %Y') }} at {{ post.date_posted.strftime('%I'':''%M %p') }}</div>
+                <div id="author">By: <a href="{{ url_for('pub_profile', username=room.author) }}"> {{ room.author }}</a></div>
+                <div id="dateTime">{{ room.date_posted.strftime('%b %d, %Y') }} at {{ room.date_posted.strftime('%I'':''%M %p') }}</div>
             </div>
 
-            <div id="roomTitle">{{ post.room_title }}</div>
+            <div id="roomTitle">{{ room.room_title }}</div>
 
-            <div id="content">Post Content: {{ post.content|safe }}</div>
+            <div id="content">Post Content: {{ room.content|safe }}</div>
 
-            <div id="joinRoomLink"><a href="{{ url_for('chat_jq') }}">Join {{ post.room_title }}</a></div>
+            <div id="joinRoomLink"><a href="{{ url_for('private_chat') }}">Join {{ room.room_title }}</a></div>
 
 
                 <form method="post">
@@ -79,7 +82,7 @@
 
 
 
-{#    <form method="post">#}
+{#    <form method="room">#}
 {#        <div>{{ post_form.type }}</div>#}
 {#        <div>#}
 {#            {{ comment_form.content(class_='form-control', placeholder='Add A Comment Now!', autocomplete='off') }}#}
@@ -106,13 +109,13 @@
 
             <h5>View Recent Room Posts:</h5>
 
-            {% for post in posts %}
+            {% for room in rooms %}
                 <div class="roomPosts">
 
-                    <a href="{{ url_for('post', post_id=post.id) }}">
-                        <h5>[{{ post.type|upper }}] {{ post.title }}</h5>
-                        by {{ post.author }} on {{ post.date_posted.strftime('%b %d, %Y') }}
-                        at {{ post.date_posted.strftime('%I' ':' '%M %p') }}
+                    <a href="{{ url_for('room', room_id=room.id) }}">
+                        <h5>[{{ room.type|upper }}] {{ room.title }}</h5>
+                        by {{ room.author }} on {{ room.date_posted.strftime('%b %d, %Y') }}
+                        at {{ room.date_posted.strftime('%I' ':' '%M %p') }}
                     </a>
 
                     <hr>
@@ -129,12 +132,12 @@
 {##}
 {#        <div class="row">#}
 {#            <div class="col-lg-8 col-md-10 mx-auto">#}
-{#                <div class="post-heading">#}
-{#                    <h1>{{ post.title }}</h1>#}
-{#                    <h2 class="subheading">{{ post.room_title }}</h2>#}
+{#                <div class="room-heading">#}
+{#                    <h1>{{ room.title }}</h1>#}
+{#                    <h2 class="subheading">{{ room.room_title }}</h2>#}
 {#                    <span class="meta">Posted by#}
-{#                {{ post.author }}#}
-{#                on {{ post.date_posted.strftime('%b %d, %Y') }} at {{ post.date_posted.strftime('%I'':''%M %p') }}</span>#}
+{#                {{ room.author }}#}
+{#                on {{ room.date_posted.strftime('%b %d, %Y') }} at {{ room.date_posted.strftime('%I'':''%M %p') }}</span>#}
 {#                </div>#}
 {#            </div>#}
 {#        </div>#}
@@ -145,39 +148,18 @@
 {#            <div class="container">#}
 {#                <div class="row">#}
 {#                    <div class="col-lg-8 col-md-10 mx-auto">#}
-{#                        {{ post.content|safe }}#}
+{#                        {{ room.content|safe }}#}
 {#                    </div>#}
 {#                </div>#}
 {#            </div>#}
-{#            <a href="{{ url_for('chat_jq') }}">Join This Room</a>#}
+{#            <a href="{{ url_for('private_chat') }}">Join This Room</a>#}
 {#        </article>#}
 {##}
 {#    </div><!-- End Container -->#}
 
 </div><!-- End Main Section -->
 
-
-
-<script type="text/javascript">
-    const username = `{{ username }}`;
-    const mesage_object = `{{ message_object }}`
-</script>
-
-<!-- Custom Chat JS -->
-<script src="{{ url_for('static', filename='js/chat_page.js') }}">
-
-</script>
-<!-- SocketIO JS -->
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
-        integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
-
-<!-- CustomSocketIO JS -->
-<script src="{{ url_for('static', filename='js/socketio.js') }}">
-
-
-</script>
-
-
+{% endblock %}
 </body>
 
 </html>

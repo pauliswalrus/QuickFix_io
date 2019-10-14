@@ -27,25 +27,25 @@ $(document).ready(function() {
 
     $('.updateButton').on('click',function () {
 
-        var post_id = $(this).attr('post_id');
+        var room_id = $(this).attr('room_id');
 
-        var name = $('#nameInput'+post_id).val();
+        var name = $('#nameInput'+room_id).val();
 
-        var title = $('#titleInput'+post_id).val()
+        var title = $('#titleInput'+room_id).val()
 
-        var content = $('#contentInput'+post_id).val()
+        var content = $('#contentInput'+room_id).val()
 
         req = $.ajax({
            url : '/updateRoom',
            type : 'POST',
-           data : { name : name, title : title, content : content, id : post_id }
+           data : { name : name, title : title, content : content, id : room_id }
 
         });
 
         req.done(function(data) {
 
-            $('#roomSection'+post_id).fadeOut(1000).fadeIn(1000);
-            $('#memberNumber'+post_id).text(data.room_name);
+            $('#roomSection'+room_id).fadeOut(1000).fadeIn(1000);
+            $('#memberNumber'+room_id).text(data.room_name);
 
         });
 
@@ -55,7 +55,7 @@ $(document).ready(function() {
     })
 
 
-    $('.deleteButton').on('click',function () {
+    $('.privateButton').on('click',function () {
 
         var room_id = $(this).attr('room_id');
 
@@ -68,9 +68,67 @@ $(document).ready(function() {
 
         });
         alert("this room is private!")
-        $('.deleteButton').fadeOut(200);
+        $('.privateButton').fadeOut(200);
 
 
+
+    })
+
+       $('.deleteButton').on('click',function () {
+
+        var room_id = $(this).attr('room_id');
+
+        var name = $('#nameInput'+room_id).val();
+
+        req = $.ajax({
+           url : '/deleteRoom',
+           type : 'POST',
+           data : { name : name, id : room_id }
+
+        });
+        alert("Room Deleted!")
+        location.reload();
+
+
+
+    })
+
+
+    $('.approveTutor').on('click',function () {
+
+        var user_id = $(this).attr('user_id');
+
+        req = $.ajax({
+           url : '/approveTutor',
+           type : 'POST',
+           data : { id : user_id }
+
+        });
+
+        req.done(function(data) {
+            alert(data.tutor_status)
+
+            $('#memberNumber'+user_id).text(data.tutor_status);
+            $('#tutorSection'+user_id).fadeOut(1000).fadeIn(1000);
+
+        });
+
+
+    })
+
+    $('.denyTutor').on('click',function () {
+
+        var user_id = $(this).attr('user_id');
+
+        var comments = $('#appComments').val();
+
+        req = $.ajax({
+           url : '/denyTutor',
+           type : 'POST',
+           data : { id : user_id, comments : comments}
+
+        });
+        location.reload();
 
     })
 

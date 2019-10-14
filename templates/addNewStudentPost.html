@@ -2,7 +2,7 @@
 <head>
     <meta charset=utf-8>
 
-    <title>Add a Post</title>
+    <title>Ask For Help</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/cardStyleForm.css') }}">
@@ -13,20 +13,23 @@
 
 <body>
 
-<div class="navbar">
-    <a class="logo" href="{{ url_for('chat', username=username) }}">Home</a>
-    <a href="{{ url_for('profile', username=username) }}">{{ username }}</a>
-    <a href="#">Forums</a>
-    <a href="{{ url_for('chat', username=username) }}">Chat</a>
-    <a href="{{ url_for('all_users') }}">Users</a>
-    <a href="{{ url_for('logout') }}"> Logout </a>
-</div>
+{% extends "navbar.html" %}
+{% block content %}
+
+{#<div class="navbar">#}
+{#    <a class="logo" href="{{ url_for('chat', username=username) }}">Home</a>#}
+{#    <a href="{{ url_for('profile', username=username) }}">{{ username }}</a>#}
+{#    <a href="#">Forums</a>#}
+{#    <a href="{{ url_for('chat', username=username) }}">Chat</a>#}
+{#    <a href="{{ url_for('all_users') }}">Users</a>#}
+{#    <a href="{{ url_for('logout') }}"> Logout </a>#}
+{#</div>#}
 
 <div id="main-section">
 
-    <div id="formTitle"> Add a post</div>
+    <div id="formTitle"> Add a Student Post</div>
 
-    <form action="{{ url_for('add_post') }}" , method="post">
+    <form action="{{ url_for('add_student_post') }}" , method="post">
 
 {#        <div>{{ post_form.type }}</div>#}
 
@@ -34,15 +37,6 @@
             {{ post_form.title(class_='form-control', placeholder='Title', autocomplete='off', autofocus=true) }}
             <ul>
                 {% for error in post_form.title.errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div>
-            {{ post_form.subtitle(class_='form-control', placeholder='RoomName', autocomplete='off') }}
-            <ul>
-                {% for error in post_form.subtitle.errors %}
                     <li>{{ error }}</li>
                 {% endfor %}
             </ul>
@@ -65,14 +59,6 @@
 
 </div>
 
-
-<script type="text/javascript">
-    const username = `{{ username }}`;
-    const mesage_object = `{{ message_object }}`
-</script>
-
-<!-- SocketIO JS -->
-
-
+{% endblock %}
 </body>
 </html>

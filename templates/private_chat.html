@@ -1,0 +1,295 @@
+<html>
+<head>
+    <meta charset=utf-8>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Beth+Ellen&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Dosis:200&display=swap');
+    </style>
+
+    <title> QuickFix Chat: {{ roomName }}</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/austins_private_jq.css') }}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
+            integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+
+    <script src="{{ url_for('static', filename='js/chat_page.js') }}"></script>
+
+    <script src="https://kit.fontawesome.com/2f55668b75.js" crossorigin="anonymous"></script>
+
+</head>
+
+
+
+
+<body>
+{#{% extends "navbar.html" %}#}
+{#{% block content %}#}
+
+<div id="main-section">
+
+    <div id="chatWindowHeader">
+        <div id="room-name">{{ roomName }}</div>
+    </div>
+
+
+    <div id="leftColumn">
+        Room Information:
+        <div id="currDate">{{ date_stamp }}</div>
+        <div id="roomCreator">Created By: {{ authorName }}</div>
+        <div id="joined-stamp">Joined at {{ connected_stamp }}</div>
+
+        <hr>
+
+        <!-- To Do: Add Javascript to hide close room if student-->
+        <button type="button" id="button_leave" class="btn btn-light">Leave Room</button>
+        <button type="button" id="button_close" class="btn btn-light">Close Room</button>
+
+        <input type="text" id="nameInput{{ room.id }}" value="{{ room.room_title }}" readonly hidden/>
+        <button id="privateButton" class="btn btn-danger privateButton" room_id="{{ room.id }}">Make Room Private</button>
+
+        <hr>
+
+        {% for file in room_files %}
+            <a href="{{ url_for('room_download', dl_name=file.file_name) }}">
+                <h5>{{ file.file_name }} </h5></a>
+        {% endfor %}
+    </div>
+
+
+    <div id="rightColumn">
+
+        <div id="display-message-section">
+
+
+            {% for msg in message_object %}
+
+                {% if msg.username == username %}
+
+                <p class="my-msg">
+{#                    <img src="{{ url_for('uploaded_file', filename=this_user.user_photo) }}" height="50px" width="50px" class="profilePic_sm"/>#}
+                    <span class="my-username">{{ msg.username }}</span>
+                    <span class="timestamp">{{ msg.timestamp }}</span>
+                    <br>
+                    <span class="my-msg">{{ msg.message }}</span>
+                </p>
+
+                {% else %}
+
+                <p class="others-msg">
+{#                    <img src="{{ url_for('uploaded_file', filename=this_user.user_photo) }}" height="50px" width="50px" class="profilePic_sm"/>#}
+                    <span class="other-username">{{ msg.username }}</span>
+                    <span class="other-timestamp">{{ msg.timestamp }}</span>
+                    <br>
+                    <span class="others-msg">{{ msg.message }}</span>
+                </p>
+
+                {% endif %}
+
+
+            {% endfor %}
+
+
+        </div>
+
+        <div id="input-area">
+            <button class="fas fa-paperclip" id="uploadNewDocs"></button>
+{#            <button class="btn btn-info" id="uploadNewDocs">[+]</button>#}
+            <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">
+            <button type="submit" id="send_message">SEND</button>
+        </div>
+
+
+        <div id="upload">
+            <span class="closeWindow" onclick="testClose()">&times;</span><br>
+
+            <form method="post" enctype="multipart/form-data">
+                {{ file_form.hidden_tag() }}
+                {{ file_form.file }}
+                <button id="file_upload" type=submit class="btn btn-info" title="Submit">Add New File</button>
+                {{ file_form.csrf_token }}
+            </form>
+        </div>
+
+
+    </div>
+
+</div><!-- End Main Section Div -->
+
+<script type="text/javascript">
+    const username = `{{ username }}`;
+    const mesage_object = `{{ message_object }}`
+    const roomname = `{{ roomName }}`;
+</script>
+
+<script type="text/javascript">
+
+    //show div upload on button click uploadNewDocs
+    let uploadForm = document.getElementById('upload');
+    let button = document.getElementById('uploadNewDocs');
+
+    button.onclick = function () {
+        uploadForm.style.display = "block";
+    }
+
+    function testClose() {
+
+        uploadForm.style.display = "none";
+    }
+
+</script>
+
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', () => {
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+
+        //sets up socketio for chat_join.html page
+
+        let room = `{{ roomName }}`;
+        joinRoom(`{{ roomName }}`);
+
+        //Displays incoming messages
+        socket.on('message', data => {
+
+            const p = document.createElement('p'); // <p> tag
+            const span_username = document.createElement('span'); // <span> tag
+            const span_timestamp = document.createElement('span'); // <span> tag
+            const br = document.createElement('br'); // <br> tag
+
+
+            if (data.username == username) {
+
+                p.setAttribute("class", "my-msg"); // <p class="my-msg"></p>
+
+                span_username.setAttribute("class", "my-username"); // <span class="my-username"></span>
+                span_username.innerHTML = data.username; // <span class="my-username"> { username } </span>
+
+                span_timestamp.setAttribute("class", "timestamp"); // <span class="timestamp"></span>
+                span_timestamp.innerHTML = data.time_stamp; // <span class="timestamp"> { timestamp } </span>
+
+                p.innerHTML = span_username.outerHTML + span_timestamp.outerHTML + br.outerHTML + data.msg; // add username, timestamp, line break and message to the <p> tag
+                //p.innerHTML = span_username.outerHTML + br.outerHTML + data.msg + br.outerHTML + span_timestamp.outerHTML;
+                document.querySelector('#display-message-section').append(p); // append <p> tag to message section
+                //console.log(`Message received: ${data}`)
+
+            } else if (typeof data.username !== 'undefined') {
+                p.setAttribute("class", "others-msg");
+
+                span_username.setAttribute("class", "other-username");
+                span_username.innerText = data.username;
+
+                span_timestamp.setAttribute("class", "other-timestamp");
+                span_timestamp.innerText = data.time_stamp;
+
+                p.innerHTML = span_timestamp.outerHTML + span_username.outerHTML + br.outerHTML + data.msg;
+                document.querySelector('#display-message-section').append(p);
+
+                //p.innerHTML = span_timestamp.outerHTML + span_username + br.outerHTML + data.msg;
+            } else {
+                printSysMsg(data.msg);
+            }
+
+        });
+
+        // send message
+        document.querySelector('#send_message').onclick = () => {
+            socket.send({'msg': document.querySelector('#user_message').value, 'username': username, 'room': roomname});
+
+            //clear input area
+            document.querySelector('#user_message').value = '';
+
+        };
+
+        // on button click - leave the room
+        document.querySelector('#button_leave').onclick = () => {
+            socket.emit('leave', {'username': username, 'room': roomname});
+            socket.disconnect();
+            window.location.href = "{{ url_for('home') }}";
+        };
+
+        // on button click - close the room
+        document.querySelector('#button_close').onclick = () => {
+            socket.emit('close_room', {'username': username, 'room': roomname});
+            socket.disconnect();
+            window.location.href = "{{ url_for('home') }}";
+        };
+
+           document.querySelector('#file_upload').onclick = () => {
+               socket.emit('upload', {'username': username, 'room': roomname});
+        };
+
+
+        //leave room
+        function leaveRoom(room) {
+            socket.emit('leave', {'username': username, 'room': roomname});
+
+            window.location.href = "{{ url_for('home') }}";
+
+
+        }
+
+        //join room
+        function joinRoom(room) {
+            socket.emit('join', {'username': username, 'room': roomname});
+            document.querySelector('#room-name').innerHTML = room;
+            {#document.querySelector('#display-message-section').innerHTML = '';#}
+            //document.querySelector('#user_message').focus();
+        }
+
+
+        function printSysMsg(msg) {
+            const p = document.createElement('p');
+            p.innerHTML = msg;
+            document.querySelector('#display-message-section').append(p);
+        }
+    })
+
+</script>
+<script>
+    window.onload=function () {
+     let objDiv = document.getElementById("display-message-section");
+     objDiv.scrollTop = objDiv.scrollHeight;
+
+
+    let uRole = '{{ role_name }}';
+       if (uRole == 'S') {
+            document.getElementById('button_close').style.display = "none";
+            document.getElementById('deleteButton').style.display = "none";
+        }
+
+
+
+
+
+    {##}
+    {##}
+    {#// Get the modal#}
+    {#let modal = document.getElementsByClassName('modal');#}
+    {##}
+    {#// When the user clicks the button, open the modal#}
+    {#btn[0].onclick = function () {#}
+    {#    modal[0].style.display = "block";#}
+    {##}
+    {##}
+    {#span[1].onclick = function () {#}
+    {#    modal[1].style.display = "none";#}
+    {##}
+
+
+}
+</script>
+
+</body>
+
+
+</html>

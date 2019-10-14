@@ -3,13 +3,14 @@ from wtforms import StringField, PasswordField, SubmitField, TextAreaField, Sele
 from wtforms.validators import InputRequired, Length, EqualTo, ValidationError, Email
 
 from passlib.hash import pbkdf2_sha256
-from app.sqlalq_datamodels import User, FileUpload
+from sqlalq_datamodels import User, FileUpload, RoomPost
 
 
 ###     AUTHOR: AUSTIN PAUL
-###     DATE: OCT 4
+###     DATE: OCT 13
 ###     QUICKFIX_IO DIRTYBITS
-###     PRE-SPRINT 4 TURNIN OCT 4 BUILD
+###     SPRINT 6 OCT 13 BUILD DEPLOYED AT
+###     quickfix-io.herokuapp.com
 
 
 def invalid_credentials(form, field):
@@ -47,7 +48,7 @@ class RegistrationForm(FlaskForm):
 class TutorForm(FlaskForm):
     """ TutorRegistration form """
 
-    about_tutor = TextAreaField('about_label', validators=[InputRequired(message="Post required")])
+    about_tutor = TextAreaField('about_label', validators=[InputRequired(message="About Me required")])
     credentials_file = FileField('file_upload', validators=[InputRequired(message="Select a file")])
     submit_button = SubmitField('Create Account')
 
@@ -65,16 +66,34 @@ class RoomCreate(FlaskForm):
     room_made = StringField('Private Room ', validators=[InputRequired(message="Must enter a room name")])
     submit_button = SubmitField('Room')
 
-class BlogPostForm(FlaskForm):
+class RoomForm(FlaskForm):
+    """ RoomPost Form """
+
+    subtitle = StringField('subtitle_label', validators=[InputRequired(message="Room required"), Length(min=4, max=50, message="Room Name must be between 4 and 50 characters")])
+    title = StringField('title_label', validators=[InputRequired(message="Title required"), Length(min=4, max=50, message="Title must be between 4 and 50 characters")])
+    content = TextAreaField('content_label', validators=[InputRequired(message="Post required")])
+    submit_button = SubmitField('Add Room')
+
+    def validate_subtitle(self, subtitle):
+        room_object = RoomPost.query.filter_by(room_title=subtitle.data).first()
+        if room_object:
+            raise ValidationError("A room with this name already exists. Please try a different name")
+
+class CommentForm(FlaskForm):
     """ RoomPost Form """
 
     # type = SelectField('type_label', choices=[('Request', 'Request'), ('Offer', 'Offer')])
-    title = StringField('title_label', validators=[InputRequired(message="Title required")])
-    subtitle = StringField('subtitle_label', validators=[InputRequired(message="Room required")])
+    content = TextAreaField('content_label', validators=[InputRequired(message="Post required")])
+    submit_button = SubmitField('Add Comment')
+
+class StudentPostForm(FlaskForm):
+    """ RoomPost Form """
+    # type = SelectField('type_label', choices=[('Request', 'Request'), ('Offer', 'Offer')])
+    title = StringField('title_label', validators=[InputRequired(message="Title required"), Length(min=4, max=50, message="Title must be between 4 and 50 characters")])
     content = TextAreaField('content_label', validators=[InputRequired(message="Post required")])
     submit_button = SubmitField('Add Post')
 
-class CommentForm(FlaskForm):
+class StudentCommentForm(FlaskForm):
     """ RoomPost Form """
 
     # type = SelectField('type_label', choices=[('Request', 'Request'), ('Offer', 'Offer')])
@@ -99,4 +118,10 @@ class RoomJoin(FlaskForm):
 
     room_private = StringField('Private Room')
     submit_button2 = SubmitField('Begin Private Chat')
+
+class TutorStatus(FlaskForm):
+    """ Status"""
+
+    status = SelectField('Status', choices=[('0', 'Offline'), ('1', 'Online')])
+    submit_button3 = SubmitField('Change Status')
 

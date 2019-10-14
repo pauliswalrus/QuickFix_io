@@ -9,13 +9,14 @@ import os
 
 from flask_uploads import UploadSet, configure_uploads, IMAGES, send_from_directory
 
-from app.flask_forms import *
-from app.sqlalq_datamodels import *
+from flask_forms import *
+from sqlalq_datamodels import *
 
 ###     AUTHOR: AUSTIN PAUL
-###     DATE: OCT 4
+###     DATE: OCT 13
 ###     QUICKFIX_IO DIRTYBITS
-###     PRE-SPRINT 4 TURNIN OCT 4 BUILD
+###     SPRINT 6 OCT 13 BUILD DEPLOYED AT
+###     quickfix-io.herokuapp.com
 
 # socketio init
 socketio = SocketIO(app)
@@ -23,9 +24,6 @@ socketio = SocketIO(app)
 photos = UploadSet('photos', IMAGES)
 app.config['UPLOADED_PHOTOS_DEST'] = 'static/pictures'
 configure_uploads(app, photos)
-
-# rooms used at chat
-ROOMS = ["lounge", "student chat", "coding q & a", "general math"]
 
 # creates and inits Login
 login = LoginManager(app)
@@ -47,13 +45,16 @@ def login():
         user_object = User.query.filter_by(username=login_form.username.data).first()
         login_user(user_object)
 
+        # session['userName'] = user_object.username
+        session['userRole'] = user_object.role
+
         if user_object.role == "A":
 
             return redirect(url_for('admin'))
 
         else:
 
-            return redirect(url_for('chat'))
+            return redirect(url_for('home'))
 
     return render_template("login.html", form=login_form)
 
@@ -68,14 +69,17 @@ def logout():
 @app.route('/admin')
 def admin():
 
+    if session["userRole"] != "A":
+        return "You are not an authorized admin please go back"
+
     users_list = User.query.all()
     all_files = FileUpload.query.all()
     blog_posts = RoomPost.query.all()
-    tutors = Tutor.query.all()
+    tutors = Tutor.query.filter_by(tutor_status="pending").all()
 
-    tutor_users = User.query.filter_by(role="T").all()
+    this_user = User.query.filter_by(username=current_user.username).first()
 
-    return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts, tutors=tutors, tutor_users=tutor_users)
+    return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts, tutors=tutors, this_user=this_user)
 
 ### need to rename to user
 @app.route('/register', methods=['GET', 'POST'])
@@ -115,7 +119,7 @@ def new_student():
 ### need to rename to user
 @app.route('/tutor_register', methods=['GET', 'POST'])
 def new_tutor():
-
+    this_user = User.query.filter_by(username=current_user.username).first()
     tutor_form = TutorForm()
     # Updates database if validation is successful
     if tutor_form.validate_on_submit():
@@ -125,28 +129,29 @@ def new_tutor():
 
         user_object = User.query.filter_by(username=current_user.username).first()
 
-        user_object.role = "T"
         tutor_added = Tutor(user_id=user_object.id, about_tutor=about_tutor, tutor_status="pending", credentials_file_name=credentials_file.filename, credentials_file_data=credentials_file.read())
         db.session.add(tutor_added)
         db.session.commit()
         flash('Registered successfully. Please login', 'success')
-        return redirect(url_for('chat'))
+        return redirect(url_for('home'))
 
-    return render_template("tutor_application.html", form=tutor_form)
+    return render_template("tutor_application.html", form=tutor_form, this_user=this_user)
 
-@app.route('/post/<int:post_id>', methods=['GET', 'POST'])
-def post(post_id):
-    post = RoomPost.query.filter_by(id=post_id).one()
+@app.route('/room/<int:room_id>', methods=['GET', 'POST'])
+def room(room_id):
+    room = RoomPost.query.filter_by(id=room_id).one()
 
-    comments = RoomComment.query.filter_by(room_id=post_id).order_by(RoomComment.date_posted.desc()).all()
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    comments = RoomComment.query.filter_by(room_id=room_id).order_by(RoomComment.date_posted.desc()).all()
     comment_form = CommentForm()
 
-    session['roomName'] = post.room_title
+    session['roomName'] = room.room_title
     session['userName'] = current_user.username
-    session['author'] = post.author
+    session['author'] = room.author
 
     if comment_form.validate_on_submit():
-        room_id = post.id
+        room_id = room.id
         comment_author = current_user.username
         content = comment_form.content.data
         date_time = datetime.now()
@@ -155,26 +160,28 @@ def post(post_id):
         db.session.add(comment_post)
         db.session.commit()
 
-        return redirect(url_for('post', post_id=post.id))
+        return redirect(url_for('room', room_id=room.id))
 
     if current_user.role == 'S':
-        posts = RoomPost.query.filter_by(type="Offer").order_by(RoomPost.date_posted.desc()).all()
+        rooms = RoomPost.query.filter_by(type="Offer").order_by(RoomPost.date_posted.desc()).all()
     else:
-        posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
+        rooms = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
 
-    return render_template('viewPost.html', post=post, username=current_user.username, posts=posts, comment_form=comment_form, comments=comments)
+    return render_template('viewRoom.html', room=room, username=current_user.username, rooms=rooms, comment_form=comment_form, comments=comments, this_user=this_user)
 
 
-@app.route('/add_post', methods=['GET', 'POST'])
-def add_post():
+@app.route('/add_room', methods=['GET', 'POST'])
+def add_room():
 
-    post_form = BlogPostForm()
+    post_form = RoomForm()
 
     user_object = User.query.filter_by(username=current_user.username)
 
+    this_user = User.query.filter_by(username=current_user.username).first()
+
     if post_form.validate_on_submit():
-        title = post_form.title.data
         subtitle = post_form.subtitle.data
+        title = post_form.title.data
         content = post_form.content.data
         if current_user.role == 'S':
             type = "Request"
@@ -183,22 +190,25 @@ def add_post():
         #type = post_form.type.data
         author = current_user.username
         date_time = datetime.now()
+        visible = True
 
         # add roompost to database
         blog_post = RoomPost(title=title, room_title=subtitle, author=author, date_posted=date_time, content=content,
-                             type=type)
+                             type=type, visible=visible)
 
         db.session.add(blog_post)
         db.session.commit()
 
-        return redirect(url_for('chat'))
+        return redirect(url_for('home'))
 
-    return render_template('addNewPost.html', username=current_user.username, post_form=post_form, user_object=user_object)
+    return render_template('addNewRoom.html', username=current_user.username, post_form=post_form, user_object=user_object, this_user=this_user)
 #add comment
 @app.route('/add_comment', methods=['GET', 'POST'])
 def add_comment():
 
-    post_form = BlogPostForm()
+    post_form = RoomForm()
+
+    this_user = User.query.filter_by(username=current_user.username).first()
 
     if post_form.validate_on_submit():
         title = post_form.title.data
@@ -214,12 +224,99 @@ def add_comment():
 
         # add roompost to database
         blog_post = RoomPost(title=title, room_title=subtitle, author=author, date_posted=date_time, content=content,
+                             type=type, this_user=this_user)
+
+        db.session.add(blog_post)
+        db.session.commit()
+
+        return redirect(url_for('home'))
+
+@app.route('/studentpost/<int:studentpost_id>', methods=['GET', 'POST'])
+def studentpost(studentpost_id):
+
+    stdpost = StudentPost.query.filter_by(id=studentpost_id).one()
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    comments = PostComment.query.filter_by(post_id=studentpost_id).order_by(PostComment.date_posted.desc()).all()
+    comment_form = CommentForm()
+
+    session['postName'] = stdpost.title
+    session['userName'] = current_user.username
+    session['author'] = stdpost.author
+
+    if comment_form.validate_on_submit():
+        post_id = stdpost.id
+        comment_author = current_user.username
+        content = comment_form.content.data
+        date_time = datetime.now()
+        # add roompost to database
+        comment_post = PostComment(post_id=studentpost_id, comment_author=comment_author, date_posted=date_time, content=content)
+        db.session.add(comment_post)
+        db.session.commit()
+
+        return redirect(url_for('studentpost', studentpost_id=post_id))
+
+    return render_template('viewStudentPost.html', post=stdpost, username=current_user.username, comment_form=comment_form, comments=comments, this_user=this_user)
+
+
+@app.route('/add_student_post', methods=['GET', 'POST'])
+def add_student_post():
+
+    post_form = StudentPostForm()
+
+    user_object = User.query.filter_by(username=current_user.username)
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    if post_form.validate_on_submit():
+        title = post_form.title.data
+        content = post_form.content.data
+        if current_user.role == 'S':
+            type = "Request"
+        else:
+            type = "Offer"
+        #type = post_form.type.data
+        author = current_user.username
+        date_time = datetime.now()
+
+        # add roompost to database
+        blog_post = StudentPost(title=title, author=author, date_posted=date_time, content=content,
                              type=type)
 
         db.session.add(blog_post)
         db.session.commit()
 
-        return redirect(url_for('chat'))
+        return redirect(url_for('home'))
+
+    return render_template('addNewStudentPost.html', username=current_user.username, post_form=post_form, user_object=user_object, this_user=this_user)
+#add comment
+@app.route('/add_student_comment', methods=['GET', 'POST'])
+def add_student_comment():
+
+    post_form = StudentPostForm()
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    if post_form.validate_on_submit():
+        title = post_form.title.data
+        content = post_form.content.data
+        if current_user.role == 'S':
+            type = "Request"
+        else:
+            type = "Offer"
+        #type = post_form.type.data
+        author = current_user.username
+        date_time = datetime.now()
+
+        # add roompost to database
+        blog_post = StudentPost(title=title,  author=author, date_posted=date_time, content=content,
+                             type=type, this_user=this_user)
+
+        db.session.add(blog_post)
+        db.session.commit()
+
+        return redirect(url_for('home'))
 #all users page
 @app.route("/users", methods=['GET', 'POST'])
 def all_users():
@@ -227,46 +324,52 @@ def all_users():
     all_tutors = User.query.filter_by(role='T').all()
     online_tutors = User.query.filter_by(status=1, role='T').all()
     student_users = User.query.filter_by(role='S').all()
+    this_user = User.query.filter_by(username=current_user.username).first()
 
     return render_template('all_users.html', username=current_user.username, all_tutors=all_tutors,
-                           online_tutors=online_tutors, student_users=student_users)
+                           online_tutors=online_tutors, student_users=student_users, this_user=this_user)
 
-# route forff chat - displays public rooms and form to join(create rooms)
-@app.route("/chat", methods=['GET', 'POST'])
-def chat():
+# route for chat - displays public rooms and form to join(create rooms)
+@app.route("/home", methods=['GET', 'POST'])
+def home():
 
     date_stamp = strftime('%A, %B %d', localtime())
     this_user = User.query.filter_by(username=current_user.username).first()
-
 
     one = 1
     online_users = User.query.filter_by(status=one).all()
 
     if this_user.role == 'S':
-        posts = RoomPost.query.filter_by(type="Offer").order_by(RoomPost.date_posted.desc()).all()
+        posts = RoomPost.query.filter_by(type="Offer").filter_by(visible=True).order_by(RoomPost.date_posted.desc()).all()
         role_name = "Student"
+        tutorapplication = Tutor.query.filter_by(user_id=this_user.id).first()
+
     else:
         posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
         role_name = "Tutor"
 
-    offerhelp = RoomPost.query.filter_by(type="Offer").order_by(RoomPost.date_posted.desc()).all()
-    askforhelp = RoomPost.query.filter_by(type="Request").order_by(RoomPost.date_posted.desc()).all()
+    offerhelp = RoomPost.query.filter_by(type="Offer").filter_by(visible=True).order_by(RoomPost.date_posted.desc()).all()
+    #askforhelp = RoomPost.query.filter_by(type="Request").filter_by(visible=True).order_by(RoomPost.date_posted.desc()).all()
+    askforhelp = StudentPost.query.all()
 
-    return render_template('home_page.html', username=current_user.username, role=current_user.role, rooms=ROOMS, date_stamp=date_stamp,
-                           online_users=online_users, posts=posts, offerhelp=offerhelp, askforhelp=askforhelp, role_name=role_name)
+    return render_template('home_page.html', username=current_user.username, role=current_user.role, date_stamp=date_stamp,
+                           online_users=online_users, posts=posts, offerhelp=offerhelp, askforhelp=askforhelp, role_name=role_name, this_user=this_user)
 
 
 # route for chat - displays public rooms and form to join(create rooms)
 @app.route("/private_session/", methods=['GET', 'POST'])
-def chat_jq():
+def private_chat():
 
     date_stamp = strftime('%A, %B %d', localtime())
     connected_stamp = strftime('%I : %M %p', localtime())
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    role_name = this_user.role
 
     roomName = session.get('roomName')
     authorName = session.get('author')
 
-    message_object = Message.query.filter_by(room=roomName).order_by(Message.id.desc()).all()
+    message_object = Message.query.filter_by(room=roomName).order_by(Message.id.asc()).all()
     room_files = RoomUpload.query.filter_by(room_name=roomName).all()
     room_object = RoomPost.query.filter_by(room_title=roomName).first()
 
@@ -277,26 +380,28 @@ def chat_jq():
         newFile = RoomUpload(file_name=file.filename, room_name=roomName, username=current_user.username, data=file.read())
         db.session.add(newFile)
         db.session.commit()
-        return redirect(url_for('chat_jq'))
+        return redirect(url_for('private_chat'))
 
-    return render_template('private_jq_new.html', username=current_user.username, rooms=ROOMS, date_stamp=date_stamp,
+    return render_template('private_chat.html', username=current_user.username, date_stamp=date_stamp,
                            roomName=roomName, message_object=message_object,
-                           authorName=authorName, connected_stamp=connected_stamp, file_form=file_form, room_files=room_files, room=room_object)
+                           authorName=authorName, connected_stamp=connected_stamp, file_form=file_form, room_files=room_files, room=room_object, this_user=this_user, role_name=role_name)
 
 # route for personal profile
 @app.route("/profile/", methods=['GET', 'POST'])
 def profile():
 
     user_object = User.query.filter_by(username=current_user.username).first()
+    this_user = User.query.filter_by(username=current_user.username).first()
 
     status = user_object.status
     role = user_object.role
     image_fp = user_object.user_photo
 
+    setdbstatus = 0
+
     image_form = ImageUploadForm()
 
     if image_form.validate_on_submit():
-
 
         image_filename = photos.save(request.files[image_form.image.name])
         #user_object2 = User.query.filter_by(username=current_user.username).update(dict(user_photo=os.path.join(app.config['UPLOADED_PHOTOS_DEST'], image_filename)))
@@ -310,7 +415,7 @@ def profile():
     else:
         role_name = "Tutor"
 
-    blog_posts = RoomPost.query.filter_by(author=current_user.username).order_by(RoomPost.date_posted.desc()).all()
+    room_posts = RoomPost.query.filter_by(author=current_user.username).order_by(RoomPost.date_posted.desc()).all()
 
     user_files = FileUpload.query.filter_by(username=current_user.username).all()
 
@@ -328,7 +433,24 @@ def profile():
         db.session.commit()
         return redirect(url_for('profile'))
 
-    return render_template('profile.html', username=current_user.username, image_fp=image_fp, status_string=status_string, blog_posts=blog_posts, role_name=role_name, file_form=file_form, user_files=user_files, image_form=image_form, user_object=user_object)
+    ts_form = TutorStatus()
+
+    if ts_form.validate_on_submit():
+        s1 = ts_form.status.data
+        print(s1)
+
+        if(s1 == '0'):
+            setdbstatus = 0
+            status_string = 'Offline'
+            db_status = User.query.filter_by(username=current_user.username).update(dict(status=setdbstatus))
+            db.session.commit()
+        if(s1 == '1'):
+            setdbstatus = 1
+            status_string = 'Online'
+            db_status = User.query.filter_by(username=current_user.username).update(dict(status=setdbstatus))
+            db.session.commit()
+
+    return render_template('profile.html', username=current_user.username, image_fp=image_fp, status_string=status_string, room_posts=room_posts, role_name=role_name, file_form=file_form, user_files=user_files, image_form=image_form, user_object=user_object, this_user=this_user, status=status, ts_form=ts_form, setdbstatus=setdbstatus)
 
 #
 # public profile accessed by users from online user links.
@@ -338,6 +460,8 @@ def pub_profile(username):
 
     thisUser = current_user.username
     user_object = User.query.filter_by(username=username).first()
+
+    this_user = User.query.filter_by(username=current_user.username).first()
 
     image_form = ImageUploadForm()
 
@@ -356,7 +480,7 @@ def pub_profile(username):
     status = user_object.status
     role = user_object.role
 
-    blog_posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
+    room_posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
 
     if role == "S":
         role_name = "Student"
@@ -364,14 +488,13 @@ def pub_profile(username):
         role_name = "Tutor"
 
     if status == 0:
-        status_string = "Offine"
+        status_string = "Offline"
     elif status == 1:
         status_string = "Online"
 
     return render_template('pub_profile.html', thisUser=thisUser, username=username, firstname=firstname,
-                           lastname=lastname, email=email, status_string=status_string, blog_posts=blog_posts,
-                           role_name=role_name, image_form=image_form, user_object=user_object, user_files=user_files)
-
+                           lastname=lastname, email=email, status_string=status_string, room_posts=room_posts,
+                           role_name=role_name, image_form=image_form, user_object=user_object, user_files=user_files, this_user=this_user)
 #gets uploaded files
 @app.route('/static/pictures/<filename>')
 def uploaded_file(filename):
@@ -412,39 +535,56 @@ def updateRoom():
     db.session.commit()
 
     return jsonify({'result' : 'success', "room_name" : room.room_title})
-    #return render_template('section.html', room=room)
-#
-##
-###pulls up register page - currently users only
-##
-#
+
+@app.route('/deleteRoom', methods=['POST'])
+def deleteRoom():
+    room = RoomPost.query.filter_by(id=request.form['id']).first()
+    db.session.delete(room)
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
 
 @app.route('/privateRoom', methods=['POST'])
 def privateRoom():
 
     room = RoomPost.query.filter_by(id=request.form['id']).first()
-    db.session.delete(room)
+    room.visible = False
+    #db.session.delete(room)
     db.session.commit()
 
     return jsonify({'result' : 'success'})
 
 
-#
-## file upload test
-#
+@app.route('/approveTutor', methods=['POST'])
+def approveTutor():
 
-# @app.route('/upload', methods=['GET','POST'])
-# def upload():
-#
-# #     file = request.files['inputFile']
-# #
-# #     print(file.filename)
-# # #
-# #     newFile = FileUpload(name=file.filename, data=file.read())
-# #     db.session.add(newFile)
-# #     db.session.commit()
-#
-#     return file.filename
+    user = User.query.filter_by(id=request.form['id']).first()
+    tutor = Tutor.query.filter_by(user_id=user.id).first()
+
+    user.role = "T"
+    tutor.tutor_status = "approved"
+    db.session.commit()
+
+    student = Student.query.filter_by(user_id=user.id).first()
+    db.session.delete(student)
+    db.session.commit()
+    tutor1 = Tutor.query.filter_by(user_id=user.id).first()
+
+    return jsonify({'result' : 'success', "tutor_status" : tutor1.tutor_status})
+
+@app.route('/denyTutor', methods=['POST'])
+def denyTutor():
+
+    user = User.query.filter_by(id=request.form['id']).first()
+    tutor = Tutor.query.filter_by(user_id=user.id).first()
+
+    tutor.application_comments = request.form['comments']
+
+    db.session.commit()
+    tutor1 = Tutor.query.filter_by(user_id=user.id).first()
+
+    return jsonify({'result' : 'success', "app_comments" : tutor1.application_comments})
 
 #
 ###
@@ -479,8 +619,8 @@ def upload(data):
     #join_room(data['room'])
     join_room(room)
     # message_object = Message.query.filter_by(room='room').all()
-    print('Connection on ' + data['room'] + ' with user ' + current_user.username + ' has been established')
-    send({'msg': data['username'] + " has joined the " + data['room'] + " room."}, room=data['room'])
+    print(current_user.username + ' uploaded a file to ' + data['room'] + " room")
+    send({'msg': data['username'] + " sent a file to the " + data['room'] + " room."}, room=data['room'])
 
 
 @socketio.on('leave')
@@ -501,5 +641,5 @@ def close_room(data):
 
 
 if __name__ == '__main__':
-    #socketio.run(app)
-    app.run()
+    socketio.run(app)
+    #app.run()

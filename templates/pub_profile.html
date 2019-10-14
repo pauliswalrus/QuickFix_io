@@ -34,14 +34,17 @@
     })
     </script>
 <body>
-    <div class="navbar">
-        <a class="logo" a href="#">Home</a>
-        <a href="{{ url_for('profile') }}">{{ thisUser }}</a>
-        <a href="#">Forums</a>
-        <a href="{{ url_for('chat') }}" >Chat</a>
-        <a href="{{ url_for('all_users') }}">Users</a>
-        <a href="{{ url_for('logout') }}"> Logout </a>
-    </div>
+
+{% extends "navbar.html" %}
+{% block content %}
+{#    <div class="navbar">#}
+{#        <a class="logo" a href="#">Home</a>#}
+{#        <a href="{{ url_for('profile') }}">{{ thisUser }}</a>#}
+{#        <a href="#">Forums</a>#}
+{#        <a href="{{ url_for('chat') }}" >Chat</a>#}
+{#        <a href="{{ url_for('all_users') }}">Users</a>#}
+{#        <a href="{{ url_for('logout') }}"> Logout </a>#}
+{#    </div>#}
 
     <div class="row">
     <div class="column left">
@@ -109,11 +112,11 @@
 
         <div class="cardContainer">
 
-            <p class="subheading">My Posts <a href="{{ url_for('add_post') }}">Add New Post</a></p>
+            <p class="subheading">My Posts <a href="{{ url_for('add_room') }}">Add New Room</a></p>
 
-            {% for post in blog_posts %}
-                <a href="{{ url_for('post', post_id=post.id) }}">
-                    <h5>[{{ post.type|upper }}] {{ post.title }} - {{ post.date_posted.strftime('%B %d, %Y') }}</h5>
+            {% for room in room_posts %}
+                <a href="{{ url_for('room', room_id=room.id) }}">
+                    <h5>[{{ room.type|upper }}] {{ room.title }} - {{ room.date_posted.strftime('%B %d, %Y') }}</h5>
                 </a>
             {% endfor %}
 
@@ -148,14 +151,15 @@
 {#            <h3>Role : {{ role_name }}</h3>#}
 {#            <div id="profilePic"></div>#}
 {##}
-{#              {% for post in blog_posts %}#}
-{#                    <a href="{{ url_for('post', post_id=post.id) }}">#}
-{#                        <h5>{{ post.type|upper }} : {{ post.title }} - {{ post.subtitle }}</h5>#}
-{#                        By {{ post.author }} on {{ post.date_posted.strftime('%B %d, %Y') }} </a>#}
+{#              {% for room in blog_posts %}#}
+{#                    <a href="{{ url_for('room', post_id=room.id) }}">#}
+{#                        <h5>{{ room.type|upper }} : {{ room.title }} - {{ room.subtitle }}</h5>#}
+{#                        By {{ room.author }} on {{ room.date_posted.strftime('%B %d, %Y') }} </a>#}
 {##}
 {#            {% endfor %}#}
 {##}
 {#        </div>#}
 {#    </div>#}
+{% endblock %}
 </body>
 </html>
