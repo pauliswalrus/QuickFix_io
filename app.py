@@ -176,7 +176,6 @@ def add_room():
     post_form = RoomForm()
 
     user_object = User.query.filter_by(username=current_user.username)
-
     this_user = User.query.filter_by(username=current_user.username).first()
 
     if post_form.validate_on_submit():
@@ -187,16 +186,13 @@ def add_room():
             type = "Request"
         else:
             type = "Offer"
-        #type = post_form.type.data
         author = current_user.username
         date_time = datetime.now()
         visible = True
-
-        # add roompost to database
-        blog_post = RoomPost(title=title, room_title=subtitle, author=author, date_posted=date_time, content=content,
+        new_room = RoomPost(title=title, room_title=subtitle, author=author, date_posted=date_time, content=content,
                              type=type, visible=visible)
 
-        db.session.add(blog_post)
+        db.session.add(new_room)
         db.session.commit()
 
         return redirect(url_for('home'))
@@ -339,21 +335,29 @@ def home():
     one = 1
     online_users = User.query.filter_by(status=one).all()
 
+    t_status = "not sure"
+
     if this_user.role == 'S':
         posts = RoomPost.query.filter_by(type="Offer").filter_by(visible=True).order_by(RoomPost.date_posted.desc()).all()
         role_name = "Student"
-        tutorapplication = Tutor.query.filter_by(user_id=this_user.id).first()
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
 
     else:
         posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
         role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
 
     offerhelp = RoomPost.query.filter_by(type="Offer").filter_by(visible=True).order_by(RoomPost.date_posted.desc()).all()
     #askforhelp = RoomPost.query.filter_by(type="Request").filter_by(visible=True).order_by(RoomPost.date_posted.desc()).all()
     askforhelp = StudentPost.query.all()
 
     return render_template('home_page.html', username=current_user.username, role=current_user.role, date_stamp=date_stamp,
-                           online_users=online_users, posts=posts, offerhelp=offerhelp, askforhelp=askforhelp, role_name=role_name, this_user=this_user)
+                           online_users=online_users, posts=posts, offerhelp=offerhelp, askforhelp=askforhelp, role_name=role_name, this_user=this_user, t_status=t_status)
 
 
 # route for chat - displays public rooms and form to join(create rooms)
@@ -538,6 +542,7 @@ def updateRoom():
 
 @app.route('/deleteRoom', methods=['POST'])
 def deleteRoom():
+
     room = RoomPost.query.filter_by(id=request.form['id']).first()
     db.session.delete(room)
     db.session.commit()
@@ -550,7 +555,6 @@ def privateRoom():
 
     room = RoomPost.query.filter_by(id=request.form['id']).first()
     room.visible = False
-    #db.session.delete(room)
     db.session.commit()
 
     return jsonify({'result' : 'success'})
@@ -561,7 +565,6 @@ def approveTutor():
 
     user = User.query.filter_by(id=request.form['id']).first()
     tutor = Tutor.query.filter_by(user_id=user.id).first()
-
     user.role = "T"
     tutor.tutor_status = "approved"
     db.session.commit()
@@ -578,9 +581,7 @@ def denyTutor():
 
     user = User.query.filter_by(id=request.form['id']).first()
     tutor = Tutor.query.filter_by(user_id=user.id).first()
-
     tutor.application_comments = request.form['comments']
-
     db.session.commit()
     tutor1 = Tutor.query.filter_by(user_id=user.id).first()
 
@@ -588,7 +589,7 @@ def denyTutor():
 
 #
 ###
-### public socketio chat events join_chat.html - socketio.js file
+### private_chat - private_chat.html file
 ##
 #
 

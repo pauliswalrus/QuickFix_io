@@ -44,6 +44,14 @@
 
             <div id="tutorApply">
             <a href="{{ url_for('new_tutor') }}">Apply To Be A Tutor</a>
+
+            <hr>
+            </div>
+
+            </div>
+
+            <div id="checkApp">
+            <a href="{{ url_for('new_tutor') }}">Check Application</a>
             </div>
 
         </div>
@@ -191,13 +199,33 @@
 
     let uRole = '{{ role_name }}';
 
+    let tStatus = '{{ t_status }}';
+
     window.onload = function (event) {
+
+        document.getElementById('checkApp').style.display = "none";
 
        if (uRole == 'Student') {
             document.getElementById('test').style.color = "purple";
             document.getElementById('tutorPosts').style.display = "block";
             document.getElementById('studentPosts').style.display = "none";
             document.getElementById('roomPost').style.display = "none";
+
+            if (tStatus == 'pending') {
+                document.getElementById('tutorApply').style.display = "none";
+                document.getElementById('roomPost').style.display = "none";
+                document.getElementById('checkApp').style.display = "block";
+
+            }
+            else if (tStatus == 'approved') {
+                document.getElementById('tutorApply').style.display = "none";
+                document.getElementById('checkApp').style.display = "none";
+            }
+            else if (tStatus == null) {
+                document.getElementById('checkApp').style.display = "none";
+                document.getElementById('roomPost').style.display = "none";
+            }
+
         }
        else if (uRole == 'Tutor') {
            document.getElementById('test').style.color = "green";
@@ -205,7 +233,10 @@
             document.getElementById('studentPosts').style.display = "block";
             document.getElementById('studentPost').style.display = "none";
             document.getElementById('tutorApply').style.display = "none";
+            document.getElementById('checkApp').style.display = "none";
+
        }
+
 
 
     }
