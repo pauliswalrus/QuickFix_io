@@ -353,8 +353,7 @@ def home():
 
 
     offerhelp = RoomPost.query.filter_by(type="Offer").filter_by(visible=True).order_by(RoomPost.date_posted.desc()).all()
-    #askforhelp = RoomPost.query.filter_by(type="Request").filter_by(visible=True).order_by(RoomPost.date_posted.desc()).all()
-    askforhelp = StudentPost.query.all()
+    askforhelp = StudentPost.query.order_by(StudentPost.date_posted.desc()).all()
 
     return render_template('home_page.html', username=current_user.username, role=current_user.role, date_stamp=date_stamp,
                            online_users=online_users, posts=posts, offerhelp=offerhelp, askforhelp=askforhelp, role_name=role_name, this_user=this_user, t_status=t_status)
