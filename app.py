@@ -24,9 +24,6 @@ photos = UploadSet('photos', IMAGES)
 app.config['UPLOADED_PHOTOS_DEST'] = 'static/pictures'
 configure_uploads(app, photos)
 
-# rooms used at chat
-# ROOMS = ["lounge", "student chat", "coding q & a", "general math"]
-
 # creates and inits Login
 login = LoginManager(app)
 login.init_app(app)
@@ -259,11 +256,6 @@ def studentpost(studentpost_id):
 
         return redirect(url_for('studentpost', studentpost_id=post_id))
 
-    # if current_user.role == 'S':
-    #     rooms = RoomPost.query.filter_by(type="Offer").order_by(RoomPost.date_posted.desc()).all()
-    # else:
-    #     rooms = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
-
     return render_template('viewStudentPost.html', post=stdpost, username=current_user.username, comment_form=comment_form, comments=comments, this_user=this_user)
 
 
@@ -389,7 +381,7 @@ def chat_jq():
         db.session.commit()
         return redirect(url_for('chat_jq'))
 
-    return render_template('private_jq_new.html', username=current_user.username, date_stamp=date_stamp,
+    return render_template('private_room.html', username=current_user.username, date_stamp=date_stamp,
                            roomName=roomName, message_object=message_object,
                            authorName=authorName, connected_stamp=connected_stamp, file_form=file_form, room_files=room_files, room=room_object, this_user=this_user, role_name=role_name)
 
@@ -502,20 +494,6 @@ def pub_profile(username):
     return render_template('pub_profile.html', thisUser=thisUser, username=username, firstname=firstname,
                            lastname=lastname, email=email, status_string=status_string, room_posts=room_posts,
                            role_name=role_name, image_form=image_form, user_object=user_object, user_files=user_files, this_user=this_user)
-
-
-#gets User status and updates into database
-#@app.route("/profile/<username>", methods=['POST', 'GET'])
-#def tutor_status(username):
-#    username = username
-#    tutorstatus_form = TutorStatus()
-#    if request.method == 'POST':
-#        t_status = tutorstatus_form.status.data
-#        print(t_status)
- #       return redirect(url_for('profile', username=username))
- #       return render_template("/profile/<username>", username=username, tutorstatus_form=tutorstatus_form, t_status=t_status)
-
-
 #gets uploaded files
 @app.route('/static/pictures/<filename>')
 def uploaded_file(filename):
@@ -606,25 +584,6 @@ def denyTutor():
     tutor1 = Tutor.query.filter_by(user_id=user.id).first()
 
     return jsonify({'result' : 'success', "app_comments" : tutor1.application_comments})
-
-
-
-#
-## file upload test
-#
-
-# @app.route('/upload', methods=['GET','POST'])
-# def upload():
-#
-# #     file = request.files['inputFile']
-# #
-# #     print(file.filename)
-# # #
-# #     newFile = FileUpload(name=file.filename, data=file.read())
-# #     db.session.add(newFile)
-# #     db.session.commit()
-#
-#     return file.filename
 
 #
 ###

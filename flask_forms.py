@@ -68,8 +68,6 @@ class RoomCreate(FlaskForm):
 class RoomForm(FlaskForm):
     """ RoomPost Form """
 
-    # type = SelectField('type_label', choices=[('Request', 'Request'), ('Offer', 'Offer')])
-    #title = StringField('title_label', validators=[InputRequired(message="Title required"), Length(min=4, max=50, message="Title must be between 4 and 50 characters")])
     subtitle = StringField('subtitle_label', validators=[InputRequired(message="Room required"), Length(min=4, max=50, message="Room Name must be between 4 and 50 characters")])
     title = StringField('title_label', validators=[InputRequired(message="Title required"), Length(min=4, max=50, message="Title must be between 4 and 50 characters")])
     content = TextAreaField('content_label', validators=[InputRequired(message="Post required")])
