@@ -586,6 +586,10 @@ def approveTutor():
     user.role = "T"
     tutor.tutor_status = "approved"
     db.session.commit()
+
+    student = Student.query.filter_by(user_id=user.id).first()
+    db.session.delete(student)
+    db.session.commit()
     tutor1 = Tutor.query.filter_by(user_id=user.id).first()
 
     return jsonify({'result' : 'success', "tutor_status" : tutor1.tutor_status})
