@@ -69,30 +69,32 @@ $(document).ready(function() {
         });
         alert("this room is private!")
         $('.privateButton').fadeOut(200);
+        $('.publicButton').fadeIn(200);
 
 
 
     })
 
 
-    // $('.publicButton').on('click',function () {
-    //
-    //     var room_id = $(this).attr('room_id');
-    //
-    //     var name = $('#nameInput'+room_id).val();
-    //
-    //     req = $.ajax({
-    //        url : '/publicRoom',
-    //        type : 'POST',
-    //        data : { name : name, id : room_id }
-    //
-    //     });
-    //     alert("this room is private!")
-    //     $('.privateButton').fadeOut(200);
-    //
-    //
-    //
-    // })
+    $('.publicButton').on('click',function () {
+
+        var room_id = $(this).attr('room_id');
+
+        var name = $('#nameInput'+room_id).val();
+
+        req = $.ajax({
+           url : '/publicRoom',
+           type : 'POST',
+           data : { name : name, id : room_id }
+
+        });
+        alert("this room is public!")
+        $('.publicButton').fadeOut(200);
+        $('.privateButton').fadeIn(200);
+
+
+
+    })
 
        $('.deleteButton').on('click',function () {
 

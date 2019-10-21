@@ -55,6 +55,7 @@
 
         <input type="text" id="nameInput{{ room.id }}" value="{{ room.room_title }}" readonly hidden/>
         <button id="privateButton" class="btn btn-danger privateButton" room_id="{{ room.id }}">Make Room Private</button>
+        <button id="publicButton" class="btn btn-danger publicButton" room_id="{{ room.id }}">Make Room Public</button>
 
         <hr>
 
@@ -218,9 +219,14 @@
         };
 
 
-        // on button click - leave the room
+        // on button click - makes rooms private
         document.querySelector('#privateButton').onclick = () => {
             socket.emit('private', {'username': username, 'room': roomname});
+        };
+
+        // on button click - makes rooms public
+        document.querySelector('#publicButton').onclick = () => {
+            socket.emit('public', {'username': username, 'room': roomname});
         };
 
         // on button click - close the room
@@ -273,6 +279,7 @@
        if (uRole == 'S') {
             document.getElementById('button_close').style.display = "none";
             document.getElementById('privateButton').style.display = "none";
+            document.getElementById('publicButton').style.display = "none";
         }
 
 
@@ -282,6 +289,8 @@
     if (roomAuth == username) {
 
         document.getElementById('privateButton').style.display = "block";
+        document.getElementById('publicButton').style.display = "none";
+
 
     }
 

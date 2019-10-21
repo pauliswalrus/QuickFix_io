@@ -598,6 +598,18 @@ def privateRoom():
 
     return jsonify({'result' : 'success'})
 
+
+# tutor makes room private
+@app.route('/publicRoom', methods=['POST'])
+def publicRoom():
+
+    room = RoomPost.query.filter_by(id=request.form['id']).first()
+    room.visible = True
+    db.session.commit()
+
+    return jsonify({'result' : 'success'})
+
+
 #
 ###
 ### private_chat socket io functions - private_chat.html file
@@ -644,6 +656,16 @@ def private(data):
     # message_object = Message.query.filter_by(room='room').all()
     print(current_user.username + ' has now started a private session in room' + data['room'])
     send({'msg': "Tutor " + data['username'] + " has now made the " + data['room'] + " room private."}, room=data['room'])
+
+# ran when tutor makes room private
+@socketio.on('public')
+def public(data):
+    room = session.get('roomName')
+    #join_room(data['room'])
+    join_room(room)
+    # message_object = Message.query.filter_by(room='room').all()
+    print(current_user.username + ' has now ended a private session in room' + data['room'])
+    send({'msg': "Tutor " + data['username'] + " has now made the " + data['room'] + " room public."}, room=data['room'])
 
 # ran when user leaves room
 @socketio.on('leave')
