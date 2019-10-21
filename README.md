@@ -2,12 +2,13 @@
 
 QuickFix_io Capstone Project
 
-Sprint 6 - Oct 13 2019 Build
+Sprint 6 - Oct 21 2019 Build
 
 deployed at:
 
 quickfix-io.herokuapp.com
 
+public/private room tutor controls added
 major refactor see commit comments
 
 Authors:
