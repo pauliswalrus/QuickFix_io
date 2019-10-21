@@ -24,7 +24,7 @@ def invalid_credentials(form, field):
         raise ValidationError("Username or password is incorrect")
     elif not pbkdf2_sha256.verify(password_entered, user_object.password):
         raise ValidationError("Username or password is incorrect")
-    #elif password_entered != user_object.password:
+    #elif password_entered != user_object.password:ffff
      #   raise ValidationError("Username or password is incorrect")
 
 
