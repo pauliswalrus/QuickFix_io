@@ -381,6 +381,8 @@ def private_chat():
     room_files = RoomUpload.query.filter_by(room_name=roomName).all()
     room_object = RoomPost.query.filter_by(room_title=roomName).first()
 
+    roomVisible = room_object.visible
+
     file_form = FileUploadForm()
 
     if file_form.validate_on_submit():
@@ -392,7 +394,7 @@ def private_chat():
 
     return render_template('private_chat.html', username=current_user.username, date_stamp=date_stamp,
                            roomName=roomName, message_object=message_object,
-                           authorName=authorName, connected_stamp=connected_stamp, file_form=file_form, room_files=room_files, room=room_object, this_user=this_user, role_name=role_name)
+                           authorName=authorName, connected_stamp=connected_stamp, file_form=file_form, room_files=room_files, room=room_object, this_user=this_user, role_name=role_name, roomVisible=roomVisible)
 
 # route for personal profile
 @app.route("/profile/", methods=['GET', 'POST'])
