@@ -62,6 +62,12 @@ def login():
 # logout route
 @app.route("/logout", methods=['GET'])
 def logout():
+
+    #sets status to offline at logout
+    this_user = User.query.filter_by(username=current_user.username).first()
+    this_user.status = 0
+    db.session.commit()
+
     logout_user()
     flash('You logged out!', 'success')
     return redirect(url_for('login'))
@@ -614,6 +620,7 @@ def privateRoom():
     room.visible = False
     db.session.commit()
 
+    #sets rooms tutor status to busy
     room_tutor = User.query.filter_by(username=room.author).first()
     room_tutor.status = 2
     db.session.commit()
@@ -629,6 +636,7 @@ def publicRoom():
     room.visible = True
     db.session.commit()
 
+    # sets rooms tutor status to online
     room_tutor = User.query.filter_by(username=room.author).first()
     room_tutor.status = 1
     db.session.commit()
