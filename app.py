@@ -21,6 +21,7 @@ from sqlalq_datamodels import *
 # socketio init
 socketio = SocketIO(app)
 
+# used for profile photos
 photos = UploadSet('photos', IMAGES)
 app.config['UPLOADED_PHOTOS_DEST'] = 'static/pictures'
 configure_uploads(app, photos)
@@ -129,7 +130,7 @@ def new_tutor():
 
         user_object = User.query.filter_by(username=current_user.username).first()
 
-        tutor_added = Tutor(user_id=user_object.id, about_tutor=about_tutor, tutor_status="pending", credentials_file_name=credentials_file.filename, credentials_file_data=credentials_file.read())
+        tutor_added = Tutor(user_id=user_object.id, about_tutor=about_tutor, application_comments="nothing to add", tutor_status="pending", credentials_file_name=credentials_file.filename, credentials_file_data=credentials_file.read())
         db.session.add(tutor_added)
         db.session.commit()
         flash('Registered successfully. Please login', 'success')
@@ -402,6 +403,7 @@ def profile():
 
     setdbstatus = 0
 
+    #profile picture form
     image_form = ImageUploadForm()
 
     if image_form.validate_on_submit():
@@ -427,6 +429,7 @@ def profile():
     elif status == 1:
         status_string = "Online"
 
+    #file uploads
     file_form = FileUploadForm()
 
     if file_form.validate_on_submit():
@@ -436,6 +439,7 @@ def profile():
         db.session.commit()
         return redirect(url_for('profile'))
 
+    #online status form
     ts_form = TutorStatus()
 
     if ts_form.validate_on_submit():
@@ -524,6 +528,9 @@ def download_cred(dl_name):
 
     return send_file(BytesIO(file_data.credentials_file_data), attachment_filename=file_data.credentials_file_name, as_attachment=True)
 
+## admin portal functions
+
+# update room
 @app.route('/updateRoom', methods=['POST'])
 def updateRoom():
 
@@ -539,6 +546,7 @@ def updateRoom():
 
     return jsonify({'result' : 'success', "room_name" : room.room_title})
 
+# delete room
 @app.route('/deleteRoom', methods=['POST'])
 def deleteRoom():
 
@@ -548,17 +556,7 @@ def deleteRoom():
 
     return jsonify({'result': 'success'})
 
-
-@app.route('/privateRoom', methods=['POST'])
-def privateRoom():
-
-    room = RoomPost.query.filter_by(id=request.form['id']).first()
-    room.visible = False
-    db.session.commit()
-
-    return jsonify({'result' : 'success'})
-
-
+# admin approves tutor
 @app.route('/approveTutor', methods=['POST'])
 def approveTutor():
 
@@ -575,20 +573,34 @@ def approveTutor():
 
     return jsonify({'result' : 'success', "tutor_status" : tutor1.tutor_status})
 
+#admin denies tutor
 @app.route('/denyTutor', methods=['POST'])
 def denyTutor():
 
     user = User.query.filter_by(id=request.form['id']).first()
     tutor = Tutor.query.filter_by(user_id=user.id).first()
     tutor.application_comments = request.form['comments']
-    db.session.commit()
-    tutor1 = Tutor.query.filter_by(user_id=user.id).first()
 
-    return jsonify({'result' : 'success', "app_comments" : tutor1.application_comments})
+    print(tutor.application_comments)
+    tutor.tutor_status = "denied"
+    db.session.commit()
+
+    return jsonify({'result' : 'success', "commentsApp" : tutor.application_comments})
+
+
+# tutor makes room private
+@app.route('/privateRoom', methods=['POST'])
+def privateRoom():
+
+    room = RoomPost.query.filter_by(id=request.form['id']).first()
+    room.visible = False
+    db.session.commit()
+
+    return jsonify({'result' : 'success'})
 
 #
 ###
-### private_chat - private_chat.html file
+### private_chat socket io functions - private_chat.html file
 ##
 #
 
@@ -603,7 +615,7 @@ def message(data):
     send({'msg': data['msg'], 'username': data['username'], 'time_stamp': strftime('%b-%d %I:%M%p', localtime())},
          room=data['room'])
 
-
+#ran when joining room
 @socketio.on('join')
 def join(data):
     room = session.get('roomName')
@@ -613,6 +625,7 @@ def join(data):
     print('Connection on ' + data['room'] + ' with user ' + current_user.username + ' has been established')
     send({'msg': data['username'] + " has joined the " + data['room'] + " room."}, room=data['room'])
 
+#ran when uploading a file
 @socketio.on('upload')
 def upload(data):
     room = session.get('roomName')
@@ -622,7 +635,17 @@ def upload(data):
     print(current_user.username + ' uploaded a file to ' + data['room'] + " room")
     send({'msg': data['username'] + " sent a file to the " + data['room'] + " room."}, room=data['room'])
 
+# ran when tutor makes room private
+@socketio.on('private')
+def private(data):
+    room = session.get('roomName')
+    #join_room(data['room'])
+    join_room(room)
+    # message_object = Message.query.filter_by(room='room').all()
+    print(current_user.username + ' has now started a private session in room' + data['room'])
+    send({'msg': "Tutor " + data['username'] + " has now made the " + data['room'] + " room private."}, room=data['room'])
 
+# ran when user leaves room
 @socketio.on('leave')
 def leave(data):
     room = session.get('roomName')
@@ -632,7 +655,7 @@ def leave(data):
     print('Connection on ' + data['room'] + ' with user ' + current_user.username + ' has been lost')
     send({'msg': data['username'] + " has left the " + data['room'] + " room."}, room=data['room'])
 
-
+# ran when tutor closes room
 @socketio.on('close_room')
 def close_room(data):
     #room = data['room']

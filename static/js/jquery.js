@@ -74,6 +74,26 @@ $(document).ready(function() {
 
     })
 
+
+    // $('.publicButton').on('click',function () {
+    //
+    //     var room_id = $(this).attr('room_id');
+    //
+    //     var name = $('#nameInput'+room_id).val();
+    //
+    //     req = $.ajax({
+    //        url : '/publicRoom',
+    //        type : 'POST',
+    //        data : { name : name, id : room_id }
+    //
+    //     });
+    //     alert("this room is private!")
+    //     $('.privateButton').fadeOut(200);
+    //
+    //
+    //
+    // })
+
        $('.deleteButton').on('click',function () {
 
         var room_id = $(this).attr('room_id');
@@ -106,10 +126,12 @@ $(document).ready(function() {
         });
 
         req.done(function(data) {
-            alert(data.tutor_status)
+            alert(data.tutor_status);
 
             $('#memberNumber'+user_id).text(data.tutor_status);
             $('#tutorSection'+user_id).fadeOut(1000).fadeIn(1000);
+
+            location.reload();
 
         });
 
@@ -120,7 +142,7 @@ $(document).ready(function() {
 
         var user_id = $(this).attr('user_id');
 
-        var comments = $('#appComments').val();
+        var comments = $('#appComments'+user_id).val();
 
         req = $.ajax({
            url : '/denyTutor',
@@ -130,36 +152,6 @@ $(document).ready(function() {
         });
         location.reload();
 
-    })
-
-    // $('.approveButton').on('click',function () {
-    //
-    //     var room_id = $(this).attr('room_id');
-    //
-    //     var name = $('#nameInput'+room_id).val();
-    //
-    //     req = $.ajax({
-    //        url : '/aproveTutor',
-    //        type : 'POST',
-    //        data : { name : name, id : room_id }
-    //
-    //     });
-    //     alert("this room is private!")
-    //     $('.deleteButton').fadeOut(200);
-    //
-    //
-    //
-    // })
-
-    $('.timerButton').on('click',function () {
-
-       var start = new Date;
-
-        setInterval(function() {
-        $('#timerValue').text((new Date - start) / 1000-2 + " Seconds");
-        }, 1000);
-
-        //var room_title = $('#room_Input'+post_id).val();
 
     })
 
