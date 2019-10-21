@@ -16,24 +16,16 @@
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', () => {
 
+
+        //hides online status toggle and info if user is a student
         let role = '{{ role_name }}';
 
         if (role === "Student") {
-
             document.getElementById('tutorStatusToggle').style.display = "none";
             document.getElementById('tutorStatusHeader').style.display = "none";
-
         }
 
-        let online_status = {{ status }};
 
-        if (online_status == 1) {
-            document.querySelector('#online_stat').innerHTML = "Online"
-        } else {
-            document.querySelector('#online_stat').innerHTML = "Offline"
-        }
-        document.querySelector('changeStatus').onclick = () => {
-        }
     })
 </script>
 
