@@ -207,34 +207,34 @@ def add_room():
 
     return render_template('addNewRoom.html', username=current_user.username, post_form=post_form, user_object=user_object, this_user=this_user)
 
-#add comment to room lobbies
-@app.route('/add_comment', methods=['GET', 'POST'])
-def add_comment():
-
-    post_form = RoomForm()
-
-    this_user = User.query.filter_by(username=current_user.username).first()
-
-    if post_form.validate_on_submit():
-        title = post_form.title.data
-        subtitle = post_form.subtitle.data
-        content = post_form.content.data
-        if current_user.role == 'S':
-            type = "Request"
-        else:
-            type = "Offer"
-        #type = post_form.type.data
-        author = current_user.username
-        date_time = datetime.now()
-
-        # add roompost to database
-        blog_post = RoomPost(title=title, room_title=subtitle, author=author, date_posted=date_time, content=content,
-                             type=type, this_user=this_user)
-
-        db.session.add(blog_post)
-        db.session.commit()
-
-        return redirect(url_for('home'))
+# #add comment to room lobbies
+# @app.route('/add_comment', methods=['GET', 'POST'])
+# def add_comment():
+#
+#     post_form = RoomForm()
+#
+#     this_user = User.query.filter_by(username=current_user.username).first()
+#
+#     if post_form.validate_on_submit():
+#         title = post_form.title.data
+#         subtitle = post_form.subtitle.data
+#         content = post_form.content.data
+#         if current_user.role == 'S':
+#             type = "Request"
+#         else:
+#             type = "Offer"
+#         #type = post_form.type.data
+#         author = current_user.username
+#         date_time = datetime.now()
+#
+#         # add roompost to database
+#         blog_post = RoomPost(title=title, room_title=subtitle, author=author, date_posted=date_time, content=content,
+#                              type=type, this_user=this_user)
+#
+#         db.session.add(blog_post)
+#         db.session.commit()
+#
+#         return redirect(url_for('home'))
 
 @app.route('/studentpost/<int:studentpost_id>', methods=['GET', 'POST'])
 def studentpost(studentpost_id):
@@ -297,32 +297,32 @@ def add_student_post():
     return render_template('addNewStudentPost.html', username=current_user.username, post_form=post_form, user_object=user_object, this_user=this_user)
 
 #add comment to student post
-@app.route('/add_student_comment', methods=['GET', 'POST'])
-def add_student_comment():
-
-    post_form = StudentPostForm()
-
-    this_user = User.query.filter_by(username=current_user.username).first()
-
-    if post_form.validate_on_submit():
-        title = post_form.title.data
-        content = post_form.content.data
-        if current_user.role == 'S':
-            type = "Request"
-        else:
-            type = "Offer"
-        #type = post_form.type.data
-        author = current_user.username
-        date_time = datetime.now()
-
-        # add roompost to database
-        blog_post = StudentPost(title=title,  author=author, date_posted=date_time, content=content,
-                             type=type, this_user=this_user)
-
-        db.session.add(blog_post)
-        db.session.commit()
-
-        return redirect(url_for('home'))
+# @app.route('/add_student_comment', methods=['GET', 'POST'])
+# def add_student_comment():
+#
+#     post_form = StudentPostForm()
+#
+#     this_user = User.query.filter_by(username=current_user.username).first()
+#
+#     if post_form.validate_on_submit():
+#         title = post_form.title.data
+#         content = post_form.content.data
+#         if current_user.role == 'S':
+#             type = "Request"
+#         else:
+#             type = "Offer"
+#         #type = post_form.type.data
+#         author = current_user.username
+#         date_time = datetime.now()
+#
+#         # add roompost to database
+#         blog_post = StudentPost(title=title,  author=author, date_posted=date_time, content=content,
+#                              type=type, this_user=this_user)
+#
+#         db.session.add(blog_post)
+#         db.session.commit()
+#
+#         return redirect(url_for('home'))
 
 #all users page
 @app.route("/users", methods=['GET', 'POST'])
