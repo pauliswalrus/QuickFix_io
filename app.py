@@ -82,7 +82,7 @@ def admin():
 
     return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts, tutors=tutors, this_user=this_user)
 
-### need to rename to user
+### need to rename/refactor to user
 @app.route('/register', methods=['GET', 'POST'])
 def new_student():
 
@@ -117,7 +117,7 @@ def new_student():
 
     return render_template("register_now.html", form=reg_form)
 
-### need to rename to user
+### tutor application/registration page
 @app.route('/tutor_register', methods=['GET', 'POST'])
 def new_tutor():
     this_user = User.query.filter_by(username=current_user.username).first()
@@ -138,6 +138,7 @@ def new_tutor():
 
     return render_template("tutor_application.html", form=tutor_form, this_user=this_user)
 
+#room page
 @app.route('/room/<int:room_id>', methods=['GET', 'POST'])
 def room(room_id):
     room = RoomPost.query.filter_by(id=room_id).one()
@@ -170,7 +171,7 @@ def room(room_id):
 
     return render_template('viewRoom.html', room=room, username=current_user.username, rooms=rooms, comment_form=comment_form, comments=comments, this_user=this_user)
 
-
+#tutor creates room
 @app.route('/add_room', methods=['GET', 'POST'])
 def add_room():
 
@@ -199,7 +200,8 @@ def add_room():
         return redirect(url_for('home'))
 
     return render_template('addNewRoom.html', username=current_user.username, post_form=post_form, user_object=user_object, this_user=this_user)
-#add comment
+
+#add comment to room lobbies
 @app.route('/add_comment', methods=['GET', 'POST'])
 def add_comment():
 
@@ -256,7 +258,7 @@ def studentpost(studentpost_id):
 
     return render_template('viewStudentPost.html', post=stdpost, username=current_user.username, comment_form=comment_form, comments=comments, this_user=this_user)
 
-
+#new student request help post
 @app.route('/add_student_post', methods=['GET', 'POST'])
 def add_student_post():
 
@@ -287,7 +289,8 @@ def add_student_post():
         return redirect(url_for('home'))
 
     return render_template('addNewStudentPost.html', username=current_user.username, post_form=post_form, user_object=user_object, this_user=this_user)
-#add comment
+
+#add comment to student post
 @app.route('/add_student_comment', methods=['GET', 'POST'])
 def add_student_comment():
 
@@ -314,6 +317,7 @@ def add_student_comment():
         db.session.commit()
 
         return redirect(url_for('home'))
+
 #all users page
 @app.route("/users", methods=['GET', 'POST'])
 def all_users():
@@ -587,6 +591,7 @@ def denyTutor():
 
     return jsonify({'result' : 'success', "commentsApp" : tutor.application_comments})
 
+# tutor chat room controls
 
 # tutor makes room private
 @app.route('/privateRoom', methods=['POST'])
@@ -616,6 +621,7 @@ def publicRoom():
 ##
 #
 
+#when user sends message
 @socketio.on('message')
 def message(data):
     room = session.get('roomName')
@@ -647,7 +653,7 @@ def upload(data):
     print(current_user.username + ' uploaded a file to ' + data['room'] + " room")
     send({'msg': data['username'] + " sent a file to the " + data['room'] + " room."}, room=data['room'])
 
-# ran when tutor makes room private
+#ran when tutor makes room private
 @socketio.on('private')
 def private(data):
     room = session.get('roomName')
@@ -657,7 +663,7 @@ def private(data):
     print(current_user.username + ' has now started a private session in room' + data['room'])
     send({'msg': "Tutor " + data['username'] + " has now made the " + data['room'] + " room private."}, room=data['room'])
 
-# ran when tutor makes room private
+# ran when tutor makes room public
 @socketio.on('public')
 def public(data):
     room = session.get('roomName')
@@ -688,3 +694,4 @@ def close_room(data):
 if __name__ == '__main__':
     socketio.run(app)
     #app.run()
+    # ^ uncomment this when running and comment out socketio.run(app) at deployment
