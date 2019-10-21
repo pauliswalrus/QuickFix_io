@@ -643,7 +643,7 @@ def join(data):
     print('Connection on ' + data['room'] + ' with user ' + current_user.username + ' has been established')
     send({'msg': data['username'] + " has joined the " + data['room'] + " room."}, room=data['room'])
 
-#ran when uploading a file
+#when uploading a file
 @socketio.on('upload')
 def upload(data):
     room = session.get('roomName')
@@ -653,7 +653,7 @@ def upload(data):
     print(current_user.username + ' uploaded a file to ' + data['room'] + " room")
     send({'msg': data['username'] + " sent a file to the " + data['room'] + " room."}, room=data['room'])
 
-#ran when tutor makes room private
+#when tutor makes room private
 @socketio.on('private')
 def private(data):
     room = session.get('roomName')
@@ -663,7 +663,7 @@ def private(data):
     print(current_user.username + ' has now started a private session in room' + data['room'])
     send({'msg': "Tutor " + data['username'] + " has now made the " + data['room'] + " room private."}, room=data['room'])
 
-# ran when tutor makes room public
+#when tutor makes room public
 @socketio.on('public')
 def public(data):
     room = session.get('roomName')
@@ -673,7 +673,7 @@ def public(data):
     print(current_user.username + ' has now ended a private session in room' + data['room'])
     send({'msg': "Tutor " + data['username'] + " has now made the " + data['room'] + " room public."}, room=data['room'])
 
-# ran when user leaves room
+#when user leaves room
 @socketio.on('leave')
 def leave(data):
     room = session.get('roomName')
@@ -683,7 +683,7 @@ def leave(data):
     print('Connection on ' + data['room'] + ' with user ' + current_user.username + ' has been lost')
     send({'msg': data['username'] + " has left the " + data['room'] + " room."}, room=data['room'])
 
-# ran when tutor closes room
+#when tutor closes room
 @socketio.on('close_room')
 def close_room(data):
     #room = data['room']
