@@ -383,6 +383,8 @@ def private_chat():
 
     roomVisible = room_object.visible
 
+    print(roomVisible)
+
     file_form = FileUploadForm()
 
     if file_form.validate_on_submit():
@@ -407,7 +409,7 @@ def profile():
     role = user_object.role
     image_fp = user_object.user_photo
 
-    setdbstatus = 0
+    setdbstatus = status
 
     #profile picture form
     image_form = ImageUploadForm()
@@ -434,6 +436,8 @@ def profile():
         status_string = "Offine"
     elif status == 1:
         status_string = "Online"
+    elif status == 2:
+        status_string = "Busy"
 
     #file uploads
     file_form = FileUploadForm()
@@ -460,6 +464,11 @@ def profile():
         if(s1 == '1'):
             setdbstatus = 1
             status_string = 'Online'
+            db_status = User.query.filter_by(username=current_user.username).update(dict(status=setdbstatus))
+            db.session.commit()
+        if(s1 == '2'):
+            setdbstatus = 2
+            status_string = 'Busy'
             db_status = User.query.filter_by(username=current_user.username).update(dict(status=setdbstatus))
             db.session.commit()
 
@@ -504,6 +513,8 @@ def pub_profile(username):
         status_string = "Offline"
     elif status == 1:
         status_string = "Online"
+    elif status == 2:
+        status_string = "Busy"
 
     return render_template('pub_profile.html', thisUser=thisUser, username=username, firstname=firstname,
                            lastname=lastname, email=email, status_string=status_string, room_posts=room_posts,
@@ -603,6 +614,10 @@ def privateRoom():
     room.visible = False
     db.session.commit()
 
+    room_tutor = User.query.filter_by(username=room.author).first()
+    room_tutor.status = 2
+    db.session.commit()
+
     return jsonify({'result' : 'success'})
 
 
@@ -612,6 +627,10 @@ def publicRoom():
 
     room = RoomPost.query.filter_by(id=request.form['id']).first()
     room.visible = True
+    db.session.commit()
+
+    room_tutor = User.query.filter_by(username=room.author).first()
+    room_tutor.status = 1
     db.session.commit()
 
     return jsonify({'result' : 'success'})
