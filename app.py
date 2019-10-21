@@ -506,7 +506,7 @@ def pub_profile(username):
     return render_template('pub_profile.html', thisUser=thisUser, username=username, firstname=firstname,
                            lastname=lastname, email=email, status_string=status_string, room_posts=room_posts,
                            role_name=role_name, image_form=image_form, user_object=user_object, user_files=user_files, this_user=this_user)
-#gets uploaded files
+#gets profile pics
 @app.route('/static/pictures/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOADED_PHOTOS_DEST'], filename)
@@ -591,7 +591,7 @@ def denyTutor():
 
     return jsonify({'result' : 'success', "commentsApp" : tutor.application_comments})
 
-# tutor chat room controls
+## tutor chat room controls
 
 # tutor makes room private
 @app.route('/privateRoom', methods=['POST'])
