@@ -43,7 +43,7 @@ class Tutor(db.Model):
     about_tutor = db.Column(db.Text, nullable=False)
     credentials_file_data = db.Column(db.LargeBinary, nullable=False)
     credentials_file_name = db.Column(db.Text, nullable=False)
-    user_id = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('users_new.id'))
     tutor_status = db.Column(db.String(25))
     application_comments = db.Column(db.Text)
 

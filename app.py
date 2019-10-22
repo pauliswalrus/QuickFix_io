@@ -84,10 +84,11 @@ def admin():
     blog_posts = RoomPost.query.all()
     tutors = Tutor.query.filter_by(tutor_status="pending").all()
     tutors_approved = Tutor.query.filter_by(tutor_status="approved").all()
+    users_approved = User.query.join()
 
     this_user = User.query.filter_by(username=current_user.username).first()
 
-    return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts, tutors=tutors, this_user=this_user, tutors_approved=tutors_approved)
+    return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts, tutors=tutors, this_user=this_user, tutors_approved=tutors_approved, users_approved=users_approved)
 
 ### need to rename/refactor to user
 @app.route('/register', methods=['GET', 'POST'])

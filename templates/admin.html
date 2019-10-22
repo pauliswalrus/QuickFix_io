@@ -189,22 +189,18 @@
  <h3>Approved Tutors:</h3>
 
      {% for tutor in tutors_approved %}
+
       <div id="tutorSection{{ tutor.user_id }}" class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Tutor: <span id="memberNumber"> {{ tutor.tutor_id }} User: {{ tutor.user_id }}</span> </h3>
+          <h3 class="panel-title"><span id="memberNumber">Tutor: {{ tutor.tutor_id }} User: {{ tutor.user_id }}</span> </h3>
         </div>
-            </a>
         <div class="panel-body">
           <div class="form-inline">
-            <div class="form-group">
-              <label for="userID{{ tutor.user_id }}">User Id</label>
-              <span id="userID{{ tutor.user_id }}">{{ tutor.user_id }} </span>
-            </div><br>
+               <div class="form-group">
+                <label for="statusTutor">Name: </label>
+                <span id="statusTutor"></span>
+            </div> <br>
 
-              <div class="form-group">
-              <label for="tutID">Tutor Id</label>
-                  <span id="tutID">{{ tutor.tutor_id }} </span>
-            </div><br>
             <div class="form-group">
               <label for="aboutTutor">Reason: </label>
               <span id="aboutTutor">{{ tutor.about_tutor }}</span>
@@ -230,8 +226,6 @@
       </div>
 
       {% endfor %}
-
-
         </div>
 
     </div><!-- end right_column div -->
