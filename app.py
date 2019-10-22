@@ -83,11 +83,16 @@ def admin():
     all_files = FileUpload.query.all()
     blog_posts = RoomPost.query.all()
     tutors = Tutor.query.filter_by(tutor_status="pending").all()
-    tutors_approved = Tutor.query.filter_by(tutor_status="approved").all()
+
+    #grabs all pending tutors, grabs info from User and Tutor table
+    tutors_pending = db.session.query(User.firstname, User.lastname, User.username, Tutor.user_id, Tutor.tutor_id, Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name, Tutor.application_comments).filter(User.id == Tutor.user_id, Tutor.tutor_status == "pending").all()
+    #tutors_approved = Tutor.query.filter_by(tutor_status="approved").all()
+
+    tutors_approved = db.session.query(User.firstname, User.lastname, User.username, Tutor.user_id, Tutor.tutor_id, Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name, Tutor.application_comments).filter(User.id == Tutor.user_id)
 
     this_user = User.query.filter_by(username=current_user.username).first()
 
-    return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts, tutors=tutors, this_user=this_user, tutors_approved=tutors_approved)
+    return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts, tutors=tutors, this_user=this_user, tutors_approved=tutors_approved, tutors_pending=tutors_pending)
 
 ### need to rename/refactor to user
 @app.route('/register', methods=['GET', 'POST'])

@@ -48,15 +48,21 @@
 
             <h5>View Recent Room:</h5>
 
-            {% for room in blog_posts %}
-                <div>
-                    <a href="{{ url_for('room', room_id=room.id) }}">
-                        <div id="memberNumber"></div>
-                        <h5>{{ room.type|upper }} : {{ room.room_title }} - {{ room.title }}</h5>
-                        by {{ room.author }} on {{ room.date_posted.strftime('%b %d, %Y') }} at {{ room.date_posted.strftime('%I' ':' '%M %p') }} </a>
-                </div>
 
-            {% endfor %}
+
+{#                 {% for result in query %}#}
+{#               <li><span> {{ result.firstname }} {{ result.lastname }} </span></li>#}
+{#                 {% endfor %}#}
+
+{#            {% for room in blog_posts %}#}
+{#                <div>#}
+{#                    <a href="{{ url_for('room', room_id=room.id) }}">#}
+{#                        <div id="memberNumber"></div>#}
+{#                        <h5>{{ room.type|upper }} : {{ room.room_title }} - {{ room.title }}</h5>#}
+{#                        by {{ room.author }} on {{ room.date_posted.strftime('%b %d, %Y') }} at {{ room.date_posted.strftime('%I' ':' '%M %p') }} </a>#}
+{#                </div>#}
+{##}
+{#            {% endfor %}#}
 
 
 
@@ -141,23 +147,15 @@
 {##}
 {#            {% endfor %}#}
 
-      {% for tutor in tutors %}
+      {% for tutor in tutors_pending %}
       <div id="tutorSection{{ tutor.user_id }}" class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Tutor Application <span id="memberNumber{{ tutor.tutor_id }}"> User Id: {{ tutor.user_id }} {{ tutor.tutor_status }}</span> </h3>
+            <h3 class="panel-title"><span id="memberNumber"><a href="{{ url_for('pub_profile', username=tutor.username) }}">Tutor {{ tutor.tutor_id }} : {{ tutor.username|upper }} </a></span> </h3>
         </div>
             </a>
         <div class="panel-body">
           <div class="form-inline">
-            <div class="form-group">
-              <label for="userID{{ tutor.user_id }}">User Id</label>
-              <span id="userID{{ tutor.user_id }}">{{ tutor.user_id }} </span>
-            </div><br>
 
-              <div class="form-group">
-              <label for="tutID{{ tutor.tutor_id }}">Tutor Id</label>
-                  <span id="tutID{{ tutor.tutor_id }}">{{ tutor.tutor_id }} </span>
-            </div><br>
             <div class="form-group">
               <label for="aboutTutor{{ tutor.user_id }}">Reason: </label>
               <span id="aboutTutor{{ tutor.tutor_id }}" value="{{ tutor.about_tutor }}">{{ tutor.about_tutor }}</span>
@@ -190,15 +188,17 @@
 
      {% for tutor in tutors_approved %}
 
+
       <div id="tutorSection{{ tutor.user_id }}" class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title"><span id="memberNumber">Tutor: {{ tutor.tutor_id }} User: {{ tutor.user_id }}</span> </h3>
+            <h3 class="panel-title"><span id="memberNumber"><a href="{{ url_for('pub_profile', username=tutor.username) }}">Tutor {{ tutor.tutor_id }} : {{ tutor.username|upper }} </a></span> </h3>
         </div>
         <div class="panel-body">
           <div class="form-inline">
-               <div class="form-group">
-                <label for="statusTutor">Name: </label>
-                <span id="statusTutor"></span>
+
+              <div class="form-group">
+                <label for="tutorName">Name: </label>
+                <span id="tutorName">{{ tutor.firstname }} {{ tutor.lastname }}</span>
             </div> <br>
 
             <div class="form-group">
@@ -206,10 +206,6 @@
               <span id="aboutTutor">{{ tutor.about_tutor }}</span>
             </div>
             <br>
-            <div class="form-group">
-                <label for="statusTutor">Status: </label>
-                <span id="statusTutor">{{ tutor.tutor_status }} </span>
-            </div> <br>
 {#                {{ tutor.tutor_status }}#}
              <div class="form-group">
              <b>Credentials:</b> <a href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>
@@ -224,7 +220,6 @@
           </div>
         </div>
       </div>
-
       {% endfor %}
         </div>
 
