@@ -84,11 +84,10 @@ def admin():
     blog_posts = RoomPost.query.all()
     tutors = Tutor.query.filter_by(tutor_status="pending").all()
     tutors_approved = Tutor.query.filter_by(tutor_status="approved").all()
-    users_approved = User.query.join()
 
     this_user = User.query.filter_by(username=current_user.username).first()
 
-    return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts, tutors=tutors, this_user=this_user, tutors_approved=tutors_approved, users_approved=users_approved)
+    return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts, tutors=tutors, this_user=this_user, tutors_approved=tutors_approved)
 
 ### need to rename/refactor to user
 @app.route('/register', methods=['GET', 'POST'])
@@ -174,7 +173,7 @@ def room(room_id):
         comment_author = current_user.username
         content = comment_form.content.data
         date_time = datetime.now()
-        # add roompost to database
+
         comment_post = RoomComment(room_id=room_id, comment_author=comment_author, date_posted=date_time, content=content)
         db.session.add(comment_post)
         db.session.commit()
@@ -267,7 +266,7 @@ def studentpost(studentpost_id):
         comment_author = current_user.username
         content = comment_form.content.data
         date_time = datetime.now()
-        # add roompost to database
+
         comment_post = PostComment(post_id=studentpost_id, comment_author=comment_author, date_posted=date_time, content=content)
         db.session.add(comment_post)
         db.session.commit()
@@ -436,7 +435,6 @@ def profile():
     if image_form.validate_on_submit():
 
         image_filename = photos.save(request.files[image_form.image.name])
-        #user_object2 = User.query.filter_by(username=current_user.username).update(dict(user_photo=os.path.join(app.config['UPLOADED_PHOTOS_DEST'], image_filename)))
         user_object2 = User.query.filter_by(username=current_user.username).update(dict(user_photo=image_filename))
         db.session.commit()
 
@@ -605,7 +603,6 @@ def approveTutor():
     student = Student.query.filter_by(user_id=user.id).first()
     db.session.delete(student)
     db.session.commit()
-    tutor1 = Tutor.query.filter_by(user_id=user.id).first()
 
     return jsonify({'result' : 'success'})
 
@@ -619,7 +616,6 @@ def denyTutor():
     tutor = Tutor.query.filter_by(user_id=user.id).first()
     tutor.application_comments = request.form['comments']
     tutor.tutor_status = "denied"
-
     db.session.commit()
 
     return jsonify({'result' : 'success'})
