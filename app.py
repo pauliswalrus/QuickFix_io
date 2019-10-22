@@ -217,34 +217,6 @@ def add_room():
 
     return render_template('addNewRoom.html', username=current_user.username, post_form=post_form, user_object=user_object, this_user=this_user)
 
-# #add comment to room lobbies
-# @app.route('/add_comment', methods=['GET', 'POST'])
-# def add_comment():
-#
-#     post_form = RoomForm()
-#
-#     this_user = User.query.filter_by(username=current_user.username).first()
-#
-#     if post_form.validate_on_submit():
-#         title = post_form.title.data
-#         subtitle = post_form.subtitle.data
-#         content = post_form.content.data
-#         if current_user.role == 'S':
-#             type = "Request"
-#         else:
-#             type = "Offer"
-#         #type = post_form.type.data
-#         author = current_user.username
-#         date_time = datetime.now()
-#
-#         # add roompost to database
-#         blog_post = RoomPost(title=title, room_title=subtitle, author=author, date_posted=date_time, content=content,
-#                              type=type, this_user=this_user)
-#
-#         db.session.add(blog_post)
-#         db.session.commit()
-#
-#         return redirect(url_for('home'))
 
 #student post
 @app.route('/studentpost/<int:studentpost_id>', methods=['GET', 'POST'])
@@ -254,6 +226,7 @@ def studentpost(studentpost_id):
 
     this_user = User.query.filter_by(username=current_user.username).first()
 
+    #student post comments
     comments = PostComment.query.filter_by(post_id=studentpost_id).order_by(PostComment.date_posted.desc()).all()
     comment_form = CommentForm()
 
@@ -307,33 +280,6 @@ def add_student_post():
 
     return render_template('addNewStudentPost.html', username=current_user.username, post_form=post_form, user_object=user_object, this_user=this_user)
 
-#add comment to student post
-# @app.route('/add_student_comment', methods=['GET', 'POST'])
-# def add_student_comment():
-#
-#     post_form = StudentPostForm()
-#
-#     this_user = User.query.filter_by(username=current_user.username).first()
-#
-#     if post_form.validate_on_submit():
-#         title = post_form.title.data
-#         content = post_form.content.data
-#         if current_user.role == 'S':
-#             type = "Request"
-#         else:
-#             type = "Offer"
-#         #type = post_form.type.data
-#         author = current_user.username
-#         date_time = datetime.now()
-#
-#         # add roompost to database
-#         blog_post = StudentPost(title=title,  author=author, date_posted=date_time, content=content,
-#                              type=type, this_user=this_user)
-#
-#         db.session.add(blog_post)
-#         db.session.commit()
-#
-#         return redirect(url_for('home'))
 
 #all users page
 @app.route("/users", methods=['GET', 'POST'])
@@ -343,6 +289,7 @@ def all_users():
     online_tutors = User.query.filter_by(status=1, role='T').all()
     busy_tutors = User.query.filter_by(status=2, role='T').all()
     student_users = User.query.filter_by(role='S').all()
+
     this_user = User.query.filter_by(username=current_user.username).first()
 
     return render_template('all_users.html', username=current_user.username, all_tutors=all_tutors,
@@ -373,7 +320,6 @@ def home():
         role_name = "Tutor"
         tutor = Tutor.query.filter_by(user_id=this_user.id).first()
         t_status = tutor.tutor_status
-
 
     offerhelp = RoomPost.query.filter_by(type="Offer").filter_by(visible=True).order_by(RoomPost.date_posted.desc()).all()
     askforhelp = StudentPost.query.order_by(StudentPost.date_posted.desc()).all()

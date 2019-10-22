@@ -87,7 +87,6 @@
         <div class="panel-body">
           <div class="form-inline">
 
-
                   <b>ID:</b> {{ room.id }} <b>Type:</b> {{ room.type }} <b>Visible:</b> {{ room.visible }}<br>
             <div class="form-group">
               <label for="nameInput{{ room.id }}">Title</label>
@@ -103,10 +102,11 @@
               <input type="text" class="form-control" id="contentInput{{ room.id }}" value="{{ room.content }}">
             </div><br>
 
-
             <button class="btn btn-primary updateButton" room_id="{{ room.id }}">Update Room</button>
-
             <button class="btn btn-danger deleteButton" room_id="{{ room.id }}">Delete Room</button>
+            <br>
+              <button id="privateButton" class="btn btn-warning privateButton" room_id="{{ room.id }}">Make Room Private</button>
+            <button id="publicButton" class="btn btn-success publicButton" room_id="{{ room.id }}">Make Room Public</button>
 
           </div>
         </div>
