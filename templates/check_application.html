@@ -1,0 +1,63 @@
+<!-- HTML Template By: Emma Hobden -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Tutor Application Status</title>
+
+    <link rel="stylesheet" href="{{url_for('static', filename='css/cardStyleForm.css')}}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+</head>
+<body>
+{% extends "navbar.html" %}
+{% block content %}
+
+<div id="main-section">
+
+     <div id="tutorSection{{ this_tutor.user_id }}" class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">APPLICATION STATUS: <span> {{ this_tutor.tutor_status|upper }} </span> </h3>
+        </div>
+        <div class="panel-body">
+          <div class="form-inline">
+            <div class="form-group">
+              <label for="tutorName">Name: </label>
+              <span id="tutorName">{{ this_user.firstname }} {{ this_user.lastname }} </span>
+              <br>
+              <label for="tutorUsername">Username: </label>
+              <span id="tutorName">{{ this_user.username }}</span>
+              <br>
+               <label for="userId">User Id</label>
+                  <span id="userID">{{ this_user.id }} </span>
+              <label for="tutID">Tutor Id</label>
+                  <span id="tutID">{{ this_tutor.tutor_id }} </span>
+              <br>
+              <label for="aboutTutor">Reason: </label>
+              <span id="aboutTutor">{{ this_tutor.about_tutor }}</span>
+            <br>
+                <label for="statusTutor">Status: </label>
+                <span id="statusTutor">{{ this_tutor.tutor_status|title }} </span>
+              <br>
+             <label>Credentials:</label> <a href="{{ url_for('download_cred', dl_name=this_tutor.credentials_file_name) }}">{{ this_tutor.credentials_file_name }}</a>
+             <br>
+
+                <label for="appComments">Application Feedback: </label>
+                   <span id="appComments">{{ this_tutor.application_comments }}</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+</div>
+{% endblock %}
+</body>
+</html>

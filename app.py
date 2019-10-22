@@ -144,6 +144,15 @@ def new_tutor():
 
     return render_template("tutor_application.html", form=tutor_form, this_user=this_user)
 
+
+@app.route('/check_application', methods=['GET', 'POST'])
+def check_application():
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    this_tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+
+    return render_template("check_application.html", this_user=this_user, this_tutor=this_tutor)
+
 #room page
 @app.route('/room/<int:room_id>', methods=['GET', 'POST'])
 def room(room_id):
@@ -236,6 +245,7 @@ def add_room():
 #
 #         return redirect(url_for('home'))
 
+#student post
 @app.route('/studentpost/<int:studentpost_id>', methods=['GET', 'POST'])
 def studentpost(studentpost_id):
 
@@ -330,11 +340,12 @@ def all_users():
 
     all_tutors = User.query.filter_by(role='T').all()
     online_tutors = User.query.filter_by(status=1, role='T').all()
+    busy_tutors = User.query.filter_by(status=2, role='T').all()
     student_users = User.query.filter_by(role='S').all()
     this_user = User.query.filter_by(username=current_user.username).first()
 
     return render_template('all_users.html', username=current_user.username, all_tutors=all_tutors,
-                           online_tutors=online_tutors, student_users=student_users, this_user=this_user)
+                           online_tutors=online_tutors, busy_tutors=busy_tutors, student_users=student_users, this_user=this_user)
 
 # route for chat - displays public rooms and form to join(create rooms)
 @app.route("/home", methods=['GET', 'POST'])
