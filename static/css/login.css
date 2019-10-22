@@ -1,12 +1,18 @@
+/* ---------------------------------------------------- GENERAL ----------------------------------------------------- */
+
 /* Styles the body and html elements */
 body, html {
   height: 100%;
 }
 
+/* ---------------------------------------------------- NAV BAR ----------------------------------------------------- */
+
 /* Styles the div that holds the navigation bar */
 #navigation {
     background-color: slategray;
     height: 80px;
+    position: fixed;
+    width: 100%;
 }
 
 /* Styles the unordered list in nav bar */
@@ -20,6 +26,17 @@ body, html {
 #navigation li {
     display: inline;
     padding-top: 30px;
+}
+
+.logo {
+    float: left;
+    display: block;
+    text-align: center;
+    padding: 5px;
+    width: 220px !important;
+    background-image: url('../images/logo3.png');
+    background-size: cover;
+    height: 80px;
 }
 
 /* Styles nav bar links on the left side */
@@ -53,7 +70,20 @@ body, html {
 
 /* Styles the login button */
 .loginButton {
+    background-color: #395065;
+    color: white;
+    border-style: none;
+}
 
+/* Styles the div that holds the login form and button and reg link */
+#loginForm {
+    /*border: 1px solid red;*/
+    width: 100%;
+    text-align: right;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-right: 20px;
 }
 
 /* Styles the form that holds the login */
@@ -73,6 +103,10 @@ form {
     padding-top: 2px;
 }
 
+
+
+
+
 /* Styles login error msgs when invalid username or password is entered */
 .loginErrorMsg {
     clear: both;
@@ -84,7 +118,78 @@ form {
     text-align: center;
     vertical-align: center;
     font-size: 16px;
-    top: -3px;
+    top: 80px;
+    position: fixed;
+}
+
+/* --------------------------------------------------- SECTION 1 ---------------------------------------------------- */
+
+/* Styles Section 1 - Desk bg image */
+#section_1 {
+    background-image: url('../images/login_deskMessy.png');
+    height: 800px;
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* Styles the main headline text */
+.biggerText {
+    font-size: 5em;
+    padding-top: 140px;
+    padding-left: 40px;
+    color: white;
+    font-family: 'Rock Salt', cursive;
+}
+
+/* Styles the sub-line of text */
+.bigText {
+    font-size: 4em;
+    padding-top: 40px;
+    padding-left: 40px;
+    color: #cccd79;
+}
+
+/* --------------------------------------------------- SECTION 2 ---------------------------------------------------- */
+
+/* Styles Section 2 - about our services */
+#section_2 {
+    width: 100%;
+    height: 400px;
+    background-color: white;
+}
+
+/* Styles the table that holds the about us icons */
+#aboutIcons {
+    margin-top: 60px;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    text-align: center;
+    /*border: 2px solid red;*/
+    color: slategray;
+}
+
+/* Styles the table data that holds the icon imgs */
+#aboutIcons td {
+    padding: 5px;
+    margin: 10px;
+}
+
+.aboutHeadings {
+    font-weight: bold;
+}
+
+/* Styles the table data that holds the icon imgs */
+#icon1,
+#icon2,
+#icon3 {
+    width: 33%;
+    height: 50px;
+    /*border: 2px solid red;*/
 }
 
 /* Styles the 'get started today' register button */
@@ -113,11 +218,12 @@ form {
     text-decoration: none;
 }
 
+/* --------------------------------------------------- SECTION 3 ---------------------------------------------------- */
 
-/* Styles Section 1 - Desk bg image */
-#section_1 {
-    background-image: url('../images/login_deskMessy.png');
-    height: 800px;
+/* Styles Section 3 */
+#section_3 {
+    background-image: url('../images/twoLaptops.jpg');
+    height: 300px;
 
     /* Create the parallax scrolling effect */
     background-attachment: fixed;
@@ -126,73 +232,105 @@ form {
     background-size: cover;
 }
 
-/* Styles the main headline text */
-.biggerText {
-    font-size: 5em;
-    padding-top: 40px;
-    padding-left: 40px;
-    color: white;
-    font-family: 'Rock Salt', cursive;
-}
+/* --------------------------------------------------- SECTION 4 ---------------------------------------------------- */
 
-/* Styles the sub-line of text */
-.bigText {
-    font-size: 4em;
-    padding-top: 5px;
-    padding-left: 40px;
-    color: #cccd79;
-}
-
-/* Styles Section 2 - about our services */
-#section_2 {
+/* Styles Section 3 */
+#section_4 {
     width: 100%;
     height: 400px;
     background-color: white;
-
 }
 
-/* Styles the table that holds the about us icons */
-#aboutIcons {
+#benefits {
     margin-top: 60px;
     width: 80%;
     margin-left: 10%;
     margin-right: 10%;
     text-align: center;
-    /*border: 2px solid red;*/
-    color: slategray;
+    color: #395065;
+    font-size: 1.2em;
 }
 
-/* Styles the table data that holds the icon imgs */
-#icon1,
-#icon2,
-#icon3 {
-    width: 33%;
-    height: 50px;
-    /*border: 2px solid red;*/
+#benefits h2 {
+    font-size: 2.5em;
+    color: #395065;
 }
 
-.rightBorder {
-    border-right: 1px solid slategray;
+.benefitsList {
+    width: 50%;
+    text-align: left;
+    margin-left: 25%;
+    margin-right: 25%;
 }
 
-.aboutHeadings {
-    font-weight: bold;
-}
+/* --------------------------------------------------- SECTION 5 ---------------------------------------------------- */
 
-/* Styles the table data that holds the icon imgs */
-#aboutIcons td {
-    padding: 5px;
-    margin: 10px;
-}
-
-/* Styles Section 3 */
-#section_3 {
-    background-image: url('../images/login_deskCharts.jpg');
-    height: 800px;
+/* Styles Section 5 */
+#section_5 {
+    background-image: url('../images/twoLaptops.jpg');
+    height: 300px;
 
     /* Create the parallax scrolling effect */
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ---------------------------------------------- DEVICE BREAK POINTS ----------------------------------------------- */
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+
+
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+
+
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+
 }

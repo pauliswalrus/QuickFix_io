@@ -18,9 +18,8 @@
 <!-- Navigation Bar / Login Form -->
 <div id="navigation">
     <ul>
-        <li class="quickLinks"><a>QuickFix</a></li>
+        <li class="logo"><a></a></li>
         <li class="quickLinks"><a href="#section_2">How It Works</a></li>
-        <li class="quickLinks"><a>Contact</a></li>
         <li>
             <form action="{{ url_for('login') }}" method="post" id="loginForm">
                 {{ form.username(class_='loginText', placeholder='Username', autocomplete='off', autofocus=true) }}
@@ -34,7 +33,7 @@
 </div>
 
 
-<!-- Section 1 -->
+<!-- Section 1 - BG image 1 -->
 <div id="section_1">
 
     {% for error in form.password.errors %}
@@ -55,7 +54,7 @@
 
 </div>
 
-<!-- Section 2 -->
+<!-- Section 2 - About the Website -->
 <div id="section_2">
 
     <table id="aboutIcons">
@@ -81,10 +80,31 @@
     <BR><BR><BR>
     <p><a class="regButton" href="{{ url_for('new_student') }}">Get started today</a></p>
 
+
 </div>
 
-<!-- Section 3 -->
+
+<!-- Section 3 - BG image 2 -->
 <div id="section_3"></div>
+
+<!-- Section 4 - Online Tutor Benefits -->
+<div id="section_4">
+
+    <div id="benefits">
+        <h2>Did You Know?</h2>
+        <p>Getting help with a specific problem isn't the only benefit to using online tutoring services. It can...</p>
+        <ul class="benefitsList">
+            <li>Improve work and study habits, or teach you new methods</li>
+            <li>Encourage self-paced and self-directed learning</li>
+            <li>Help develop your critical thinking skills</li>
+        </ul>
+        <p>Plus, no travel time or expenses. You can study at home in your PJ's - need we say more?</p>
+    </div>
+
+</div>
+
+<!-- Section 5 - BG image 3 -->
+<div id="section_5"></div>
 
 
 {% for error in form.username.errors %}
