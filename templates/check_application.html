@@ -35,23 +35,25 @@
                <label for="userId">User Id</label>
                   <span id="userID">{{ this_user.id }} </span>
               <label for="tutID">Tutor Id</label>
-                  <span id="tutID">{{ this_tutor.tutor_id }} </span>
+                <span id="tutID">{{ this_tutor.tutor_id }} </span>
               <br>
               <label for="aboutTutor">Reason: </label>
               <span id="aboutTutor">{{ this_tutor.about_tutor }}</span>
-            <br>
+              <br>
                 <label for="statusTutor">Status: </label>
                 <span id="statusTutor">{{ this_tutor.tutor_status|title }} </span>
               <br>
              <label>Credentials:</label> <a href="{{ url_for('download_cred', dl_name=this_tutor.credentials_file_name) }}">{{ this_tutor.credentials_file_name }}</a>
              <br>
-
                 <label for="appComments">Application Feedback: </label>
                    <span id="appComments">{{ this_tutor.application_comments }}</span>
+                <br>
             </div>
 
           </div>
+
         </div>
+
       </div>
 
 

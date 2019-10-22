@@ -96,7 +96,7 @@ $(document).ready(function() {
 
     })
 
-       $('.deleteButton').on('click',function () {
+    $('.deleteButton').on('click',function () {
 
         var room_id = $(this).attr('room_id');
 
@@ -126,25 +126,18 @@ $(document).ready(function() {
            data : { id : user_id }
 
         });
-
-        req.done(function(data) {
-            alert(data.tutor_status);
-
-            $('#memberNumber'+user_id).text(data.tutor_status);
-            $('#tutorSection'+user_id).fadeOut(1000).fadeIn(1000);
-
-            location.reload();
-
-        });
+        alert("Tutor Approved!")
+        location.reload();
 
 
     })
 
+
+
     $('.denyTutor').on('click',function () {
 
         var user_id = $(this).attr('user_id');
-
-        var comments = $('#appComments'+user_id).val();
+        var comments = $("#appComments").val();
 
         req = $.ajax({
            url : '/denyTutor',
@@ -152,10 +145,12 @@ $(document).ready(function() {
            data : { id : user_id, comments : comments}
 
         });
+        alert("Tutor Denied!")
         location.reload();
 
 
     })
+
 
 
 

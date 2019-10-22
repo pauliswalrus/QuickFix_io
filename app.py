@@ -83,10 +83,11 @@ def admin():
     all_files = FileUpload.query.all()
     blog_posts = RoomPost.query.all()
     tutors = Tutor.query.filter_by(tutor_status="pending").all()
+    tutors_approved = Tutor.query.filter_by(tutor_status="approved").all()
 
     this_user = User.query.filter_by(username=current_user.username).first()
 
-    return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts, tutors=tutors, this_user=this_user)
+    return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts, tutors=tutors, this_user=this_user, tutors_approved=tutors_approved)
 
 ### need to rename/refactor to user
 @app.route('/register', methods=['GET', 'POST'])
@@ -144,11 +145,11 @@ def new_tutor():
 
     return render_template("tutor_application.html", form=tutor_form, this_user=this_user)
 
-
+### check tutor application
 @app.route('/check_application', methods=['GET', 'POST'])
 def check_application():
-    this_user = User.query.filter_by(username=current_user.username).first()
 
+    this_user = User.query.filter_by(username=current_user.username).first()
     this_tutor = Tutor.query.filter_by(user_id=this_user.id).first()
 
     return render_template("check_application.html", this_user=this_user, this_tutor=this_tutor)
@@ -605,21 +606,22 @@ def approveTutor():
     db.session.commit()
     tutor1 = Tutor.query.filter_by(user_id=user.id).first()
 
-    return jsonify({'result' : 'success', "tutor_status" : tutor1.tutor_status})
+    return jsonify({'result' : 'success'})
+
 
 #admin denies tutor
 @app.route('/denyTutor', methods=['POST'])
 def denyTutor():
 
     user = User.query.filter_by(id=request.form['id']).first()
+
     tutor = Tutor.query.filter_by(user_id=user.id).first()
     tutor.application_comments = request.form['comments']
-
-    print(tutor.application_comments)
     tutor.tutor_status = "denied"
+
     db.session.commit()
 
-    return jsonify({'result' : 'success', "commentsApp" : tutor.application_comments})
+    return jsonify({'result' : 'success'})
 
 ## tutor chat room controls
 

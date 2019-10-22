@@ -172,15 +172,58 @@
              <b>Credentials:</b> <a href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>
 {#              <input type="text" class="form-control" id="titleInput{{ tutor.tutor_id }}" value="{{ tutor.credentials_file_name }}" y>#}
             </div>
-
                <div class="form-group">
                 <label for="appComments{{ tutor.application_comments }}">Application Comments: </label>
-                <input type="text" class="form-control" id="appComments{{ tutor.application_comments }}" value="{{ tutor.application_comments }}">
+                <input type="text" class="form-control" id="appComments" value="{{ tutor.application_comments }}">
             </div>
 
             <button class="btn btn-primary approveTutor" user_id="{{ tutor.user_id }}">Approve</button>
-
             <button class="btn btn-warning denyTutor" user_id="{{ tutor.user_id }}">Deny</button>
+
+
+          </div>
+        </div>
+      </div>
+
+      {% endfor %}
+ <h3>Approved Tutors:</h3>
+
+     {% for tutor in tutors_approved %}
+      <div id="tutorSection{{ tutor.user_id }}" class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Tutor: <span id="memberNumber"> {{ tutor.tutor_id }} User: {{ tutor.user_id }}</span> </h3>
+        </div>
+            </a>
+        <div class="panel-body">
+          <div class="form-inline">
+            <div class="form-group">
+              <label for="userID{{ tutor.user_id }}">User Id</label>
+              <span id="userID{{ tutor.user_id }}">{{ tutor.user_id }} </span>
+            </div><br>
+
+              <div class="form-group">
+              <label for="tutID">Tutor Id</label>
+                  <span id="tutID">{{ tutor.tutor_id }} </span>
+            </div><br>
+            <div class="form-group">
+              <label for="aboutTutor">Reason: </label>
+              <span id="aboutTutor">{{ tutor.about_tutor }}</span>
+            </div>
+            <br>
+            <div class="form-group">
+                <label for="statusTutor">Status: </label>
+                <span id="statusTutor">{{ tutor.tutor_status }} </span>
+            </div> <br>
+{#                {{ tutor.tutor_status }}#}
+             <div class="form-group">
+             <b>Credentials:</b> <a href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>
+{#              <input type="text" class="form-control" id="titleInput{{ tutor.tutor_id }}" value="{{ tutor.credentials_file_name }}" y>#}
+            </div>
+               <div class="form-group">
+                <label for="approved">Application Comments: </label>
+                   <span id="approved">{{ tutor.application_comments }}</span>
+            </div>
+
 
           </div>
         </div>
