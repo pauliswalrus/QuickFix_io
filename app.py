@@ -62,6 +62,12 @@ def login():
 # logout route
 @app.route("/logout", methods=['GET'])
 def logout():
+
+    #sets status to offline at logout
+    this_user = User.query.filter_by(username=current_user.username).first()
+    this_user.status = 0
+    db.session.commit()
+
     logout_user()
     flash('You logged out!', 'success')
     return redirect(url_for('login'))
@@ -138,6 +144,15 @@ def new_tutor():
 
     return render_template("tutor_application.html", form=tutor_form, this_user=this_user)
 
+
+@app.route('/check_application', methods=['GET', 'POST'])
+def check_application():
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    this_tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+
+    return render_template("check_application.html", this_user=this_user, this_tutor=this_tutor)
+
 #room page
 @app.route('/room/<int:room_id>', methods=['GET', 'POST'])
 def room(room_id):
@@ -201,35 +216,36 @@ def add_room():
 
     return render_template('addNewRoom.html', username=current_user.username, post_form=post_form, user_object=user_object, this_user=this_user)
 
-#add comment to room lobbies
-@app.route('/add_comment', methods=['GET', 'POST'])
-def add_comment():
+# #add comment to room lobbies
+# @app.route('/add_comment', methods=['GET', 'POST'])
+# def add_comment():
+#
+#     post_form = RoomForm()
+#
+#     this_user = User.query.filter_by(username=current_user.username).first()
+#
+#     if post_form.validate_on_submit():
+#         title = post_form.title.data
+#         subtitle = post_form.subtitle.data
+#         content = post_form.content.data
+#         if current_user.role == 'S':
+#             type = "Request"
+#         else:
+#             type = "Offer"
+#         #type = post_form.type.data
+#         author = current_user.username
+#         date_time = datetime.now()
+#
+#         # add roompost to database
+#         blog_post = RoomPost(title=title, room_title=subtitle, author=author, date_posted=date_time, content=content,
+#                              type=type, this_user=this_user)
+#
+#         db.session.add(blog_post)
+#         db.session.commit()
+#
+#         return redirect(url_for('home'))
 
-    post_form = RoomForm()
-
-    this_user = User.query.filter_by(username=current_user.username).first()
-
-    if post_form.validate_on_submit():
-        title = post_form.title.data
-        subtitle = post_form.subtitle.data
-        content = post_form.content.data
-        if current_user.role == 'S':
-            type = "Request"
-        else:
-            type = "Offer"
-        #type = post_form.type.data
-        author = current_user.username
-        date_time = datetime.now()
-
-        # add roompost to database
-        blog_post = RoomPost(title=title, room_title=subtitle, author=author, date_posted=date_time, content=content,
-                             type=type, this_user=this_user)
-
-        db.session.add(blog_post)
-        db.session.commit()
-
-        return redirect(url_for('home'))
-
+#student post
 @app.route('/studentpost/<int:studentpost_id>', methods=['GET', 'POST'])
 def studentpost(studentpost_id):
 
@@ -291,32 +307,32 @@ def add_student_post():
     return render_template('addNewStudentPost.html', username=current_user.username, post_form=post_form, user_object=user_object, this_user=this_user)
 
 #add comment to student post
-@app.route('/add_student_comment', methods=['GET', 'POST'])
-def add_student_comment():
-
-    post_form = StudentPostForm()
-
-    this_user = User.query.filter_by(username=current_user.username).first()
-
-    if post_form.validate_on_submit():
-        title = post_form.title.data
-        content = post_form.content.data
-        if current_user.role == 'S':
-            type = "Request"
-        else:
-            type = "Offer"
-        #type = post_form.type.data
-        author = current_user.username
-        date_time = datetime.now()
-
-        # add roompost to database
-        blog_post = StudentPost(title=title,  author=author, date_posted=date_time, content=content,
-                             type=type, this_user=this_user)
-
-        db.session.add(blog_post)
-        db.session.commit()
-
-        return redirect(url_for('home'))
+# @app.route('/add_student_comment', methods=['GET', 'POST'])
+# def add_student_comment():
+#
+#     post_form = StudentPostForm()
+#
+#     this_user = User.query.filter_by(username=current_user.username).first()
+#
+#     if post_form.validate_on_submit():
+#         title = post_form.title.data
+#         content = post_form.content.data
+#         if current_user.role == 'S':
+#             type = "Request"
+#         else:
+#             type = "Offer"
+#         #type = post_form.type.data
+#         author = current_user.username
+#         date_time = datetime.now()
+#
+#         # add roompost to database
+#         blog_post = StudentPost(title=title,  author=author, date_posted=date_time, content=content,
+#                              type=type, this_user=this_user)
+#
+#         db.session.add(blog_post)
+#         db.session.commit()
+#
+#         return redirect(url_for('home'))
 
 #all users page
 @app.route("/users", methods=['GET', 'POST'])
@@ -324,11 +340,12 @@ def all_users():
 
     all_tutors = User.query.filter_by(role='T').all()
     online_tutors = User.query.filter_by(status=1, role='T').all()
+    busy_tutors = User.query.filter_by(status=2, role='T').all()
     student_users = User.query.filter_by(role='S').all()
     this_user = User.query.filter_by(username=current_user.username).first()
 
     return render_template('all_users.html', username=current_user.username, all_tutors=all_tutors,
-                           online_tutors=online_tutors, student_users=student_users, this_user=this_user)
+                           online_tutors=online_tutors, busy_tutors=busy_tutors, student_users=student_users, this_user=this_user)
 
 # route for chat - displays public rooms and form to join(create rooms)
 @app.route("/home", methods=['GET', 'POST'])
@@ -383,6 +400,8 @@ def private_chat():
 
     roomVisible = room_object.visible
 
+    print(roomVisible)
+
     file_form = FileUploadForm()
 
     if file_form.validate_on_submit():
@@ -407,7 +426,7 @@ def profile():
     role = user_object.role
     image_fp = user_object.user_photo
 
-    setdbstatus = 0
+    setdbstatus = status
 
     #profile picture form
     image_form = ImageUploadForm()
@@ -434,6 +453,8 @@ def profile():
         status_string = "Offine"
     elif status == 1:
         status_string = "Online"
+    elif status == 2:
+        status_string = "Busy"
 
     #file uploads
     file_form = FileUploadForm()
@@ -460,6 +481,11 @@ def profile():
         if(s1 == '1'):
             setdbstatus = 1
             status_string = 'Online'
+            db_status = User.query.filter_by(username=current_user.username).update(dict(status=setdbstatus))
+            db.session.commit()
+        if(s1 == '2'):
+            setdbstatus = 2
+            status_string = 'Busy'
             db_status = User.query.filter_by(username=current_user.username).update(dict(status=setdbstatus))
             db.session.commit()
 
@@ -504,6 +530,8 @@ def pub_profile(username):
         status_string = "Offline"
     elif status == 1:
         status_string = "Online"
+    elif status == 2:
+        status_string = "Busy"
 
     return render_template('pub_profile.html', thisUser=thisUser, username=username, firstname=firstname,
                            lastname=lastname, email=email, status_string=status_string, room_posts=room_posts,
@@ -603,6 +631,11 @@ def privateRoom():
     room.visible = False
     db.session.commit()
 
+    #sets rooms tutor status to busy
+    room_tutor = User.query.filter_by(username=room.author).first()
+    room_tutor.status = 2
+    db.session.commit()
+
     return jsonify({'result' : 'success'})
 
 
@@ -612,6 +645,11 @@ def publicRoom():
 
     room = RoomPost.query.filter_by(id=request.form['id']).first()
     room.visible = True
+    db.session.commit()
+
+    # sets rooms tutor status to online
+    room_tutor = User.query.filter_by(username=room.author).first()
+    room_tutor.status = 1
     db.session.commit()
 
     return jsonify({'result' : 'success'})

@@ -15,15 +15,17 @@
 
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', () => {
-        let online_status = {{ status }};
 
-        if (online_status == 1) {
-            document.querySelector('#online_stat').innerHTML = "Online"
-        } else {
-            document.querySelector('#online_stat').innerHTML = "Offline"
+
+        //hides online status toggle and info if user is a student
+        let role = '{{ role_name }}';
+
+        if (role === "Student") {
+            document.getElementById('tutorStatusToggle').style.display = "none";
+            document.getElementById('tutorStatusHeader').style.display = "none";
         }
-        document.querySelector('changeStatus').onclick = () => {
-        }
+
+
     })
 </script>
 
@@ -57,7 +59,7 @@
             <!-- Trigger/Open The Modal -->
             <button id="myBtn" class="myBtn uploadPhotoButton">Change</button>
             <br><br>
-
+            <div id="tutorStatusToggle">
                   Status:
             <form method="post" enctype="multipart/form-data">
                 <fieldset>
@@ -66,8 +68,8 @@
                         {{ ts_form.submit_button3 }}
                         {{ ts_form.csrf_token }}
                     </fieldset>
-                    </form>
-
+            </form>
+            </div>
 
             <hr>
 
@@ -88,7 +90,9 @@
                 View My Public Profile</a>
             </div>
 
+            <div id="tutorStatusHeader">
             <h2>Your status is currently set to: {{ status_string }} </h2>
+            </div>
 
 
 
