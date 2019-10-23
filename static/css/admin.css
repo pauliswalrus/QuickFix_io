@@ -38,10 +38,10 @@
     width: 600px;
     margin-left: 25%;
     margin-right: 25%;
-    height: 200px;
+    height: 400px;
     left: 0;
     top: 200px;
-    padding: 20px;
+    padding: 5px;
     text-align: center;
     overflow: auto; /* Enable scroll if needed */
     background-color: white;

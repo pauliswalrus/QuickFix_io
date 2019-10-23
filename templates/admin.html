@@ -61,14 +61,20 @@
                                     <button class="btn btn-warning editUser" onclick="showForm()" id="editUser" user_id="{{ user.id }}">Edit</button>
 
                                     <div id="upload">
-
                                     <span class="closeWindow" onclick="testClose()">&times;</span><br>
-                                    <form method="post" enctype="multipart/form-data">
-                                        {{ file_form.hidden_tag() }}
-                                        {{ file_form.file }}
-                                        <button id="file_upload" type=submit class="btn btn-info" title="Submit">Add New File</button>
-                                        {{ file_form.csrf_token }}
-                                    </form>
+                                        <h4>Edit User {{ user.username|upper }}</h4>
+                                        <label for="userName{{ user.id }}">Username: </label><br>
+                                        <input type="text" class="form-control" id="userName" value="{{ user.username }}"><br>
+                                        <label for="firstName{{ user.id }}">First Name: </label><br>
+                                        <input type="text" class="form-control" id="firstName" value="{{ user.firstname }}"><br>
+                                        <label for="firstName{{ user.id }}">Last Name: </label><br>
+                                        <input type="text" class="form-control" id="lastName" value="{{ user.lastname }}"><br>
+                                        <label for="userRole{{ user.id }}">Role: </label><br>
+                                        <input type="text" class="form-control" id="userRole" value="{{ user.role }}"><br>
+                                        <label for="userEmail{{ user.id }}">Email: </label><br>
+                                        <input type="text" class="form-control" id="userEmail" value="{{ user.email }}"><br>
+
+                                        <button class="btn btn-info editUserForm" user_id="{{ user.id }}">Edit User</button>
                                     </div>
 
                                     <button class="btn btn-danger deleteUser" user_id="{{ user.id }}">Delete</button>

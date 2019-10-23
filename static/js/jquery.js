@@ -168,6 +168,28 @@ $(document).ready(function() {
 
     })
 
+    $('.editUserForm').on('click',function () {
+
+        var user_id = $(this).attr('user_id');
+
+        var firstname = $('#firstName').val();
+        var lastname = $('#lastName').val();
+        var email = $('#email').val();
+        var username = $('#userName').val();
+
+
+        req = $.ajax({
+           url : '/editUser',
+           type : 'POST',
+           data : { firstname : firstname, lastname : lastname, email : email, username : username, id : user_id }
+
+        });
+        alert("User Edited!")
+        location.reload();
+
+
+    })
+
     $('.deleteLogs').on('click',function () {
 
         var room_id = $(this).attr('room_id');

@@ -80,7 +80,6 @@ def admin():
         return "You are not an authorized admin please go back"
 
     #users in desc order
-    file_form = FileUploadForm()
 
     users_list = User.query.order_by(User.id.desc()).all()
     all_files = FileUpload.query.all()
@@ -97,7 +96,7 @@ def admin():
 
     this_user = User.query.filter_by(username=current_user.username).first()
 
-    return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts, tutors=tutors, this_user=this_user, tutors_approved=tutors_approved, tutors_pending=tutors_pending, file_form=file_form)
+    return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts, tutors=tutors, this_user=this_user, tutors_approved=tutors_approved, tutors_pending=tutors_pending)
 
 ### need to rename/refactor to user
 @app.route('/register', methods=['GET', 'POST'])
@@ -617,6 +616,18 @@ def deleteRoom():
 
     return jsonify({'result': 'success'})
 
+@app.route('/editUser', methods=['POST'])
+def editUser():
+
+    user_edit = User.query.filter_by(id=request.form['id']).first()
+
+    user_edit.username = request.form['userName']
+    user_edit.firstname = request.form['firstname']
+    user_edit.lastname = request.form['lastname']
+
+    db.session.commit()
+
+    return jsonify({'result' : 'success'})
 
 @app.route('/deleteUser', methods=['POST'])
 def deleteUser():
