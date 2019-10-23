@@ -253,6 +253,28 @@ def studentpost(studentpost_id):
 
     return render_template('viewStudentPost.html', post=stdpost, username=current_user.username, comment_form=comment_form, comments=comments, this_user=this_user)
 
+#view all student posts
+@app.route('/allstudentposts', methods=['GET', 'POST'])
+def allstudentposts():
+
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    student_posts = StudentPost.query.order_by(StudentPost.date_posted.desc()).all()
+
+    return render_template('studentPosts.html', this_user=this_user, student_posts=student_posts)
+
+#view all tutor posts
+@app.route('/allrooms', methods=['GET', 'POST'])
+def allrooms():
+
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    room_posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
+
+    return render_template('tutorPosts.html', this_user=this_user, room_posts=room_posts)
+
 #new student request help post
 @app.route('/add_student_post', methods=['GET', 'POST'])
 def add_student_post():
@@ -311,6 +333,7 @@ def home():
     online_users = User.query.filter_by(status=one).all()
 
     t_status = "not sure"
+
 
     if this_user.role == 'S':
         posts = RoomPost.query.filter_by(type="Offer").filter_by(visible=True).order_by(RoomPost.date_posted.desc()).all()

@@ -21,11 +21,14 @@
         </span>
 
         <div id="menu" style="display:none">
-            <a href="#">Forums</a>
-            <a href="{{ url_for('home') }}" >Home</a>
-            <a href="{{ url_for('all_users') }}">Users</a>
+            <a href="{{ url_for('allrooms') }}">Open Tutor Rooms (both)</a>
+            <a href="{{ url_for('allstudentposts') }}">Student Questions (tutors only)</a>
             <hr>
-            <a href="{{ url_for('logout') }}"> Logout </a>
+            <a href="{{ url_for('profile') }}">Settings</a>
+            <a href="{{ url_for('all_users') }}">All Users (temp)</a>
+            <hr>
+            <a href="#">Contact</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
         </div>
 
         <a href="{{ url_for('logout') }}" class="fl_right"> Logout </a>
