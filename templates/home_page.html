@@ -15,301 +15,152 @@
 {% extends "navbar.html" %}
 {% block content %}
 
-<div class="row">
+    <!-- Section 1 - Current Date -->
+    <div id="section_1">
+        <span id="currDate">{{ date_stamp }}</span>
+    </div>
 
-    <div class="column left">
-        <div>
-            <span id="currDate">{{ date_stamp }}</span>
+    <!-- Section 2 - Recent Posts -->
+    <div id="section_2"></div>
 
-            <div id="onlineTutors">
-                <h5 id="test">Current online tutors: </h5>
+    <!-- Section 3 - ?? -->
+    <div id="section_3"></div>
 
-                {% for user in online_users %}
-                    <a href="{{ url_for('pub_profile', username=user.username) }}">{{ user.username }} </a><br>
+
+
+
+
+
+
+
+
+
+
+
+    <div class="row">
+
+        <div class="column left">
+            <div>
+                <span id="currDate">{{ date_stamp }}</span>
+
+                <div id="onlineTutors">
+                    <h5 id="test">Current online tutors: </h5>
+
+                    {% for user in online_users %}
+                        <a href="{{ url_for('pub_profile', username=user.username) }}">{{ user.username }}</a><br>
+                    {% endfor %}
+                </div>
+
+                <hr>
+
+                <div id="roomPost">
+                    <a href="{{ url_for('add_room') }}">Create A New Room</a>
+                    <hr>
+                </div>
+
+                <div id="studentPost">
+                    <a href="{{ url_for('add_student_post') }}">Ask For Help</a>
+                    <hr>
+                </div>
+
+                <div id="tutorApply">
+                    <a href="{{ url_for('new_tutor') }}">Apply To Be A Tutor</a>
+                    <hr>
+                </div>
+
+                <div id="checkApp"><a href="{{ url_for('check_application') }}">Check Application</a></div>
+
+            </div> <!-- end empty div -->
+        </div> <!-- end column left -->
+
+
+        <div class="column middle" id="tutorPosts">
+            <div class="cardContainer">
+                <h3>Available Tutors:</h3>
+                {% for room in offerhelp %}
+                    <div>
+                        <a href="{{ url_for('room', room_id=room.id) }}">
+                            <div id="postTypeTitle">{{ room.title }} - {{ room.room_title }}</div>
+                            <div id="postAuthorTime">
+                                by {{ room.author }} on {{ room.date_posted.strftime('%b %d, %Y') }}
+                                at {{ room.date_posted.strftime('%I' ':' '%M %p') }}
+                            </div>
+                        </a>
+                        <hr>
+                    </div>
+
                 {% endfor %}
             </div>
-
-            <hr>
-            <div id="roomPost">
-            <a href="{{ url_for('add_room') }}">Create A New Room</a>
-
-            <hr>
-            </div>
-
-            <div id="studentPost">
-            <a href="{{ url_for('add_student_post') }}">Ask For Help</a>
-
-            <hr>
-            </div>
-
-            <div id="tutorApply">
-            <a href="{{ url_for('new_tutor') }}">Apply To Be A Tutor</a>
-
-            <hr>
-            </div>
-
-            <div id="checkApp">
-            <a href="{{ url_for('check_application') }}">Check Application</a>
-            </div>
-
         </div>
-    </div>
 
 
+        <div class="column right" id="studentPosts">
+            <div class="cardContainer">
+                <h3>These Students Need Help:</h3>
+                {% for post in askforhelp %}
+                    <div>
+                        <a href="{{ url_for('studentpost', studentpost_id=post.id) }}">
+                            <div id="postTypeTitle">[{{ post.type|upper }}] {{ post.title }}</div>
+                            <div id="postAuthorTime">
+                                by {{ post.author }} on {{ post.date_posted.strftime('%b %d, %Y') }}
+                                at {{ post.date_posted.strftime('%I' ':' '%M %p') }}
+                            </div>
+                        </a>
+                        <hr>
+                    </div>
 
-    <div class="column middle" id="tutorPosts">
-        <div class="cardContainer">
-            <h3>Available Tutors:</h3>
-            {% for room in offerhelp %}
-                <div>
-                    <a href="{{ url_for('room', room_id=room.id) }}">
-                        <div id="postTypeTitle">{{ room.title }} - {{ room.room_title }}</div>
-                        <div id="postAuthorTime">
-                            by {{ room.author }} on {{ room.date_posted.strftime('%b %d, %Y') }}
-                            at {{ room.date_posted.strftime('%I' ':' '%M %p') }}
-                        </div>
-                    </a>
-                    <hr>
-                </div>
+                {% endfor %}
+            </div>  <!-- end card container -->
+        </div> <!-- end column right -->
 
-            {% endfor %}
-        </div>
-    </div>
-
-
-
-    <div class="column right" id="studentPosts">
-        <div class="cardContainer">
-            <h3>These Students Need Help:</h3>
-            {% for post in askforhelp %}
-                <div>
-                    <a href="{{ url_for('studentpost', studentpost_id=post.id) }}">
-                        <div id="postTypeTitle">[{{ post.type|upper }}] {{ post.title }}</div>
-                        <div id="postAuthorTime">
-                            by {{ post.author }} on {{ post.date_posted.strftime('%b %d, %Y') }}
-                            at {{ post.date_posted.strftime('%I' ':' '%M %p') }}
-                        </div>
-                    </a>
-                    <hr>
-                </div>
-
-            {% endfor %}
-        </div>
-    </div>
-
-</div>
+    </div> <!-- end row -->
 
 
-{#<!-- div main section starts -->#}
-{#<div id="main-section">#}
-{##}
-{#    <!-- Left Column - Join Room - Online Tutors etc -->#}
-{#    <div id="left_column">#}
-{##}
-{#        <span id="currDate">{{ date_stamp }}</span>#}
-{##}
-{#        <div id="onlineTutors">#}
-{#            <h5>Current online tutors: </h5>#}
-{##}
-{#            {% for user in online_users %}#}
-{#                <a href="{{ url_for('pub_profile', username=user.username) }}">{{ user.username }} </a><br>#}
-{#            {% endfor %}#}
-{#        </div>#}
-{##}
-{#    <hr>#}
-{#        <a href="{{ url_for('new_tutor') }}">Apply to be a Tutor</a>#}
-{##}
-{#    </div> <!-- end of left column -->#}
-{##}
-{#    <!-- Middle Column - Type Message area -->#}
-{#    <div id="middle_column">#}
-{##}
-{##}
-{##}
-{#    </div><!-- end middle_column div -->#}
-{##}
-{##}
-{#    <!-- right_column div -->#}
-{#    <div id="right_column">#}
-{##}
-{#        <div id="blog-posts">#}
-{##}
-{##}
-{#            <a href="{{ url_for('add_post') }}">Add A Room Post</a> <br><br>#}
-{#            <h5>View Recent Room Posts:</h5>#}
-{##}
-{#            {% for room in posts %}#}
-{#                <div>#}
-{#                    <a href="{{ url_for('room', post_id=room.id) }}">#}
-{#                        <div id="postTypeTitle">[{{ room.type|upper }}] {{ room.title }} - {{ room.room_title }}</div>#}
-{#                        <div id="postAuthorTime">#}
-{#                            by {{ room.author }} on {{ room.date_posted.strftime('%b %d, %Y') }}#}
-{#                            at {{ room.date_posted.strftime('%I' ':' '%M %p') }}#}
-{#                        </div>#}
-{#                    </a>#}
-{#                <hr>#}
-{#                </div>#}
-{##}
-{#            {% endfor %}#}
-{##}
-{##}
-{##}
-{#            <h1>Offer Help:</h1>#}
-{#            {% for room in offerhelp %}#}
-{#                <div>#}
-{#                    <a href="{{ url_for('room', post_id=room.id) }}">#}
-{#                        <div id="postTypeTitle">[{{ room.type|upper }}] {{ room.title }} - {{ room.room_title }}</div>#}
-{#                        <div id="postAuthorTime">#}
-{#                            by {{ room.author }} on {{ room.date_posted.strftime('%b %d, %Y') }}#}
-{#                            at {{ room.date_posted.strftime('%I' ':' '%M %p') }}#}
-{#                        </div>#}
-{#                    </a>#}
-{#                <hr>#}
-{#                </div>#}
-{##}
-{#            {% endfor %}#}
-{##}
-{#        </div>#}
-{##}
-{#    </div><!-- end right_column div -->#}
-{##}
-{##}
-{#</div> <!--end main section-->#}
+    <script>
 
-{##}
-{#<script type="text/javascript">#}
-{#    const username = `{{ username }}`;#}
-{#    const mesage_object = `{{ message_object }}`#}
-{#</script>#}
+        let uRole = '{{ role_name }}';
 
-<script>
+        let tStatus = '{{ t_status }}';
 
-    let uRole = '{{ role_name }}';
+        window.onload = function (event) {
 
-    let tStatus = '{{ t_status }}';
-
-    window.onload = function (event) {
-
-        document.getElementById('checkApp').style.display = "none";
-        document.getElementById('adminPortal').style.display = "none";
-
-       if (uRole == 'Student') {
-            document.getElementById('test').style.color = "purple";
-            document.getElementById('tutorPosts').style.display = "block";
-            document.getElementById('studentPosts').style.display = "none";
-            document.getElementById('roomPost').style.display = "none";
-
-            if (tStatus == 'pending') {
-                document.getElementById('tutorApply').style.display = "none";
-                document.getElementById('roomPost').style.display = "none";
-                document.getElementById('checkApp').style.display = "block";
-
-            }
-            else if (tStatus == 'approved') {
-                document.getElementById('tutorApply').style.display = "none";
-                document.getElementById('checkApp').style.display = "none";
-            }
-            else if (tStatus == 'denied') {
-                document.getElementById('checkApp').style.display = "block";
-                document.getElementById('tutorApply').style.display = "none";
-                document.getElementById('roomPost').style.display = "none";
-            }
-
-        }
-       else if (uRole == 'Tutor') {
-           document.getElementById('test').style.color = "green";
-           document.getElementById('tutorPosts').style.display = "block";
-            document.getElementById('studentPosts').style.display = "block";
-            document.getElementById('studentPost').style.display = "none";
-            document.getElementById('tutorApply').style.display = "none";
             document.getElementById('checkApp').style.display = "none";
 
-       }
+            if (uRole == 'Student') {
+                document.getElementById('test').style.color = "purple";
+                document.getElementById('tutorPosts').style.display = "block";
+                document.getElementById('studentPosts').style.display = "none";
+                document.getElementById('roomPost').style.display = "none";
+
+                if (tStatus == 'pending') {
+                    document.getElementById('tutorApply').style.display = "none";
+                    document.getElementById('roomPost').style.display = "none";
+                    document.getElementById('checkApp').style.display = "block";
+
+                } else if (tStatus == 'approved') {
+                    document.getElementById('tutorApply').style.display = "none";
+                    document.getElementById('checkApp').style.display = "none";
+                } else if (tStatus == 'denied') {
+                    document.getElementById('checkApp').style.display = "block";
+                    document.getElementById('tutorApply').style.display = "none";
+                    document.getElementById('roomPost').style.display = "none";
+                }
+
+            } else if (uRole == 'Tutor') {
+                document.getElementById('test').style.color = "green";
+                document.getElementById('tutorPosts').style.display = "block";
+                document.getElementById('studentPosts').style.display = "block";
+                document.getElementById('studentPost').style.display = "none";
+                document.getElementById('tutorApply').style.display = "none";
+                document.getElementById('checkApp').style.display = "none";
+
+            }
 
 
+        }
 
-    }
-
-
-
-
-    {##}
-    {##}
-    {#// Get the modal#}
-    {#let modal = document.getElementsByClassName('modal');#}
-    {##}
-    {#// When the user clicks the button, open the modal#}
-    {#btn[0].onclick = function () {#}
-    {#    modal[0].style.display = "block";#}
-    {##}
-    {##}
-    {#span[1].onclick = function () {#}
-    {#    modal[1].style.display = "none";#}
-    {##}
-
-</script>
+    </script>
 
 {% endblock %}
 </body>
 </html>
-
-
-<!-- COMMENTS / OLD CODE / DONT DELETE YET -->
-
-
-<!-- floating right -->
-{#
-        <span id="currDate">{{ date_stamp }}</span>
-    #}
-
-
-<!-- Input message
-<div id="input-area">
-    <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">
-    <button type="button" id="send_message">SEND</button>
-
-</div>
--->
-
-
-<!-- Create Room to Join:
-
-
-<input type="text" id="room_to_join" name="room_to_join">
-<button type="submit" id="join_room">Join Room</button>
-
-<br>
-<br>
--->
-
-
-{#        <h5>General Rooms:</h5>#}
-{#        {% for room in rooms %}#}
-{#            <p class="select-room">{{ room|title }}</p>#}
-{#        {% endfor %}#}
-
-
-<!-- Middle Column - Type Message area -->
-{#    <div id="middle_column">#}
-
-{#        <div id="chatWindowHeader">#}
-{#            <p id="room-name"></p>#}
-{#        </div>#}
-{##}
-{#        <!-- Display message -->#}
-{#        <div id="display-message-section">#}
-{#            {% for msg in message_object %}#}
-{#                <li>{{ msg.username }}#}
-{#                    {{ msg.message }}#}
-{#                    {{ msg.room }}#}
-{#                </li>#}
-{#            {% endfor %}#}
-{#        </div>#}
-{##}
-{##}
-{#        <div id="input-area">#}
-{#            <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">#}
-{#            <button type="button" id="send_message">SEND</button>#}
-{#        </div>#}
-
-{#    </div><!-- end middle_column div -->#}

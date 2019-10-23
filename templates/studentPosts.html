@@ -1,0 +1,69 @@
+<!--
+  -- studentPosts.html
+  -- Shows all posts all students have made.
+  -->
+
+<html lang=en>
+<head>
+    <meta charset=utf-8>
+
+    <title>View Student Posts</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/viewPost.css') }}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+</head>
+
+<body>
+
+{% extends "navbar.html" %}
+{% block content %}
+
+
+    <div class="column right" id="studentPosts">
+        <div class="cardContainer">
+            <h3>These Students Need Help:</h3>
+            {% for post in student_posts %}
+                <div>
+                    <a href="{{ url_for('studentpost', studentpost_id=post.id) }}">
+                        <div id="postTypeTitle">[{{ post.type|upper }}] {{ post.title }}</div>
+                        <div id="postAuthorTime">
+                            by {{ post.author }} on {{ post.date_posted.strftime('%b %d, %Y') }}
+                            at {{ post.date_posted.strftime('%I' ':' '%M %p') }}
+                        </div>
+                    </a>
+                    <hr>
+                </div>
+
+            {% endfor %}
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+{#    {% for post in student_posts %}#}
+{#        <div id="postTitle">{{ post.title }} </div>#}
+{#        #}
+{#        <div id="authorDate">#}
+{#            <div id="author">By: <a href="{{ url_for('pub_profile', username=post.author) }}"> {{ post.author }}</a></div>#}
+{#            <div id="dateTime">{{ post.date_posted.strftime('%b %d, %Y') }} at {{ post.date_posted.strftime('%I'':''%M %p') }}</div>#}
+{#        </div>#}
+{#        #}
+{#        <div id="roomTitle">{{ post.title }}</div>#}
+{#        <div id="content">Post Content: {{ post.content|safe }}</div>#}
+{##}
+{#    {% endfor %}#}
+
+
+
+{% endblock %}
+</body>
+</html>
