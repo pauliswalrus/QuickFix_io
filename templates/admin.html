@@ -10,6 +10,7 @@
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -25,18 +26,17 @@
 </head>
 
 <body>
-{#{% extends "navbar.html" %}#}
-{#{% block content %}#}
-
 
 <!-- div main section starts -->
 <div id="main-section">
 
 
-    <!-- Left Column - Join Room - Online Tutors etc -->
+    <!-- Left Column - Users List etc -->
     <div id="left_column">
 
         <h3>Users: <a href="{{ url_for('all_users') }}">Users Page</a></h3>
+        <div class="cardContainer2">
+
         {% for user in users_list %}
 
       <div id="roomSection{{ user.id }}" class="panel panel-default">
@@ -59,14 +59,14 @@
       </div>
 
       {% endfor %}
-
+        </div><!-- end of card container2 -->
 
     </div> <!-- end of left column -->
 
-    <!-- Middle Column - Type Message area -->
+    <!-- Middle Column - Rooms Area -->
     <div id="middle_column">
-
       <h3>Active Rooms:</h3>
+    <div class="cardContainer4">
         {% for room in blog_posts %}
       <div id="roomSection{{ room.id }}" class="panel panel-default">
         <div class="panel-heading">
@@ -81,39 +81,37 @@
               <div class="form-group">
               <label for="emailInput{{ room.id }}">Room Name: </label><br>
               <input type="text" class="form-control" id="titleInput{{ room.id }}" value="{{ room.room_title }}">
-            </div><br>
-            <div class="form-group">
+            </div><div class="form-group">
               <label for="nameInput{{ room.id }}">Title: </label><br>
               <input type="text" class="form-control" id="nameInput{{ room.id }}" value="{{ room.title }}">
-            </div> <br>
+            </div><br>
 
             <div class="form-group">
               <label for="contentInput{{ room.id }}">Content: </label> <br>
-                <textarea rows="3" cols="24" class="form-control" id="contentInput{{ room.id }}" >{{ room.content }}</textarea>
+                <textarea rows="4" cols="55" class="form-control" id="contentInput{{ room.id }}" >{{ room.content }}</textarea><br>
 {#              <input type="text" class="form-control" id="contentInput{{ room.id }}" value="{{ room.content }}">#}
-            </div><br><br>
+            </div>
 
-            <button class="btn btn-primary updateButton" room_id="{{ room.id }}">Update Room</button>
-            <button class="btn btn-danger deleteButton" room_id="{{ room.id }}">Delete Room</button>
-            <br>
-              <button id="privateButton" class="btn btn-warning privateButton" room_id="{{ room.id }}">Make Room Private</button>
-            <button id="publicButton" class="btn btn-success publicButton" room_id="{{ room.id }}">Make Room Public</button>
+            <button class="btn btn-primary updateButton" room_id="{{ room.id }}">Update</button>
+            <button class="btn btn-danger deleteButton" room_id="{{ room.id }}">Delete</button>
+              <button id="privateButton" class="btn btn-warning privateButton" room_id="{{ room.id }}">Private</button>
+            <button id="publicButton" class="btn btn-success publicButton" room_id="{{ room.id }}">Public</button>
 
           </div>
         </div>
       </div>
 
       {% endfor %}
+        </div><!-- end of card container4 -->
+
 
     </div><!-- end middle_column div -->
-
 
     <!-- right_column div -->
     <div id="right_column">
 
-        <span id="currDate">{{ date_stamp }}</span>
-
     <h3>Pending Tutor Applications:</h3>
+    <div class="cardContainer3">
 
       {% for tutor in tutors_pending %}
       <div id="tutorSection{{ tutor.user_id }}" class="panel panel-default">
@@ -141,21 +139,23 @@
                <div class="form-group">
                 <label for="appComments{{ tutor.application_comments }}">Application Comments: </label>
                 <input type="text" class="form-control" id="appComments" value="{{ tutor.application_comments }}">
-            </div>
+               </div>
 
             <button class="btn btn-primary approveTutor" user_id="{{ tutor.user_id }}">Approve</button>
             <button class="btn btn-warning denyTutor" user_id="{{ tutor.user_id }}">Deny</button>
-
 
           </div>
         </div>
       </div>
 
       {% endfor %}
+    </div>
+
  <h3>Approved Tutors:</h3>
 
-     {% for tutor in tutors_approved %}
+    <div class="cardContainer2">
 
+     {% for tutor in tutors_approved %}
 
       <div id="tutorSection{{ tutor.user_id }}" class="panel panel-default">
         <div class="panel-heading">
@@ -174,27 +174,24 @@
               <span id="aboutTutor">{{ tutor.about_tutor }}</span>
             </div>
             <br>
-{#                {{ tutor.tutor_status }}#}
+
              <div class="form-group">
              <b>Credentials:</b> <a href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>
-{#              <input type="text" class="form-control" id="titleInput{{ tutor.tutor_id }}" value="{{ tutor.credentials_file_name }}" y>#}
             </div>
                <div class="form-group">
                 <label for="approved">Application Comments: </label>
                    <span id="approved">{{ tutor.application_comments }}</span>
             </div>
 
-
           </div>
         </div>
       </div>
       {% endfor %}
-        </div>
-
+    </div><!-- end of card container2 -->
     </div><!-- end right_column div -->
 
-</div> <!--end main section-->
-
+    </div>
+    <!--end main section-->
 
 </body>
 </html>
