@@ -44,29 +44,6 @@
     overflow-y: scroll;
 }
 
-.cardContainer2 {
-    height: 400px;
-    padding: 10px;
-    width: 100%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    overflow-y: scroll;
-}
-
-.cardContainer3 {
-    height: 200px;
-    padding: 10px;
-    width: 100%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    overflow-y: scroll;
-}
-
-.cardContainer4 {
-    height: 400px;
-    padding: 10px;
-    width: 100%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    overflow-y: scroll;
-}
 
 /* Responsive layout - when the screen is less than 600px wide, make the three columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 600px) {

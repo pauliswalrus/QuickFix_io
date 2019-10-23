@@ -8,9 +8,9 @@
 
     <title> Admin Portal </title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    {#    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">#}
+    {#    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">#}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -20,179 +20,230 @@
 
     </script>
 
-         <script src="{{ url_for('static', filename='js/jquery.js') }}">
+    <script src="{{ url_for('static', filename='js/jquery.js') }}">
 
     </script>
 </head>
 
 <body>
+{% extends "navbar.html" %}
+{% block content %}
 
-<!-- div main section starts -->
-<div id="main-section">
+    <!-- Main Section -->
+    <div id="main-section">
 
+        <!-- Left Column - Users List etc -->
+        <div id="left_column">
 
-    <!-- Left Column - Users List etc -->
-    <div id="left_column">
+            <h3>Users: <a href="{{ url_for('all_users') }}">Users Page</a></h3>
 
-        <h3>Users: <a href="{{ url_for('all_users') }}">Users Page</a></h3>
-        <div class="cardContainer2">
+            <div class="container">
+                <div class="cardStyle">
 
-        {% for user in users_list %}
+                    {% for user in users_list %}
 
-      <div id="roomSection{{ user.id }}" class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title"><span id="memberNumber{{ user.id }}"><a href="{{ url_for('pub_profile', username=user.username) }}">User {{ user.id }} : {{ user.username|upper}}</a> </span></h3>
-        </div>
-            </a>
-        <div class="panel-body">
-          <div class="form-inline">
-                  <b>Name:</b> {{ user.firstname }} {{ user.lastname }} <br>
-                  <b>Username:</b> {{ user.username }} <br>
-                  <b>Email:</b> {{ user.email }}<br>
-                  <b>Role:</b> {{ user.role }}<br>
-              <button class="btn btn-warning editUser" user_id="{{ user.id }}">Edit</button>
-              <button class="btn btn-danger deleteUser" user_id="{{ user.id }}">Delete</button>
+                        <div id="roomSection{{ user.id }}" class="panel panel-default">
 
-             <br>
-          </div>
-        </div>
-      </div>
+                            <div class="panel-heading">
+                                <h3 class="panel-title">
+                            <span id="memberNumber{{ user.id }}">
+                                <a href="{{ url_for('pub_profile', username=user.username) }}">User {{ user.id }} : {{ user.username|upper }}</a>
+                            </span>
+                                </h3>
+                            </div>
 
-      {% endfor %}
-        </div><!-- end of card container2 -->
+                            <div class="panel-body">
+                                <div class="form-inline">
+                                    <b>Name:</b> {{ user.firstname }} {{ user.lastname }} <br>
+                                    <b>Username:</b> {{ user.username }} <br>
+                                    <b>Email:</b> {{ user.email }}<br>
+                                    <b>Role:</b> {{ user.role }}<br>
+                                    <button class="btn btn-warning editUser" user_id="{{ user.id }}">Edit</button>
+                                    <button class="btn btn-danger deleteUser" user_id="{{ user.id }}">Delete</button>
+                                </div>
+                            </div>
 
-    </div> <!-- end of left column -->
+                        </div>
 
-    <!-- Middle Column - Rooms Area -->
-    <div id="middle_column">
-      <h3>Active Rooms:</h3>
-    <div class="cardContainer4">
-        {% for room in blog_posts %}
-      <div id="roomSection{{ room.id }}" class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title"><span id="memberNumber"><a href="{{ url_for('room', room_id=room.id) }}">Room {{ room.id }} : {{ room.room_title }}</a></span> </h3>
-        </div>
-        <div class="panel-body">
-          <div class="form-inline">
-              <b>Author:</b><a href="{{ url_for('pub_profile', username=room.author) }}"> {{ room.author|upper }}</a><br>
-              <b>Public:</b> {{ room.visible }}<br>
-              <b>Date:</b> {{ room.date_posted.strftime('%Y-%m-%d') }} <br>
-              <b><a href="{{ url_for('chat_log', room_id=room.id) }}"><button class="btn btn-primary viewButton" room_id="{{ room.id }}">View Logs</button></a></b> <b><a href="#"><button class="btn btn-danger deleteLogs" room_id="{{ room.id }}">Clear Logs</button></a></b> <br>
-              <div class="form-group">
-              <label for="emailInput{{ room.id }}">Room Name: </label><br>
-              <input type="text" class="form-control" id="titleInput{{ room.id }}" value="{{ room.room_title }}">
-            </div><div class="form-group">
-              <label for="nameInput{{ room.id }}">Title: </label><br>
-              <input type="text" class="form-control" id="nameInput{{ room.id }}" value="{{ room.title }}">
-            </div><br>
+                    {% endfor %}
 
-            <div class="form-group">
-              <label for="contentInput{{ room.id }}">Content: </label> <br>
-                <textarea rows="4" cols="55" class="form-control" id="contentInput{{ room.id }}" >{{ room.content }}</textarea><br>
-{#              <input type="text" class="form-control" id="contentInput{{ room.id }}" value="{{ room.content }}">#}
+                </div>
             </div>
 
-            <button class="btn btn-primary updateButton" room_id="{{ room.id }}">Update</button>
-            <button class="btn btn-danger deleteButton" room_id="{{ room.id }}">Delete</button>
-              <button id="privateButton" class="btn btn-warning privateButton" room_id="{{ room.id }}">Private</button>
-            <button id="publicButton" class="btn btn-success publicButton" room_id="{{ room.id }}">Public</button>
 
-          </div>
-        </div>
-      </div>
-
-      {% endfor %}
-        </div><!-- end of card container4 -->
+        </div> <!-- End Left Column -->
 
 
-    </div><!-- end middle_column div -->
+        <!-- Middle Column - Rooms Area -->
+        <div id="middle_column">
 
-    <!-- right_column div -->
-    <div id="right_column">
+            <h3>Active Rooms:</h3>
 
-    <h3>Pending Tutor Applications:</h3>
-    <div class="cardContainer3">
+            {% for room in blog_posts %}
 
-      {% for tutor in tutors_pending %}
-      <div id="tutorSection{{ tutor.user_id }}" class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title"><span id="memberNumber"><a href="{{ url_for('pub_profile', username=tutor.username) }}">Tutor {{ tutor.tutor_id }} : {{ tutor.username|upper }} </a></span> </h3>
-        </div>
-            </a>
-        <div class="panel-body">
-          <div class="form-inline">
+                <div id="roomSection{{ room.id }}" class="panel panel-default">
 
-            <div class="form-group">
-              <label for="aboutTutor{{ tutor.user_id }}">Reason: </label>
-              <span id="aboutTutor{{ tutor.tutor_id }}" value="{{ tutor.about_tutor }}">{{ tutor.about_tutor }}</span>
-            </div>
-            <br>
-            <div class="form-group">
-                <label for="statusTutor{{ tutor.tutor_status }}">Status: </label>
-                <span id="statusTutor{{ tutor.tutor_status }}">{{ tutor.tutor_status }} </span>
-            </div> <br>
-{#                {{ tutor.tutor_status }}#}
-             <div class="form-group">
-             <b>Credentials:</b> <a href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>
-{#              <input type="text" class="form-control" id="titleInput{{ tutor.tutor_id }}" value="{{ tutor.credentials_file_name }}" y>#}
-            </div>
-               <div class="form-group">
-                <label for="appComments{{ tutor.application_comments }}">Application Comments: </label>
-                <input type="text" class="form-control" id="appComments" value="{{ tutor.application_comments }}">
-               </div>
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><span id="memberNumber">
+                            <a href="{{ url_for('room', room_id=room.id) }}">Room {{ room.id }} : {{ room.room_title }}</a></span>
+                        </h3>
+                    </div>
 
-            <button class="btn btn-primary approveTutor" user_id="{{ tutor.user_id }}">Approve</button>
-            <button class="btn btn-warning denyTutor" user_id="{{ tutor.user_id }}">Deny</button>
+                    <div class="panel-body">
+                        <div class="form-inline">
+                            <b>Author:</b>
+                            <a href="{{ url_for('pub_profile', username=room.author) }}"> {{ room.author|upper }}</a><br>
+                            <b>Public:</b> {{ room.visible }}<br>
+                            <b>Date:</b> {{ room.date_posted.strftime('%Y-%m-%d') }} <br>
+                            <b><a href="{{ url_for('chat_log', room_id=room.id) }}">
+                                <button class="btn btn-primary viewButton" room_id="{{ room.id }}">View Logs</button>
+                            </a></b>
+                            <b><a href="#">
+                                <button class="btn btn-danger deleteLogs" room_id="{{ room.id }}">Clear Logs</button>
+                            </a></b>
 
-          </div>
-        </div>
-      </div>
+                            <br>
 
-      {% endfor %}
-    </div>
+                            <div class="form-group">
+                                <label for="emailInput{{ room.id }}">Room Name: </label>
+                                <br>
+                                <input type="text" class="form-control" id="titleInput{{ room.id }}"
+                                       value="{{ room.room_title }}">
+                            </div>
 
- <h3>Approved Tutors:</h3>
+                            <div class="form-group">
+                                <label for="nameInput{{ room.id }}">Title: </label>
+                                <br>
+                                <input type="text" class="form-control" id="nameInput{{ room.id }}"
+                                       value="{{ room.title }}">
+                            </div>
 
-    <div class="cardContainer2">
+                            <br>
 
-     {% for tutor in tutors_approved %}
+                            <div class="form-group">
+                                <label for="contentInput{{ room.id }}">Content: </label>
+                                <br>
+                                <textarea rows="4" cols="55" class="form-control"
+                                          id="contentInput{{ room.id }}">{{ room.content }}</textarea><br>
+                                {#              <input type="text" class="form-control" id="contentInput{{ room.id }}" value="{{ room.content }}">#}
+                            </div>
 
-      <div id="tutorSection{{ tutor.user_id }}" class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title"><span id="memberNumber"><a href="{{ url_for('pub_profile', username=tutor.username) }}">Tutor {{ tutor.tutor_id }} : {{ tutor.username|upper }} </a></span> </h3>
-        </div>
-        <div class="panel-body">
-          <div class="form-inline">
+                            <button class="btn btn-primary updateButton" room_id="{{ room.id }}">Update</button>
+                            <button class="btn btn-danger deleteButton" room_id="{{ room.id }}">Delete</button>
+                            <button id="privateButton" class="btn btn-warning privateButton" room_id="{{ room.id }}">
+                                Private
+                            </button>
+                            <button id="publicButton" class="btn btn-success publicButton" room_id="{{ room.id }}">
+                                Public
+                            </button>
 
-              <div class="form-group">
-                <label for="tutorName">Name: </label>
-                <span id="tutorName">{{ tutor.firstname }} {{ tutor.lastname }}</span>
-            </div> <br>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="form-group">
-              <label for="aboutTutor">Reason: </label>
-              <span id="aboutTutor">{{ tutor.about_tutor }}</span>
-            </div>
-            <br>
+            {% endfor %}
 
-             <div class="form-group">
-             <b>Credentials:</b> <a href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>
-            </div>
-               <div class="form-group">
-                <label for="approved">Application Comments: </label>
-                   <span id="approved">{{ tutor.application_comments }}</span>
-            </div>
 
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-    </div><!-- end of card container2 -->
-    </div><!-- end right_column div -->
+        </div><!-- End Middle Column -->
+
+
+        <!-- Right Column -->
+        <div id="right_column">
+
+            <h3>Pending Applications:</h3>
+
+            {% for tutor in tutors_pending %}
+                <div id="tutorSection{{ tutor.user_id }}" class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><span id="memberNumber"><a
+                                href="{{ url_for('pub_profile', username=tutor.username) }}">Tutor {{ tutor.tutor_id }} : {{ tutor.username|upper }} </a></span>
+                        </h3>
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="form-inline">
+
+                            <div class="form-group">
+                                <label for="aboutTutor{{ tutor.user_id }}">Reason: </label>
+                                <span id="aboutTutor{{ tutor.tutor_id }}"
+                                      value="{{ tutor.about_tutor }}">{{ tutor.about_tutor }}</span>
+                            </div>
+                            <br>
+                            <div class="form-group">
+                                <label for="statusTutor{{ tutor.tutor_status }}">Status: </label>
+                                <span id="statusTutor{{ tutor.tutor_status }}">{{ tutor.tutor_status }} </span>
+                            </div>
+                            <br>
+                            {#                {{ tutor.tutor_status }}#}
+                            <div class="form-group">
+                                <b>Credentials:</b> <a
+                                    href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>
+                                {#              <input type="text" class="form-control" id="titleInput{{ tutor.tutor_id }}" value="{{ tutor.credentials_file_name }}" y>#}
+                            </div>
+                            <div class="form-group">
+                                <label for="appComments{{ tutor.application_comments }}">Application
+                                    Comments: </label>
+                                <input type="text" class="form-control" id="appComments"
+                                       value="{{ tutor.application_comments }}">
+                            </div>
+
+                            <button class="btn btn-primary approveTutor" user_id="{{ tutor.user_id }}">Approve
+                            </button>
+                            <button class="btn btn-warning denyTutor" user_id="{{ tutor.user_id }}">Deny</button>
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+
+            <h3>Approved Tutors:</h3>
+            {% for tutor in tutors_approved %}
+
+                <div id="tutorSection{{ tutor.user_id }}" class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><span id="memberNumber"><a
+                                href="{{ url_for('pub_profile', username=tutor.username) }}">Tutor {{ tutor.tutor_id }} : {{ tutor.username|upper }} </a></span>
+                        </h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-inline">
+
+                            <div class="form-group">
+                                <label for="tutorName">Name: </label>
+                                <span id="tutorName">{{ tutor.firstname }} {{ tutor.lastname }}</span>
+                            </div>
+                            <br>
+
+                            <div class="form-group">
+                                <label for="aboutTutor">Reason: </label>
+                                <span id="aboutTutor">{{ tutor.about_tutor }}</span>
+                            </div>
+                            <br>
+
+                            <div class="form-group">
+                                <b>Credentials:</b> <a
+                                    href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>
+                            </div>
+                            <div class="form-group">
+                                <label for="approved">Application Comments: </label>
+                                <span id="approved">{{ tutor.application_comments }}</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+
+        </div><!-- End Right Column -->
+
 
     </div>
     <!--end main section-->
 
+
+{% endblock %}
 </body>
 </html>
 
