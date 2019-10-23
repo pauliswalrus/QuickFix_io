@@ -79,16 +79,20 @@ def admin():
     if session["userRole"] != "A":
         return "You are not an authorized admin please go back"
 
-    users_list = User.query.all()
+    #users in desc order
+    users_list = User.query.order_by(User.id.desc()).all()
     all_files = FileUpload.query.all()
-    blog_posts = RoomPost.query.all()
+    #rooms desc by date
+    blog_posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
     tutors = Tutor.query.filter_by(tutor_status="pending").all()
 
+
     #grabs all pending tutors, grabs info from User and Tutor table
-    tutors_pending = db.session.query(User.firstname, User.lastname, User.username, Tutor.user_id, Tutor.tutor_id, Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name, Tutor.application_comments).filter(User.id == Tutor.user_id, Tutor.tutor_status == "pending").all()
+    tutors_pending = db.session.query(User.firstname, User.lastname, User.username, Tutor.user_id, Tutor.tutor_id, Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name, Tutor.application_comments).filter(User.id == Tutor.user_id, Tutor.tutor_status == "pending").order_by(Tutor.tutor_id.desc()).all()
     #tutors_approved = Tutor.query.filter_by(tutor_status="approved").all()
 
-    tutors_approved = db.session.query(User.firstname, User.lastname, User.username, Tutor.user_id, Tutor.tutor_id, Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name, Tutor.application_comments).filter(User.id == Tutor.user_id)
+    #approved tutors in desc order
+    tutors_approved = db.session.query(User.firstname, User.lastname, User.username, Tutor.user_id, Tutor.tutor_id, Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name, Tutor.application_comments).filter(User.id == Tutor.user_id).order_by(User.id.desc()).all()
 
     this_user = User.query.filter_by(username=current_user.username).first()
 
@@ -320,11 +324,16 @@ def home():
             tutor = Tutor.query.filter_by(user_id=this_user.id).first()
             t_status = tutor.tutor_status
 
-    else:
+    elif this_user.role == 'T':
         posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
         role_name = "Tutor"
         tutor = Tutor.query.filter_by(user_id=this_user.id).first()
         t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
+        role_name = "Admin"
+        t_status = "Admin"
 
     offerhelp = RoomPost.query.filter_by(type="Offer").filter_by(visible=True).order_by(RoomPost.date_posted.desc()).all()
     askforhelp = StudentPost.query.order_by(StudentPost.date_posted.desc()).all()
@@ -514,6 +523,22 @@ def download_cred(dl_name):
     return send_file(BytesIO(file_data.credentials_file_data), attachment_filename=file_data.credentials_file_name, as_attachment=True)
 
 ## admin portal functions
+
+#admin chatlog for each room
+@app.route('/chat_log/<int:room_id>', methods=['GET', 'POST'])
+def chat_log(room_id):
+
+    if session["userRole"] != "A":
+        return "You are not an authorized admin please go back"
+
+    room = RoomPost.query.filter_by(id=room_id).first()
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    message_object = Message.query.filter_by(room=room.room_title).order_by(Message.id.desc()).all()
+
+    return render_template('chat_log.html', room=room, username=current_user.username, this_user=this_user, message_object=message_object)
+
 
 # update room
 @app.route('/updateRoom', methods=['POST'])

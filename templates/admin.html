@@ -15,7 +15,9 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
 
 
-    <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js">
+
+    </script>
 
          <script src="{{ url_for('static', filename='js/jquery.js') }}">
 
@@ -23,18 +25,8 @@
 </head>
 
 <body>
-
 {#{% extends "navbar.html" %}#}
 {#{% block content %}#}
-
-{#<div class="navbar">#}
-{#    <a class="logo" href="#">Home</a>#}
-{#    <a href="{{ url_for('profile', username=username) }}">{{ username }}</a>#}
-{#    <a href="#">Forums</a>#}
-{#    <a href="{{ url_for('chat', username=username) }}">Chat</a>#}
-{#    <a href="{{ url_for('all_users') }}">Users</a>#}
-{#    <a href="{{ url_for('logout') }}"> Logout </a>#}
-{#</div>#}
 
 
 <!-- div main section starts -->
@@ -44,24 +36,21 @@
     <!-- Left Column - Join Room - Online Tutors etc -->
     <div id="left_column">
 
-        <h4><a href="{{ url_for('all_users') }}">Users Page</a> </h4>
-
-        <h3>Users:</h3>
+        <h3>Users: <a href="{{ url_for('all_users') }}">Users Page</a></h3>
         {% for user in users_list %}
 
       <div id="roomSection{{ user.id }}" class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">{{ user.id }} <br><span id="memberNumber{{ user.id }}">{{ user.firstname }} {{ user.lastname }} </span></h3>
+            <h3 class="panel-title"><span id="memberNumber{{ user.id }}"><a href="{{ url_for('pub_profile', username=user.username) }}">User {{ user.id }} : {{ user.username|upper}}</a> </span></h3>
         </div>
             </a>
         <div class="panel-body">
           <div class="form-inline">
+                  <b>Name:</b> {{ user.firstname }} {{ user.lastname }} <br>
                   <b>Username:</b> {{ user.username }} <br>
+                  <b>Email:</b> {{ user.email }}<br>
                   <b>Role:</b> {{ user.role }}<br>
-              <a href="{{ url_for('pub_profile', username=user.username) }}">View Profile</a>
-              <a href="{{ url_for('pub_profile', username=user.username) }}">Edit User</a> <br>
-
-
+              <button class="btn btn-warning editUser" user_id="{{ user.id }}">Edit</button>
               <button class="btn btn-danger deleteUser" user_id="{{ user.id }}">Delete</button>
 
              <br>
@@ -79,30 +68,30 @@
 
       <h3>Active Rooms:</h3>
         {% for room in blog_posts %}
-
-            <a href="{{ url_for('room', room_id=room.id) }}"/>
       <div id="roomSection{{ room.id }}" class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title"><span id="memberNumber{{ room.id }}">{{ room.room_title }} </span> </h3>
+            <h3 class="panel-title"><span id="memberNumber"><a href="{{ url_for('room', room_id=room.id) }}">Room {{ room.id }} : {{ room.room_title }}</a></span> </h3>
         </div>
-            </a>
         <div class="panel-body">
           <div class="form-inline">
-
-                  <b>ID:</b> {{ room.id }} <b>Type:</b> {{ room.type }} <b>Visible:</b> {{ room.visible }}<br>
-            <div class="form-group">
-              <label for="nameInput{{ room.id }}">Title</label>
-              <input type="text" class="form-control" id="nameInput{{ room.id }}" value="{{ room.title }}">
-            </div>
-            <div class="form-group">
-              <label for="emailInput{{ room.id }}">Room Name</label>
+              <b>Author:</b><a href="{{ url_for('pub_profile', username=room.author) }}"> {{ room.author|upper }}</a><br>
+              <b>Public:</b> {{ room.visible }}<br>
+              <b>Date:</b> {{ room.date_posted.strftime('%Y-%m-%d') }} <br>
+              <b><a href="{{ url_for('chat_log', room_id=room.id) }}">View Logs</a></b> <b><a href="#">Clear Logs</a></b> <br>
+              <div class="form-group">
+              <label for="emailInput{{ room.id }}">Room Name: </label><br>
               <input type="text" class="form-control" id="titleInput{{ room.id }}" value="{{ room.room_title }}">
-            </div>
+            </div><br>
+            <div class="form-group">
+              <label for="nameInput{{ room.id }}">Title: </label><br>
+              <input type="text" class="form-control" id="nameInput{{ room.id }}" value="{{ room.title }}">
+            </div> <br>
 
             <div class="form-group">
-              <label for="contentInput{{ room.id }}">Content</label>
-              <input type="text" class="form-control" id="contentInput{{ room.id }}" value="{{ room.content }}">
-            </div><br>
+              <label for="contentInput{{ room.id }}">Content: </label> <br>
+                <textarea rows="3" cols="24" class="form-control" id="contentInput{{ room.id }}" >{{ room.content }}</textarea>
+{#              <input type="text" class="form-control" id="contentInput{{ room.id }}" value="{{ room.content }}">#}
+            </div><br><br>
 
             <button class="btn btn-primary updateButton" room_id="{{ room.id }}">Update Room</button>
             <button class="btn btn-danger deleteButton" room_id="{{ room.id }}">Delete Room</button>
