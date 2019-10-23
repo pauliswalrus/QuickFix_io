@@ -168,6 +168,23 @@ $(document).ready(function() {
 
     })
 
+    $('.deleteLogs').on('click',function () {
+
+        var room_id = $(this).attr('room_id');
+
+        req = $.ajax({
+           url : '/deleteLogs',
+           type : 'POST',
+           data : { id : room_id }
+
+        });
+        alert("Chat Log Cleared!")
+            $('#roomSection'+room_id).fadeOut(1000).fadeIn(1000);
+
+
+
+    })
+
 
 
 

@@ -402,8 +402,10 @@ def profile():
 
     if role == "S":
         role_name = "Student"
-    else:
+    elif role == "T":
         role_name = "Tutor"
+    elif role == "A":
+        role_name = "Admin"
 
     room_posts = RoomPost.query.filter_by(author=current_user.username).order_by(RoomPost.date_posted.desc()).all()
 
@@ -483,8 +485,10 @@ def pub_profile(username):
 
     if role == "S":
         role_name = "Student"
-    else:
+    elif role == "T":
         role_name = "Tutor"
+    elif role == "A":
+        role_name = "Admin"
 
     if status == 0:
         status_string = "Offline"
@@ -539,6 +543,29 @@ def chat_log(room_id):
 
     return render_template('chat_log.html', room=room, username=current_user.username, this_user=this_user, message_object=message_object)
 
+#delete chat logs for room
+@app.route('/deleteLogs', methods=['POST'])
+def deleteLogs():
+
+    room = RoomPost.query.filter_by(id=request.form['id']).first()
+
+    #delete all messages by room title
+    db.session.query(Message).filter_by(room=room.room_title).delete()
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+#delete chat logs for room
+@app.route('/deleteRoomUploads', methods=['POST'])
+def deleteRoomUploads():
+
+    room = RoomPost.query.filter_by(id=request.form['id']).first()
+
+    #delete all messages by room title
+    db.session.query(Message).filter_by(room=room.room_title).delete()
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
 
 # update room
 @app.route('/updateRoom', methods=['POST'])
@@ -565,6 +592,7 @@ def deleteRoom():
     db.session.commit()
 
     return jsonify({'result': 'success'})
+
 
 @app.route('/deleteUser', methods=['POST'])
 def deleteUser():

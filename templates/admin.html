@@ -77,7 +77,7 @@
               <b>Author:</b><a href="{{ url_for('pub_profile', username=room.author) }}"> {{ room.author|upper }}</a><br>
               <b>Public:</b> {{ room.visible }}<br>
               <b>Date:</b> {{ room.date_posted.strftime('%Y-%m-%d') }} <br>
-              <b><a href="{{ url_for('chat_log', room_id=room.id) }}">View Logs</a></b> <b><a href="#">Clear Logs</a></b> <br>
+              <b><a href="{{ url_for('chat_log', room_id=room.id) }}"><button class="btn btn-primary viewButton" room_id="{{ room.id }}">View Logs</button></a></b> <b><a href="#"><button class="btn btn-danger deleteLogs" room_id="{{ room.id }}">Clear Logs</button></a></b> <br>
               <div class="form-group">
               <label for="emailInput{{ room.id }}">Room Name: </label><br>
               <input type="text" class="form-control" id="titleInput{{ room.id }}" value="{{ room.room_title }}">
