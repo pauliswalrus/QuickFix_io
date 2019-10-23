@@ -92,7 +92,7 @@ class RoomPost(db.Model):
 
 # data model for blogpost table recently added in heroku db
 class RoomComment(db.Model):
-    """ Comment Model"""
+    """Room Comment Model"""
 
     __tablename__= "commentpost"
     id = db.Column(db.Integer, primary_key=True)
@@ -116,7 +116,7 @@ class StudentPost(db.Model):
 
 # data model for blogpost table recently added in heroku db
 class PostComment(db.Model):
-    """ Comment Model"""
+    """Student Post Comment Model"""
 
     __tablename__= "commentstudent"
     id = db.Column(db.Integer, primary_key=True)

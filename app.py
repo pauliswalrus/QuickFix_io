@@ -541,6 +541,29 @@ def deleteRoom():
 
     return jsonify({'result': 'success'})
 
+@app.route('/deleteUser', methods=['POST'])
+def deleteUser():
+
+    user = User.query.filter_by(id=request.form['id']).first()
+
+    if user.role == "T":
+        tutor = Tutor.query.filter_by(user_id=user.id).first()
+        db.session.delete(tutor)
+        db.session.commit()
+
+        db.session.delete(user)
+        db.session.commit()
+
+    elif user.role == "S":
+        student = Student.query.filter_by(user_id=user.id).first()
+        db.session.delete(student)
+        db.session.commit()
+
+        db.session.delete(user)
+        db.session.commit()
+
+    return jsonify({'result': 'success'})
+
 # admin approves tutor
 @app.route('/approveTutor', methods=['POST'])
 def approveTutor():
