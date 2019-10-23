@@ -621,7 +621,7 @@ def editUser():
 
     user_edit = User.query.filter_by(id=request.form['id']).first()
 
-    user_edit.username = request.form['userName']
+    user_edit.username = request.form['username']
     user_edit.firstname = request.form['firstname']
     user_edit.lastname = request.form['lastname']
 

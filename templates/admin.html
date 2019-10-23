@@ -58,7 +58,7 @@
                                     <b>Username:</b> {{ user.username }} <br>
                                     <b>Email:</b> {{ user.email }}<br>
                                     <b>Role:</b> {{ user.role }}<br>
-                                    <button class="btn btn-warning editUser" onclick="showForm()" id="editUser" user_id="{{ user.id }}">Edit</button>
+                                    <button class="btn btn-warning editUser" onclick="showForm()" id="editUser{{ user.id }}" user_id="{{ user.id }}">Edit</button>
 
                                     <div id="upload">
                                     <span class="closeWindow" onclick="testClose()">&times;</span><br>
