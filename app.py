@@ -79,16 +79,20 @@ def admin():
     if session["userRole"] != "A":
         return "You are not an authorized admin please go back"
 
-    users_list = User.query.all()
+    #users in desc order
+    users_list = User.query.order_by(User.id.desc()).all()
     all_files = FileUpload.query.all()
-    blog_posts = RoomPost.query.all()
+    #rooms desc by date
+    blog_posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
     tutors = Tutor.query.filter_by(tutor_status="pending").all()
 
+
     #grabs all pending tutors, grabs info from User and Tutor table
-    tutors_pending = db.session.query(User.firstname, User.lastname, User.username, Tutor.user_id, Tutor.tutor_id, Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name, Tutor.application_comments).filter(User.id == Tutor.user_id, Tutor.tutor_status == "pending").all()
+    tutors_pending = db.session.query(User.firstname, User.lastname, User.username, Tutor.user_id, Tutor.tutor_id, Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name, Tutor.application_comments).filter(User.id == Tutor.user_id, Tutor.tutor_status == "pending").order_by(Tutor.tutor_id.desc()).all()
     #tutors_approved = Tutor.query.filter_by(tutor_status="approved").all()
 
-    tutors_approved = db.session.query(User.firstname, User.lastname, User.username, Tutor.user_id, Tutor.tutor_id, Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name, Tutor.application_comments).filter(User.id == Tutor.user_id)
+    #approved tutors in desc order
+    tutors_approved = db.session.query(User.firstname, User.lastname, User.username, Tutor.user_id, Tutor.tutor_id, Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name, Tutor.application_comments).filter(User.id == Tutor.user_id).order_by(User.id.desc()).all()
 
     this_user = User.query.filter_by(username=current_user.username).first()
 
@@ -343,11 +347,16 @@ def home():
             tutor = Tutor.query.filter_by(user_id=this_user.id).first()
             t_status = tutor.tutor_status
 
-    else:
+    elif this_user.role == 'T':
         posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
         role_name = "Tutor"
         tutor = Tutor.query.filter_by(user_id=this_user.id).first()
         t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
+        role_name = "Admin"
+        t_status = "Admin"
 
     offerhelp = RoomPost.query.filter_by(type="Offer").filter_by(visible=True).order_by(RoomPost.date_posted.desc()).all()
     askforhelp = StudentPost.query.order_by(StudentPost.date_posted.desc()).all()
@@ -416,8 +425,10 @@ def profile():
 
     if role == "S":
         role_name = "Student"
-    else:
+    elif role == "T":
         role_name = "Tutor"
+    elif role == "A":
+        role_name = "Admin"
 
     room_posts = RoomPost.query.filter_by(author=current_user.username).order_by(RoomPost.date_posted.desc()).all()
 
@@ -497,8 +508,10 @@ def pub_profile(username):
 
     if role == "S":
         role_name = "Student"
-    else:
+    elif role == "T":
         role_name = "Tutor"
+    elif role == "A":
+        role_name = "Admin"
 
     if status == 0:
         status_string = "Offline"
@@ -538,6 +551,45 @@ def download_cred(dl_name):
 
 ## admin portal functions
 
+#admin chatlog for each room
+@app.route('/chat_log/<int:room_id>', methods=['GET', 'POST'])
+def chat_log(room_id):
+
+    if session["userRole"] != "A":
+        return "You are not an authorized admin please go back"
+
+    room = RoomPost.query.filter_by(id=room_id).first()
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    message_object = Message.query.filter_by(room=room.room_title).order_by(Message.id.desc()).all()
+
+    return render_template('chat_log.html', room=room, username=current_user.username, this_user=this_user, message_object=message_object)
+
+#delete chat logs for room
+@app.route('/deleteLogs', methods=['POST'])
+def deleteLogs():
+
+    room = RoomPost.query.filter_by(id=request.form['id']).first()
+
+    #delete all messages by room title
+    db.session.query(Message).filter_by(room=room.room_title).delete()
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+#delete chat logs for room
+@app.route('/deleteRoomUploads', methods=['POST'])
+def deleteRoomUploads():
+
+    room = RoomPost.query.filter_by(id=request.form['id']).first()
+
+    #delete all messages by room title
+    db.session.query(Message).filter_by(room=room.room_title).delete()
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
 # update room
 @app.route('/updateRoom', methods=['POST'])
 def updateRoom():
@@ -561,6 +613,30 @@ def deleteRoom():
     room = RoomPost.query.filter_by(id=request.form['id']).first()
     db.session.delete(room)
     db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+
+@app.route('/deleteUser', methods=['POST'])
+def deleteUser():
+
+    user = User.query.filter_by(id=request.form['id']).first()
+
+    if user.role == "T":
+        tutor = Tutor.query.filter_by(user_id=user.id).first()
+        db.session.delete(tutor)
+        db.session.commit()
+
+        db.session.delete(user)
+        db.session.commit()
+
+    elif user.role == "S":
+        student = Student.query.filter_by(user_id=user.id).first()
+        db.session.delete(student)
+        db.session.commit()
+
+        db.session.delete(user)
+        db.session.commit()
 
     return jsonify({'result': 'success'})
 

@@ -1,0 +1,235 @@
+/* Chat.css - Defines the styles for the chat_join.html page */
+/* Author: Emma Hobden */
+
+/* ---------------------------------------------------- GENERAL ---------------------------------------------------- */
+
+#main-section {
+    border: 1px solid red;
+    width: 100%;
+    height: 100%;
+}
+
+#left_column,
+#middle_column,
+#right_column {
+    float: left;
+    border: 1px solid blue;
+    height: 800px;
+}
+
+#left_column {
+    width: 30%;
+}
+
+#middle_column {
+    width: 40%;
+}
+
+#right_column {
+    width: 30%;
+    margin-top: 0px;
+}
+
+.container {
+    border: 2px solid green;
+    height: 800px;
+    width: inherit;
+    /*width: 95%;*/
+    /*margin-left: 2%;*/
+    /*margin-right: 2%;*/
+    overflow-y: scroll;
+}
+
+.cardStyle {
+
+    /*width: 80%;*/
+    /*margin-left: 10%;*/
+    /*margin-right: 10%;*/
+    /*margin-top: 5%;*/
+    /*text-align: center;*/
+    /*padding: 20px;*/
+    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+}
+
+
+
+
+
+
+
+
+/*!* Create columns that float next to each other *!*/
+/*.column {*/
+    /*float: left;*/
+    /*height: 600px;*/
+    /*!*border: 1px solid black;*!*/
+/*}*/
+
+/*!* Left Column *!*/
+/*.left {*/
+    /*width: 33%;*/
+    /*text-align: center;*/
+/*}*/
+
+/*!* Right Column *!*/
+/*.right {*/
+    /*width: 33%;*/
+    /*float: right;*/
+/*}*/
+
+/*.middle {*/
+  /*width: 33%;*/
+/*}*/
+
+/*!* Clear floats after the columns *!*/
+/*.row:after {*/
+    /*content: "";*/
+    /*display: table;*/
+    /*clear: both;*/
+/*}*/
+
+/*!* Makes div look like a card *!*/
+/*.cardContainer {*/
+    /*height: 600px;*/
+    /*padding: 10px;*/
+    /*width: 90%;*/
+    /*margin-left: 5%;*/
+    /*margin-right: 5%;*/
+    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+    /*overflow-y: scroll;*/
+/*}*/
+
+/*.cardContainer2 {*/
+    /*height: 400px;*/
+    /*padding: 10px;*/
+    /*width: 100%;*/
+    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+    /*overflow-y: scroll;*/
+/*}*/
+
+/*.cardContainer3 {*/
+    /*height: 200px;*/
+    /*padding: 10px;*/
+    /*width: 100%;*/
+    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+    /*overflow-y: scroll;*/
+/*}*/
+
+/*.cardContainer4 {*/
+    /*height: 800px;*/
+    /*padding: 10px;*/
+    /*width: 100%;*/
+    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+    /*overflow-y: scroll;*/
+/*}*/
+
+/*.cardContainer5 {*/
+    /*height: 400px;*/
+    /*padding: 10px;*/
+    /*width: 90%;*/
+    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+    /*overflow-y: scroll;*/
+/*}*/
+
+/*!* Responsive layout - when the screen is less than 600px wide, make the three columns stack on top of each other instead of next to each other *!*/
+/*@media screen and (max-width: 600px) {*/
+  /*.column {*/
+    /*width: 100%;*/
+  /*}*/
+/*}*/
+
+
+/*!* Styles the python variable that holds the current local time date *!*/
+/*#currDate {*/
+    /*font-size: 2em;*/
+    /*padding-right: 1em;*/
+    /*font-family: 'Lato', sans-serif;*/
+    /*color: #D57356;*/
+/*}*/
+
+/*#tutorPosts, #studentPosts {*/
+    /*display: none;*/
+/*}*/
+
+
+
+
+/*!* Styles the body of the page *!*/
+/*body {*/
+/*    !*background-image: url('../images/teamChat2.png');*!*/
+/*    !*background-size: cover;*!*/
+/*}*/
+
+/*!* Styles the main-section div which holds all page content *!*/
+/*#main-section {*/
+/*    width: 100%;*/
+/*    !*border: 2px solid blue;*!*/
+/*}*/
+
+/*!* Styles all three column divs on the page *!*/
+/*#left_column,*/
+/*#right_column,*/
+/*#middle_column {*/
+/*    !*width: 33%;*!*/
+/*    !*display: inline-block;*!*/
+/*    !*border: 2px solid red;*!*/
+/*    height: 80%;*/
+/*    !*margin-top: 0px;*!*/
+/*    !*vertical-align: middle;*!*/
+/*}*/
+
+/*!* -------------------------------------------------- LEFT COLUMN -------------------------------------------------- *!*/
+
+/*!* Styles left column - online tutors, join room etc *!*/
+/*#left_column {*/
+/*    width: 25%;*/
+/*    padding: 10px;*/
+/*    float: left;*/
+/*}*/
+
+/*!* Styles the python variable that holds the list of rooms *!*/
+/*#left_column p {*/
+/*    padding-left: 2em;*/
+/*    padding-right: 2em;*/
+/*}*/
+
+/*!* Styles the hover on the list of rooms *!*/
+/*#left_column p:hover {*/
+/*    background-color: #E46D4E;*/
+/*    color: #F8F3F2;*/
+/*    cursor: pointer;*/
+/*}*/
+
+/*!* Styles the Heading4 in left column *!*/
+/*#left_column h4 {*/
+/*    padding-left: 0.5em;*/
+/*}*/
+
+
+/*!* ------------------------------------------------- MIDDLE COLUMN ------------------------------------------------- *!*/
+
+/*!* Styles right column - current date and time *!*/
+/*#middle_column {*/
+/*    width: 35%;*/
+/*    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+/*    padding: 15px;*/
+/*    overflow-y: scroll;*/
+/*    margin: 0;*/
+/*}*/
+
+/*!* -------------------------------------------------- RIGHT COLUMN ------------------------------------------------- *!*/
+
+/*!* Styles right column - current date and time *!*/
+/*#right_column {*/
+/*    width: 35%;*/
+/*    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+/*    padding: 15px;*/
+/*    overflow-y: scroll;*/
+/*    float: right;*/
+/*}*/
+
+
+
+
+/*#blog-posts {}*/
+

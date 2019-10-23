@@ -67,7 +67,7 @@ $(document).ready(function() {
            data : { name : name, id : room_id }
 
         });
-        alert("this room is private!")
+        alert("This Room is Private!")
         $('.privateButton').fadeOut(200);
         $('.publicButton').fadeIn(200);
 
@@ -88,7 +88,7 @@ $(document).ready(function() {
            data : { name : name, id : room_id }
 
         });
-        alert("this room is public!")
+        alert("This Room is Public!")
         $('.publicButton').fadeOut(200);
         $('.privateButton').fadeIn(200);
 
@@ -120,6 +120,7 @@ $(document).ready(function() {
 
         var user_id = $(this).attr('user_id');
 
+
         req = $.ajax({
            url : '/approveTutor',
            type : 'POST',
@@ -147,6 +148,39 @@ $(document).ready(function() {
         });
         alert("Tutor Denied!")
         location.reload();
+
+
+    })
+
+    $('.deleteUser').on('click',function () {
+
+        var user_id = $(this).attr('user_id');
+
+        req = $.ajax({
+           url : '/deleteUser',
+           type : 'POST',
+           data : { id : user_id }
+
+        });
+        alert("User Deleted!")
+        location.reload();
+
+
+    })
+
+    $('.deleteLogs').on('click',function () {
+
+        var room_id = $(this).attr('room_id');
+
+        req = $.ajax({
+           url : '/deleteLogs',
+           type : 'POST',
+           data : { id : room_id }
+
+        });
+        alert("Chat Log Cleared!")
+            $('#roomSection'+room_id).fadeOut(1000).fadeIn(1000);
+
 
 
     })
