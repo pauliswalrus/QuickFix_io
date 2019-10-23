@@ -58,7 +58,19 @@
                                     <b>Username:</b> {{ user.username }} <br>
                                     <b>Email:</b> {{ user.email }}<br>
                                     <b>Role:</b> {{ user.role }}<br>
-                                    <button class="btn btn-warning editUser" user_id="{{ user.id }}">Edit</button>
+                                    <button class="btn btn-warning editUser" onclick="showForm()" id="editUser" user_id="{{ user.id }}">Edit</button>
+
+                                    <div id="upload">
+
+                                    <span class="closeWindow" onclick="testClose()">&times;</span><br>
+                                    <form method="post" enctype="multipart/form-data">
+                                        {{ file_form.hidden_tag() }}
+                                        {{ file_form.file }}
+                                        <button id="file_upload" type=submit class="btn btn-info" title="Submit">Add New File</button>
+                                        {{ file_form.csrf_token }}
+                                    </form>
+                                    </div>
+
                                     <button class="btn btn-danger deleteUser" user_id="{{ user.id }}">Delete</button>
                                 </div>
                             </div>
@@ -241,7 +253,23 @@
 
     </div>
     <!--end main section-->
+<script type="text/javascript">
 
+
+    //show div upload on button click uploadNewDocs
+    let uploadForm = document.getElementById('upload');
+    let button = document.getElementById('editUser');
+
+    function showForm() {
+        uploadForm.style.display = "block";
+    }
+
+    function testClose() {
+
+        uploadForm.style.display = "none";
+    }
+
+</script>
 
 {% endblock %}
 </body>

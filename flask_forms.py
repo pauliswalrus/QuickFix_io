@@ -125,3 +125,9 @@ class TutorStatus(FlaskForm):
     status = SelectField('Status', choices=[('0', 'Offline'), ('1', 'Online')])
     submit_button3 = SubmitField('Change Status')
 
+class UserEdit(FlaskForm):
+    """ User Edit """
+
+    firstname = StringField('User Name')
+    lastname = StringField('Last Name')
+    submit_button4 = SubmitField('Edit User')

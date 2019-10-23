@@ -80,12 +80,13 @@ def admin():
         return "You are not an authorized admin please go back"
 
     #users in desc order
+    file_form = FileUploadForm()
+
     users_list = User.query.order_by(User.id.desc()).all()
     all_files = FileUpload.query.all()
     #rooms desc by date
     blog_posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
     tutors = Tutor.query.filter_by(tutor_status="pending").all()
-
 
     #grabs all pending tutors, grabs info from User and Tutor table
     tutors_pending = db.session.query(User.firstname, User.lastname, User.username, Tutor.user_id, Tutor.tutor_id, Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name, Tutor.application_comments).filter(User.id == Tutor.user_id, Tutor.tutor_status == "pending").order_by(Tutor.tutor_id.desc()).all()
@@ -96,7 +97,7 @@ def admin():
 
     this_user = User.query.filter_by(username=current_user.username).first()
 
-    return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts, tutors=tutors, this_user=this_user, tutors_approved=tutors_approved, tutors_pending=tutors_pending)
+    return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files, blog_posts=blog_posts, tutors=tutors, this_user=this_user, tutors_approved=tutors_approved, tutors_pending=tutors_pending, file_form=file_form)
 
 ### need to rename/refactor to user
 @app.route('/register', methods=['GET', 'POST'])
