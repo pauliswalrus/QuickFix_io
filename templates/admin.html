@@ -1,20 +1,13 @@
 <html lang=en>
 <head>
     <meta charset=utf-8>
-    <style>
-        @import url('https://fonts.googleapis.com/css?family=Beth+Ellen&display=swap');
-        @import url('https://fonts.googleapis.com/css?family=Dosis:200&display=swap');
-    </style>
 
     <title> Admin Portal </title>
 
-    {#    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">#}
-    {#    <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">#}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
-
 
     <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js">
 
@@ -29,73 +22,61 @@
 {% extends "navbar.html" %}
 {% block content %}
 
-    <!-- Main Section -->
-    <div id="main-section">
+    <!-- Grid Container -->
+    <div class="grid-container">
 
-        <!-- Left Column - Users List etc -->
-        <div id="left_column">
+        <!-- ------------------------------------------- Column 1 ------------------------------------------- -->
+        <div class="title1">Edit Users (<a href="{{ url_for('all_users') }}">View All Users Page</a>)</div>
 
-            <h3>Users: <a href="{{ url_for('all_users') }}">Users Page</a></h3>
+        <div class="section1">
 
-            <div class="container">
-                <div class="cardStyle">
+            {% for user in users_list %}
 
-                    {% for user in users_list %}
+                <div id="roomSection{{ user.id }}" class="panel panel-default">
 
-                        <div id="roomSection{{ user.id }}" class="panel panel-default">
-
-                            <div class="panel-heading">
-                                <h3 class="panel-title">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
                             <span id="memberNumber{{ user.id }}">
                                 <a href="{{ url_for('pub_profile', username=user.username) }}">User {{ user.id }} : {{ user.username|upper }}</a>
                             </span>
-                                </h3>
+                        </h3>
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="form-inline">
+                            <b>Name:</b> {{ user.firstname }} {{ user.lastname }} <br>
+                            <b>Username:</b> {{ user.username }} <br>
+                            <b>Email:</b> {{ user.email }}<br>
+                            <b>Role:</b> {{ user.role }}<br>
+
+                            <button class="btn btn-warning editUser" onclick="showForm()" id="editUser" user_id="{{ user.id }}">Edit</button>
+
+                            <div id="upload">
+
+                                <span class="closeWindow" onclick="testClose()">&times;</span><br>
+                                <form method="post" enctype="multipart/form-data">
+                                    {{ file_form.hidden_tag() }}
+                                    {{ file_form.file }}
+                                    <button id="file_upload" type=submit class="btn btn-info" title="Submit">Add New File</button>
+                                    {{ file_form.csrf_token }}
+                                </form>
+
                             </div>
 
-                            <div class="panel-body">
-                                <div class="form-inline">
-                                    <b>Name:</b> {{ user.firstname }} {{ user.lastname }} <br>
-                                    <b>Username:</b> {{ user.username }} <br>
-                                    <b>Email:</b> {{ user.email }}<br>
-                                    <b>Role:</b> {{ user.role }}<br>
-                                    <button class="btn btn-warning editUser" onclick="showForm()" id="editUser{{ user.id }}" user_id="{{ user.id }}">Edit</button>
-
-                                    <div id="upload">
-                                    <span class="closeWindow" onclick="testClose()">&times;</span><br>
-                                        <h4>Edit User {{ user.username|upper }}</h4>
-                                        <label for="userName{{ user.id }}">Username: </label><br>
-                                        <input type="text" class="form-control" id="userName" value="{{ user.username }}"><br>
-                                        <label for="firstName{{ user.id }}">First Name: </label><br>
-                                        <input type="text" class="form-control" id="firstName" value="{{ user.firstname }}"><br>
-                                        <label for="firstName{{ user.id }}">Last Name: </label><br>
-                                        <input type="text" class="form-control" id="lastName" value="{{ user.lastname }}"><br>
-                                        <label for="userRole{{ user.id }}">Role: </label><br>
-                                        <input type="text" class="form-control" id="userRole" value="{{ user.role }}"><br>
-                                        <label for="userEmail{{ user.id }}">Email: </label><br>
-                                        <input type="text" class="form-control" id="userEmail" value="{{ user.email }}"><br>
-
-                                        <button class="btn btn-info editUserForm" user_id="{{ user.id }}">Edit User</button>
-                                    </div>
-
-                                    <button class="btn btn-danger deleteUser" user_id="{{ user.id }}">Delete</button>
-                                </div>
-                            </div>
-
+                            <button class="btn btn-danger deleteUser" user_id="{{ user.id }}">Delete</button>
                         </div>
-
-                    {% endfor %}
+                    </div>
 
                 </div>
-            </div>
+
+            {% endfor %}
+
+        </div>
 
 
-        </div> <!-- End Left Column -->
-
-
-        <!-- Middle Column - Rooms Area -->
-        <div id="middle_column">
-
-            <h3>Active Rooms:</h3>
+        <!-- ------------------------------------------- Column 2 ------------------------------------------- -->
+        <div class="title2">Active Rooms</div>
+        <div class="section2">
 
             {% for room in blog_posts %}
 
@@ -148,12 +129,8 @@
 
                             <button class="btn btn-primary updateButton" room_id="{{ room.id }}">Update</button>
                             <button class="btn btn-danger deleteButton" room_id="{{ room.id }}">Delete</button>
-                            <button id="privateButton" class="btn btn-warning privateButton" room_id="{{ room.id }}">
-                                Private
-                            </button>
-                            <button id="publicButton" class="btn btn-success publicButton" room_id="{{ room.id }}">
-                                Public
-                            </button>
+                            <button id="privateButton" class="btn btn-warning privateButton" room_id="{{ room.id }}">Private</button>
+                            <button id="publicButton" class="btn btn-success publicButton" room_id="{{ room.id }}">Public</button>
 
                         </div>
                     </div>
@@ -161,14 +138,12 @@
 
             {% endfor %}
 
+        </div>
 
-        </div><!-- End Middle Column -->
 
-
-        <!-- Right Column -->
-        <div id="right_column">
-
-            <h3>Pending Applications:</h3>
+        <!-- ------------------------------------------- Column 3 ------------------------------------------- -->
+        <div class="title3">Pending Applications</div>
+        <div class="section3">
 
             {% for tutor in tutors_pending %}
                 <div id="tutorSection{{ tutor.user_id }}" class="panel panel-default">
@@ -214,8 +189,16 @@
                 </div>
             {% endfor %}
 
+        </div>
 
-            <h3>Approved Tutors:</h3>
+
+
+
+
+
+        <div class="title4">Approved Tutors</div>
+        <div class="section4">
+
             {% for tutor in tutors_approved %}
 
                 <div id="tutorSection{{ tutor.user_id }}" class="panel panel-default">
@@ -254,28 +237,32 @@
             {% endfor %}
 
 
-        </div><!-- End Right Column -->
+        </div>
+
+    </div><!-- End Grid Container -->
 
 
-    </div>
-    <!--end main section-->
-<script type="text/javascript">
 
 
-    //show div upload on button click uploadNewDocs
-    let uploadForm = document.getElementById('upload');
-    let button = document.getElementById('editUser');
 
-    function showForm() {
-        uploadForm.style.display = "block";
-    }
 
-    function testClose() {
 
-        uploadForm.style.display = "none";
-    }
 
-</script>
+
+
+    <script type="text/javascript">
+        //show div upload on button click uploadNewDocs
+        let uploadForm = document.getElementById('upload');
+        let button = document.getElementById('editUser');
+
+        function showForm() {
+            uploadForm.style.display = "block";
+        }
+
+        function testClose() {
+            uploadForm.style.display = "none";
+        }
+    </script>
 
 {% endblock %}
 </body>
