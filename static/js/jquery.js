@@ -172,16 +172,15 @@ $(document).ready(function() {
 
         var user_id = $(this).attr('user_id');
 
-        var firstname = $('#firstName').val();
-        var lastname = $('#lastName').val();
-        var email = $('#email').val();
-        var username = $('#userName').val();
+        var firstname = $('#firstName'+user_id).val();
+        var lastname = $('#lastName'+user_id).val();
+        var username = $('#userName'+user_id).val();
 
 
         req = $.ajax({
            url : '/editUser',
            type : 'POST',
-           data : { firstname : firstname, lastname : lastname, email : email, username : username, id : user_id }
+           data : { firstname : firstname, lastname : lastname, username : username, id : user_id }
 
         });
         alert("User Edited!")
