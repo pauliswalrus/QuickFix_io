@@ -21,7 +21,7 @@ $(document).ready(function() {
     //     $('#fade2').fadeOut(500);
     //     $('#fade2').fadeIn(500);
 
-    });
+    // });
 /*
 
 Admin portal functions
@@ -207,7 +207,7 @@ Admin portal functions
 
         });
         alert("Chat Log Cleared!")
-            $('#roomSection'+room_id).fadeOut(1000).fadeIn(1000);
+        $('#roomSection'+room_id).fadeOut(1000).fadeIn(1000);
 
 
 

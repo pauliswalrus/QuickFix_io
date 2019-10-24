@@ -49,7 +49,26 @@
                             <b>Email:</b> {{ user.email }}<br>
                             <b>Role:</b> {{ user.role }}<br>
 
-                            <button class="btn btn-warning editUser" onclick="showForm()" id="editUser" user_id="{{ user.id }}">Edit</button>
+                            <button class="btn btn-warning editUser" id="editUser" user_id="{{ user.id }}">Edit</button>
+
+                            <button class="btn btn-danger deleteUser" user_id="{{ user.id }}">Delete</button>
+
+                            <div id="upload{{ user.id }}" >
+                                    <span class="closeWindow" onclick="testClose()">&times;</span><br>
+                                        <h4>Edit User {{ user.username|upper }}</h4>
+                                        <label for="userName{{ user.id }}">Username: </label><br>
+                                        <input type="text" class="form-control" id="userName{{ user.id }}" value="{{ user.username }}"><br>
+                                        <label for="firstName{{ user.id }}">First Name: </label><br>
+                                        <input type="text" class="form-control" id="firstName{{ user.id }}" value="{{ user.firstname }}"><br>
+                                        <label for="firstName{{ user.id }}">Last Name: </label><br>
+                                        <input type="text" class="form-control" id="lastName{{ user.id }}" value="{{ user.lastname }}"><br>
+{#                                        <label for="userRole{{ user.id }}">Role: </label><br>#}
+{#                                        <input type="text" class="form-control" id="userRole" value="{{ user.role }}"><br>#}
+{#                                        <label for="userEmail{{ user.id }}">Email: </label><br>#}
+{#                                        <input type="text" class="form-control" id="userEmail" value="{{ user.email }}"><br>#}
+
+                                        <button class="btn btn-info editUserForm" user_id="{{ user.id }}">Edit User</button>
+                            </div>
 
 {#                            <div id="upload">#}
 {##}
@@ -63,7 +82,6 @@
 {##}
 {#                            </div>#}
 
-                            <button class="btn btn-danger deleteUser" user_id="{{ user.id }}">Delete</button>
                         </div>
                     </div>
 
