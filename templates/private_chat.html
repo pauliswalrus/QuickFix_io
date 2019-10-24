@@ -58,11 +58,13 @@
         <button id="publicButton" class="btn btn-success publicButton" room_id="{{ room.id }}">Make Room Public</button>
 
         <hr>
-
+        <div id="file_list" >
         {% for file in room_files %}
             <a href="{{ url_for('room_download', dl_name=file.file_name) }}">
                 <h5>{{ file.file_name }} </h5></a>
         {% endfor %}
+
+        </div>
     </div>
 
 

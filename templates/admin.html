@@ -51,17 +51,17 @@
 
                             <button class="btn btn-warning editUser" onclick="showForm()" id="editUser" user_id="{{ user.id }}">Edit</button>
 
-                            <div id="upload">
-
-                                <span class="closeWindow" onclick="testClose()">&times;</span><br>
-                                <form method="post" enctype="multipart/form-data">
-                                    {{ file_form.hidden_tag() }}
-                                    {{ file_form.file }}
-                                    <button id="file_upload" type=submit class="btn btn-info" title="Submit">Add New File</button>
-                                    {{ file_form.csrf_token }}
-                                </form>
-
-                            </div>
+{#                            <div id="upload">#}
+{##}
+{#                                <span class="closeWindow" onclick="testClose()">&times;</span><br>#}
+{#                                <form method="post" enctype="multipart/form-data">#}
+{#                                    {{ file_form.hidden_tag() }}#}
+{#                                    {{ file_form.file }}#}
+{#                                    <button id="file_upload" type=submit class="btn btn-info" title="Submit">Add New File</button>#}
+{#                                    {{ file_form.csrf_token }}#}
+{#                                </form>#}
+{##}
+{#                            </div>#}
 
                             <button class="btn btn-danger deleteUser" user_id="{{ user.id }}">Delete</button>
                         </div>

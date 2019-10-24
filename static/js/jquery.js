@@ -1,30 +1,34 @@
 $(document).ready(function() {
-
-       $('#fade').css('background-color', '#E46D4E');
-       $('#fade').css('color', 'white');
-
-       $('#fade').fadeOut(500);
-       $('#fade').fadeIn(500);
-       $('#fade').fadeOut(500);
-
-       $('#fade2').css('background-color', '#E46D4E');
-       $('#fade2').css('color', 'white');
-
-
-    $('#fade').on('click', function() {
-        $('#fade').fadeOut(1000);
-        $('#fade').fadeIn(1000);
-    });
-
-    $('#send_message').on('click', function() {
-        $('#fade2').fadeIn(500);
-        $('#fade2').fadeOut(500);
-        $('#fade2').fadeIn(500);
-
-
+    //
+    //    $('#fade').css('background-color', '#E46D4E');
+    //    $('#fade').css('color', 'white');
+    //
+    //    $('#fade').fadeOut(500);
+    //    $('#fade').fadeIn(500);
+    //    $('#fade').fadeOut(500);
+    //
+    //    $('#fade2').css('background-color', '#E46D4E');
+    //    $('#fade2').css('color', 'white');
+    //
+    //
+    // $('#fade').on('click', function() {
+    //     $('#fade').fadeOut(1000);
+    //     $('#fade').fadeIn(1000);
+    // });
+    //
+    // $('#send_message').on('click', function() {
+    //     $('#fade2').fadeIn(500);
+    //     $('#fade2').fadeOut(500);
+    //     $('#fade2').fadeIn(500);
 
     });
+/*
 
+Admin portal functions
+
+ */
+
+//update room
     $('.updateButton').on('click',function () {
 
         var room_id = $(this).attr('room_id');
@@ -53,8 +57,8 @@ $(document).ready(function() {
 
 
     })
-
-
+// also used in private chat
+//make room private
     $('.privateButton').on('click',function () {
 
         var room_id = $(this).attr('room_id');
@@ -74,12 +78,11 @@ $(document).ready(function() {
 
 
     })
-
-
+//also used in private chat
+//public room
     $('.publicButton').on('click',function () {
 
         var room_id = $(this).attr('room_id');
-
         var name = $('#nameInput'+room_id).val();
 
         req = $.ajax({
@@ -96,6 +99,10 @@ $(document).ready(function() {
 
     })
 
+
+
+
+//delete room
     $('.deleteButton').on('click',function () {
 
         var room_id = $(this).attr('room_id');
@@ -115,7 +122,7 @@ $(document).ready(function() {
 
     })
 
-
+//approve tutor
     $('.approveTutor').on('click',function () {
 
         var user_id = $(this).attr('user_id');
@@ -134,7 +141,7 @@ $(document).ready(function() {
     })
 
 
-
+//deny tutor
     $('.denyTutor').on('click',function () {
 
         var user_id = $(this).attr('user_id');
@@ -151,7 +158,7 @@ $(document).ready(function() {
 
 
     })
-
+//delete user
     $('.deleteUser').on('click',function () {
 
         var user_id = $(this).attr('user_id');
@@ -167,7 +174,7 @@ $(document).ready(function() {
 
 
     })
-
+//edit user
     $('.editUserForm').on('click',function () {
 
         var user_id = $(this).attr('user_id');
@@ -188,7 +195,7 @@ $(document).ready(function() {
 
 
     })
-
+//delete chat logs
     $('.deleteLogs').on('click',function () {
 
         var room_id = $(this).attr('room_id');
