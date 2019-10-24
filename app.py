@@ -23,7 +23,7 @@ socketio = SocketIO(app)
 
 # used for profile photos
 photos = UploadSet('photos', IMAGES)
-app.config['UPLOADED_PHOTOS_DEST'] = 'static/pictures'
+app.config['UPLOADED_PHOTOS_DEST'] = 'uploads/pictures'
 configure_uploads(app, photos)
 
 # creates and inits Login
