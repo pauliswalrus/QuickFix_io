@@ -3,32 +3,134 @@
 
 /* ---------------------------------------------------- GENERAL ---------------------------------------------------- */
 
-#main-section {
-    border: 1px solid red;
+body, html {
     width: 100%;
-    height: 100%;
 }
 
-#left_column,
-#middle_column,
-#right_column {
-    float: left;
+.title1 { grid-area: title1; }
+.section1 { grid-area: section1; }
+.title2 { grid-area: title2; }
+.section2 { grid-area: section2; }
+.title3 { grid-area: title3; }
+.section3 { grid-area: section3; }
+.title4 { grid-area: title4; }
+.section4 { grid-area: section4; }
+
+.grid-container {
+    display: grid;
+    width: 100%;
+    height: 90%;
+    border: 1px solid red;
+    grid-template-areas:
+  	    'title1 title2 title3'
+  	    'section1 section2 section3'
+        'section1 section2 title4'
+        'section1 section2 section4';
+    grid-gap: 5px;
+    /*background-color: #2196F3;*/
+    padding: 5px;
+    grid-template-columns: 30% auto 30%;
+
+}
+
+.grid-container > div {
+    background-color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    padding: 20px 0;
+}
+
+.title1,
+.title2,
+.title3,
+.title4 {
+    height: 20px;
     border: 1px solid blue;
-    height: 800px;
+    width: 100%;
+	color: red;
 }
 
-#left_column {
-    width: 30%;
+.section1,
+.section2 {
+    border: 2px solid green;
+    height: 500px;
+    overflow-y: scroll;
 }
 
-#middle_column {
-    width: 40%;
+.section3,
+.section4 {
+    border: 2px solid green;
+    overflow-y: scroll;
 }
 
-#right_column {
-    width: 30%;
-    margin-top: 0px;
-}
+
+
+
+
+
+
+
+
+
+
+/*#mainSection {*/
+/*    display: flex;*/
+/*    justify-content: flex-end;*/
+/*    flex-direction: row;*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    border: 1px solid green;*/
+/*    overflow-y: scroll;*/
+/*    align-items: flex-start;*/
+/*}*/
+
+/*.col {*/
+/*    justify-content: flex-end;*/
+/*    height: 100%;*/
+/*    width: 33%;*/
+/*    border: 1px solid red;*/
+/*    overflow-y: scroll;*/
+/*    overflow-x: scroll;*/
+/*}*/
+
+/*.col1 {*/
+
+/*}*/
+
+/*.col2 {*/
+
+/*}*/
+
+/*.col3top {*/
+/*    flex-flow: wrap;*/
+/*    order: 1;*/
+/*    height: 50%;*/
+/*    background-color: yellow;*/
+/*}*/
+
+/*.col3bottom {*/
+/*    flex-flow: wrap;*/
+/*    order: 2;*/
+/*    height: 50%;*/
+/*    background-color: blue;*/
+/*}*/
+
+
+
+/*.container {*/
+/*    width: 100% !important;*/
+/*}*/
+
+/*#left {*/
+/*    width: 30%;*/
+/*}*/
+
+/*#middle {*/
+/*    width: 40%;*/
+/*}*/
+
+/*#right {*/
+/*    width: 30%;*/
+/*}*/
 
 
 #upload {
@@ -65,129 +167,121 @@
     cursor: pointer;
 }
 
-.container {
-    border: 2px solid green;
-    height: 800px;
-    width: inherit;
-    /*width: 95%;*/
-    /*margin-left: 2%;*/
-    /*margin-right: 2%;*/
-    overflow-y: scroll;
-}
+/*.container {*/
+/*    border: 2px solid green;*/
+/*    height: 800px;*/
+/*    width: inherit;*/
+/*    !*width: 95%;*!*/
+/*    !*margin-left: 2%;*!*/
+/*    !*margin-right: 2%;*!*/
+/*    overflow-y: scroll;*/
+/*}*/
 
 
-.cardStyle {
+/*.cardStyle {*/
 
-    /*width: 80%;*/
-    /*margin-left: 10%;*/
-    /*margin-right: 10%;*/
-    /*margin-top: 5%;*/
-    /*text-align: center;*/
-    /*padding: 20px;*/
-    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
-}
-
-
-
-
-
-
+/*    !*width: 80%;*!*/
+/*    !*margin-left: 10%;*!*/
+/*    !*margin-right: 10%;*!*/
+/*    !*margin-top: 5%;*!*/
+/*    !*text-align: center;*!*/
+/*    !*padding: 20px;*!*/
+/*    !*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*!*/
+/*}*/
 
 
 /*!* Create columns that float next to each other *!*/
 /*.column {*/
-    /*float: left;*/
-    /*height: 600px;*/
-    /*!*border: 1px solid black;*!*/
+/*float: left;*/
+/*height: 600px;*/
+/*!*border: 1px solid black;*!*/
 /*}*/
 
 /*!* Left Column *!*/
 /*.left {*/
-    /*width: 33%;*/
-    /*text-align: center;*/
+/*width: 33%;*/
+/*text-align: center;*/
 /*}*/
 
 /*!* Right Column *!*/
 /*.right {*/
-    /*width: 33%;*/
-    /*float: right;*/
+/*width: 33%;*/
+/*float: right;*/
 /*}*/
 
 /*.middle {*/
-  /*width: 33%;*/
+/*width: 33%;*/
 /*}*/
 
 /*!* Clear floats after the columns *!*/
 /*.row:after {*/
-    /*content: "";*/
-    /*display: table;*/
-    /*clear: both;*/
+/*content: "";*/
+/*display: table;*/
+/*clear: both;*/
 /*}*/
 
 /*!* Makes div look like a card *!*/
 /*.cardContainer {*/
-    /*height: 600px;*/
-    /*padding: 10px;*/
-    /*width: 90%;*/
-    /*margin-left: 5%;*/
-    /*margin-right: 5%;*/
-    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
-    /*overflow-y: scroll;*/
+/*height: 600px;*/
+/*padding: 10px;*/
+/*width: 90%;*/
+/*margin-left: 5%;*/
+/*margin-right: 5%;*/
+/*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+/*overflow-y: scroll;*/
 /*}*/
 
 /*.cardContainer2 {*/
-    /*height: 400px;*/
-    /*padding: 10px;*/
-    /*width: 100%;*/
-    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
-    /*overflow-y: scroll;*/
+/*height: 400px;*/
+/*padding: 10px;*/
+/*width: 100%;*/
+/*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+/*overflow-y: scroll;*/
 /*}*/
 
 /*.cardContainer3 {*/
-    /*height: 200px;*/
-    /*padding: 10px;*/
-    /*width: 100%;*/
-    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
-    /*overflow-y: scroll;*/
+/*height: 200px;*/
+/*padding: 10px;*/
+/*width: 100%;*/
+/*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+/*overflow-y: scroll;*/
 /*}*/
 
 /*.cardContainer4 {*/
-    /*height: 800px;*/
-    /*padding: 10px;*/
-    /*width: 100%;*/
-    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
-    /*overflow-y: scroll;*/
+/*height: 800px;*/
+/*padding: 10px;*/
+/*width: 100%;*/
+/*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+/*overflow-y: scroll;*/
 /*}*/
 
 /*.cardContainer5 {*/
-    /*height: 400px;*/
-    /*padding: 10px;*/
-    /*width: 90%;*/
-    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
-    /*overflow-y: scroll;*/
+/*height: 400px;*/
+/*padding: 10px;*/
+/*width: 90%;*/
+/*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+/*overflow-y: scroll;*/
 /*}*/
 
 /*!* Responsive layout - when the screen is less than 600px wide, make the three columns stack on top of each other instead of next to each other *!*/
 /*@media screen and (max-width: 600px) {*/
-  /*.column {*/
-    /*width: 100%;*/
-  /*}*/
+/*.column {*/
+/*width: 100%;*/
+/*}*/
 /*}*/
 
 
 /*!* Styles the python variable that holds the current local time date *!*/
 /*#currDate {*/
-    /*font-size: 2em;*/
-    /*padding-right: 1em;*/
-    /*font-family: 'Lato', sans-serif;*/
-    /*color: #D57356;*/
+/*font-size: 2em;*/
+/*padding-right: 1em;*/
+/*font-family: 'Lato', sans-serif;*/
+/*color: #D57356;*/
 /*}*/
 
 /*#tutorPosts, #studentPosts {*/
-    /*display: none;*/
+/*display: none;*/
 /*}*/
-
-
 
 
 /*!* Styles the body of the page *!*/
@@ -263,8 +357,6 @@
 /*    overflow-y: scroll;*/
 /*    float: right;*/
 /*}*/
-
-
 
 
 /*#blog-posts {}*/
