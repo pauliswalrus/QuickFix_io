@@ -162,6 +162,11 @@ Admin portal functions
     $('.deleteUser').on('click',function () {
 
         var user_id = $(this).attr('user_id');
+        var r = confirm("Delete User?");
+
+        if (r == true) {
+
+
 
         req = $.ajax({
            url : '/deleteUser',
@@ -171,7 +176,9 @@ Admin portal functions
         });
         alert("User Deleted!")
         location.reload();
-
+         } else {
+            alert("Delete Cancelled")
+        }
 
     })
 
