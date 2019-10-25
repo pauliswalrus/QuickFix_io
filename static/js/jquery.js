@@ -174,6 +174,20 @@ Admin portal functions
 
 
     })
+
+    //open edit user
+    $('.editUser').on('click',function () {
+
+        var user_id = $(this).attr('user_id');
+        var modal = $('.modal_editUser'+user_id).val();
+
+        modal.show();
+
+
+    })
+
+
+
 //edit user
     $('.editUserForm').on('click',function () {
 
@@ -195,6 +209,10 @@ Admin portal functions
 
 
     })
+
+
+
+
 //delete chat logs
     $('.deleteLogs').on('click',function () {
 

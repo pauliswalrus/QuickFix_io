@@ -20,16 +20,17 @@ body, html {
     display: grid;
     width: 100%;
     height: 90%;
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     grid-template-areas:
   	    'title1 title2 title3'
   	    'section1 section2 section3'
         'section1 section2 title4'
         'section1 section2 section4';
-    grid-gap: 5px;
+    grid-gap: 10px;
     /*background-color: #2196F3;*/
     padding: 5px;
     grid-template-columns: 30% auto 30%;
+    grid-template-rows: 5% 45% 5% 45%;
 
 }
 
@@ -39,37 +40,55 @@ body, html {
     padding: 20px 0;
 }
 
-.title1,
-.title2,
-.title3,
-.title4 {
-    height: 20px;
-    border: 1px solid blue;
-    width: 100%;
-	color: red;
+#title1,
+#title2,
+#title3,
+#title4 {
+    color: #395065;
+    font-size: 1.2em;
+    vertical-align: middle;
+    /*background-color: #395065;*/
+	/*color: white;*/
+    /*font-size: 1.2em;*/
+    /*text-align: center;*/
+    /*vertical-align: middle !important;*/
 }
 
 .section1,
 .section2 {
-    border: 2px solid green;
-    height: 500px;
+    /*border: 2px solid #395065;*/
     overflow-y: scroll;
 }
 
 .section3,
 .section4 {
-    border: 2px solid green;
+    /*border: 2px solid #395065;*/
     overflow-y: scroll;
 }
 
+table {
+    width: 100%;
+    /*border: 1px solid red;*/
+}
 
+.tableLeft {
+    width: 70%;
+}
+.tableRight {
+    width: 30%;
+    text-align: right;
+    border-left: 2px solid #395065;
+}
 
+.btn {
+    width: 100px;
+    margin: 2px;
+}
 
+#upload {
+      display: none; /* Hidden by default */
 
-
-
-
-
+}
 
 
 /*#mainSection {*/
@@ -133,21 +152,22 @@ body, html {
 /*}*/
 
 
-#upload {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    width: 600px;
-    margin-left: 25%;
-    margin-right: 25%;
-    height: 400px;
-    left: 0;
-    top: 200px;
-    padding: 5px;
-    text-align: center;
-    overflow: auto; /* Enable scroll if needed */
-    background-color: white;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+.modal_editUser {
+    display: none;
+    /*display: none; !* Hidden by default *!*/
+    /*position: fixed; !* Stay in place *!*/
+    /*z-index: 1; !* Sit on top *!*/
+    /*width: 600px;*/
+    /*margin-left: 25%;*/
+    /*margin-right: 25%;*/
+    /*height: 400px;*/
+    /*left: 0;*/
+    /*top: 200px;*/
+    /*padding: 5px;*/
+    /*text-align: center;*/
+    /*overflow: auto; !* Enable scroll if needed *!*/
+    /*background-color: white;*/
+    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
 
 }
 

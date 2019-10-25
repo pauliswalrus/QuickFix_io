@@ -25,50 +25,77 @@
     <!-- Grid Container -->
     <div class="grid-container">
 
-        <!-- ------------------------------------------- Column 1 ------------------------------------------- -->
-        <div class="title1">Edit Users (<a href="{{ url_for('all_users') }}">View All Users Page</a>)</div>
 
+
+
+
+<!-- -------------------------------------------------- Column 1 -------------------------------------------------- -->
+
+        <div id="title1">Edit Users (<a href="{{ url_for('all_users') }}">View All Users Page</a>)</div>
+
+        <!-- SECTION 1 -->
         <div class="section1">
 
             {% for user in users_list %}
 
                 <div id="roomSection{{ user.id }}" class="panel panel-default">
 
+                    <!-- Heading Bar -->
                     <div class="panel-heading">
                         <h3 class="panel-title">
                             <span id="memberNumber{{ user.id }}">
-                                <a href="{{ url_for('pub_profile', username=user.username) }}">User {{ user.id }} : {{ user.username|upper }}</a>
+                                <a href="{{ url_for('pub_profile', username=user.username) }}">User {{ user.id }}: {{ user.username|upper }}</a>
                             </span>
                         </h3>
                     </div>
 
+                    <!-- Content -->
                     <div class="panel-body">
+
                         <div class="form-inline">
-                            <b>Name:</b> {{ user.firstname }} {{ user.lastname }} <br>
-                            <b>Username:</b> {{ user.username }} <br>
-                            <b>Email:</b> {{ user.email }}<br>
-                            <b>Role:</b> {{ user.role }}<br>
 
-                            <button class="btn btn-warning editUser" id="editUser" user_id="{{ user.id }}">Edit</button>
+                            <table>
+                                <tr>
+                                    <td class="tableLeft">
+                                        <b>Name:</b> {{ user.firstname }} {{ user.lastname }} <br>
+                                        <b>Username:</b> {{ user.username }} <br>
+                                        <b>Email:</b> {{ user.email }}<br>
+                                        <b>Role:</b> {{ user.role }}<br>
+                                    </td>
+                                    <td class="tableRight">
+                                        <button class="btn btn-warning editUser" id="editUser" user_id="{{ user.id }}">Edit</button>
+                                        <button class="btn btn-danger deleteUser" user_id="{{ user.id }}">Delete User</button>
+                                    </td>
+                                </tr>
+                            </table>
 
-                            <button class="btn btn-danger deleteUser" user_id="{{ user.id }}">Delete</button>
 
-                            <div id="upload{{ user.id }}" >
-                                    <span class="closeWindow" onclick="testClose()">&times;</span><br>
-                                        <h4>Edit User {{ user.username|upper }}</h4>
-                                        <label for="userName{{ user.id }}">Username: </label><br>
-                                        <input type="text" class="form-control" id="userName{{ user.id }}" value="{{ user.username }}"><br>
-                                        <label for="firstName{{ user.id }}">First Name: </label><br>
-                                        <input type="text" class="form-control" id="firstName{{ user.id }}" value="{{ user.firstname }}"><br>
-                                        <label for="firstName{{ user.id }}">Last Name: </label><br>
-                                        <input type="text" class="form-control" id="lastName{{ user.id }}" value="{{ user.lastname }}"><br>
-{#                                        <label for="userRole{{ user.id }}">Role: </label><br>#}
-{#                                        <input type="text" class="form-control" id="userRole" value="{{ user.role }}"><br>#}
-{#                                        <label for="userEmail{{ user.id }}">Email: </label><br>#}
-{#                                        <input type="text" class="form-control" id="userEmail" value="{{ user.email }}"><br>#}
 
-                                        <button class="btn btn-info editUserForm" user_id="{{ user.id }}">Edit User</button>
+{#                            <b>Name:</b> {{ user.firstname }} {{ user.lastname }} <br>#}
+{#                            <b>Username:</b> {{ user.username }} <br>#}
+{#                            <b>Email:</b> {{ user.email }}<br>#}
+{#                            <b>Role:</b> {{ user.role }}<br>#}
+{##}
+{#                            <button class="btn btn-warning editUser" id="editUser" user_id="{{ user.id }}">Edit</button>#}
+{#                            <button class="btn btn-danger deleteUser" user_id="{{ user.id }}">Delete</button>#}
+
+                            <div class="modal_editUser">
+                            <div id="upload{{ user.id }}">
+                                <span class="closeWindow" onclick="testClose()">&times;</span><br>
+                                <h4>Edit User {{ user.username|upper }}</h4>
+                                <label for="userName{{ user.id }}">Username: </label><br>
+                                <input type="text" class="form-control" id="userName{{ user.id }}" value="{{ user.username }}"><br>
+                                <label for="firstName{{ user.id }}">First Name: </label><br>
+                                <input type="text" class="form-control" id="firstName{{ user.id }}" value="{{ user.firstname }}"><br>
+                                <label for="firstName{{ user.id }}">Last Name: </label><br>
+                                <input type="text" class="form-control" id="lastName{{ user.id }}" value="{{ user.lastname }}"><br>
+{#                              <label for="userRole{{ user.id }}">Role: </label><br>#}
+{#                              <input type="text" class="form-control" id="userRole" value="{{ user.role }}"><br>#}
+{#                              <label for="userEmail{{ user.id }}">Email: </label><br>#}
+{#                              <input type="text" class="form-control" id="userEmail" value="{{ user.email }}"><br>#}
+                                <button class="btn btn-info editUserForm" user_id="{{ user.id }}">Edit User</button>
                             </div>
+                                </div>
 
 {#                            <div id="upload">#}
 {##}
@@ -82,18 +109,27 @@
 {##}
 {#                            </div>#}
 
-                        </div>
-                    </div>
+                        </div> <!-- end form-inline class -->
+                    </div><!-- end panel-body class-->
 
-                </div>
+                </div><!-- end roomSection ID -->
 
             {% endfor %}
 
-        </div>
+        </div> <!-- END SECTION 1 -->
 
 
-        <!-- ------------------------------------------- Column 2 ------------------------------------------- -->
-        <div class="title2">Active Rooms</div>
+
+
+
+
+
+
+
+<!-- -------------------------------------------------- Column 2 -------------------------------------------------- -->
+        <div id="title2">Active Rooms</div>
+
+        <!-- SECTION 2 -->
         <div class="section2">
 
             {% for room in blog_posts %}
@@ -108,8 +144,7 @@
 
                     <div class="panel-body">
                         <div class="form-inline">
-                            <b>Author:</b>
-                            <a href="{{ url_for('pub_profile', username=room.author) }}"> {{ room.author|upper }}</a><br>
+                            <b>Author:</b> <a href="{{ url_for('pub_profile', username=room.author) }}"> {{ room.author|upper }}</a><br>
                             <b>Public:</b> {{ room.visible }}<br>
                             <b>Date:</b> {{ room.date_posted.strftime('%Y-%m-%d') }} <br>
                             <b><a href="{{ url_for('chat_log', room_id=room.id) }}">
@@ -156,19 +191,32 @@
 
             {% endfor %}
 
-        </div>
+        </div><!-- END SECTION 2 -->
 
 
-        <!-- ------------------------------------------- Column 3 ------------------------------------------- -->
-        <div class="title3">Pending Applications</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- -------------------------------------------------- Column 3 -------------------------------------------------- -->
+        <div id="title3">Pending Applications</div>
+
+        <!-- SECTION 3 -->
         <div class="section3">
 
             {% for tutor in tutors_pending %}
+
                 <div id="tutorSection{{ tutor.user_id }}" class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><span id="memberNumber"><a
-                                href="{{ url_for('pub_profile', username=tutor.username) }}">Tutor {{ tutor.tutor_id }} : {{ tutor.username|upper }} </a></span>
-                        </h3>
+                        <h3 class="panel-title"><span id="memberNumber"><a href="{{ url_for('pub_profile', username=tutor.username) }}">Tutor {{ tutor.tutor_id }} : {{ tutor.username|upper }} </a></span></h3>
                     </div>
 
                     <div class="panel-body">
@@ -176,86 +224,95 @@
 
                             <div class="form-group">
                                 <label for="aboutTutor{{ tutor.user_id }}">Reason: </label>
-                                <span id="aboutTutor{{ tutor.tutor_id }}"
-                                      value="{{ tutor.about_tutor }}">{{ tutor.about_tutor }}</span>
+                                <span id="aboutTutor{{ tutor.tutor_id }}" value="{{ tutor.about_tutor }}">{{ tutor.about_tutor }}</span>
                             </div>
+
                             <br>
+
                             <div class="form-group">
                                 <label for="statusTutor{{ tutor.tutor_status }}">Status: </label>
                                 <span id="statusTutor{{ tutor.tutor_status }}">{{ tutor.tutor_status }} </span>
                             </div>
+
                             <br>
-                            {#                {{ tutor.tutor_status }}#}
+
                             <div class="form-group">
-                                <b>Credentials:</b> <a
-                                    href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>
-                                {#              <input type="text" class="form-control" id="titleInput{{ tutor.tutor_id }}" value="{{ tutor.credentials_file_name }}" y>#}
-                            </div>
-                            <div class="form-group">
-                                <label for="appComments{{ tutor.application_comments }}">Application
-                                    Comments: </label>
-                                <input type="text" class="form-control" id="appComments"
-                                       value="{{ tutor.application_comments }}">
+                                <b>Credentials:</b> <a href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>
                             </div>
 
-                            <button class="btn btn-primary approveTutor" user_id="{{ tutor.user_id }}">Approve
-                            </button>
+                            <div class="form-group">
+                                <label for="appComments{{ tutor.application_comments }}">Application Comments: </label>
+                                <input type="text" class="form-control" id="appComments" value="{{ tutor.application_comments }}">
+                            </div>
+
+                            <button class="btn btn-primary approveTutor" user_id="{{ tutor.user_id }}">Approve</button>
                             <button class="btn btn-warning denyTutor" user_id="{{ tutor.user_id }}">Deny</button>
 
-                        </div>
-                    </div>
-                </div>
+                        </div> <!-- end form-inline class -->
+
+                    </div><!-- end panel-body class -->
+
+                </div> <!-- end tutorSection ID -->
+
             {% endfor %}
 
-        </div>
+        </div><!-- END SECTION 3 -->
 
 
 
 
 
 
-        <div class="title4">Approved Tutors</div>
+        <div id="title4">Approved Tutors</div>
+
+        <!-- SECTION 4 -->
         <div class="section4">
 
             {% for tutor in tutors_approved %}
 
                 <div id="tutorSection{{ tutor.user_id }}" class="panel panel-default">
+
                     <div class="panel-heading">
-                        <h3 class="panel-title"><span id="memberNumber"><a
-                                href="{{ url_for('pub_profile', username=tutor.username) }}">Tutor {{ tutor.tutor_id }} : {{ tutor.username|upper }} </a></span>
-                        </h3>
+                        <h3 class="panel-title"><span id="memberNumber"><a href="{{ url_for('pub_profile', username=tutor.username) }}">Tutor {{ tutor.tutor_id }} : {{ tutor.username|upper }} </a></span></h3>
                     </div>
+
                     <div class="panel-body">
+
                         <div class="form-inline">
 
                             <div class="form-group">
                                 <label for="tutorName">Name: </label>
                                 <span id="tutorName">{{ tutor.firstname }} {{ tutor.lastname }}</span>
                             </div>
+
                             <br>
 
                             <div class="form-group">
                                 <label for="aboutTutor">Reason: </label>
                                 <span id="aboutTutor">{{ tutor.about_tutor }}</span>
                             </div>
+
                             <br>
 
                             <div class="form-group">
-                                <b>Credentials:</b> <a
-                                    href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>
+                                <b>Credentials:</b> <a href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>
                             </div>
+
                             <div class="form-group">
                                 <label for="approved">Application Comments: </label>
                                 <span id="approved">{{ tutor.application_comments }}</span>
                             </div>
 
-                        </div>
-                    </div>
-                </div>
+                        </div> <!-- end form-inline class -->
+
+                    </div><!-- end panel-body class -->
+
+                </div><!-- end tutorSection ID -->
+
             {% endfor %}
 
 
-        </div>
+        </div><!-- END SECTION 4 -->
 
     </div><!-- End Grid Container -->
 
@@ -267,20 +324,32 @@
 
 
 
-
+<!-- -------------------------------------------------- scripts -------------------------------------------------- -->
     <script type="text/javascript">
         //show div upload on button click uploadNewDocs
-        let uploadForm = document.getElementById('upload');
+        let modal = document.getElementsByClassName('modal_editUser');
         let button = document.getElementById('editUser');
+        let close = document.getElementsByClassName('closeWindow');
 
-        function showForm() {
-            uploadForm.style.display = "block";
+        button.onClick = function () {
+            modal.style.display = "block";
         }
 
-        function testClose() {
-            uploadForm.style.display = "none";
+        close.onClick = function () {
+            modal.style.display = "none";
         }
+
+
+
+
+
+
+
     </script>
+
+
+
+
 
 {% endblock %}
 </body>
