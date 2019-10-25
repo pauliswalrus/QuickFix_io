@@ -158,6 +158,7 @@ Admin portal functions
 
 
     })
+
 //delete user
     $('.deleteUser').on('click',function () {
 
@@ -190,10 +191,17 @@ Admin portal functions
         $('.modal_editUser').show();
 
 
+    })
+
+        //close edit user
+    $('.closeWindow').on('click',function () {
+
+        var user_id = $(this).attr('user_id');
+
+        $('.modal_editUser').hide();
 
 
     })
-
 
 
 //edit user
