@@ -179,9 +179,10 @@ Admin portal functions
     $('.editUser').on('click',function () {
 
         var user_id = $(this).attr('user_id');
-        var modal = $('.modal_editUser'+user_id).val();
 
-        modal.show();
+        $('.modal_editUser').show();
+
+
 
 
     })
@@ -205,6 +206,7 @@ Admin portal functions
 
         });
         alert("User Edited!")
+
         location.reload();
 
 
