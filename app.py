@@ -13,9 +13,9 @@ from flask_forms import *
 from sqlalq_datamodels import *
 
 ###     AUTHOR: AUSTIN PAUL
-###     DATE: OCT 21
+###     DATE: OCT 25
 ###     QUICKFIX_IO DIRTYBITS
-###     SPRINT 6 OCT 21 BUILD DEPLOYED AT
+###     SPRINT 6 OCT 25 BUILD DEPLOYED AT
 ###     quickfix-io.herokuapp.com
 
 # socketio init
