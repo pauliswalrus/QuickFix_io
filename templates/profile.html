@@ -61,6 +61,10 @@
             <br><br>
             <div id="tutorStatusToggle">
                 Status:
+
+                <b>{{ status_string }}</b>
+
+
                 <form method="post" enctype="multipart/form-data">
                     <fieldset>
                         {{ ts_form.hidden_tag() }}
@@ -83,17 +87,42 @@
 
             <hr>
 
-            <div><a href="{{ url_for('new_tutor') }}">Apply to be a tutor</a></div>
+            <div>
+
+             <div id="roomPost">
+                    <a href="{{ url_for('add_room') }}">Create A New Room</a>
+                    <hr>
+                </div>
+
+                <div id="studentPost">
+                    <a href="{{ url_for('add_student_post') }}">Ask For Help</a>
+                    <hr>
+                </div>
+
+                <div id="tutorApply">
+                    <a href="{{ url_for('new_tutor') }}">Apply To Be A Tutor</a>
+                    <hr>
+                </div>
+
+                <div id="adminPortal">
+                    <a href="{{ url_for('admin') }}">Admin Portal</a>
+                    <hr>
+                </div>
+
+                <div id="checkApp"><a href="{{ url_for('check_application') }}">Check Application</a></div>
+
+
+            </div>
 
             <div>
                 <a href="{{ url_for('pub_profile', username=user_object.username) }}">
                 View My Public Profile</a>
             </div>
 
-            <div id="tutorStatusHeader">
-            <h2>Your status is currently set to: {{ status_string }} </h2>
-            </div>
-
+{#            <div id="tutorStatusHeader">#}
+{#            <h2>Current Status : {{ status_string }} </h2>#}
+{#            </div>#}
+{##}
 
 
 
@@ -417,7 +446,54 @@
             modal.style.display = "none";
         }
     }
+
+    let uRole = '{{ role_name }}';
+
+        let tStatus = '{{ t_status }}';
+
+        window.onload = function (event) {
+
+            document.getElementById('checkApp').style.display = "none";
+            document.getElementById('adminPortal').style.display = "none";
+
+            if (uRole == 'Student') {
+                document.getElementById('roomPost').style.display = "none";
+                document.getElementById('adminPortal').style.display = "none";
+
+                if (tStatus == 'pending') {
+                    document.getElementById('tutorApply').style.display = "none";
+                    document.getElementById('roomPost').style.display = "none";
+                    document.getElementById('checkApp').style.display = "block";
+
+                } else if (tStatus == 'approved') {
+                    document.getElementById('tutorApply').style.display = "none";
+                    document.getElementById('checkApp').style.display = "none";
+                } else if (tStatus == 'denied') {
+                    document.getElementById('checkApp').style.display = "block";
+                    document.getElementById('tutorApply').style.display = "none";
+                    document.getElementById('roomPost').style.display = "none";
+                }
+
+            } else if (uRole == 'Tutor') {
+                document.getElementById('studentPost').style.display = "none";
+                document.getElementById('tutorApply').style.display = "none";
+                document.getElementById('adminPortal').style.display = "none";
+                document.getElementById('checkApp').style.display = "none";
+
+            } else if (uRole == 'Admin') {
+                document.getElementById('studentPost').style.display = "none";
+                document.getElementById('tutorApply').style.display = "none";
+                document.getElementById('adminPortal').style.display = "block";
+                document.getElementById('checkApp').style.display = "none";
+            }
+
+
+        }
+
+
+
 </script>
+
 
 {% endblock %}
 </body>
