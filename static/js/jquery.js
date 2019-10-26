@@ -287,15 +287,22 @@ Admin portal functions
 
         var room_id = $(this).attr('room_id');
 
-        req = $.ajax({
-           url : '/deleteRoomUploads',
-           type : 'POST',
-           data : { id : room_id }
+        var r = confirm("Delete Room Uploads?");
 
-        });
-        alert("Chat Log Cleared!");
-        $('#roomSection'+room_id).fadeOut(1000).fadeIn(1000);
+        if (r == true) {
 
+            req = $.ajax({
+                url: '/deleteRoomUploads',
+                type: 'POST',
+                data: {id: room_id}
+
+            });
+            alert("Room Uploads Cleared!");
+            $('#roomSection' + room_id).fadeOut(1000).fadeIn(1000);
+
+        } else {
+
+        }
 
 
     })

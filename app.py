@@ -584,8 +584,10 @@ def deleteRoomUploads():
 
     room = RoomPost.query.filter_by(id=request.form['id']).first()
 
+    db.session.query(RoomUpload).filter_by(room_name=room.room_title).delete()
+
     #delete all messages by room title
-    db.session.query(Message).filter_by(room=room.room_title).delete()
+    #db.session.query(Message).filter_by(room=room.room_title).delete()
     db.session.commit()
 
     return jsonify({'result': 'success'})
