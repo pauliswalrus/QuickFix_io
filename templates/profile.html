@@ -172,13 +172,36 @@
                 </p>
             </div>
 
-            <p class="subheading">My Posts <a href="{{ url_for('add_room') }}">Add New Room</a></p>
+{#            <p class="subheading">My Posts <a href="{{ url_for('add_room') }}">Add New Room</a></p>#}
+{##}
+{#            {% for room in room_posts %}#}
+{#                <a href="{{ url_for('room', room_id=room.id) }}">#}
+{#                    <p>[{{ room.type|upper }}] {{ room.title }} - {{ room.date_posted.strftime('%B %d, %Y') }}</p>#}
+{#                </a>#}
+{#            {% endfor %}#}
 
-            {% for room in room_posts %}
-                <a href="{{ url_for('room', room_id=room.id) }}">
-                    <p>[{{ room.type|upper }}] {{ room.title }} - {{ room.date_posted.strftime('%B %d, %Y') }}</p>
-                </a>
+
+             <div id="myPosts">
+            <p class="subheading">My Posts <a href="{{ url_for('add_student_post') }}">Add New Post</a></p>
+
+            {% for room in student_posts %}
+                <div id="linkType"> <a href="{{ url_for('studentpost', studentpost_id=room.id) }}">
+                    <h5>[{{ room.type|upper }}] {{ room.title }} - {{ room.date_posted.strftime('%B %d, %Y') }}</h5>
+                </a></div>
             {% endfor %}
+
+            </div>
+
+             <div id="myRooms">
+            <p class="subheading">My Rooms <a href="{{ url_for('add_room') }}">Add New Room</a></p>
+
+            {% for room in posts %}
+                <div id="linkType"> <a href="{{ url_for('room', room_id=room.id) }}">
+                    <h5>[{{ room.type|upper }}] {{ room.title }} - {{ room.date_posted.strftime('%B %d, %Y') }}</h5>
+                </a></div>
+            {% endfor %}
+
+            </div>
 
 
             <div id="userUploads">
@@ -456,7 +479,14 @@
             document.getElementById('checkApp').style.display = "none";
             document.getElementById('adminPortal').style.display = "none";
 
+            document.getElementById('myPosts').style.display = "none";
+                document.getElementById('myRooms').style.display = "none";
+
             if (uRole == 'Student') {
+
+                document.getElementById('myPosts').style.display = "block";
+                document.getElementById('myRooms').style.display = "none";
+
                 document.getElementById('roomPost').style.display = "none";
                 document.getElementById('adminPortal').style.display = "none";
 
@@ -475,12 +505,19 @@
                 }
 
             } else if (uRole == 'Tutor') {
+                document.getElementById('myPosts').style.display = "none";
+                document.getElementById('myRooms').style.display = "block";
+
                 document.getElementById('studentPost').style.display = "none";
                 document.getElementById('tutorApply').style.display = "none";
                 document.getElementById('adminPortal').style.display = "none";
                 document.getElementById('checkApp').style.display = "none";
 
             } else if (uRole == 'Admin') {
+
+                document.getElementById('myPosts').style.display = "none";
+                document.getElementById('myRooms').style.display = "none";
+
                 document.getElementById('studentPost').style.display = "none";
                 document.getElementById('tutorApply').style.display = "none";
                 document.getElementById('adminPortal').style.display = "block";
