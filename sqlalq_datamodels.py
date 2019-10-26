@@ -124,3 +124,18 @@ class PostComment(db.Model):
     comment_author = db.Column(db.String(25), nullable=False)
     date_posted = db.Column(db.DateTime)
     content = db.Column(db.Text)
+
+class Program(db.Model):
+    """Program Model"""
+
+    __tablename__ = "program"
+    program_id = db.Column(db.Integer, primary_key=True)
+    program_name = db.Column(db.Text)
+
+class Course(db.Model):
+    """Course Model"""
+
+    __tablename__ = "course"
+    course_id = db.Column(db.Integer, primary_key=True)
+    course_name = db.Column(db.Text)
+    program_id = db.Column(db.Integer, db.ForeignKey('program.program_id'))
