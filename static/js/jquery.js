@@ -308,6 +308,16 @@ Admin portal functions
     })
 
 
+    $('.setProgram').on('click',function () {
+
+        var program_id = $(this).attr('.program_id');
+
+            alert(program_id);
+
+    })
+
+
+
 
 
 

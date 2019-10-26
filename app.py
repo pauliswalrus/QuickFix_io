@@ -4,7 +4,7 @@ from flask import Flask, render_template, redirect, url_for, flash, session, req
 from flask_login import LoginManager, login_user, current_user, logout_user
 from flask_socketio import SocketIO, send, emit, join_room, leave_room
 from io import BytesIO
-
+from flask_bootstrap import Bootstrap
 import os
 
 from flask_uploads import UploadSet, configure_uploads, IMAGES, send_from_directory
@@ -30,6 +30,7 @@ configure_uploads(app, photos)
 login = LoginManager(app)
 login.init_app(app)
 
+Bootstrap(app)
 
 # loads in user
 @login.user_loader
@@ -382,6 +383,7 @@ def add_student_post():
     return render_template('addNewStudentPost.html', username=current_user.username, post_form=post_form,
                            user_object=user_object, this_user=this_user)
 
+
 # courses page
 @app.route("/courses", methods=['GET', 'POST'])
 def courses():
@@ -391,21 +393,16 @@ def courses():
     available_programs = Program.query.all()
 
     program_list = [(k.program_id, k.program_name) for k in available_programs]
+    form = ProgramForm()
+    form.program_options.choices = program_list
 
-    program_form = ProgramForm()
+    programID = form.program_options.data
+    program_picked = Program.query.filter_by(program_id=programID).first()
 
-    program_form.program_options.choices = program_list
 
-    if program_form.validate_on_submit():
 
-        programID = program_form.program_options.data
-        program_picked = Program.query.filter_by(program_id=programID).first()
-        print(program_picked.prograwm_name)
 
-        return program_picked.program_name
-
-    return render_template('courses.html', username=current_user.username, this_user=this_user, program_form=program_form)
-
+    return render_template('courses.html', username=current_user.username, this_user=this_user, form=form)
 
 
 # route for chat - displays public rooms and form to join(create rooms)
@@ -606,6 +603,7 @@ def pub_profile(username):
     email = user_object.email
     status = user_object.status
     role = user_object.role
+    about_me = user_object.about_me
 
     room_posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
 
@@ -625,7 +623,7 @@ def pub_profile(username):
 
     return render_template('pub_profile.html', thisUser=thisUser, username=username, firstname=firstname,
                            lastname=lastname, email=email, status_string=status_string, room_posts=room_posts,
-                           role_name=role_name, image_form=image_form, user_object=user_object, user_files=user_files,
+                           role_name=role_name, about_me=about_me, image_form=image_form, user_object=user_object, user_files=user_files,
                            this_user=this_user)
 
 

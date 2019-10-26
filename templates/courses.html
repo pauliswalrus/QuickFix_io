@@ -4,25 +4,23 @@
     <meta charset="UTF-8">
     <title>Courses</title>
 </head>
+
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 <body>
+
+
 
 {% extends "navbar.html" %}
 {% block content %}
 
 
-                 <form method="post" action="">
+                 <form method="POST" action="">
                   <h2>Pick Program</h2>
-                     {{ program_form.csrf_token }}
-                  {{ program_form.program_options }}
-                  <button type="submit">Pick Program</button>
+                     {{ form.csrf_token }}
+                  {{ wtf.form_field(form.program_options, class='program_id') }}
+                  <input type="button" class="btn btn-primary setProgram" >
               </form>
-
-{#                 <form method="POST" action="">#}
-{#                  <h2>Pick Course</h2>#}
-{#                     {{ form.csrf_token }}#}
-{#                  {{ form.course_options }}#}
-{#                  <button type="submit">Pick Course</button>#}
-{#              </form>#}
 
 
 
