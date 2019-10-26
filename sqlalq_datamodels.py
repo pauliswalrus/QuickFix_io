@@ -73,7 +73,7 @@ class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     message = db.Column(db.Text)
     username = db.Column(db.String(25), nullable=False)
-    room = db.Column(db.String(25), nullable=False)
+    room = db.Column(db.String(50), nullable=False)
     created_at = db.Column(db.Text)
 
 # data model for blogpost table recently added in heroku db
@@ -139,3 +139,9 @@ class Course(db.Model):
     course_id = db.Column(db.Integer, primary_key=True)
     course_name = db.Column(db.Text)
     program_id = db.Column(db.Integer, db.ForeignKey('program.program_id'))
+
+    def __repr__(self):
+        return '[Course {}]'.format(self.course_name)
+
+def choice_query():
+    return Course.query

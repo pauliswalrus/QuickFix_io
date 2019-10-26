@@ -3,7 +3,8 @@ from wtforms import StringField, PasswordField, SubmitField, TextAreaField, Sele
 from wtforms.validators import InputRequired, Length, EqualTo, ValidationError, Email
 
 from passlib.hash import pbkdf2_sha256
-from sqlalq_datamodels import User, FileUpload, RoomPost
+from sqlalq_datamodels import User, FileUpload, RoomPost, choice_query
+from wtforms_sqlalchemy.fields import QuerySelectField
 
 
 ###     AUTHOR: AUSTIN PAUL
@@ -125,5 +126,7 @@ class TutorStatus(FlaskForm):
     status = SelectField('Status', choices=[('0', 'Offline'), ('1', 'Online')])
     submit_button3 = SubmitField('Change Status')
 
+class CourseForm(FlaskForm):
 
+    course_options = QuerySelectField('course_list', query_factory=choice_query, allow_blank=False, get_label='course_name')
 

@@ -333,13 +333,21 @@ def all_users():
     return render_template('all_users.html', username=current_user.username, all_tutors=all_tutors,
                            online_tutors=online_tutors, busy_tutors=busy_tutors, student_users=student_users, this_user=this_user, users_list = users_list)
 
+
 #all users page
 @app.route("/courses", methods=['GET', 'POST'])
 def courses():
 
     this_user = User.query.filter_by(username=current_user.username).first()
 
-    return render_template('courses.html', username=current_user.username, this_user=this_user)
+    form = CourseForm()
+
+    if form.validate_on_submit():
+        return '<html><h1>{}</h1></html>'.format(form.course_options.data)
+
+    # courses = Course.query.filter_by()
+
+    return render_template('courses.html', username=current_user.username, this_user=this_user, form=form)
 
 # route for chat - displays public rooms and form to join(create rooms)
 @app.route("/home", methods=['GET', 'POST'])
