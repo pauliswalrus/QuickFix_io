@@ -617,13 +617,18 @@ def pub_profile(username):
     role = user_object.role
     about_me = user_object.about_me
 
-    room_posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
+    posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
+
+    student_posts = StudentPost.query.filter_by(author=username).order_by(StudentPost.date_posted.desc()).all()
 
     if role == "S":
+        student_posts = StudentPost.query.filter_by(author=username).order_by(StudentPost.date_posted.desc()).all()
         role_name = "Student"
     elif role == "T":
+        posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
         role_name = "Tutor"
     elif role == "A":
+        posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
         role_name = "Admin"
 
     if status == 0:
@@ -634,13 +639,13 @@ def pub_profile(username):
         status_string = "Busy"
 
     return render_template('pub_profile.html', thisUser=thisUser, username=username, firstname=firstname,
-                           lastname=lastname, email=email, status_string=status_string, room_posts=room_posts,
+                           lastname=lastname, email=email, status_string=status_string, posts=posts,
                            role_name=role_name, about_me=about_me, image_form=image_form, user_object=user_object, user_files=user_files,
-                           this_user=this_user)
+                           this_user=this_user, student_posts=student_posts)
 
 
 # gets profile pics
-@app.route('/static/pictures/<filename>')
+@app.route('/uploads/pictures/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOADED_PHOTOS_DEST'], filename)
 

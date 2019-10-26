@@ -13,26 +13,26 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
 </head>
 
-    <script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', () => {
-        var online_status = {{ status }}
-
-       if (online_status==1) {
-
-           document.querySelector('#online_stat').innerHTML = "Online"
-
-       }
-       else {
-
-           document.querySelector('#online_stat').innerHTML = "Offline"
-       }
-
-
-       document.querySelector('changeStatus').onclick = () => {
-
-       }
-    })
-    </script>
+{#    <script type="text/javascript">#}
+{#    document.addEventListener('DOMContentLoaded', () => {#}
+{#        var online_status = {{ status }}#}
+{##}
+{#       if (online_status==1) {#}
+{##}
+{#           document.querySelector('#online_stat').innerHTML = "Online"#}
+{##}
+{#       }#}
+{#       else {#}
+{##}
+{#           document.querySelector('#online_stat').innerHTML = "Offline"#}
+{#       }#}
+{##}
+{##}
+{#       document.querySelector('changeStatus').onclick = () => {#}
+{##}
+{#       }#}
+{#    })#}
+{#    </script>#}
 <body>
 
 {% extends "navbar.html" %}
@@ -89,7 +89,7 @@
 
 
             <div id="myCourses">
-                <p class="subheading">My Courses</p>
+                <p class="subheading">{{ username }}'s Courses</p>
                 <p>• Lorem ipsum dolor sit amet, consectetur adipiscing elit<br>
                     • Nullam non ex quis massa cursus dictum eu eget leo. <br>
                     • Pellentesque nulla eratpellentesque ut tortor vel <br>
@@ -106,13 +106,29 @@
 
         <div class="cardContainer">
 
-            <p class="subheading">My Posts <a href="{{ url_for('add_room') }}">Add New Room</a></p>
+            <div id="studentPublic">
+            <p class="subheading">{{ username }}'s Posts</p>
 
-            {% for room in room_posts %}
-                <a href="{{ url_for('room', room_id=room.id) }}">
+            {% for room in student_posts %}
+                <div id="linkType"> <a href="{{ url_for('studentpost', studentpost_id=room.id) }}">
                     <h5>[{{ room.type|upper }}] {{ room.title }} - {{ room.date_posted.strftime('%B %d, %Y') }}</h5>
-                </a>
+                </a></div>
             {% endfor %}
+
+            </div>
+
+             <div id="tutorPublic">
+            <p class="subheading">{{ username }}'s Rooms</p>
+
+            {% for room in posts %}
+                <div id="linkType"> <a href="{{ url_for('room', room_id=room.id) }}">
+                    <h5>[{{ room.type|upper }}] {{ room.title }} - {{ room.date_posted.strftime('%B %d, %Y') }}</h5>
+                </a></div>
+            {% endfor %}
+
+            </div>
+
+
 
             <div id="userUploads">
                 <p class="subheading">My Uploads</p>
@@ -154,6 +170,32 @@
 {##}
 {#        </div>#}
 {#    </div>#}
+
+    <script>
+    let uRole = '{{ role_name }}';
+
+        window.onload = function (event) {
+
+                document.getElementById('tutorPublic').style.display = "none";
+                document.getElementById('studentPublic').style.display = "none";
+
+            if (uRole == 'Student') {
+                document.getElementById('tutorPublic').style.display = "none";
+                document.getElementById('studentPublic').style.display = "block";
+
+            } else if (uRole == 'Tutor') {
+                document.getElementById('tutorPublic').style.display = "block";
+                document.getElementById('studentPublic').style.display = "none";
+
+            } else if (uRole == 'Admin') {
+                document.getElementById('tutorPublic').style.display = "none";
+                document.getElementById('studentPublic').style.display = "none";
+            }
+
+        }
+</script>
+
 {% endblock %}
+
 </body>
 </html>
