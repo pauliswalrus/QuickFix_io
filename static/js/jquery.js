@@ -246,7 +246,7 @@ Admin portal functions
            data : { firstname : firstname, lastname : lastname, username : username, id : user_id }
 
         });
-        alert("User Edited!")
+        alert("User Edited!");
 
         location.reload();
 
@@ -271,7 +271,7 @@ Admin portal functions
                 data: {id: room_id}
 
             });
-            alert("Chat Log Cleared!")
+            alert("Chat Log Cleared!");
             $('#roomSection' + room_id).fadeOut(1000).fadeIn(1000);
         } else {
 
@@ -293,7 +293,7 @@ Admin portal functions
            data : { id : room_id }
 
         });
-        alert("Chat Log Cleared!")
+        alert("Chat Log Cleared!");
         $('#roomSection'+room_id).fadeOut(1000).fadeIn(1000);
 
 
