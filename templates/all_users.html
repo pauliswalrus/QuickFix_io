@@ -17,10 +17,11 @@
 </head>
 
 <body>
-{% extends "navbar.html" %}
+{% extends "navbar_admin.html" %}
 {% block content %}
+    <div id="main-content">
 
- <div id="title1">Edit Users (<a href="{{ url_for('all_users') }}">View All Users Page</a>)</div>
+        <div id="title1">Edit Users (<a href="{{ url_for('all_users') }}">View All Users Page</a>)</div>
 
         <!-- SECTION 1 -->
         <div class="section1">
@@ -90,7 +91,24 @@
 
         </div> <!-- END SECTION 1 -->
 
+    </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+</body>
+</html>
 {#<!-- <nav id="main-section"> -->#}
 {#<div id="main-section">#}
 {##}
@@ -154,8 +172,3 @@
 {##}
 {#</div> <!-- End main section div -->#}
 
-
-{% endblock %}
-</body>
-
-</html>

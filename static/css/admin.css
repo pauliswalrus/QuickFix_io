@@ -7,6 +7,29 @@ body, html {
     width: 100%;
 }
 
+
+#main-content {
+    position: absolute;
+    left: 300px;
+    right: 0;
+
+    border: 2px solid red;
+    /*width: fit-content;*/
+    /*margin-left: 300px;*/
+    /*margin-right: 0;*/
+    /*right: 0;*/
+    height: 100%;
+    overflow-y: scroll;
+}
+
+
+
+
+
+
+
+
+
 .title1 { grid-area: title1; }
 .section1 { grid-area: section1; }
 .title2 { grid-area: title2; }
@@ -87,6 +110,12 @@ table {
 
 #upload {
       display: none; /* Hidden by default */
+
+}
+
+#id_number {
+    float: right;
+    color: red;
 
 }
 

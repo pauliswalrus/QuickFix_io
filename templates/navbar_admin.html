@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar_admin.css') }}">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Amatic+SC&display=swap');
+    </style>
+</head>
+<body>
+
+    <div id="navBar"> <!-- whole nav bar -->
+
+        <a href="{{ url_for('admin') }}" class="fl_left logo"></a>
+
+        <div id="menu">
+
+            <h2>Admin Portal</h2>
+
+            <hr>
+
+            <a href="{{ url_for('admin') }}">Pending Tutor Applications</a> <!-- refactor to admin_pending -->
+            <a href="{{ url_for('admin_approved') }}">Approved Tutors</a>
+
+            <hr>
+
+            <a href="{{ url_for('all_users') }}">Manage Users</a> <!-- refactor to admin_users -->
+            <a href="{{ url_for('admin_rooms') }}">Manage Rooms</a>
+
+{#            <hr>#}
+{##}
+{#            <a href="{{ url_for('allrooms') }}">View Open Tutor Rooms</a>#}
+{#            <a href="{{ url_for('allstudentposts') }}">View Student Questions</a>#}
+
+        </div>
+
+
+        <a href="{{ url_for('logout') }}" class="fl_right"> Logout </a>
+        <a href="{{ url_for('profile') }}" class="fl_right">
+            <img src="{{ url_for('uploaded_file', filename=this_user.user_photo) }}" height="50px" width="50px"
+                 class="profilePic_sm"/>
+        </a>
+{#        <a href="{{ url_for('profile') }}" class="fl_right">{{ username }}</a>#}
+
+
+    </div>
+
+
+
+    <script type="text/javascript">
+        function showMenu(icon) {
+
+           let x = document.getElementById("menu");
+
+           if (x.style.display === "none") {
+               x.style.display = "block";
+               icon.classList.toggle("change");
+           } else if (x.style.display === "block") {
+               x.style.display = "none";
+               icon.classList.toggle("change");
+           }
+        }
+    </script>
+
+
+
+    {% block content %}
+    {% endblock %}
+
+
+</body>
+</html>
