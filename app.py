@@ -316,6 +316,13 @@ def add_student_post():
 @app.route("/users", methods=['GET', 'POST'])
 def all_users():
 
+    if session["userRole"] != "A":
+        return "You are not an authorized admin please go back"
+
+    #users in desc order
+
+    users_list = User.query.order_by(User.id.desc()).all()
+
     all_tutors = User.query.filter_by(role='T').all()
     online_tutors = User.query.filter_by(status=1, role='T').all()
     busy_tutors = User.query.filter_by(status=2, role='T').all()
@@ -324,7 +331,7 @@ def all_users():
     this_user = User.query.filter_by(username=current_user.username).first()
 
     return render_template('all_users.html', username=current_user.username, all_tutors=all_tutors,
-                           online_tutors=online_tutors, busy_tutors=busy_tutors, student_users=student_users, this_user=this_user)
+                           online_tutors=online_tutors, busy_tutors=busy_tutors, student_users=student_users, this_user=this_user, users_list = users_list)
 
 # route for chat - displays public rooms and form to join(create rooms)
 @app.route("/home", methods=['GET', 'POST'])

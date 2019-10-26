@@ -9,13 +9,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
 
-    <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js">
+    <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
 
-    </script>
-
-    <script src="{{ url_for('static', filename='js/jquery.js') }}">
-
-    </script>
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
 </head>
 
 <body>
@@ -26,12 +22,9 @@
     <div class="grid-container">
 
 
+        <!-- -------------------------------------------------- Column 1 -------------------------------------------------- -->
 
-
-
-<!-- -------------------------------------------------- Column 1 -------------------------------------------------- -->
-
-        <div id="title1">Edit Users (<a href="{{ url_for('all_users') }}">View All Users Page</a>)</div>
+        <div id="title1">All Users (<a href="{{ url_for('all_users') }}">Edit Users</a>)</div>
 
         <!-- SECTION 1 -->
         <div class="section1">
@@ -42,72 +35,23 @@
 
                     <!-- Heading Bar -->
                     <div class="panel-heading">
+
                         <h3 class="panel-title">
                             <span id="memberNumber{{ user.id }}">
-                                <a href="{{ url_for('pub_profile', username=user.username) }}">User {{ user.id }}: {{ user.username|upper }}</a>
+                                User {{ user.id }}: <a href="{{ url_for('pub_profile', username=user.username) }}">{{ user.username }}</a>
                             </span>
                         </h3>
+
                     </div>
 
                     <!-- Content -->
                     <div class="panel-body">
-
                         <div class="form-inline">
 
-                            <table>
-                                <tr>
-                                    <td class="tableLeft">
-                                        <b>Name:</b> {{ user.firstname }} {{ user.lastname }} <br>
-                                        <b>Username:</b> {{ user.username }} <br>
-                                        <b>Email:</b> {{ user.email }}<br>
-                                        <b>Role:</b> {{ user.role }}<br>
-                                    </td>
-                                    <td class="tableRight">
-                                        <button class="btn btn-warning editUser" id="editUser" user_id="{{ user.id }}">Edit</button>
-                                        <button class="btn btn-danger deleteUser" user_id="{{ user.id }}">Delete User</button>
-                                    </td>
-                                </tr>
-                            </table>
-
-
-
-{#                            <b>Name:</b> {{ user.firstname }} {{ user.lastname }} <br>#}
-{#                            <b>Username:</b> {{ user.username }} <br>#}
-{#                            <b>Email:</b> {{ user.email }}<br>#}
-{#                            <b>Role:</b> {{ user.role }}<br>#}
-{##}
-{#                            <button class="btn btn-warning editUser" id="editUser" user_id="{{ user.id }}">Edit</button>#}
-{#                            <button class="btn btn-danger deleteUser" user_id="{{ user.id }}">Delete</button>#}
-
-                            <div class="modal_editUser">
-                            <div id="upload{{ user.id }}">
-                                <span class="closeWindow" onclick="testClose()">&times;</span><br>
-                                <h4>Edit User {{ user.username|upper }}</h4>
-                                <label for="userName{{ user.id }}">Username: </label><br>
-                                <input type="text" class="form-control" id="userName{{ user.id }}" value="{{ user.username }}"><br>
-                                <label for="firstName{{ user.id }}">First Name: </label><br>
-                                <input type="text" class="form-control" id="firstName{{ user.id }}" value="{{ user.firstname }}"><br>
-                                <label for="firstName{{ user.id }}">Last Name: </label><br>
-                                <input type="text" class="form-control" id="lastName{{ user.id }}" value="{{ user.lastname }}"><br>
-{#                              <label for="userRole{{ user.id }}">Role: </label><br>#}
-{#                              <input type="text" class="form-control" id="userRole" value="{{ user.role }}"><br>#}
-{#                              <label for="userEmail{{ user.id }}">Email: </label><br>#}
-{#                              <input type="text" class="form-control" id="userEmail" value="{{ user.email }}"><br>#}
-                                <button class="btn btn-info editUserForm" user_id="{{ user.id }}">Edit User</button>
-                            </div>
-                                </div>
-
-{#                            <div id="upload">#}
-{##}
-{#                                <span class="closeWindow" onclick="testClose()">&times;</span><br>#}
-{#                                <form method="post" enctype="multipart/form-data">#}
-{#                                    {{ file_form.hidden_tag() }}#}
-{#                                    {{ file_form.file }}#}
-{#                                    <button id="file_upload" type=submit class="btn btn-info" title="Submit">Add New File</button>#}
-{#                                    {{ file_form.csrf_token }}#}
-{#                                </form>#}
-{##}
-{#                            </div>#}
+                            <b>Name:</b> {{ user.firstname }} {{ user.lastname }} <br>
+                            <b>Username:</b> {{ user.username }} <br>
+                            <b>Email:</b> {{ user.email }}<br>
+                            <b>Role:</b> {{ user.role }}<br>
 
                         </div> <!-- end form-inline class -->
                     </div><!-- end panel-body class-->
@@ -119,15 +63,8 @@
         </div> <!-- END SECTION 1 -->
 
 
-
-
-
-
-
-
-
-<!-- -------------------------------------------------- Column 2 -------------------------------------------------- -->
-        <div id="title2">Active Rooms</div>
+        <!-- -------------------------------------------------- Column 2 -------------------------------------------------- -->
+        <div id="title2">Active Rooms (<a href="{{ url_for('courses') }}">courses</a>)</div>
 
         <!-- SECTION 2 -->
         <div class="section2">
@@ -144,7 +81,8 @@
 
                     <div class="panel-body">
                         <div class="form-inline">
-                            <b>Author:</b> <a href="{{ url_for('pub_profile', username=room.author) }}"> {{ room.author|upper }}</a><br>
+                            <b>Author:</b> <a
+                                href="{{ url_for('pub_profile', username=room.author) }}"> {{ room.author|upper }}</a><br>
                             <b>Public:</b> {{ room.visible }}<br>
                             <b>Date:</b> {{ room.date_posted.strftime('%Y-%m-%d') }} <br>
                             <b><a href="{{ url_for('chat_log', room_id=room.id) }}">
@@ -153,8 +91,9 @@
                             <b><a href="#">
                                 <button class="btn btn-danger deleteLogs" room_id="{{ room.id }}">Clear Logs</button>
                             </a></b>
-                              <b><a href="#">
-                                <button class="btn btn-danger deleteRoomUploads" room_id="{{ room.id }}">Clear Files</button>
+                            <b><a href="#">
+                                <button class="btn btn-danger deleteRoomUploads" room_id="{{ room.id }}">Clear Files
+                                </button>
                             </a></b>
 
 
@@ -186,8 +125,12 @@
 
                             <button class="btn btn-primary updateButton" room_id="{{ room.id }}">Update</button>
                             <button class="btn btn-danger deleteButton" room_id="{{ room.id }}">Delete</button>
-                            <button id="privateButton" class="btn btn-warning privateButton" room_id="{{ room.id }}">Private</button>
-                            <button id="publicButton" class="btn btn-success publicButton" room_id="{{ room.id }}">Public</button>
+                            <button id="privateButton" class="btn btn-warning privateButton" room_id="{{ room.id }}">
+                                Private
+                            </button>
+                            <button id="publicButton" class="btn btn-success publicButton" room_id="{{ room.id }}">
+                                Public
+                            </button>
 
                         </div>
                     </div>
@@ -198,19 +141,7 @@
         </div><!-- END SECTION 2 -->
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- -------------------------------------------------- Column 3 -------------------------------------------------- -->
+        <!-- -------------------------------------------------- Column 3 -------------------------------------------------- -->
         <div id="title3">Pending Applications</div>
 
         <!-- SECTION 3 -->
@@ -220,7 +151,9 @@
 
                 <div id="tutorSection{{ tutor.user_id }}" class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><span id="memberNumber"><a href="{{ url_for('pub_profile', username=tutor.username) }}">Tutor {{ tutor.tutor_id }} : {{ tutor.username|upper }} </a></span></h3>
+                        <h3 class="panel-title"><span id="memberNumber"><a
+                                href="{{ url_for('pub_profile', username=tutor.username) }}">Tutor {{ tutor.tutor_id }} : {{ tutor.username|upper }} </a></span>
+                        </h3>
                     </div>
 
                     <div class="panel-body">
@@ -228,7 +161,8 @@
 
                             <div class="form-group">
                                 <label for="aboutTutor{{ tutor.user_id }}">Reason: </label>
-                                <span id="aboutTutor{{ tutor.tutor_id }}" value="{{ tutor.about_tutor }}">{{ tutor.about_tutor }}</span>
+                                <span id="aboutTutor{{ tutor.tutor_id }}"
+                                      value="{{ tutor.about_tutor }}">{{ tutor.about_tutor }}</span>
                             </div>
 
                             <br>
@@ -241,12 +175,14 @@
                             <br>
 
                             <div class="form-group">
-                                <b>Credentials:</b> <a href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>
+                                <b>Credentials:</b> <a
+                                    href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>
                             </div>
 
                             <div class="form-group">
                                 <label for="appComments{{ tutor.application_comments }}">Application Comments: </label>
-                                <input type="text" class="form-control" id="appComments" value="{{ tutor.application_comments }}">
+                                <input type="text" class="form-control" id="appComments"
+                                       value="{{ tutor.application_comments }}">
                             </div>
 
                             <button class="btn btn-primary approveTutor" user_id="{{ tutor.user_id }}">Approve</button>
@@ -263,10 +199,6 @@
         </div><!-- END SECTION 3 -->
 
 
-
-
-
-
         <div id="title4">Approved Tutors</div>
 
         <!-- SECTION 4 -->
@@ -277,7 +209,9 @@
                 <div id="tutorSection{{ tutor.user_id }}" class="panel panel-default">
 
                     <div class="panel-heading">
-                        <h3 class="panel-title"><span id="memberNumber"><a href="{{ url_for('pub_profile', username=tutor.username) }}">Tutor {{ tutor.tutor_id }} : {{ tutor.username|upper }} </a></span></h3>
+                        <h3 class="panel-title"><span id="memberNumber"><a
+                                href="{{ url_for('pub_profile', username=tutor.username) }}">Tutor {{ tutor.tutor_id }} : {{ tutor.username|upper }} </a></span>
+                        </h3>
                     </div>
 
                     <div class="panel-body">
@@ -299,7 +233,8 @@
                             <br>
 
                             <div class="form-group">
-                                <b>Credentials:</b> <a href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>
+                                <b>Credentials:</b> <a
+                                    href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>
                             </div>
 
                             <div class="form-group">
@@ -328,7 +263,7 @@
 
 
 
-<!-- -------------------------------------------------- scripts -------------------------------------------------- -->
+    <!-- -------------------------------------------------- scripts -------------------------------------------------- -->
     <script type="text/javascript">
         //show div upload on button click uploadNewDocs
         let modal = document.getElementsByClassName('modal_editUser');
@@ -344,11 +279,6 @@
         }
 
 
-
-
-
-
-
     </script>
 
 
@@ -360,3 +290,28 @@
 </html>
 
 
+{#                            <b>Name:</b> {{ user.firstname }} {{ user.lastname }} <br>#}
+{#                            <b>Username:</b> {{ user.username }} <br>#}
+{#                            <b>Email:</b> {{ user.email }}<br>#}
+{#                            <b>Role:</b> {{ user.role }}<br>#}
+{##}
+{#                            <button class="btn btn-warning editUser" id="editUser" user_id="{{ user.id }}">Edit</button>#}
+{#                            <button class="btn btn-danger deleteUser" user_id="{{ user.id }}">Delete</button>#}
+
+
+{#                              <label for="userRole{{ user.id }}">Role: </label><br>#}
+{#                              <input type="text" class="form-control" id="userRole" value="{{ user.role }}"><br>#}
+{#                              <label for="userEmail{{ user.id }}">Email: </label><br>#}
+{#                              <input type="text" class="form-control" id="userEmail" value="{{ user.email }}"><br>#}
+
+{#                            <div id="upload">#}
+{##}
+{#                                <span class="closeWindow" onclick="testClose()">&times;</span><br>#}
+{#                                <form method="post" enctype="multipart/form-data">#}
+{#                                    {{ file_form.hidden_tag() }}#}
+{#                                    {{ file_form.file }}#}
+{#                                    <button id="file_upload" type=submit class="btn btn-info" title="Submit">Add New File</button>#}
+{#                                    {{ file_form.csrf_token }}#}
+{#                                </form>#}
+{##}
+{#                            </div>#}

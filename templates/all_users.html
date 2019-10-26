@@ -4,89 +4,155 @@
 
     <title>QuickFix Members</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/all_users.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+
+
 </head>
 
 <body>
 {% extends "navbar.html" %}
 {% block content %}
 
-{#<div class="navbar">#}
-{#    <a class="logo" href="{{ url_for('chat', username=username) }}">Home</a>#}
-{#    <a href="{{ url_for('profile', username=username) }}">{{ username }}</a>#}
-{#    <a href="#">Forums</a>#}
-{#    <a href="{{ url_for('chat', username=username) }}">Chat</a>#}
-{#    <a href="{{ url_for('all_users') }}">Users</a>#}
-{#    <a href="{{ url_for('logout') }}"> Logout </a>#}
-{#</div>#}
+ <div id="title1">Edit Users (<a href="{{ url_for('all_users') }}">View All Users Page</a>)</div>
+
+        <!-- SECTION 1 -->
+        <div class="section1">
+
+            {% for user in users_list %}
+
+                <div id="roomSection{{ user.id }}" class="panel panel-default">
+
+                    <!-- Heading Bar -->
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <span id="memberNumber{{ user.id }}">
+                                <a href="{{ url_for('pub_profile', username=user.username) }}">User {{ user.id }}: {{ user.username|upper }}</a>
+                            </span>
+                        </h3>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="panel-body">
+                        <div class="form-inline">
+
+                            <table>
+                                <tr>
+                                    <td class="tableLeft">
+                                        <b>Name:</b> {{ user.firstname }} {{ user.lastname }} <br>
+                                        <b>Username:</b> {{ user.username }} <br>
+                                        <b>Email:</b> {{ user.email }}<br>
+                                        <b>Role:</b> {{ user.role }}<br>
+                                    </td>
+                                    <td class="tableRight">
+                                        <button class="btn btn-warning editUser" id="editUser" user_id="{{ user.id }}">
+                                            Edit
+                                        </button>
+                                        <button class="btn btn-danger deleteUser" user_id="{{ user.id }}">Delete User
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
 
 
-<!-- <nav id="main-section"> -->
-<div id="main-section">
+                            <div class="modal_editUser">
+
+                                <div id="upload{{ user.id }}">
+                                    <span class="closeWindow" onclick="testClose()">&times;</span><br>
+                                    <h4>Edit User {{ user.username|upper }}</h4>
+                                    <label for="userName{{ user.id }}">Username: </label><br>
+                                    <input type="text" class="form-control" id="userName{{ user.id }}"
+                                           value="{{ user.username }}"><br>
+                                    <label for="firstName{{ user.id }}">First Name: </label><br>
+                                    <input type="text" class="form-control" id="firstName{{ user.id }}"
+                                           value="{{ user.firstname }}"><br>
+                                    <label for="firstName{{ user.id }}">Last Name: </label><br>
+                                    <input type="text" class="form-control" id="lastName{{ user.id }}"
+                                           value="{{ user.lastname }}"><br>
+
+                                    <button class="btn btn-info editUserForm" user_id="{{ user.id }}">Edit User</button>
+                                </div>
+                            </div>
 
 
+                        </div> <!-- end form-inline class -->
+                    </div><!-- end panel-body class-->
+
+                </div><!-- end roomSection ID -->
+
+            {% endfor %}
+
+        </div> <!-- END SECTION 1 -->
 
 
-
-    <!-- Left Column - Filter Users -->
+{#<!-- <nav id="main-section"> -->#}
+{#<div id="main-section">#}
+{##}
+{##}
+{##}
+{##}
+{##}
+{#    <!-- Left Column - Filter Users -->#}
 {#    <div id="left_column">#}
 {#        <h4 class="userHeadings">Filter users by subject: </h4>#}
 {#    </div> <!-- End left column div -->#}
-
-
-
-
-    <!-- Middle Column - List of All Users -->
-    <div id="middle_column">
-
-        <h4 class="userHeadings">All Tutors: </h4>
-        {% for user in all_tutors %}
-            <div>
-                <a href="{{ url_for('pub_profile', username=user.username) }}">
-                    <p>
-                        <span class="bold_username">{{ user.username }}</span> - {{ user.firstname }} {{ user.lastname }}
-                    </p>
-                </a>
-            </div>
-        {% endfor %}
-
-    </div> <!-- End middle column div -->
-
-
-
-
-    <!-- Right Column - Online / Offline Users -->
-    <div id="right_column">
-
-        <h4 class="userHeadings">Online Tutors: </h4>
-        {% for user in online_tutors %}
-            <div>
-                <a href="{{ url_for('pub_profile', username=user.username) }}">
-                    <p>
-                        <span class="bold_username">{{ user.username }}</span> - {{ user.firstname }} {{ user.lastname }}
-                    </p>
-                </a>
-            </div>
-        {% endfor %}
-
-        <h4 class="userHeadings">All Students: </h4>
-        {% for user in student_users %}
-            <div>
-                <a href="{{ url_for('pub_profile', username=user.username) }}">
-                    <p>
-                        <span class="bold_username">{{ user.username }}</span> - {{ user.firstname }} {{ user.lastname }}
-                    </p>
-                </a>
-            </div>
-        {% endfor %}
-
-    </div> <!-- End right column div -->
-
-</div> <!-- End main section div -->
+{##}
+{##}
+{##}
+{##}
+{#    <!-- Middle Column - List of All Users -->#}
+{#    <div id="middle_column">#}
+{##}
+{#        <h4 class="userHeadings">All Tutors: </h4>#}
+{#        {% for user in all_tutors %}#}
+{#            <div>#}
+{#                <a href="{{ url_for('pub_profile', username=user.username) }}">#}
+{#                    <p>#}
+{#                        <span class="bold_username">{{ user.username }}</span> - {{ user.firstname }} {{ user.lastname }}#}
+{#                    </p>#}
+{#                </a>#}
+{#            </div>#}
+{#        {% endfor %}#}
+{##}
+{#    </div> <!-- End middle column div -->#}
+{##}
+{##}
+{##}
+{##}
+{#    <!-- Right Column - Online / Offline Users -->#}
+{#    <div id="right_column">#}
+{##}
+{#        <h4 class="userHeadings">Online Tutors: </h4>#}
+{#        {% for user in online_tutors %}#}
+{#            <div>#}
+{#                <a href="{{ url_for('pub_profile', username=user.username) }}">#}
+{#                    <p>#}
+{#                        <span class="bold_username">{{ user.username }}</span> - {{ user.firstname }} {{ user.lastname }}#}
+{#                    </p>#}
+{#                </a>#}
+{#            </div>#}
+{#        {% endfor %}#}
+{##}
+{#        <h4 class="userHeadings">All Students: </h4>#}
+{#        {% for user in student_users %}#}
+{#            <div>#}
+{#                <a href="{{ url_for('pub_profile', username=user.username) }}">#}
+{#                    <p>#}
+{#                        <span class="bold_username">{{ user.username }}</span> - {{ user.firstname }} {{ user.lastname }}#}
+{#                    </p>#}
+{#                </a>#}
+{#            </div>#}
+{#        {% endfor %}#}
+{##}
+{#    </div> <!-- End right column div -->#}
+{##}
+{#</div> <!-- End main section div -->#}
 
 
 {% endblock %}

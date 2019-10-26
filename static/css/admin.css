@@ -153,6 +153,9 @@ table {
 
 
 .modal_editUser {
+    display: none;
+    /*position: fixed;*/
+    /*z-index: 1;*/
     /*display: none;*/
     /*display: none; !* Hidden by default *!*/
     /*position: fixed; !* Stay in place *!*/
