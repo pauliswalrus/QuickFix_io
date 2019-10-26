@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
     //
     //    $('#fade').css('background-color', '#E46D4E');
     //    $('#fade').css('color', 'white');
@@ -109,16 +110,24 @@ Admin portal functions
 
         var name = $('#nameInput'+room_id).val();
 
-        req = $.ajax({
-           url : '/deleteRoom',
-           type : 'POST',
-           data : { name : name, id : room_id }
+        var r = confirm("Delete Room?");
 
-        });
-        alert("Room Deleted!")
-        location.reload();
+        if (r == true) {
 
+            req = $.ajax({
+                url: '/deleteRoom',
+                type: 'POST',
+                data: {name: name, id: room_id}
 
+            });
+            alert("Room Deleted!")
+            location.reload();
+
+        } else {
+
+            //nothing happens
+
+        }
 
     })
 
@@ -128,15 +137,23 @@ Admin portal functions
         var user_id = $(this).attr('user_id');
 
 
-        req = $.ajax({
-           url : '/approveTutor',
-           type : 'POST',
-           data : { id : user_id }
+        var r = confirm("Approve Tutor?");
 
-        });
-        alert("Tutor Approved!")
-        location.reload();
+        if (r == true) {
 
+
+            req = $.ajax({
+                url: '/approveTutor',
+                type: 'POST',
+                data: {id: user_id}
+
+            });
+            alert("Tutor Approved!")
+            location.reload();
+
+        } else {
+            //nothing happens
+        }
 
     })
 
@@ -147,14 +164,23 @@ Admin portal functions
         var user_id = $(this).attr('user_id');
         var comments = $("#appComments").val();
 
-        req = $.ajax({
-           url : '/denyTutor',
-           type : 'POST',
-           data : { id : user_id, comments : comments}
+        var r = confirm("Deny This Tutor?");
 
-        });
-        alert("Tutor Denied!")
-        location.reload();
+        if (r == true) {
+
+            req = $.ajax({
+                url: '/denyTutor',
+                type: 'POST',
+                data: {id: user_id, comments: comments}
+
+            });
+            alert("Tutor Denied!")
+            location.reload();
+
+
+        } else {
+            //nothing happens
+        }
 
 
     })
@@ -178,7 +204,7 @@ Admin portal functions
         alert("User Deleted!")
         location.reload();
          } else {
-            alert("Delete Cancelled")
+            //nothing happens
         }
 
     })
@@ -235,8 +261,34 @@ Admin portal functions
 
         var room_id = $(this).attr('room_id');
 
+        var r = confirm("Delete Chat Logs?");
+
+        if (r == true) {
+
+            req = $.ajax({
+                url: '/deleteLogs',
+                type: 'POST',
+                data: {id: room_id}
+
+            });
+            alert("Chat Log Cleared!")
+            $('#roomSection' + room_id).fadeOut(1000).fadeIn(1000);
+        } else {
+
+            //nothing happens
+        }
+
+
+
+    })
+
+    //delete chat logs
+    $('.deleteRoomUploads').on('click',function () {
+
+        var room_id = $(this).attr('room_id');
+
         req = $.ajax({
-           url : '/deleteLogs',
+           url : '/deleteRoomUploads',
            type : 'POST',
            data : { id : room_id }
 
