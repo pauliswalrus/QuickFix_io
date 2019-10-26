@@ -60,15 +60,15 @@
             <button id="myBtn" class="myBtn uploadPhotoButton">Change</button>
             <br><br>
             <div id="tutorStatusToggle">
-                  Status:
-            <form method="post" enctype="multipart/form-data">
-                <fieldset>
+                Status:
+                <form method="post" enctype="multipart/form-data">
+                    <fieldset>
                         {{ ts_form.hidden_tag() }}
                         {{ ts_form.status }}<br>
                         {{ ts_form.submit_button3 }}
                         {{ ts_form.csrf_token }}
                     </fieldset>
-            </form>
+                </form>
             </div>
 
             <hr>
