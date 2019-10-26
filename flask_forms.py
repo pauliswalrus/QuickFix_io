@@ -126,7 +126,16 @@ class TutorStatus(FlaskForm):
     status = SelectField('Status', choices=[('0', 'Offline'), ('1', 'Online')])
     submit_button3 = SubmitField('Change Status')
 
+class ProgramForm(FlaskForm):
+
+    program_options = SelectField('Programs', coerce=int, validators=[InputRequired])
+
+    #course_options = QuerySelectField('course_list', query_factory=choice_query, allow_blank=False, get_label='course_name')
+
+
 class CourseForm(FlaskForm):
 
-    course_options = QuerySelectField('course_list', query_factory=choice_query, allow_blank=False, get_label='course_name')
+    course_options = SelectField('Courses', coerce=int, validators=[InputRequired])
+
+    #course_options = QuerySelectField('course_list', query_factory=choice_query, allow_blank=False, get_label='course_name')
 

@@ -10,12 +10,20 @@
 {% block content %}
 
 
-    <form action="/" method="POST">
-    {{ form.csrf_token }}
-    {{ form.course_options }}
+                 <form method="POST" action="">
+                  <h2>Pick Program</h2>
+                     {{ program_form.csrf_token }}
+                  {{ program_form.program_options }}
+                  <button type="submit">Pick Program</button>
+              </form>
 
-    <input type="submit">
-    </form>
+                 <form method="POST" action="">
+                  <h2>Pick Course</h2>
+                     {{ form.csrf_token }}
+                  {{ form.course_options }}
+                  <button type="submit">Pick Course</button>
+              </form>
+
 
 
 {% endblock %}
