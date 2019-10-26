@@ -124,16 +124,11 @@
 
         <div class="cardContainer">
 
+
             <div id="aboutMe">
-                <p class="subheading">About Me <a href="#">update</a></p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non ex quis massa cursus dictum eu
-                    eget leo. Pellentesque nulla erat, pellentesque ut tortor vel, malesuada vulputate tellus. Vivamus
-                    laoreet vestibulum velit, at venenatis mauris mollis nec. Cras ut fringilla ligula. Phasellus
-                    blandit
-                    lectus non sem placerat, ac venenatis nunc vestibulum. Pellentesque efficitur, magna ac varius
-                    lobortis,
-                    diam lacus consectetur mauris, vitae luctus urna justo scelerisque eros. Pellentesque accumsan nisl
-                    et dui mollis feugiat.
+                <p class="subheading">About Me <a href="{{ url_for('update_aboutme') }}">update</a> </p>
+                <p>
+                      {{ about_me }}
                 </p>
             </div>
 

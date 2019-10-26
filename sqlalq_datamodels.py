@@ -25,6 +25,7 @@ class User(UserMixin, db.Model):
     status = db.Column(db.Integer(), default=0)
     role = db.Column(db.Text, default="S")
     user_photo = db.Column(db.Text)
+    about_me = db.Column(db.Text)
 
 class Student(db.Model):
 

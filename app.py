@@ -385,6 +385,7 @@ def add_student_post():
 # courses page
 @app.route("/courses", methods=['GET', 'POST'])
 def courses():
+
     this_user = User.query.filter_by(username=current_user.username).first()
 
     available_programs = Program.query.all()
@@ -396,33 +397,14 @@ def courses():
     program_form.program_options.choices = program_list
 
     if program_form.validate_on_submit():
+
         programID = program_form.program_options.data
+        program_picked = Program.query.filter_by(program_id=programID).first()
+        print(program_picked.prograwm_name)
 
-        print(programID)
+        return program_picked.program_name
 
-        return redirect(url_for('courses'))
-
-        # available_course = db.session.query(Course).filter.all()
-
-    available_course = Course.query.all()
-        # Now forming the list of tuples for SelectField
-    groups_list = [(i.course_id, i.course_name) for i in available_course]
-
-    form = CourseForm()
-
-        # passing group_list to the form
-    form.course_options.choices = groups_list
-
-    if form.validate_on_submit():
-
-        return "New name added"
-
-        # if form.validate_on_submit():
-        #     return '<html><h1>{}</h1></html>'.format(form.course_options.data)
-
-        # courses = Course.query.filter_by()
-    return render_template('courses.html', username=current_user.username, this_user=this_user, form=form,
-                               program_form=program_form)
+    return render_template('courses.html', username=current_user.username, this_user=this_user, program_form=program_form)
 
 
 
@@ -503,6 +485,20 @@ def private_chat():
                            room_files=room_files, room=room_object, this_user=this_user, role_name=role_name,
                            roomVisible=roomVisible)
 
+# tutor/student updates aboutMe profile section
+@app.route('/update_aboutme', methods=['POST', 'GET'])
+def update_aboutme():
+
+    user_object = User.query.filter_by(username=current_user.username).first()
+    profile_me = user_object.about_me
+    if request.method == 'POST':
+
+        profile_me2 = request.form["about_me_profile"]
+        print(profile_me2)
+        new_aboutme = User.query.filter_by(username=current_user.username).update(dict(about_me=profile_me2))
+        db.session.commit()
+
+    return render_template('aboutMe.html', user_object=user_object, username=current_user.username)
 
 # route for personal profile
 @app.route("/profile/", methods=['GET', 'POST'])
@@ -513,6 +509,7 @@ def profile():
     status = user_object.status
     role = user_object.role
     image_fp = user_object.user_photo
+    about_me = user_object.about_me
 
     setdbstatus = status
 
@@ -580,7 +577,7 @@ def profile():
     return render_template('profile.html', username=current_user.username, image_fp=image_fp,
                            status_string=status_string, room_posts=room_posts, role_name=role_name, file_form=file_form,
                            user_files=user_files, image_form=image_form, user_object=user_object, this_user=this_user,
-                           status=status, ts_form=ts_form, setdbstatus=setdbstatus)
+                           status=status, about_me=about_me, ts_form=ts_form, setdbstatus=setdbstatus)
 
 
 #
