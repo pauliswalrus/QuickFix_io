@@ -4,7 +4,7 @@ from wtforms.validators import InputRequired, Length, EqualTo, ValidationError, 
 
 from passlib.hash import pbkdf2_sha256
 from sqlalq_datamodels import User, FileUpload, RoomPost, choice_query
-from wtforms_sqlalchemy.fields import QuerySelectField
+
 
 
 ###     AUTHOR: AUSTIN PAUL
