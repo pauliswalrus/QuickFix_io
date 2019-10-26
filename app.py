@@ -387,7 +387,43 @@ def add_student_post():
 def courses():
     this_user = User.query.filter_by(username=current_user.username).first()
 
-    return render_template('courses.html', username=current_user.username, this_user=this_user)
+    available_programs = Program.query.all()
+
+    program_list = [(k.program_id, k.program_name) for k in available_programs]
+
+    program_form = ProgramForm()
+
+    program_form.program_options.choices = program_list
+
+    if program_form.validate_on_submit():
+        programID = program_form.program_options.data
+
+        print(programID)
+
+        return redirect(url_for('courses'))
+
+        # available_course = db.session.query(Course).filter.all()
+
+    available_course = Course.query.all()
+        # Now forming the list of tuples for SelectField
+    groups_list = [(i.course_id, i.course_name) for i in available_course]
+
+    form = CourseForm()
+
+        # passing group_list to the form
+    form.course_options.choices = groups_list
+
+    if form.validate_on_submit():
+
+        return "New name added"
+
+        # if form.validate_on_submit():
+        #     return '<html><h1>{}</h1></html>'.format(form.course_options.data)
+
+        # courses = Course.query.filter_by()
+    return render_template('courses.html', username=current_user.username, this_user=this_user, form=form,
+                               program_form=program_form)
+
 
 
 # route for chat - displays public rooms and form to join(create rooms)
