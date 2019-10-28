@@ -802,8 +802,18 @@ def updateRoomProfile():
 # delete room
 @app.route('/deleteRoom', methods=['POST'])
 def deleteRoom():
+
     room = RoomPost.query.filter_by(id=request.form['id']).first()
     db.session.delete(room)
+    db.session.commit()
+
+    db.session.query(RoomComment).filter_by(room_id=room.id).delete()
+    db.session.commit()
+
+    db.session.query(RoomUpload).filter_by(room_name=room.title).delete()
+    db.session.commit()
+
+    db.session.query(Message).filter_by(room=room.title).delete()
     db.session.commit()
 
     return jsonify({'result': 'success'})
@@ -812,7 +822,11 @@ def deleteRoom():
 @app.route('/deleteStudentPost', methods=['POST'])
 def deleteStudentPost():
     post = StudentPost.query.filter_by(id=request.form['id']).first()
+
     db.session.delete(post)
+    db.session.commit()
+
+    db.session.query(PostComment).filter_by(post_id=room.id).delete()
     db.session.commit()
 
     return jsonify({'result': 'success'})
