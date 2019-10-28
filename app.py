@@ -809,6 +809,21 @@ def editUser():
 def deleteUser():
     user = User.query.filter_by(id=request.form['id']).first()
 
+    db.session.query(RoomPost).filter_by(author=user.username).delete()
+    db.session.commit()
+
+    db.session.query(StudentPost).filter_by(author=user.username).delete()
+    db.session.commit()
+
+    db.session.query(PostComment).filter_by(comment_author=user.username).delete()
+    db.session.commit()
+
+    db.session.query(RoomComment).filter_by(comment_author=user.username).delete()
+    db.session.commit()
+
+    db.session.query(FileUpload).filter_by(username=user.username).delete()
+    db.session.commit()
+
     if user.role == "T":
         tutor = Tutor.query.filter_by(user_id=user.id).first()
         db.session.delete(tutor)
