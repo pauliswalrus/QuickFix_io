@@ -238,12 +238,14 @@ Admin portal functions
         var firstname = $('#firstName'+user_id).val();
         var lastname = $('#lastName'+user_id).val();
         var username = $('#userName'+user_id).val();
+        var email = $('#email'+user_id).val();
+        var role = $('#role'+user_id).val();
 
 
         req = $.ajax({
            url : '/editUser',
            type : 'POST',
-           data : { firstname : firstname, lastname : lastname, username : username, id : user_id }
+           data : { firstname : firstname, lastname : lastname, username : username, id : user_id, email : email, role : role }
 
         });
         alert("User Edited!");

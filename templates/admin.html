@@ -19,62 +19,61 @@
 {% block content %}
     <div id="main-content">
 
-        <!-- -------------------------------------------------- Column 3 -------------------------------------------------- -->
-        <div id="title3">Pending Applications</div>
+        <div class="sectionTitle">Pending Applications</div>
 
-        <!-- SECTION 3 -->
-        <div class="section3">
+        {% for tutor in tutors_pending %}
 
-            {% for tutor in tutors_pending %}
+            <div id="tutorSection{{ tutor.user_id }}" class="panel panel-default">
 
-                <div id="tutorSection{{ tutor.user_id }}" class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><span id="memberNumber"><a
-                                href="{{ url_for('pub_profile', username=tutor.username) }}">Tutor {{ tutor.tutor_id }} : {{ tutor.username|upper }} </a></span>
-                        </h3>
-                    </div>
 
-                    <div class="panel-body">
-                        <div class="form-inline">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ tutor.firstname }} {{ tutor.lastname }}</h3>
+                </div>
 
-                            <div class="form-group">
-                                <label for="aboutTutor{{ tutor.user_id }}">Reason: </label>
-                                <span id="aboutTutor{{ tutor.tutor_id }}"
-                                      value="{{ tutor.about_tutor }}">{{ tutor.about_tutor }}</span>
-                            </div>
+                <div class="panel-body">
+                    <div class="form-inline">
+                        <p>
+                            <span class="subHeading">Username: </span>
+                            <a href="{{ url_for('pub_profile', username=tutor.username) }}">{{ tutor.username }} </a>
+                        </p>
 
-                            <br>
+                        <p>
+                            <span class="subHeading">Reason: </span>
+                            {{ tutor.about_tutor }}
+                        </p>
 
-                            <div class="form-group">
-                                <label for="statusTutor{{ tutor.tutor_status }}">Status: </label>
-                                <span id="statusTutor{{ tutor.tutor_status }}">{{ tutor.tutor_status }} </span>
-                            </div>
+                        <p>
+                            <span class="subHeading">Status: </span>
+                            {{ tutor.tutor_status }}
+                        </p>
 
-                            <br>
+                        <p>
+                            <span class="subHeading">Credentials: </span>
+                            <a href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>
+                        </p>
 
-                            <div class="form-group">
-                                <b>Credentials:</b> <a
-                                    href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>
-                            </div>
+                        <button class="btn btn-primary approveTutor" user_id="{{ tutor.user_id }}">Approve Tutor
+                        </button>
 
-                            <div class="form-group">
-                                <label for="appComments{{ tutor.application_comments }}">Application Comments: </label>
-                                <input type="text" class="form-control" id="appComments"
-                                       value="{{ tutor.application_comments }}">
-                            </div>
+                        <hr>
 
-                            <button class="btn btn-primary approveTutor" user_id="{{ tutor.user_id }}">Approve</button>
-                            <button class="btn btn-warning denyTutor" user_id="{{ tutor.user_id }}">Deny</button>
+                        <p>
+                            <span class="subHeading">Feedback: </span>
+                            <input type="text" class="form-control" id="appComments"
+                                   value="{{ tutor.application_comments }}">
+                            <button class="btn btn-warning denyTutor" user_id="{{ tutor.user_id }}">Deny Application
+                            </button>
+                        </p>
 
-                        </div> <!-- end form-inline class -->
 
-                    </div><!-- end panel-body class -->
+                    </div> <!-- end form-inline class -->
 
-                </div> <!-- end tutorSection ID -->
+                </div><!-- end panel-body class -->
 
-            {% endfor %}
+            </div> <!-- end tutorSection ID -->
 
-        </div><!-- END SECTION 3 -->
+        {% endfor %}
+
 
     </div>
 
@@ -121,3 +120,30 @@
 {#                                </form>#}
 {##}
 {#                            </div>#}
+
+
+{#<div class="form-group">#}
+{#    <label for="aboutTutor{{ tutor.user_id }}">Reason: </label>#}
+{#    <span id="aboutTutor{{ tutor.tutor_id }}" value="{{ tutor.about_tutor }}">{{ tutor.about_tutor }}</span>#}
+{#</div>#}
+{##}
+{#<br>#}
+{##}
+{#<div class="form-group">#}
+{#    <label for="statusTutor{{ tutor.tutor_status }}">Status: </label>#}
+{#    <span id="statusTutor{{ tutor.tutor_status }}">{{ tutor.tutor_status }} </span>#}
+{#</div>#}
+{##}
+{#<br>#}
+{##}
+{#<div class="form-group">#}
+{#    <b>Credentials:</b> <a href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>#}
+{#</div>#}
+{##}
+{#<div class="form-group">#}
+{#    <label for="appComments{{ tutor.application_comments }}">Application Comments: </label>#}
+{#    <input type="text" class="form-control" id="appComments" value="{{ tutor.application_comments }}">#}
+{#</div>#}
+{##}
+{#<button class="btn btn-primary approveTutor" user_id="{{ tutor.user_id }}">Approve</button>#}
+{#<button class="btn btn-warning denyTutor" user_id="{{ tutor.user_id }}">Deny</button>#}

@@ -783,6 +783,9 @@ def editUser():
     user_edit.firstname = request.form['firstname']
     user_edit.lastname = request.form['lastname']
 
+    user_edit.email = request.form['email']
+    user_edit.role = request.form['role']
+
     db.session.commit()
 
     return jsonify({'result': 'success'})
