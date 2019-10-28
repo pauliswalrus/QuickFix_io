@@ -879,7 +879,7 @@ def deleteApplication():
     db.session.delete(tutor)
     db.session.commit()
 
-    return redirect(url_for('new_tutor'))
+    return jsonify({'result': 'success'})
 
 ## tutor chat room controls
 

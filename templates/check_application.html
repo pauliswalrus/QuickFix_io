@@ -9,9 +9,13 @@
 
     <link rel="stylesheet" href="{{url_for('static', filename='css/cardStyleForm.css')}}">
 
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
 
+    <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
 </head>
 <body>
 {% extends "navbar.html" %}
@@ -57,8 +61,13 @@
       </div>
 
 
-    <a href="{{ url_for('home') }}">Change your mind? Return home.</a>
-    </div>
+    <a href="{{ url_for('home') }}">Change your mind? Return home.</a> <br>
+
+{#    <button class="btn btn-primary deleteApplication" >Re-Apply</button>#}
+    <b><a href="{{ url_for('new_tutor') }}">
+        <button class="btn btn-primary deleteApplication" >Re-Apply</button>
+    </a></b>
+
 
 
 </div>

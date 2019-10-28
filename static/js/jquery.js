@@ -318,7 +318,7 @@ Admin portal functions
 
      $('.deleteApplication').on('click',function () {
 
-        var r = confirm("Delete Application?");
+        var r = confirm("Re Apply?");
 
         if (r == true) {
 
@@ -327,12 +327,11 @@ Admin portal functions
                 type: 'POST'
 
             });
-            alert("Room Uploads Cleared!");
 
         } else {
 
-        }
 
+        }
 
     })
 
