@@ -11,6 +11,9 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
 </head>
 
 <script type="text/javascript">
@@ -21,6 +24,11 @@
         let role = '{{ role_name }}';
 
         if (role === "Student") {
+            document.getElementById('tutorStatusToggle').style.display = "none";
+            document.getElementById('tutorStatusHeader').style.display = "none";
+
+        } else if (role === "Admin") {
+
             document.getElementById('tutorStatusToggle').style.display = "none";
             document.getElementById('tutorStatusHeader').style.display = "none";
         }
@@ -183,25 +191,90 @@
 
              <div id="myPosts">
             <p class="subheading">My Posts <a href="{{ url_for('add_student_post') }}">Add New Post</a></p>
+{##}
+{#            {% for room in student_posts %}#}
+{#                <div id="linkType"> <a href="{{ url_for('studentpost', studentpost_id=room.id) }}">#}
+{#                    <h5>[{{ room.type|upper }}] {{ room.title }} - {{ room.date_posted.strftime('%B %d, %Y') }}</h5>#}
+{#                </a></div>#}
+{#            {% endfor %}#}
 
-            {% for room in student_posts %}
-                <div id="linkType"> <a href="{{ url_for('studentpost', studentpost_id=room.id) }}">
-                    <h5>[{{ room.type|upper }}] {{ room.title }} - {{ room.date_posted.strftime('%B %d, %Y') }}</h5>
-                </a></div>
-            {% endfor %}
+
+                    <div class="table-responsive">
+            <table class="table">
+                <thead><tr>
+                    <th>Post</th>
+                    <th>Date</th>
+                    <th>Delete</th>
+                </tr></thead>
+
+                {% for room in student_posts %}
+                    <tbody><tr>
+                        <td>
+                            <a href="{{ url_for('studentpost', studentpost_id=room.id) }}">{{ room.title }}</a>
+{#                            <a href="{{ url_for('pub_profile', username=user.username) }}">{{ user.id }}</a>#}
+                        </td>
+                        <td>{{ room.date_posted.strftime('%B %d, %Y') }}
+                        </td>
+                        <td>
+                            <button class="btn btn-danger deleteStudentPost" room_id="{{ room.id }}">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            </button>
+                        </td>
+
+                    </tr></tbody>
+                {% endfor %}
+
+            </table>
+            </div><!-- Tutor Rooms Div -->
+
+
+
+
 
             </div>
 
              <div id="myRooms">
             <p class="subheading">My Rooms <a href="{{ url_for('add_room') }}">Add New Room</a></p>
 
-            {% for room in posts %}
-                <div id="linkType"> <a href="{{ url_for('room', room_id=room.id) }}">
-                    <h5>[{{ room.type|upper }}] {{ room.title }} - {{ room.date_posted.strftime('%B %d, %Y') }}</h5>
-                </a></div>
-            {% endfor %}
+{#            {% for room in posts %}#}
+{#                <div id="linkType"> <a href="{{ url_for('room', room_id=room.id) }}">#}
+{#                    <h5>[{{ room.type|upper }}] {{ room.title }} - {{ room.date_posted.strftime('%B %d, %Y') }}</h5>#}
+{#                </a></div>#}
+{#            {% endfor %}#}
+{#                 #}
+                 <div class="table-responsive">
+            <table class="table">
+                <thead><tr>
+                    <th>Room</th>
+                    <th>Title</th>
+                    <th>Public</th>
+                    <th>Date</th>
+                    <th>Delete</th>
+                </tr></thead>
 
-            </div>
+                {% for room in posts %}
+                    <tbody><tr>
+                        <td>
+                            <a href="{{ url_for('room', room_id=room.id) }}">{{ room.room_title }}</a>
+{#                            <a href="{{ url_for('pub_profile', username=user.username) }}">{{ user.id }}</a>#}
+                        </td>
+                        <td>{{ room.title }}
+                        </td>
+                        <td>{{ room.visible }}
+                        </td>
+                        <td>{{ room.date_posted.strftime('%B %d, %Y') }}
+                        </td>
+                        <td>
+                            <button class="btn btn-danger deleteButton" room_id="{{ room.id }}">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            </button>
+                        </td>
+
+                    </tr></tbody>
+                {% endfor %}
+
+            </table>
+            </div><!-- Tutor Rooms Div -->
 
 
             <div id="userUploads">

@@ -784,12 +784,35 @@ def updateRoom():
 
     return jsonify({'result': 'success', "room_name": room.room_title})
 
+@app.route('/updateRoomProfile', methods=['POST'])
+def updateRoomProfile():
+    room = RoomPost.query.filter_by(id=request.form['id']).first()
+
+    room.title = request.form['name']
+    room.room_title = request.form['title']
+    room.content = request.form['content']
+    # room.date_posted = date_time = datetime.now()
+    room.date_posted = datetime.now()
+
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
 
 # delete room
 @app.route('/deleteRoom', methods=['POST'])
 def deleteRoom():
     room = RoomPost.query.filter_by(id=request.form['id']).first()
     db.session.delete(room)
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+# delete room
+@app.route('/deleteStudentPost', methods=['POST'])
+def deleteStudentPost():
+    post = StudentPost.query.filter_by(id=request.form['id']).first()
+    db.session.delete(post)
     db.session.commit()
 
     return jsonify({'result': 'success'})

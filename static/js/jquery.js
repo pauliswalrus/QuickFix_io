@@ -30,6 +30,32 @@ $(document).ready(function () {
     })
 
 
+        //update room
+    $('.updateButtonProfile').on('click', function () {
+
+        var room_id = $(this).attr('room_id');
+
+        var name = $('#nameInput' + room_id).val();
+
+        var title = $('#titleInput' + room_id).val()
+
+
+        req = $.ajax({
+            url: '/updateRoomProfile',
+            type: 'POST',
+            data: {name: name, title: title, id: room_id}
+
+        });
+
+        req.done(function (data) {
+
+            $('#roomSection' + room_id).fadeOut(1000).fadeIn(1000);
+            $('#memberNumber' + room_id).text(data.room_name);
+
+        });
+
+    })
+
 
 
 
@@ -84,6 +110,31 @@ $(document).ready(function () {
 
     })
 
+        //delete room
+    $('.deleteStudentPost').on('click', function () {
+
+        var room_id = $(this).attr('room_id');
+
+        var r = confirm("Delete Post?");
+
+        if (r == true) {
+
+            req = $.ajax({
+                url: '/deleteStudentPost',
+                type: 'POST',
+                data: {id: room_id}
+
+            });
+            alert("Post Deleted!")
+            location.reload();
+
+        } else {
+
+            //nothing happens
+
+        }
+
+    })
 
 
 
