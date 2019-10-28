@@ -66,12 +66,6 @@ class RoomUpload(db.Model):
     room_name = db.Column(db.String(50), nullable=False)
     data = db.Column(db.LargeBinary)
 
-    @property
-    def serialize(self):
-        return {
-            'file_name' : self.file_name
-        }
-
 
 class Message(db.Model):
     """ Message Model """
@@ -147,8 +141,12 @@ class Course(db.Model):
     course_name = db.Column(db.Text)
     program_id = db.Column(db.Integer, db.ForeignKey('program.program_id'))
 
-    def __repr__(self):
-        return '[Course {}]'.format(self.course_name)
+    # def __repr__(self):
+    #     return '[Course {}]'.format(self.course_name)
+
+# class RoomUploadsSchema(ma.ModelSchema):
+#     class Meta:
+#         model = RoomUpload
 
 def choice_query():
     return Course.query

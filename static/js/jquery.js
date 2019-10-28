@@ -248,10 +248,9 @@ Admin portal functions
            data : { firstname : firstname, lastname : lastname, username : username, id : user_id, email : email, role : role }
 
         });
+
         alert("User Edited!");
-
         location.reload();
-
 
     })
 
@@ -309,26 +308,59 @@ Admin portal functions
 
     })
 
-
-
-        //delete chat logs
+        //temp solution refresh page
     $('.refreshRoomUploads').on('click',function () {
 
-        var room_name = $(this).attr('room_name');
-
-
-            req = $.ajax({
-                url: '/refreshRoomUploads',
-                type: 'GET',
-                data: {name: room_name}
-
-            });
-             alert("Room Uploads Updated!!");
-            $('#file_list').fadeOut(1000).fadeIn(1000);
-
+        location.reload();
 
 
     })
+
+     $('.deleteApplication').on('click',function () {
+
+        var r = confirm("Delete Application?");
+
+        if (r == true) {
+
+            req = $.ajax({
+                url: '/deleteApplication',
+                type: 'POST'
+
+            });
+            alert("Room Uploads Cleared!");
+
+        } else {
+
+        }
+
+
+    })
+
+        //
+        //
+        //     req = $.ajax({
+        //         url: '/refreshRoomUploads',
+        //         type: 'POST',
+        //         data: {name: room_name}
+        //
+        //     });
+        //
+        //     req.done(function(data) {
+        //
+        //
+        //
+        //      alert("Room Uploads Updated!!");
+        //     $('#file_list').fadeOut(1000).fadeIn(1000);
+        //
+        //
+        // });
+
+
+            //  alert("Room Uploads Updated!!");
+            // $('#file_list').fadeOut(1000).fadeIn(1000);
+
+
+
     //
     // $('.uploadRoomFile').on('click',function () {
     //
@@ -347,13 +379,40 @@ Admin portal functions
     //
     // })
 
-    $('.setProgram').on('click',function () {
-
-        var program_id = $(this).attr('.program_id');
-
-            alert(program_id);
-
-    })
+    // $('form').on('submit', function(event) {
+    //
+	// 	$.ajax({
+	// 		data : {
+	// 			name : $('#nameInput').val(),
+	// 			email : $('#emailInput').val()
+	// 		},
+	// 		type : 'POST',
+	// 		url : '/process'
+	// 	})
+	// 	.done(function(data) {
+    //
+	// 		if (data.error) {
+	// 			$('#errorAlert').text(data.error).show();
+	// 			$('#successAlert').hide();
+	// 		}
+	// 		else {
+	// 			$('#successAlert').text(data.name).show();
+	// 			$('#errorAlert').hide();
+	// 		}
+    //
+	// 	});
+    //
+	// 	event.preventDefault();
+    //
+	// });
+    //
+    // $('.setProgram').on('click',function () {
+    //
+    //     var program_id = $(this).attr('.program_id');
+    //
+    //         alert(program_id);
+    //
+    // })
 
 
 

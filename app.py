@@ -742,12 +742,28 @@ def deleteRoomUploads():
 #
 #     return jsonify({'result': 'success'})
 
-@app.route('/refreshRoomUploads', methods=['GET','POST'])
-def refreshRoomUploads():
-    room_files = db.session.query(RoomUpload).filter_by(room_name=request.form['name']).all()
-    db.session.refresh(room_files)
-    db.session.commit()
-    return jsonify({'result': 'success'})
+#
+# @app.route('/process', methods=['POST'])
+# def process():
+#     email = request.form['email']
+#     name = request.form['name']
+#
+#     if name and email:
+#         newName = name[::-1]
+# 	    return jsonify({'name' : newName})
+#
+# 	return jsonify({'error' : 'Missing data!'})
+
+
+# @app.route('/refreshRoomUploads', methods=['POST'])
+# def refreshRoomUploads():
+#
+#     files = db.session.query(RoomUpload).filter_by(room_name=request.form['name']).all()
+#     room_upload_schema = RoomUploadsSchema(many=True)
+#     room_files = room_upload_schema.dump(files).data
+#     # db.session.refresh(room_files)
+#     # db.session.commit()
+#     return jsonify({'result': 'success', 'room_files': room_files})
 
 # update room
 @app.route('/updateRoom', methods=['POST'])
@@ -782,9 +798,7 @@ def editUser():
     user_edit.username = request.form['username']
     user_edit.firstname = request.form['firstname']
     user_edit.lastname = request.form['lastname']
-
     user_edit.email = request.form['email']
-    user_edit.role = request.form['role']
 
     db.session.commit()
 
@@ -842,6 +856,15 @@ def denyTutor():
 
     return jsonify({'result': 'success'})
 
+@app.route('/deleteApplication', methods=['POST'])
+def deleteApplication():
+
+    user = User.query.filter_by(username=current_user.username).first()
+    tutor = Tutor.query.filter_by(user_id=user.id).first()
+    db.session.delete(tutor)
+    db.session.commit()
+
+    return redirect(url_for('new_tutor'))
 
 ## tutor chat room controls
 
