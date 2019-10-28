@@ -396,13 +396,17 @@ def courses():
     form = ProgramForm()
     form.program_options.choices = program_list
 
-    programID = form.program_options.data
-    program_picked = Program.query.filter_by(program_id=programID).first()
+    # if form.validate_on_submit():
+    #     programID = form.program_options.data
+    #
+    #     return \
+    #         programID
+    # program_picked = Program.query.filter_by(program_id=programID).first()
+    #
+    #
 
 
-
-
-    return render_template('courses.html', username=current_user.username, this_user=this_user, form=form)
+    return render_template('addTutorCourses.html', username=current_user.username, this_user=this_user, form=form)
 
 
 # route for chat - displays public rooms and form to join(create rooms)

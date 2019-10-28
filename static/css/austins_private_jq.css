@@ -201,6 +201,14 @@ body {
 }
 
 
+#privateButton {
+   display: none;
+}
+
+#publicButton {
+   display: none;
+}
+
 .uploadDocsButton {
     background-color: white;
     border: none;

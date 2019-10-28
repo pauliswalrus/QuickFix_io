@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Courses</title>
+</head>
+
+<body>
+
+{% extends "navbar.html" %}
+{% block content %}
+
+
+                 <form method="POST" action="">
+                  <h2>Pick Program</h2>
+                     {{ form.csrf_token }}
+                  {{ form.program_options(class_='program_id')  }}
+                     <input type="button" class="btn btn-primary setProgram" value="Program">Program</input>
+              </form>
+
+
+
+{% endblock %}
+</body>
+</html>

@@ -367,6 +367,15 @@ $(document).ready(function () {
     })
 
 
+    $('.setProgram').on('click',function () {
+
+    // var program_id = $('.program_id option:selected').text();
+
+    alert("program_id");
+
+    })
+
+
 });
 
 
