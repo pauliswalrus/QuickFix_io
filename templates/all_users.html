@@ -13,7 +13,6 @@
 
     <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
 
-
 </head>
 
 <body>
@@ -21,28 +20,65 @@
 {% block content %}
     <div id="main-content">
 
-        <div id="title1">Edit Users (<a href="{{ url_for('all_users') }}">View All Users Page</a>)</div>
 
-        <!-- SECTION 1 -->
-        <div class="section1">
+        <div class="sectionTitle">Manage Users</div>
 
-            {% for user in users_list %}
 
-                <div id="roomSection{{ user.id }}" class="panel panel-default">
 
-                    <!-- Heading Bar -->
-                    <div class="panel-heading">
-                        <h3 class="panel-title">
-                            <span id="memberNumber{{ user.id }}">
-                                <a href="{{ url_for('pub_profile', username=user.username) }}">User {{ user.id }}: {{ user.username|upper }}</a>
-                            </span>
-                        </h3>
+           <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Update</th>
+                                <th>Delete</th>
+                            </tr>
+                            </thead>
+                             {% for user in users_list %}
+                            <tbody>
+                            <tr>
+                                <td><a href="{{ url_for('pub_profile', username=user.username) }}">{{ user.id }}</a></td>
+                                <td><input type="text" class="form-control" id="userName{{ user.id }}" value="{{ user.username }}"></td>
+                                <td><input type="text" class="form-control" id="firstName{{ user.id }}" value="{{ user.firstname }}"></td>
+                                <td><input type="text" class="form-control" id="lastName{{ user.id }}" value="{{ user.lastname }}"></td>
+                                <td><input type="text" class="form-control" id="email{{ user.id }}" value="{{ user.email }}"></td>
+                                <td>{{ user.role }}</td>
+                                <td><button class="btn btn-info editUserForm" user_id="{{ user.id }}"><i class="glyphicon glyphicon-check"></i></button></td>
+                                <td><button class="btn btn-danger deleteUser" user_id="{{ user.id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
+                            </tr>
+                            </tbody>
+                            {% endfor %}
+                        </table>
                     </div>
 
-                    <!-- Content -->
-                    <div class="panel-body">
-                        <div class="form-inline">
 
+    </div>
+
+{% endblock %}
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+{# ORIGINAL WITH UPDATE MODAL #}
+
+
+{#
                             <table>
                                 <tr>
                                     <td class="tableLeft">
@@ -55,8 +91,7 @@
                                         <button class="btn btn-warning editUser" id="editUser" user_id="{{ user.id }}">
                                             Edit
                                         </button>
-                                        <button class="btn btn-danger deleteUser" user_id="{{ user.id }}">Delete User
-                                        </button>
+                                        <button class="btn btn-danger deleteUser" user_id="{{ user.id }}">Delete User</button>
                                     </td>
                                 </tr>
                             </table>
@@ -80,18 +115,7 @@
                                     <button class="btn btn-info editUserForm" user_id="{{ user.id }}">Edit User</button>
                                 </div>
                             </div>
-
-
-                        </div> <!-- end form-inline class -->
-                    </div><!-- end panel-body class-->
-
-                </div><!-- end roomSection ID -->
-
-            {% endfor %}
-
-        </div> <!-- END SECTION 1 -->
-
-    </div>
+#}
 
 
 
@@ -106,9 +130,20 @@
 
 
 
-{% endblock %}
-</body>
-</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 {#<!-- <nav id="main-section"> -->#}
 {#<div id="main-section">#}
 {##}

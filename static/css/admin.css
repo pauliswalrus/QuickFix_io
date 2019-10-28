@@ -1,123 +1,222 @@
-/* Chat.css - Defines the styles for the chat_join.html page */
+/* Chat.css - Defines the styles for the admin html pages */
 /* Author: Emma Hobden */
-
+/*  */
 /* ---------------------------------------------------- GENERAL ---------------------------------------------------- */
 
+/* Styles the body and html of the page */
 body, html {
     width: 100%;
 }
 
-
+/* Styles the main content section */
 #main-content {
     position: absolute;
     left: 300px;
+    bottom: 0;
     right: 0;
-
-    border: 2px solid red;
-    /*width: fit-content;*/
-    /*margin-left: 300px;*/
-    /*margin-right: 0;*/
-    /*right: 0;*/
-    height: 100%;
+    height: calc(100% - 80px);
+    height: -webkit-calc(100% - 80px); /* google, safari */
+    height: -moz-calc(100% - 80px); /* firefox */
     overflow-y: scroll;
+    padding: 25px;
 }
 
-
-
-
-
-
-
-
-
-.title1 { grid-area: title1; }
-.section1 { grid-area: section1; }
-.title2 { grid-area: title2; }
-.section2 { grid-area: section2; }
-.title3 { grid-area: title3; }
-.section3 { grid-area: section3; }
-.title4 { grid-area: title4; }
-.section4 { grid-area: section4; }
-
-.grid-container {
-    display: grid;
-    width: 100%;
-    height: 90%;
-    /*border: 1px solid red;*/
-    grid-template-areas:
-  	    'title1 title2 title3'
-  	    'section1 section2 section3'
-        'section1 section2 title4'
-        'section1 section2 section4';
-    grid-gap: 10px;
-    /*background-color: #2196F3;*/
-    padding: 5px;
-    grid-template-columns: 30% auto 30%;
-    grid-template-rows: 5% 45% 5% 45%;
-
+/* Styles the main content title */
+.sectionTitle {
+    font-size: 1.5em;
+    border-bottom: 3px solid slategray;
+    margin-bottom: 10px;
+    color: slategray;
 }
 
-.grid-container > div {
-    background-color: rgba(255, 255, 255, 0.8);
-    text-align: center;
-    padding: 20px 0;
+/*  */
+.subHeading {
+    font-weight: bold;
 }
 
-#title1,
-#title2,
-#title3,
-#title4 {
-    color: #395065;
-    font-size: 1.2em;
-    vertical-align: middle;
-    /*background-color: #395065;*/
-	/*color: white;*/
-    /*font-size: 1.2em;*/
+/*  */
+.modal_editUser {
+    display: none;
+    /*position: fixed;*/
+    /*z-index: 1;*/
+    /*display: none;*/
+    /*display: none; !* Hidden by default *!*/
+    /*position: fixed; !* Stay in place *!*/
+    /*z-index: 1; !* Sit on top *!*/
+    /*width: 600px;*/
+    /*margin-left: 25%;*/
+    /*margin-right: 25%;*/
+    /*height: 400px;*/
+    /*left: 0;*/
+    /*top: 200px;*/
+    /*padding: 5px;*/
     /*text-align: center;*/
-    /*vertical-align: middle !important;*/
-}
-
-.section1,
-.section2 {
-    /*border: 2px solid #395065;*/
-    overflow-y: scroll;
-}
-
-.section3,
-.section4 {
-    /*border: 2px solid #395065;*/
-    overflow-y: scroll;
-}
-
-table {
-    width: 100%;
-    /*border: 1px solid red;*/
-}
-
-.tableLeft {
-    width: 70%;
-}
-.tableRight {
-    width: 30%;
-    text-align: right;
-    border-left: 2px solid #395065;
-}
-
-.btn {
-    width: 100px;
-    margin: 2px;
-}
-
-#upload {
-      display: none; /* Hidden by default */
+    /*overflow: auto; !* Enable scroll if needed *!*/
+    /*background-color: white;*/
+    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
 
 }
 
-#id_number {
+
+/* Styles the X to close the upload docs window */
+.closeWindow {
+    color: #aaaaaa;
     float: right;
-    color: red;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/*  */
+.closeWindow:hover,
+.closeWindow:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+
+
+
+/* -------------------------------------------------- MANAGE USERS -------------------------------------------------- */
+
+.table {
 
 }
+
+
+/*.editUserForm  {*/
+/*    position: fixed;*/
+/*    top: 100px;*/
+/*    right: 50px;*/
+
+
+/*}*/
+
+/*.btn-circle {*/
+/*    width: 60px;*/
+/*    height: 60px;*/
+/*    border-radius: 60px;*/
+/*    text-align: center;*/
+/*    background-color: #75BEDB;*/
+/*    border: 3px solid #75BEDB;*/
+/*    color: white;*/
+/*    font-size: 20px;*/
+/*    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+/*}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*.title1 { grid-area: title1; }*/
+/*.section1 { grid-area: section1; }*/
+/*.title2 { grid-area: title2; }*/
+/*.section2 { grid-area: section2; }*/
+/*.title3 { grid-area: title3; }*/
+/*.section3 { grid-area: section3; }*/
+/*.title4 { grid-area: title4; }*/
+/*.section4 { grid-area: section4; }*/
+
+/*.grid-container {*/
+/*    display: grid;*/
+/*    width: 100%;*/
+/*    height: 90%;*/
+/*    !*border: 1px solid red;*!*/
+/*    grid-template-areas:*/
+/*  	    'title1 title2 title3'*/
+/*  	    'section1 section2 section3'*/
+/*        'section1 section2 title4'*/
+/*        'section1 section2 section4';*/
+/*    grid-gap: 10px;*/
+/*    !*background-color: #2196F3;*!*/
+/*    padding: 5px;*/
+/*    grid-template-columns: 30% auto 30%;*/
+/*    grid-template-rows: 5% 45% 5% 45%;*/
+
+/*}*/
+
+/*.grid-container > div {*/
+/*    background-color: rgba(255, 255, 255, 0.8);*/
+/*    text-align: center;*/
+/*    padding: 20px 0;*/
+/*}*/
+
+/*#title1,*/
+/*#title2,*/
+/*#title3,*/
+/*#title4 {*/
+/*    color: #395065;*/
+/*    font-size: 1.2em;*/
+/*    vertical-align: middle;*/
+/*    !*background-color: #395065;*!*/
+/*	!*color: white;*!*/
+/*    !*font-size: 1.2em;*!*/
+/*    !*text-align: center;*!*/
+/*    !*vertical-align: middle !important;*!*/
+/*}*/
+
+/*.section1,*/
+/*.section2 {*/
+/*    !*border: 2px solid #395065;*!*/
+/*    overflow-y: scroll;*/
+/*}*/
+
+/*.section3,*/
+/*.section4 {*/
+/*    !*border: 2px solid #395065;*!*/
+/*    overflow-y: scroll;*/
+/*}*/
+
+/*table {*/
+/*    width: 100%;*/
+/*    !*border: 1px solid red;*!*/
+/*}*/
+
+/*.tableLeft {*/
+/*    width: 70%;*/
+/*}*/
+/*.tableRight {*/
+/*    width: 30%;*/
+/*    text-align: right;*/
+/*    border-left: 2px solid #395065;*/
+/*}*/
+
+/*.btn {*/
+/*    width: 100px;*/
+/*    margin: 2px;*/
+/*}*/
+
+/*#upload {*/
+/*      display: none; !* Hidden by default *!*/
+
+/*}*/
+
+/*#id_number {*/
+/*    float: right;*/
+/*    color: red;*/
+
+/*}*/
 
 
 /*#mainSection {*/
@@ -181,43 +280,43 @@ table {
 /*}*/
 
 
-.modal_editUser {
-    display: none;
-    /*position: fixed;*/
-    /*z-index: 1;*/
-    /*display: none;*/
-    /*display: none; !* Hidden by default *!*/
-    /*position: fixed; !* Stay in place *!*/
-    /*z-index: 1; !* Sit on top *!*/
-    /*width: 600px;*/
-    /*margin-left: 25%;*/
-    /*margin-right: 25%;*/
-    /*height: 400px;*/
-    /*left: 0;*/
-    /*top: 200px;*/
-    /*padding: 5px;*/
-    /*text-align: center;*/
-    /*overflow: auto; !* Enable scroll if needed *!*/
-    /*background-color: white;*/
-    /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+/*.modal_editUser {*/
+/*    display: none;*/
+/*    !*position: fixed;*!*/
+/*    !*z-index: 1;*!*/
+/*    !*display: none;*!*/
+/*    !*display: none; !* Hidden by default *!*!*/
+/*    !*position: fixed; !* Stay in place *!*!*/
+/*    !*z-index: 1; !* Sit on top *!*!*/
+/*    !*width: 600px;*!*/
+/*    !*margin-left: 25%;*!*/
+/*    !*margin-right: 25%;*!*/
+/*    !*height: 400px;*!*/
+/*    !*left: 0;*!*/
+/*    !*top: 200px;*!*/
+/*    !*padding: 5px;*!*/
+/*    !*text-align: center;*!*/
+/*    !*overflow: auto; !* Enable scroll if needed *!*!*/
+/*    !*background-color: white;*!*/
+/*    !*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*!*/
 
-}
+/*}*/
 
 
-/* Styles the X to close the upload docs window */
-.closeWindow {
-    color: #aaaaaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
+/*!* Styles the X to close the upload docs window *!*/
+/*.closeWindow {*/
+/*    color: #aaaaaa;*/
+/*    float: right;*/
+/*    font-size: 28px;*/
+/*    font-weight: bold;*/
+/*}*/
 
-.closeWindow:hover,
-.closeWindow:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
-}
+/*.closeWindow:hover,*/
+/*.closeWindow:focus {*/
+/*    color: #000;*/
+/*    text-decoration: none;*/
+/*    cursor: pointer;*/
+/*}*/
 
 /*.container {*/
 /*    border: 2px solid green;*/
