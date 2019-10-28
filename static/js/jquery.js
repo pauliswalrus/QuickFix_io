@@ -308,6 +308,43 @@ Admin portal functions
     })
 
 
+
+        //delete chat logs
+    $('.refreshRoomUploads').on('click',function () {
+
+        var room_name = $(this).attr('room_name');
+
+
+            req = $.ajax({
+                url: '/refreshRoomUploads',
+                type: 'GET',
+                data: {name: room_name}
+
+            });
+             alert("Room Uploads Updated!!");
+            $('#file_list').fadeOut(1000).fadeIn(1000);
+
+
+
+    })
+    //
+    // $('.uploadRoomFile').on('click',function () {
+    //
+    //     var formData = new FormData();
+    //     formData.append('file', $('input[type=file]')[0].files[0]);
+    //
+    //
+    //     req = $.ajax({
+    //             url: '/uploadRoomFile',
+    //             type: 'POST',
+    //             data: {file_data: formData}
+    //     });
+    //         alert("uploaded!");
+    //
+    //
+    //
+    // })
+
     $('.setProgram').on('click',function () {
 
         var program_id = $(this).attr('.program_id');

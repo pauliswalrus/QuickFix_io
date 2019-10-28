@@ -66,6 +66,12 @@ class RoomUpload(db.Model):
     room_name = db.Column(db.String(50), nullable=False)
     data = db.Column(db.LargeBinary)
 
+    @property
+    def serialize(self):
+        return {
+            'file_name' : self.file_name
+        }
+
 
 class Message(db.Model):
     """ Message Model """

@@ -651,6 +651,7 @@ def pub_profile(username):
                            this_user=this_user, student_posts=student_posts)
 
 
+
 # gets profile pics
 @app.route('/uploads/pictures/<filename>')
 def uploaded_file(filename):
@@ -715,7 +716,7 @@ def deleteLogs():
     return jsonify({'result': 'success'})
 
 
-# delete chat logs for room
+# delete roomuploads for room
 @app.route('/deleteRoomUploads', methods=['POST'])
 def deleteRoomUploads():
     room = RoomPost.query.filter_by(id=request.form['id']).first()
@@ -728,6 +729,25 @@ def deleteRoomUploads():
 
     return jsonify({'result': 'success'})
 
+
+# not working right now
+# @app.route('/uploadRoomFile', methods=['POST'])
+# def uploadRoomFile():
+#     file = request.form.files['fd']
+#     roomName = session.get('roomName')
+#     newFile = RoomUpload(file_name=file.filename, room_name=roomName, username=current_user.username,
+#                          data=file.read())
+#     db.session.add(newFile)
+#     db.session.commit()
+#
+#     return jsonify({'result': 'success'})
+
+@app.route('/refreshRoomUploads', methods=['GET','POST'])
+def refreshRoomUploads():
+    room_files = db.session.query(RoomUpload).filter_by(room_name=request.form['name']).all()
+    db.session.refresh(room_files)
+    db.session.commit()
+    return jsonify({'result': 'success'})
 
 # update room
 @app.route('/updateRoom', methods=['POST'])
