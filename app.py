@@ -895,7 +895,7 @@ def privateRoom():
     room_tutor.status = 2
     db.session.commit()
 
-    return jsonify({'result': 'success'})
+    return jsonify({'result': 'success', 'room_status': room.visible})
 
 
 # tutor makes room private

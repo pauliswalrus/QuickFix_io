@@ -19,82 +19,156 @@
 {% block content %}
     <div id="main-content">
 
-        <!-- -------------------------------------------------- Column 2 -------------------------------------------------- -->
         <div class="sectionTitle">Active Rooms (<a href="{{ url_for('courses') }}">courses</a>)</div>
 
-        <!-- SECTION 2 -->
-        <div class="section2">
 
             {% for room in blog_posts %}
 
                 <div id="roomSection{{ room.id }}" class="panel panel-default">
 
                     <div class="panel-heading">
-                        <h3 class="panel-title"><span id="memberNumber">
-                            <a href="{{ url_for('room', room_id=room.id) }}">Room {{ room.id }} : {{ room.room_title }}</a></span>
+                        <h3 class="panel-title">
+                            <span id="memberNumber">
+                                <a href="{{ url_for('room', room_id=room.id) }}">Room {{ room.id }} : {{ room.room_title }}</a>
+                            </span>
                         </h3>
                     </div>
 
                     <div class="panel-body">
                         <div class="form-inline">
-                            <b>Author:</b> <a
-                                href="{{ url_for('pub_profile', username=room.author) }}"> {{ room.author|upper }}</a><br>
-                            <b>Public:</b> {{ room.visible }}<br>
-                            <b>Date:</b> {{ room.date_posted.strftime('%Y-%m-%d') }} <br>
-                            <b><a href="{{ url_for('chat_log', room_id=room.id) }}">
-                                <button class="btn btn-primary viewButton" room_id="{{ room.id }}">View Logs</button>
-                            </a></b>
-                            <b><a href="#">
-                                <button class="btn btn-danger deleteLogs" room_id="{{ room.id }}">Clear Logs</button>
-                            </a></b>
-                            <b><a href="#">
-                                <button class="btn btn-danger deleteRoomUploads" room_id="{{ room.id }}">Clear Files
-                                </button>
-                            </a></b>
 
+                            <div class="row">
 
-                            <br>
+                                <div class="col-sm-5">
+                                    <div class="form-group">
+                                        <label for="emailInput{{ room.id }}">Room Name: </label>
+                                        <br>
+                                        <input type="text" class="form-control" id="titleInput{{ room.id }}" value="{{ room.room_title }}">
+                                    </div>
 
-                            <div class="form-group">
-                                <label for="emailInput{{ room.id }}">Room Name: </label>
-                                <br>
-                                <input type="text" class="form-control" id="titleInput{{ room.id }}"
-                                       value="{{ room.room_title }}">
+                                    <div class="form-group">
+                                        <label for="nameInput{{ room.id }}">Title: </label>
+                                        <br>
+                                        <input type="text" class="form-control" id="nameInput{{ room.id }}" value="{{ room.title }}">
+                                    </div>
+
+                                    <br>
+
+                                    <div class="form-group">
+                                        <label for="contentInput{{ room.id }}">Content: </label>
+                                        <br>
+                                        <textarea rows="4" cols="55" class="form-control" id="contentInput{{ room.id }}">{{ room.content }}</textarea><br>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <p><span class="subHeading">Author: </span>
+                                    <a href="{{ url_for('pub_profile', username=room.author) }}"> {{ room.author|upper }}</a></p>
+
+                                    <p><span class="subHeading">Public: </span>
+                                    {{ room.visible }}</p>
+
+                                    <p><span class="subHeading">Date: </span>
+                                    {{ room.date_posted.strftime('%Y-%m-%d') }}</p>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <a href="{{ url_for('chat_log', room_id=room.id) }}">
+                                        <button class="btn btn-primary viewButton" room_id="{{ room.id }}">View Logs</button>
+                                    </a><br><br>
+
+                                    <a href="#">
+                                        <button class="btn btn-danger deleteLogs" room_id="{{ room.id }}">Clear Logs</button>
+                                    </a><br><br>
+
+                                    <a href="#">
+                                        <button class="btn btn-danger deleteRoomUploads" room_id="{{ room.id }}">Clear Files</button>
+                                    </a>
+                                </div>
+
+                            </div><!-- end class row -->
+
+                            <br><br>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <button class="btn btn-primary updateButton" room_id="{{ room.id }}">Update</button>
+                                    <button class="btn btn-danger deleteButton" room_id="{{ room.id }}">Delete</button>
+                                    <button id="privateButton{{ room.id }}" class="btn btn-warning privateButtonAdmin" room_id="{{ room.id }}">Private</button>
+                                    <button id="publicButton{{ room.id }}" class="btn btn-success publicButtonAdmin" room_id="{{ room.id }}">Public</button>
+                                </div>
+                                <div class="col-sm-3">
+
+                                </div>
+                                <div class="col-sm-3">
+
+                                </div>
                             </div>
 
-                            <div class="form-group">
-                                <label for="nameInput{{ room.id }}">Title: </label>
-                                <br>
-                                <input type="text" class="form-control" id="nameInput{{ room.id }}"
-                                       value="{{ room.title }}">
-                            </div>
 
-                            <br>
 
-                            <div class="form-group">
-                                <label for="contentInput{{ room.id }}">Content: </label>
-                                <br>
-                                <textarea rows="4" cols="55" class="form-control"
-                                          id="contentInput{{ room.id }}">{{ room.content }}</textarea><br>
-                                {#              <input type="text" class="form-control" id="contentInput{{ room.id }}" value="{{ room.content }}">#}
-                            </div>
 
-                            <button class="btn btn-primary updateButton" room_id="{{ room.id }}">Update</button>
-                            <button class="btn btn-danger deleteButton" room_id="{{ room.id }}">Delete</button>
-                            <button id="privateButton" class="btn btn-warning privateButton" room_id="{{ room.id }}">
-                                Private
-                            </button>
-                            <button id="publicButton" class="btn btn-success publicButton" room_id="{{ room.id }}">
-                                Public
-                            </button>
 
-                        </div>
-                    </div>
-                </div>
+
+
+
+
+
+
+{#                            <b>Author:</b>#}
+{#                            <a href="{{ url_for('pub_profile', username=room.author) }}"> {{ room.author|upper }}</a>#}
+{##}
+{#                            <br>#}
+{##}
+{#                            <b>Public:</b> {{ room.visible }}#}
+{##}
+{#                            <br>#}
+{##}
+{#                            <b>Date:</b> {{ room.date_posted.strftime('%Y-%m-%d') }}#}
+{##}
+{#                            <br>#}
+{##}
+{#                            <a href="{{ url_for('chat_log', room_id=room.id) }}">#}
+{#                                <button class="btn btn-primary viewButton" room_id="{{ room.id }}">View Logs</button>#}
+{#                            </a>#}
+{##}
+{#                            <a href="#">#}
+{#                                <button class="btn btn-danger deleteLogs" room_id="{{ room.id }}">Clear Logs</button>#}
+{#                            </a>#}
+{##}
+{#                            <a href="#">#}
+{#                                <button class="btn btn-danger deleteRoomUploads" room_id="{{ room.id }}">Clear Files</button>#}
+{#                            </a>#}
+{##}
+{#                            <br>#}
+{##}
+{#                            <div class="form-group">#}
+{#                                <label for="emailInput{{ room.id }}">Room Name: </label>#}
+{#                                <br>#}
+{#                                <input type="text" class="form-control" id="titleInput{{ room.id }}" value="{{ room.room_title }}">#}
+{#                            </div>#}
+{##}
+{#                            <div class="form-group">#}
+{#                                <label for="nameInput{{ room.id }}">Title: </label>#}
+{#                                <br>#}
+{#                                <input type="text" class="form-control" id="nameInput{{ room.id }}" value="{{ room.title }}">#}
+{#                            </div>#}
+{##}
+{#                            <br>#}
+{##}
+{#                            <div class="form-group">#}
+{#                                <label for="contentInput{{ room.id }}">Content: </label>#}
+{#                                <br>#}
+{#                                <textarea rows="4" cols="55" class="form-control" id="contentInput{{ room.id }}">{{ room.content }}</textarea><br>#}
+{#                            </div>#}
+
+
+
+                        </div> <!-- end div class form-inline -->
+                    </div> <!-- end div class panel-body -->
+                </div> <!-- end div id roomSection -->
 
             {% endfor %}
-
-        </div><!-- END SECTION 2 -->
 
     </div>
 

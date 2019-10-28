@@ -1,114 +1,109 @@
-$(document).ready(function() {
+/* Admin portal functions */
 
-    //
-    //    $('#fade').css('background-color', '#E46D4E');
-    //    $('#fade').css('color', 'white');
-    //
-    //    $('#fade').fadeOut(500);
-    //    $('#fade').fadeIn(500);
-    //    $('#fade').fadeOut(500);
-    //
-    //    $('#fade2').css('background-color', '#E46D4E');
-    //    $('#fade2').css('color', 'white');
-    //
-    //
-    // $('#fade').on('click', function() {
-    //     $('#fade').fadeOut(1000);
-    //     $('#fade').fadeIn(1000);
-    // });
-    //
-    // $('#send_message').on('click', function() {
-    //     $('#fade2').fadeIn(500);
-    //     $('#fade2').fadeOut(500);
-    //     $('#fade2').fadeIn(500);
+$(document).ready(function () {
 
-    // });
-/*
-
-Admin portal functions
-
- */
-
-//update room
-    $('.updateButton').on('click',function () {
+    //update room
+    $('.updateButton').on('click', function () {
 
         var room_id = $(this).attr('room_id');
 
-        var name = $('#nameInput'+room_id).val();
+        var name = $('#nameInput' + room_id).val();
 
-        var title = $('#titleInput'+room_id).val()
+        var title = $('#titleInput' + room_id).val()
 
-        var content = $('#contentInput'+room_id).val()
+        var content = $('#contentInput' + room_id).val()
 
         req = $.ajax({
-           url : '/updateRoom',
-           type : 'POST',
-           data : { name : name, title : title, content : content, id : room_id }
+            url: '/updateRoom',
+            type: 'POST',
+            data: {name: name, title: title, content: content, id: room_id}
 
         });
 
-        req.done(function(data) {
+        req.done(function (data) {
 
-            $('#roomSection'+room_id).fadeOut(1000).fadeIn(1000);
-            $('#memberNumber'+room_id).text(data.room_name);
+            $('#roomSection' + room_id).fadeOut(1000).fadeIn(1000);
+            $('#memberNumber' + room_id).text(data.room_name);
 
         });
-
-
-
 
     })
-// also used in private chat
-//make room private
-    $('.privateButton').on('click',function () {
 
-        var room_id = $(this).attr('room_id');
 
-        var name = $('#nameInput'+room_id).val();
+
+
+
+
+
+
+
+
+
+
+    //make room private - private chat
+    $('.privateButtonAdmin').on('click', function () {
+
+        let room_id = $(this).attr('room_id');
+
+        let name = $('#nameInput' + room_id).val();
 
         req = $.ajax({
-           url : '/privateRoom',
-           type : 'POST',
-           data : { name : name, id : room_id }
-
+            url: '/privateRoom',
+            type: 'POST',
+            data: {name: name, id: room_id}
         });
         alert("This Room is Private!")
-        $('.privateButton').fadeOut(200);
-        $('.publicButton').fadeIn(200);
-
+        location.reload();
+        // $('#memberNumber' + room_id).text(data.roo);
+        // // $('#privateButton'+room_id).fadeOut(200);
+        // // $('#publicButton'+room_id).fadeIn(200);
+        //
+        // $('#roomSection'+room_id).fadeOut(1000).fadeIn(1000);
 
 
     })
-//also used in private chat
-//public room
-    $('.publicButton').on('click',function () {
+
+    //public room - private chat
+    $('.publicButtonAdmin').on('click', function () {
 
         var room_id = $(this).attr('room_id');
-        var name = $('#nameInput'+room_id).val();
+        var name = $('#nameInput' + room_id).val();
 
         req = $.ajax({
-           url : '/publicRoom',
-           type : 'POST',
-           data : { name : name, id : room_id }
+            url: '/publicRoom',
+            type: 'POST',
+            data: {name: name, id: room_id}
 
         });
         alert("This Room is Public!")
-        $('.publicButton').fadeOut(200);
-        $('.privateButton').fadeIn(200);
-
-
+        location.reload();
+        // $('#privateButton'+room_id).fadeIn(200);
+        // $('#publicButton'+room_id).fadeOut(200);
+        //
+        // $('#roomSection'+room_id).fadeOut(1000).fadeIn(1000);
 
     })
 
 
 
 
-//delete room
-    $('.deleteButton').on('click',function () {
+
+
+
+
+
+
+
+
+
+
+
+    //delete room
+    $('.deleteButton').on('click', function () {
 
         var room_id = $(this).attr('room_id');
 
-        var name = $('#nameInput'+room_id).val();
+        var name = $('#nameInput' + room_id).val();
 
         var r = confirm("Delete Room?");
 
@@ -131,8 +126,8 @@ Admin portal functions
 
     })
 
-//approve tutor
-    $('.approveTutor').on('click',function () {
+    //approve tutor
+    $('.approveTutor').on('click', function () {
 
         var user_id = $(this).attr('user_id');
 
@@ -158,8 +153,8 @@ Admin portal functions
     })
 
 
-//deny tutor
-    $('.denyTutor').on('click',function () {
+    //deny tutor
+    $('.denyTutor').on('click', function () {
 
         var user_id = $(this).attr('user_id');
         var comments = $("#appComments").val();
@@ -185,8 +180,8 @@ Admin portal functions
 
     })
 
-//delete user
-    $('.deleteUser').on('click',function () {
+    //delete user
+    $('.deleteUser').on('click', function () {
 
         var user_id = $(this).attr('user_id');
         var r = confirm("Delete User?");
@@ -194,23 +189,22 @@ Admin portal functions
         if (r == true) {
 
 
+            req = $.ajax({
+                url: '/deleteUser',
+                type: 'POST',
+                data: {id: user_id}
 
-        req = $.ajax({
-           url : '/deleteUser',
-           type : 'POST',
-           data : { id : user_id }
-
-        });
-        alert("User Deleted!")
-        location.reload();
-         } else {
+            });
+            alert("User Deleted!")
+            location.reload();
+        } else {
             //nothing happens
         }
 
     })
 
     //open edit user
-    $('.editUser').on('click',function () {
+    $('.editUser').on('click', function () {
 
         var user_id = $(this).attr('user_id');
 
@@ -219,8 +213,8 @@ Admin portal functions
 
     })
 
-        //close edit user
-    $('.closeWindow').on('click',function () {
+    //close edit user
+    $('.closeWindow').on('click', function () {
 
         var user_id = $(this).attr('user_id');
 
@@ -230,22 +224,22 @@ Admin portal functions
     })
 
 
-//edit user
-    $('.editUserForm').on('click',function () {
+    //edit user
+    $('.editUserForm').on('click', function () {
 
         var user_id = $(this).attr('user_id');
 
-        var firstname = $('#firstName'+user_id).val();
-        var lastname = $('#lastName'+user_id).val();
-        var username = $('#userName'+user_id).val();
-        var email = $('#email'+user_id).val();
-        var role = $('#role'+user_id).val();
+        var firstname = $('#firstName' + user_id).val();
+        var lastname = $('#lastName' + user_id).val();
+        var username = $('#userName' + user_id).val();
+        var email = $('#email' + user_id).val();
+        var role = $('#role' + user_id).val();
 
 
         req = $.ajax({
-           url : '/editUser',
-           type : 'POST',
-           data : { firstname : firstname, lastname : lastname, username : username, id : user_id, email : email, role : role }
+            url: '/editUser',
+            type: 'POST',
+            data: {firstname: firstname, lastname: lastname, username: username, id: user_id, email: email, role: role}
 
         });
 
@@ -255,10 +249,8 @@ Admin portal functions
     })
 
 
-
-
-//delete chat logs
-    $('.deleteLogs').on('click',function () {
+    //delete chat logs
+    $('.deleteLogs').on('click', function () {
 
         var room_id = $(this).attr('room_id');
 
@@ -280,11 +272,10 @@ Admin portal functions
         }
 
 
-
     })
 
     //delete chat logs
-    $('.deleteRoomUploads').on('click',function () {
+    $('.deleteRoomUploads').on('click', function () {
 
         var room_id = $(this).attr('room_id');
 
@@ -308,15 +299,15 @@ Admin portal functions
 
     })
 
-        //temp solution refresh page
-    $('.refreshRoomUploads').on('click',function () {
+    //temp solution refresh page
+    $('.refreshRoomUploads').on('click', function () {
 
         location.reload();
 
 
     })
 
-     $('.deleteApplication').on('click',function () {
+    $('.deleteApplication').on('click', function () {
 
         var r = confirm("Re Apply?");
 
@@ -335,87 +326,148 @@ Admin portal functions
 
     })
 
-        //
-        //
-        //     req = $.ajax({
-        //         url: '/refreshRoomUploads',
-        //         type: 'POST',
-        //         data: {name: room_name}
-        //
-        //     });
-        //
-        //     req.done(function(data) {
-        //
-        //
-        //
-        //      alert("Room Uploads Updated!!");
-        //     $('#file_list').fadeOut(1000).fadeIn(1000);
-        //
-        //
-        // });
+
+    //make room private - private chat
+    $('.privateButton').on('click', function () {
+
+        var room_id = $(this).attr('room_id');
+
+        var name = $('#nameInput' + room_id).val();
+
+        req = $.ajax({
+            url: '/privateRoom',
+            type: 'POST',
+            data: {name: name, id: room_id}
+
+        });
+        alert("This Room is Private!")
+        $('.privateButton').fadeOut(200);
+        $('.publicButton').fadeIn(200);
 
 
-            //  alert("Room Uploads Updated!!");
-            // $('#file_list').fadeOut(1000).fadeIn(1000);
+    })
+
+    //public room - private chat
+    $('.publicButton').on('click', function () {
+
+        var room_id = $(this).attr('room_id');
+        var name = $('#nameInput' + room_id).val();
+
+        req = $.ajax({
+            url: '/publicRoom',
+            type: 'POST',
+            data: {name: name, id: room_id}
+
+        });
+        alert("This Room is Public!")
+        $('.publicButton').fadeOut(200);
+        $('.privateButton').fadeIn(200);
 
 
-
-    //
-    // $('.uploadRoomFile').on('click',function () {
-    //
-    //     var formData = new FormData();
-    //     formData.append('file', $('input[type=file]')[0].files[0]);
-    //
-    //
-    //     req = $.ajax({
-    //             url: '/uploadRoomFile',
-    //             type: 'POST',
-    //             data: {file_data: formData}
-    //     });
-    //         alert("uploaded!");
-    //
-    //
-    //
-    // })
-
-    // $('form').on('submit', function(event) {
-    //
-	// 	$.ajax({
-	// 		data : {
-	// 			name : $('#nameInput').val(),
-	// 			email : $('#emailInput').val()
-	// 		},
-	// 		type : 'POST',
-	// 		url : '/process'
-	// 	})
-	// 	.done(function(data) {
-    //
-	// 		if (data.error) {
-	// 			$('#errorAlert').text(data.error).show();
-	// 			$('#successAlert').hide();
-	// 		}
-	// 		else {
-	// 			$('#successAlert').text(data.name).show();
-	// 			$('#errorAlert').hide();
-	// 		}
-    //
-	// 	});
-    //
-	// 	event.preventDefault();
-    //
-	// });
-    //
-    // $('.setProgram').on('click',function () {
-    //
-    //     var program_id = $(this).attr('.program_id');
-    //
-    //         alert(program_id);
-    //
-    // })
-
-
-
-
+    })
 
 
 });
+
+
+//
+//    $('#fade').css('background-color', '#E46D4E');
+//    $('#fade').css('color', 'white');
+//
+//    $('#fade').fadeOut(500);
+//    $('#fade').fadeIn(500);
+//    $('#fade').fadeOut(500);
+//
+//    $('#fade2').css('background-color', '#E46D4E');
+//    $('#fade2').css('color', 'white');
+//
+//
+// $('#fade').on('click', function() {
+//     $('#fade').fadeOut(1000);
+//     $('#fade').fadeIn(1000);
+// });
+//
+// $('#send_message').on('click', function() {
+//     $('#fade2').fadeIn(500);
+//     $('#fade2').fadeOut(500);
+//     $('#fade2').fadeIn(500);
+
+// });
+
+
+//
+//
+//     req = $.ajax({
+//         url: '/refreshRoomUploads',
+//         type: 'POST',
+//         data: {name: room_name}
+//
+//     });
+//
+//     req.done(function(data) {
+//
+//
+//
+//      alert("Room Uploads Updated!!");
+//     $('#file_list').fadeOut(1000).fadeIn(1000);
+//
+//
+// });
+
+
+//  alert("Room Uploads Updated!!");
+// $('#file_list').fadeOut(1000).fadeIn(1000);
+
+
+//
+// $('.uploadRoomFile').on('click',function () {
+//
+//     var formData = new FormData();
+//     formData.append('file', $('input[type=file]')[0].files[0]);
+//
+//
+//     req = $.ajax({
+//             url: '/uploadRoomFile',
+//             type: 'POST',
+//             data: {file_data: formData}
+//     });
+//         alert("uploaded!");
+//
+//
+//
+// })
+
+// $('form').on('submit', function(event) {
+//
+// 	$.ajax({
+// 		data : {
+// 			name : $('#nameInput').val(),
+// 			email : $('#emailInput').val()
+// 		},
+// 		type : 'POST',
+// 		url : '/process'
+// 	})
+// 	.done(function(data) {
+//
+// 		if (data.error) {
+// 			$('#errorAlert').text(data.error).show();
+// 			$('#successAlert').hide();
+// 		}
+// 		else {
+// 			$('#successAlert').text(data.name).show();
+// 			$('#errorAlert').hide();
+// 		}
+//
+// 	});
+//
+// 	event.preventDefault();
+//
+// });
+//
+// $('.setProgram').on('click',function () {
+//
+//     var program_id = $(this).attr('.program_id');
+//
+//         alert(program_id);
+//
+// })
