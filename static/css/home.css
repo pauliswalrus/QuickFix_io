@@ -2,6 +2,79 @@
 /* Author: Emma Hobden */
 
 /* ---------------------------------------------------- GENERAL ---------------------------------------------------- */
+body, html {
+    width: 100%;
+}
+
+.row {
+    width: 95% !important;
+    margin: 2.5% !important;
+    height: 400px;
+    text-align: center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    z-index: -1;
+}
+
+#section1_graphic {
+    width: 100%;
+    height: 100%;
+    background-image: url('../images/browse.jpg');
+    background-size: cover;
+    background-clip: content-box;
+
+}
+
+#section2_graphic {
+    width: 100%;
+    height: 100%;
+    background-image: url('../images/comForums.png');
+    background-size: cover;
+}
+
+.sectionText {
+    height: 200px;
+    margin-bottom: 100px;
+    margin-top: 100px;
+    color: #395065;
+}
+
+.sectionText:hover {
+    color: slategrey;
+}
+
+.no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.col,
+[class*="col-"] {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* Create columns that float next to each other */
@@ -136,7 +209,7 @@
 /*!* Styles right column - current date and time *!*/
 /*#right_column {*/
 /*    width: 35%;*/
-/*    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+/*    ox-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);b*/
 /*    padding: 15px;*/
 /*    overflow-y: scroll;*/
 /*    float: right;*/

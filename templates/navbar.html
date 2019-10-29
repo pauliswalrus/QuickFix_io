@@ -21,12 +21,18 @@
         </span>
 
         <div id="menu" style="display:none">
-            <a href="{{ url_for('allrooms') }}">Open Tutor Rooms (both)</a>
-            <a href="{{ url_for('allstudentposts') }}">Student Questions (tutors only)</a>
+
+            <a href="{{ url_for('allrooms') }}">Find a Tutor</a>
+            <a href="{{ url_for('allstudentposts') }}">Community Forums</a>
+
             <hr>
+
+            <a href="{{ url_for('all_users') }}">APPLY TO BE A TUTOR</a>
+            <a href="{{ url_for('all_users') }}">CHECK APP STATUS</a>
+
+            <hr>
+
             <a href="{{ url_for('profile') }}">Settings</a>
-            <a href="{{ url_for('all_users') }}">All Users (temp)</a>
-            <hr>
             <a href="#">Contact</a>
             <a href="{{ url_for('logout') }}">Logout</a>
         </div>
