@@ -642,8 +642,8 @@ def programCourses():
 
     # program = Program.query.filter_by(program_name=program_name).first()
 
-    program_courses = Course.query.all()
-    course_list = [(k.course_id, k.course_name) for k in program_courses]
+    program_courses = ProgramCourse.query.all()
+    course_list = [(k.program_course_id, k.courseName) for k in program_courses]
 
     form = CourseForm()
 
@@ -656,10 +656,10 @@ def programCourses():
 
         course_picked = form.course_options.data
 
-        this_course = Course.query.filter_by(course_id=course_picked).first()
+        this_course = ProgramCourse.query.filter_by(program_course_id=course_picked).first()
         this_user = User.query.filter_by(username=current_user.username).first()
-        user_course = UserCourses(user_id=this_user.id, course_name=this_course.course_name,
-                                    course_id=this_course.course_id)
+        user_course = UserCourses(user_id=this_user.id, course_name=this_course.courseName,
+                                    course_id=this_course.program_course_id, course_code=this_course.courseCode)
         db.session.add(user_course)
         db.session.commit()
 
