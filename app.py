@@ -620,6 +620,8 @@ def programCourses():
 
     this_tutor = Tutor.query.filter_by(user_id=this_user.id).first()
 
+    u_courses = UserCourses.query.filter_by(user_id=this_user.id).order_by(UserCourses.user_course_id.desc()).all()
+
     t_status = "not sure"
 
     if this_user.role == 'S':
@@ -648,7 +650,7 @@ def programCourses():
     form.course_options.choices = course_list
 
     if request.method == 'GET':
-        return render_template('programCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status)
+        return render_template('programCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses)
 
     if request.method == 'POST':
 
@@ -661,9 +663,9 @@ def programCourses():
         db.session.add(user_course)
         db.session.commit()
 
-        return redirect(url_for('profile'))
+        return redirect(url_for('programCourses'))
 
-    return render_template('programCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status)
+    return render_template('programCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses)
 
 
 # route for chat - displays public rooms and form to join(create rooms)

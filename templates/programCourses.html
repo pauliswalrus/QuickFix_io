@@ -3,69 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <title>Courses</title>
+
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
 </head>
 
 <body>
 
 {% extends "navbar.html" %}
 {% block content %}
-                <h4>Tutor Courses</h4>
-                {% for c in t_courses %}
-                <div id="tutorCourses">
-                {{ c.course_name }}
-                {% endfor %}
+{#                <h4>My Courses</h4>#}
+{#                {% for c in u_courses %}#}
+{#                <div id="tutorCourses">#}
+{#                {{ c.course_name }}#}
+{#                {% endfor %}#}
+
+                <h2>Pick Courses <a href="{{ url_for('profile') }}" >
+                    <button class="btn btn-primary warning ">Return To Profile</button>
+                </a></h2>
 
                  <form method="POST" action="">
-                  <h2>Pick Courses</h2>
                      {{ form.csrf_token }}
-                  {{ form.course_options  }}
-                     <input type="submit" class="btn btn-primary setProgram" value="Courses">
-              </form>
+                  {{ form.course_options(class_='form-control') }} <br>
+                     <input type="submit" class="btn btn-primary" value="Add Course">
+              </form> <br>
+
+            <div id="myCourses">
 
 
+                    <div class="table-responsive">
+                    <table class="table table-hover table-fixed">
+                        <thead><tr>
+                                <th class="col-sm-2">Course_ID</th>
+                                <th class="col-sm-3">Course Code</th>
+                                <th class="col-sm-6">Course Name</th>
+                        </tr></thead>
+
+                        {% for c in u_courses %}
+                            <tbody>
+                            <tr>
+                                <td>{{ c.course_id }}</td>
+                                <td>CODE123</td>
+                                <td>{{ c.course_name }}</td>
+                                <td><button class="btn btn-danger deleteUserCourse" course_id="{{ c.user_course_id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
+                            </tr>
+                            </tbody>
+                        {% endfor %}
+
+                    </table>
+
+                </div>
+
+                </div>
+{##}
+{#                 <form method="POST" action="">#}
+{#                  <h2>Pick Courses</h2>#}
+{#                     {{ form.csrf_token }}#}
+{#                  {{ form.course_options(class_='form-control') }} <br>#}
+{#                     <input type="submit" class="btn btn-primary" value="Add Course">#}
+{#              </form><br>#}
+{#                <a href="{{ url_for('profile') }}" >#}
+{#                    <button class="btn btn-primary warning ">Return To Profile</button>#}
+{#                </a>#}
+{##}
 
 {% endblock %}
 </body>
 
-<script charset="utf-8" type="text/javascript">
-
-$(function() {
-
-    // jQuery selection for the 2 select boxes
-    var dropdown = {
-        state: $('#select_state'),
-        county: $('#select_county')
-    };
-
-    // call to update on load
-    updateCounties();
-
-    // function to call XHR and update county dropdown
-    function updateCounties() {
-        var send = {
-            state: dropdown.state.val()
-        };
-        dropdown.county.attr('disabled', 'disabled');
-        dropdown.county.empty();
-        $.getJSON("{{ url_for('_get_counties') }}", send, function(data) {
-            data.forEach(function(item) {
-                dropdown.county.append(
-                    $('<option>', {
-                        value: item[0],
-                        text: item[1]
-                    })
-                );
-            });
-            dropdown.county.removeAttr('disabled');
-        });
-    }
-
-    // event listener to state dropdown change
-    dropdown.state.on('change', function() {
-        updateCounties();
-    });
-
-});
-
-</script>
 </html>
