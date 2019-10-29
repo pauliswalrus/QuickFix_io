@@ -52,9 +52,13 @@
 {% extends "navbar.html" %}
 {% block content %}
 
+    <div class="row row_mainTitle">
+        <h1>Edit Your Information</h1>
+    </div>
+
 
     <!-- ---------------------------------- Row 1 - Profile pic, upload new pic  ---------------------------------- -->
-    <div class="row">
+    <div class="row row1">
 
         <!-- Column 1 - Empty Col -->
         <div class="col-sm-4"></div>
@@ -63,7 +67,7 @@
         <div class="col-sm-4">
 
             <div id="userPhoto">
-                <img src="{{ url_for('uploaded_file', filename=user_object.user_photo) }}" height="250px" width="250px" class="profilePic"/>
+                <img src="{{ url_for('uploaded_file', filename=user_object.user_photo) }}" height="240px" width="240px" class="profilePic"/>
             </div>
 
         </div> <!-- end column 2 -->
@@ -79,7 +83,7 @@
 
     </div> <!-- end row 1 - profile pic -->
 
-
+    <br>
 
     <!-- ---------------------------------------- Row 2 - User Information  ---------------------------------------- -->
     <div class="row row2">
@@ -116,10 +120,6 @@
 
 
 
-
-
-
-
     <!-- ---------------------------------- Row 4 - Toggle Online Status (Tutor Only) ------------------------------ -->
     <div class="row">
         <div class="col-sm-12">
@@ -132,7 +132,7 @@
                 <form method="post" enctype="multipart/form-data">
                     <fieldset>
                         {{ ts_form.hidden_tag() }}
-                        {{ ts_form.status }}<br>
+                        {{ ts_form.status }}<br><br>
                         {{ ts_form.submit_button3(class_="btn btn-info") }}
                         {{ ts_form.csrf_token }}
                     </fieldset>
@@ -169,6 +169,12 @@
 
 
 
+
+
+
+
+
+
     <!-- ---------------------------------------------- Row 6 - Courses ------------------------------------------- -->
     <div class="row">
         <div class="col-sm-12">
@@ -177,23 +183,25 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-12">
+{#        <div class="col-sm-12">#}
 
                 <div id="myCourses">
 
 
                     <div class="table-responsive">
-                    <table class="table">
+                    <table class="table table-hover table-fixed">
                         <thead><tr>
-                                <th>Course_ID</th>
-                                <th>Course</th>
-                                <th>Delete</th>
+                                <th class="col-sm-2">Course_ID</th>
+                                <th class="col-sm-3">Course Code</th>
+                                <th class="col-sm-6">Course Name</th>
+                                <th class="col-sm-1">Delete</th>
                         </tr></thead>
 
                         {% for course in user_courses %}
                             <tbody>
                             <tr>
                                 <td>{{ course.course_id }}</td>
+                                <td>CODE123</td>
                                 <td>{{ course.course_name }}</td>
                                 <td><button class="btn btn-danger deleteUserCourse" course_id="{{ course.user_course_id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
                             </tr>
@@ -206,7 +214,7 @@
 
                 </div>
 
-        </div> <!-- end col -->
+{#        </div> <!-- end col -->#}
     </div><!-- end row 6 - courses -->
 
 
@@ -222,17 +230,17 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-12">
+{#        <div class="col-sm-12">#}
 
             <div id="myPosts">
 
                 <div class="table-responsive">
                     <table class="table">
                         <thead><tr>
-                                <th>Post</th>
-                                <th>Course</th>
-                                <th>Date</th>
-                                <th>Delete</th>
+                                <th class="col-sm-5">Post</th>
+                                <th class="col-sm-3">Course</th>
+                                <th class="col-sm-3">Date</th>
+                                <th class="col-sm-1">Delete</th>
                         </tr></thead>
 
                         {% for room in student_posts %}
@@ -249,9 +257,10 @@
                     </table>
 
                 </div><!-- end table responsiveness -->
+
             </div><!-- end div my posts -->
 
-        </div> <!-- end col -->
+{#        </div> <!-- end col -->#}
     </div><!-- end row 7 - posts -->
 
 
@@ -266,12 +275,14 @@
     <!-- ----------------------------------------- Row 8 - Rooms (Tutor Only) -------------------------------------- -->
     <div class="row tutorOnly">
         <div class="col-sm-12">
+            <div id="roomsHeading">
                 <p class="subheading">My Rooms <a href="{{ url_for('add_room') }}">Add New Room</a></p>
+            </div>
         </div>
     </div>
 
     <div class="row tutorOnly">
-        <div class="col-sm-12">
+{#        <div class="col-sm-12">#}
 
         <div id="roomsContent">
             <div id="myRooms">
@@ -279,12 +290,12 @@
                 <div class="table-responsive">
                     <table class="table">
                         <thead><tr>
-                            <th>Room</th>
-                            <th>Title</th>
-                            <th>Public</th>
-                            <th>Course</th>
-                            <th>Date</th>
-                            <th>Delete</th>
+                            <th class="col-sm-2">Room</th>
+                            <th class="col-sm-3">Title</th>
+                            <th class="col-sm-1">Public</th>
+                            <th class="col-sm-3">Course</th>
+                            <th class="col-sm-2">Date</th>
+                            <th class="col-sm-1">Delete</th>
                         </tr></thead>
 
                         {% for room in posts %}
@@ -305,7 +316,7 @@
 
                 </div><!-- end my rooms div -->
         </div>
-        </div> <!-- end col -->
+{#        </div> <!-- end col -->#}
     </div><!-- end row 8 - rooms -->
 
 
@@ -322,15 +333,15 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-12">
+{#        <div class="col-sm-12">#}
 
             <div id="userUploads">
 
                 <div class="table-responsive">
                     <table class="table">
                         <thead><tr>
-                            <th>File</th>
-                            <th>Delete</th>
+                            <th class="col-sm-11">File</th>
+                            <th class="col-sm-1">Delete</th>
                         </tr></thead>
 
                         {% for file in user_files %}
@@ -346,7 +357,7 @@
                 </div><!-- end table responsive -->
             </div><!-- end user Uploads Div -->
 
-        </div> <!-- end col -->
+{#        </div> <!-- end col -->#}
     </div><!-- end row 9 - uploads -->
 
 
