@@ -963,7 +963,7 @@ def download_cred(dl_name):
 
 ## admin portal functions
 
-# admin chatlog for each room
+# admin chatlog for each room admin portal
 @app.route('/chat_log/<int:room_id>', methods=['GET', 'POST'])
 def chat_log(room_id):
     if session["userRole"] != "A":
@@ -979,7 +979,7 @@ def chat_log(room_id):
                            message_object=message_object)
 
 
-# delete chat logs for room
+# delete chat logs for room admin portal
 @app.route('/deleteLogs', methods=['POST'])
 def deleteLogs():
     room = RoomPost.query.filter_by(id=request.form['id']).first()
@@ -991,7 +991,7 @@ def deleteLogs():
     return jsonify({'result': 'success'})
 
 
-# delete roomuploads for room
+# delete roomuploads for rooms used in admin
 @app.route('/deleteRoomUploads', methods=['POST'])
 def deleteRoomUploads():
     room = RoomPost.query.filter_by(id=request.form['id']).first()
@@ -1001,7 +1001,7 @@ def deleteRoomUploads():
 
     return jsonify({'result': 'success'})
 
-# update room
+# update room used in admin
 @app.route('/updateRoom', methods=['POST'])
 def updateRoom():
     room = RoomPost.query.filter_by(id=request.form['id']).first()
@@ -1016,6 +1016,7 @@ def updateRoom():
 
     return jsonify({'result': 'success', "room_name": room.room_title})
 
+#update roomprofile?
 @app.route('/updateRoomProfile', methods=['POST'])
 def updateRoomProfile():
     room = RoomPost.query.filter_by(id=request.form['id']).first()
@@ -1030,6 +1031,7 @@ def updateRoomProfile():
 
     return jsonify({'result': 'success'})
 
+#edit user email used in profile
 @app.route('/editUserProfile', methods=['POST'])
 def editUserProfile():
     user_edit = User.query.filter_by(id=request.form['id']).first()
@@ -1041,7 +1043,7 @@ def editUserProfile():
     return jsonify({'result': 'success'})
 
 
-# delete room
+# delete room admin portal
 @app.route('/deleteRoom', methods=['POST'])
 def deleteRoom():
     room = RoomPost.query.filter_by(id=request.form['id']).first()
@@ -1073,7 +1075,7 @@ def deleteStudentPost():
     return jsonify({'result': 'success'})
 
 
-# deletes student posts
+# deletes userupload used in profile
 @app.route('/deleteUserFile', methods=['POST'])
 def deleteUserFile():
     file = FileUpload.query.filter_by(username=current_user.username, file_name=request.form['id']).first()
@@ -1084,7 +1086,7 @@ def deleteUserFile():
     return jsonify({'result': 'success'})
 
 
-# deletes student posts
+# deletes user_course used in profile
 @app.route('/deleteUserCourse', methods=['POST'])
 def deleteUserCourse():
 
@@ -1098,7 +1100,7 @@ def deleteUserCourse():
 
     return jsonify({'result': 'success'})
 
-# deletes student posts
+# adds tutor_courses used in tutor_application
 @app.route('/addTutorCourse', methods=['POST'])
 def addTutorCourse():
 
@@ -1106,8 +1108,6 @@ def addTutorCourse():
     user_id = user.id
 
     this_course = Course.query.filter_by(course_name=request.form['course_name']).first()
-    #
-    # this_course = Course.query.filter_by(course_id=request.form['id']).first()
 
     tutor_course = TutorCourses(user_id=user_id, course_name=this_course.course_name,
                               course_id=this_course.course_id)
@@ -1116,7 +1116,7 @@ def addTutorCourse():
 
     return jsonify({'result': 'success'})
 
-# deletes student posts
+# deletes tutor_courses used in tutor application
 @app.route('/clearTutorCourses', methods=['POST'])
 def clearTutorCourses():
 
@@ -1129,7 +1129,7 @@ def clearTutorCourses():
     return jsonify({'result': 'success'})
 
 
-
+#edit users admin portal
 @app.route('/editUser', methods=['POST'])
 def editUser():
     user_edit = User.query.filter_by(id=request.form['id']).first()
@@ -1143,23 +1143,20 @@ def editUser():
 
     return jsonify({'result': 'success'})
 
-
+#delete user admin portal
 @app.route('/deleteUser', methods=['POST'])
 def deleteUser():
     user = User.query.filter_by(id=request.form['id']).first()
 
+    #deletes all trace of users
     db.session.query(RoomPost).filter_by(author=user.username).delete()
     db.session.commit()
-
     db.session.query(StudentPost).filter_by(author=user.username).delete()
     db.session.commit()
-
     db.session.query(PostComment).filter_by(comment_author=user.username).delete()
     db.session.commit()
-
     db.session.query(RoomComment).filter_by(comment_author=user.username).delete()
     db.session.commit()
-
     db.session.query(FileUpload).filter_by(username=user.username).delete()
     db.session.commit()
 
@@ -1339,6 +1336,7 @@ def close_room(data):
     print('Tutor ' + current_user.username + ' has closed Room: ' + room + '.')
 
 
+## CHANGE ME AT DEPLOY
 if __name__ == '__main__':
     socketio.run(app)
     # app.run()

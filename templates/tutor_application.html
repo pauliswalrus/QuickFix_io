@@ -26,11 +26,39 @@
 
         <div id="formTitle">Tutor Application</div>
 
-        <h4>Tutor Courses</h4>
-        {% for c in t_courses %}
-        <div id="tutorCourses">
-        {{ c.course_name }}
-        {% endfor %}
+{#        <h4>Tutor Courses</h4>#}
+{#        {% for c in t_courses %}#}
+{#        <div id="tutorCourses">#}
+{#        {{ c.course_name }}#}
+{#        {% endfor %}#}
+
+                    <div id="myCourses">
+
+
+                    <div class="table-responsive">
+                    <table class="table table-hover table-fixed">
+                        <thead><tr>
+                                <th class="col-sm-2">Course_ID</th>
+                                <th class="col-sm-3">Course Code</th>
+                                <th class="col-sm-6">Course Name</th>
+                        </tr></thead>
+
+                        {% for t in t_courses %}
+                            <tbody>
+                            <tr>
+                                <td>{{ t.course_id }}</td>
+                                <td>CODE123</td>
+                                <td>{{ t.course_name }}</td>
+                                <td><button class="btn btn-danger deleteUserCourse" course_id="{{ t.user_course_id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
+                            </tr>
+                            </tbody>
+                        {% endfor %}
+
+                    </table>
+
+                </div>
+
+                </div>
 
     </div>
         <form method="post" enctype="multipart/form-data">
