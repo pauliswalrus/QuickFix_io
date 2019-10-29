@@ -41,13 +41,14 @@
                                 <th class="col-sm-2">Course_ID</th>
                                 <th class="col-sm-3">Course Code</th>
                                 <th class="col-sm-6">Course Name</th>
+                                <ht class="col-sm-6">Delete</ht>
                         </tr></thead>
 
                         {% for t in t_courses %}
                             <tbody>
                             <tr>
                                 <td>{{ t.course_id }}</td>
-                                <td>CODE123</td>
+                                <td>{{ t.course_code }}</td>
                                 <td>{{ t.course_name }}</td>
                                 <td><button class="btn btn-danger deleteTutorCourse" course_id="{{ t.tutor_course_id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
                             </tr>

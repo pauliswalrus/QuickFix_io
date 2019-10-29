@@ -1121,10 +1121,10 @@ def addTutorCourse():
     user = User.query.filter_by(username=current_user.username).first()
     user_id = user.id
 
-    this_course = Course.query.filter_by(course_name=request.form['course_name']).first()
+    this_course = ProgramCourse.query.filter_by(courseName=request.form['course_name']).first()
 
-    tutor_course = TutorCourses(user_id=user_id, course_name=this_course.course_name,
-                              course_id=this_course.course_id)
+    tutor_course = TutorCourses(user_id=user_id, course_name=this_course.courseName,
+                              course_id=this_course.program_course_id, course_code=this_course.courseCode)
     db.session.add(tutor_course)
     db.session.commit()
 
