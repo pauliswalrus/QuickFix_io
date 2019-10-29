@@ -56,21 +56,26 @@
     <!-- ---------------------------------- Row 1 - Profile pic, upload new pic  ---------------------------------- -->
     <div class="row">
 
-        <!-- Column 1 - User Photo -->
-        <div class="col-sm-12">
+        <!-- Column 1 - Empty Col -->
+        <div class="col-sm-4"></div>
+
+        <!-- Column 2 - User Photo -->
+        <div class="col-sm-4">
 
             <div id="userPhoto">
-                <img src="{{ url_for('uploaded_file', filename=user_object.user_photo) }}" height="250px" width="250px"
-                     class="profilePic"/>
-            </div>
-            <div id="changePhoto">
-                <!-- Trigger/Open The Upload Modal -->
-                <button id="myBtn" class="myBtn btn btn-info uploadPhotoButton"><i
-                        class="glyphicon glyphicon-camera"></i> Upload New Photo
-                </button>
+                <img src="{{ url_for('uploaded_file', filename=user_object.user_photo) }}" height="250px" width="250px" class="profilePic"/>
             </div>
 
-        </div> <!-- end column 1 -->
+        </div> <!-- end column 2 -->
+
+        <!-- Column 3 - User Photo -->
+        <div class="col-sm-4 col_uploadBtn">
+
+            <div id="userPhotoUpload">
+                <button id="myBtn" class="myBtn uploadPhotoButton"><i class="glyphicon glyphicon-camera"></i></button>
+            </div>
+
+        </div> <!-- end column 3 -->
 
     </div> <!-- end row 1 - profile pic -->
 
@@ -121,6 +126,7 @@
 
             <div id="tutorStatusToggle">
                 <hr>
+
                 Status: <b>{{ status_string }}</b>
 
                 <form method="post" enctype="multipart/form-data">
@@ -145,7 +151,7 @@
     <!-- ---------------------------------------------- Row 5 - About Me ------------------------------------------- -->
     <div class="row">
         <div class="col-sm-12">
-            <p class="subheading">About Me <a href="{{ url_for('update_aboutme') }}">update</a></p>
+            <p class="subheading">About Me <a href="{{ url_for('update_aboutme') }}">Update</a></p>
         </div>
     </div>
 
@@ -166,7 +172,7 @@
     <!-- ---------------------------------------------- Row 6 - Courses ------------------------------------------- -->
     <div class="row">
         <div class="col-sm-12">
-            <p class="subheading">My Courses <a href="{{ url_for('programCourses') }}">update</a></p>
+            <p class="subheading">My Courses <a href="{{ url_for('programCourses') }}">Update</a></p>
         </div>
     </div>
 
@@ -238,9 +244,7 @@
     <!-- ----------------------------------------- Row 8 - Rooms (Tutor Only) -------------------------------------- -->
     <div class="row tutorOnly">
         <div class="col-sm-12">
-            <div id="roomsHeading">
                 <p class="subheading">My Rooms <a href="{{ url_for('add_room') }}">Add New Room</a></p>
-            </div>
         </div>
     </div>
 

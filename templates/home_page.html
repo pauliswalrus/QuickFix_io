@@ -58,18 +58,16 @@
         </div>
     </div>
 
-    <!-- Row 4 -  -->
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="section3_resources">
-                <h3>More Resources</h3>
-                <p>link</p>
-
-            </div>
-        </div>
-    </div>
-
-
+{#    <!-- Row 4 -  -->#}
+{#    <div class="row">#}
+{#        <div class="col-sm-12">#}
+{#            <div class="section3_resources">#}
+{#                <h3>More Resources</h3>#}
+{#                <p>link</p>#}
+{##}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
 
 
 
@@ -80,88 +78,90 @@
 
 
 
-    <div class="row">
-
-        <div class="column left">
-            <div>
-                <span id="currDate">{{ date_stamp }}</span>
-
-                <div id="onlineTutors">
-                    <h5 id="test">Current online tutors: </h5>
-
-                    {% for user in online_users %}
-                        <a href="{{ url_for('pub_profile', username=user.username) }}">{{ user.username }}</a><br>
-                    {% endfor %}
-                </div>
-
-                <hr>
-
-                <div id="roomPost">
-                    <a href="{{ url_for('add_room') }}">Create A New Room</a>
-                    <hr>
-                </div>
-
-                <div id="studentPost">
-                    <a href="{{ url_for('add_student_post') }}">Ask For Help</a>
-                    <hr>
-                </div>
-
-                <div id="tutorApply">
-                    <a href="{{ url_for('new_tutor') }}">Apply To Be A Tutor</a>
-                    <hr>
-                </div>
-
-                <div id="adminPortal">
-                    <a href="{{ url_for('admin') }}">Admin Portal</a>
-                    <hr>
-                </div>
-
-                <div id="checkApp"><a href="{{ url_for('check_application') }}">Check Application</a></div>
-
-            </div> <!-- end empty div -->
-        </div> <!-- end column left -->
 
 
-        <div class="column middle" id="tutorPosts">
-            <div class="cardContainer">
-                <h3>Available Tutors:</h3>
-                {% for room in offerhelp %}
-                    <div>
-                        <a href="{{ url_for('room', room_id=room.id) }}">
-                            <div id="postTypeTitle">{{ room.title }} - {{ room.room_title }}</div>
-                            <div id="postAuthorTime">
-                                by {{ room.author }} on {{ room.date_posted.strftime('%b %d, %Y') }}
-                                at {{ room.date_posted.strftime('%I' ':' '%M %p') }}
-                            </div>
-                        </a>
-                        <hr>
-                    </div>
-
-                {% endfor %}
-            </div>
-        </div>
-
-
-        <div class="column right" id="studentPosts">
-            <div class="cardContainer">
-                <h3>These Students Need Help:</h3>
-                {% for post in askforhelp %}
-                    <div>
-                        <a href="{{ url_for('studentpost', studentpost_id=post.id) }}">
-                            <div id="postTypeTitle">[{{ post.type|upper }}] {{ post.title }}</div>
-                            <div id="postAuthorTime">
-                                by {{ post.author }} on {{ post.date_posted.strftime('%b %d, %Y') }}
-                                at {{ post.date_posted.strftime('%I' ':' '%M %p') }}
-                            </div>
-                        </a>
-                        <hr>
-                    </div>
-
-                {% endfor %}
-            </div>  <!-- end card container -->
-        </div> <!-- end column right -->
-
-    </div> <!-- end row -->
+{#    <div class="row">#}
+{##}
+{#        <div class="column left">#}
+{#            <div>#}
+{#                <span id="currDate">{{ date_stamp }}</span>#}
+{##}
+{#                <div id="onlineTutors">#}
+{#                    <h5 id="test">Current online tutors: </h5>#}
+{##}
+{#                    {% for user in online_users %}#}
+{#                        <a href="{{ url_for('pub_profile', username=user.username) }}">{{ user.username }}</a><br>#}
+{#                    {% endfor %}#}
+{#                </div>#}
+{##}
+{#                <hr>#}
+{##}
+{#                <div id="roomPost">#}
+{#                    <a href="{{ url_for('add_room') }}">Create A New Room</a>#}
+{#                    <hr>#}
+{#                </div>#}
+{##}
+{#                <div id="studentPost">#}
+{#                    <a href="{{ url_for('add_student_post') }}">Ask For Help</a>#}
+{#                    <hr>#}
+{#                </div>#}
+{##}
+{#                <div id="tutorApply">#}
+{#                    <a href="{{ url_for('new_tutor') }}">Apply To Be A Tutor</a>#}
+{#                    <hr>#}
+{#                </div>#}
+{##}
+{#                <div id="adminPortal">#}
+{#                    <a href="{{ url_for('admin') }}">Admin Portal</a>#}
+{#                    <hr>#}
+{#                </div>#}
+{##}
+{#                <div id="checkApp"><a href="{{ url_for('check_application') }}">Check Application</a></div>#}
+{##}
+{#            </div> <!-- end empty div -->#}
+{#        </div> <!-- end column left -->#}
+{##}
+{##}
+{#        <div class="column middle" id="tutorPosts">#}
+{#            <div class="cardContainer">#}
+{#                <h3>Available Tutors:</h3>#}
+{#                {% for room in offerhelp %}#}
+{#                    <div>#}
+{#                        <a href="{{ url_for('room', room_id=room.id) }}">#}
+{#                            <div id="postTypeTitle">{{ room.title }} - {{ room.room_title }}</div>#}
+{#                            <div id="postAuthorTime">#}
+{#                                by {{ room.author }} on {{ room.date_posted.strftime('%b %d, %Y') }}#}
+{#                                at {{ room.date_posted.strftime('%I' ':' '%M %p') }}#}
+{#                            </div>#}
+{#                        </a>#}
+{#                        <hr>#}
+{#                    </div>#}
+{##}
+{#                {% endfor %}#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{##}
+{#        <div class="column right" id="studentPosts">#}
+{#            <div class="cardContainer">#}
+{#                <h3>These Students Need Help:</h3>#}
+{#                {% for post in askforhelp %}#}
+{#                    <div>#}
+{#                        <a href="{{ url_for('studentpost', studentpost_id=post.id) }}">#}
+{#                            <div id="postTypeTitle">[{{ post.type|upper }}] {{ post.title }}</div>#}
+{#                            <div id="postAuthorTime">#}
+{#                                by {{ post.author }} on {{ post.date_posted.strftime('%b %d, %Y') }}#}
+{#                                at {{ post.date_posted.strftime('%I' ':' '%M %p') }}#}
+{#                            </div>#}
+{#                        </a>#}
+{#                        <hr>#}
+{#                    </div>#}
+{##}
+{#                {% endfor %}#}
+{#            </div>  <!-- end card container -->#}
+{#        </div> <!-- end column right -->#}
+{##}
+{#    </div> <!-- end row -->#}
 
 
     <script>

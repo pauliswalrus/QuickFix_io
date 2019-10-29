@@ -1,5 +1,7 @@
 /* Defines the style for navbar.html */
 
+
+
 /* Styles the QuickFix written logo */
 .logo {
   font-family: 'Amatic SC', cursive;
@@ -20,7 +22,7 @@
   height: 80px;
   background-color: slategrey;
   top:0;
-
+  z-index: 5;
 }
 
 /* Styles links in nav bar */
@@ -89,9 +91,11 @@
 #menu {
   display: none;
   position: absolute;
-  top: 80px;
-  width: 375px;
   height: 100%;
+  bottom: 0;
+  top: 80px;
+  left: 0;
+  width: 375px;
   background-color: #e4eaf0;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.4);
   color: #395065;
