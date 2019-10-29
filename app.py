@@ -853,6 +853,8 @@ def pub_profile(username):
 
     this_user = User.query.filter_by(username=current_user.username).first()
 
+    user_courses = UserCourses.query.filter_by(user_id=this_user.id).all()
+
     image_form = ImageUploadForm()
 
     if image_form.validate_on_submit():
@@ -895,7 +897,7 @@ def pub_profile(username):
     return render_template('pub_profile.html', thisUser=thisUser, username=username, firstname=firstname,
                            lastname=lastname, email=email, status_string=status_string, posts=posts,
                            role_name=role_name, about_me=about_me, image_form=image_form, user_object=user_object, user_files=user_files,
-                           this_user=this_user, student_posts=student_posts)
+                           this_user=this_user, student_posts=student_posts, user_courses=user_courses)
 
 
 # gets profile pics

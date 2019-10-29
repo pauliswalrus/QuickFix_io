@@ -52,9 +52,13 @@
 {% extends "navbar.html" %}
 {% block content %}
 
+    <div class="row row_mainTitle">
+        <h1>Edit Your Information</h1>
+    </div>
+
 
     <!-- ---------------------------------- Row 1 - Profile pic, upload new pic  ---------------------------------- -->
-    <div class="row">
+    <div class="row row1">
 
         <!-- Column 1 - Empty Col -->
         <div class="col-sm-4"></div>
@@ -63,7 +67,7 @@
         <div class="col-sm-4">
 
             <div id="userPhoto">
-                <img src="{{ url_for('uploaded_file', filename=user_object.user_photo) }}" height="250px" width="250px" class="profilePic"/>
+                <img src="{{ url_for('uploaded_file', filename=user_object.user_photo) }}" height="240px" width="240px" class="profilePic"/>
             </div>
 
         </div> <!-- end column 2 -->
@@ -79,7 +83,7 @@
 
     </div> <!-- end row 1 - profile pic -->
 
-
+    <br>
 
     <!-- ---------------------------------------- Row 2 - User Information  ---------------------------------------- -->
     <div class="row row2">
@@ -116,10 +120,6 @@
 
 
 
-
-
-
-
     <!-- ---------------------------------- Row 4 - Toggle Online Status (Tutor Only) ------------------------------ -->
     <div class="row">
         <div class="col-sm-12">
@@ -132,7 +132,7 @@
                 <form method="post" enctype="multipart/form-data">
                     <fieldset>
                         {{ ts_form.hidden_tag() }}
-                        {{ ts_form.status }}<br>
+                        {{ ts_form.status }}<br><br>
                         {{ ts_form.submit_button3(class_="btn btn-info") }}
                         {{ ts_form.csrf_token }}
                     </fieldset>
@@ -169,6 +169,12 @@
 
 
 
+
+
+
+
+
+
     <!-- ---------------------------------------------- Row 6 - Courses ------------------------------------------- -->
     <div class="row">
         <div class="col-sm-12">
@@ -177,25 +183,27 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-12">
+{#        <div class="col-sm-12">#}
 
                 <div id="myCourses">
 
 
                     <div class="table-responsive">
-                    <table class="table">
+                    <table class="table table-hover table-fixed">
                         <thead><tr>
-                                <th class="col-2">Course_ID</th>
-                                <th class="col-8">Course</th>
-                                <th class="col-2">Delete</th>
+                                <th class="col-sm-2">Course_ID</th>
+                                <th class="col-sm-3">Course Code</th>
+                                <th class="col-sm-6">Course Name</th>
+                                <th class="col-sm-1">Delete</th>
                         </tr></thead>
 
                         {% for course in user_courses %}
                             <tbody>
                             <tr>
-                                <td class="col-2">{{ course.course_id }}</td>
-                                <td class="col-8">{{ course.course_name }}</td>
-                                <td class="col-2"><button class="btn btn-danger deleteUserCourse" course_id="{{ course.user_course_id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
+                                <td>{{ course.course_id }}</td>
+                                <td>CODE123</td>
+                                <td>{{ course.course_name }}</td>
+                                <td><button class="btn btn-danger deleteUserCourse" course_id="{{ course.user_course_id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
                             </tr>
                             </tbody>
                         {% endfor %}
@@ -206,7 +214,7 @@
 
                 </div>
 
-        </div> <!-- end col -->
+{#        </div> <!-- end col -->#}
     </div><!-- end row 6 - courses -->
 
 
@@ -222,26 +230,26 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-12">
+{#        <div class="col-sm-12">#}
 
             <div id="myPosts">
 
                 <div class="table-responsive">
                     <table class="table">
                         <thead><tr>
-                                <th class="col-4">Post</th>
-                                <th class="col-4">Course</th>
-                                <th class="col-2">Date</th>
-                                <th class="col-2">Delete</th>
+                                <th class="col-sm-5">Post</th>
+                                <th class="col-sm-3">Course</th>
+                                <th class="col-sm-3">Date</th>
+                                <th class="col-sm-1">Delete</th>
                         </tr></thead>
 
                         {% for room in student_posts %}
                             <tbody>
                             <tr>
-                                <td class="col-4"><a href="{{ url_for('studentpost', studentpost_id=room.id) }}">{{ room.title }}</a></td>
-                                <td class="col-4">{{ room.post_course }}</td>
-                                <td class="col-2">{{ room.date_posted.strftime('%B %d, %Y') }}</td>
-                                <td class="col-2"><button class="btn btn-danger deleteStudentPost" room_id="{{ room.id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
+                                <td><a href="{{ url_for('studentpost', studentpost_id=room.id) }}">{{ room.title }}</a></td>
+                                <td>{{ room.post_course }}</td>
+                                <td>{{ room.date_posted.strftime('%B %d, %Y') }}</td>
+                                <td><button class="btn btn-danger deleteStudentPost" room_id="{{ room.id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
                             </tr>
                             </tbody>
                         {% endfor %}
@@ -249,9 +257,10 @@
                     </table>
 
                 </div><!-- end table responsiveness -->
+
             </div><!-- end div my posts -->
 
-        </div> <!-- end col -->
+{#        </div> <!-- end col -->#}
     </div><!-- end row 7 - posts -->
 
 
@@ -273,7 +282,7 @@
     </div>
 
     <div class="row tutorOnly">
-        <div class="col-sm-12">
+{#        <div class="col-sm-12">#}
 
         <div id="roomsContent">
             <div id="myRooms">
@@ -281,12 +290,12 @@
                 <div class="table-responsive">
                     <table class="table">
                         <thead><tr>
-                            <th>Room</th>
-                            <th>Title</th>
-                            <th>Public</th>
-                            <th>Course</th>
-                            <th>Date</th>
-                            <th>Delete</th>
+                            <th class="col-sm-2">Room</th>
+                            <th class="col-sm-3">Title</th>
+                            <th class="col-sm-1">Public</th>
+                            <th class="col-sm-3">Course</th>
+                            <th class="col-sm-2">Date</th>
+                            <th class="col-sm-1">Delete</th>
                         </tr></thead>
 
                         {% for room in posts %}
@@ -307,7 +316,7 @@
 
                 </div><!-- end my rooms div -->
         </div>
-        </div> <!-- end col -->
+{#        </div> <!-- end col -->#}
     </div><!-- end row 8 - rooms -->
 
 
@@ -324,15 +333,15 @@
     </div>
 
     <div class="row">
-        <div class="col-sm-12">
+{#        <div class="col-sm-12">#}
 
             <div id="userUploads">
 
                 <div class="table-responsive">
                     <table class="table">
                         <thead><tr>
-                            <th>File</th>
-                            <th>Delete</th>
+                            <th class="col-sm-11">File</th>
+                            <th class="col-sm-1">Delete</th>
                         </tr></thead>
 
                         {% for file in user_files %}
@@ -348,7 +357,7 @@
                 </div><!-- end table responsive -->
             </div><!-- end user Uploads Div -->
 
-        </div> <!-- end col -->
+{#        </div> <!-- end col -->#}
     </div><!-- end row 9 - uploads -->
 
 

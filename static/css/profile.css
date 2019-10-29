@@ -4,13 +4,33 @@
     width: 60% !important;
     margin: 10px 20% 10px 20% !important;
     max-height: 300px;
+    /*overflow-y: scroll;*/
+    /*overflow-x: scroll;*/
+}
+.row_mainTitle{
+    color: slategray;
+    text-align: center;
+}
+
+
+.table-responsive {
+    /*border: 1px solid lightslategray;*/
+    width: 98% !important;
+    margin: 10px 1% 10px 1% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    max-height: 300px;
     overflow-y: scroll;
     overflow-x: scroll;
 }
 
+/* Profile Pic */
+.row1 {
+    padding-bottom: 20px;
+}
+
 /* Styles the 2nd row in bootstrap grid - holds user info */
 .row2 {
-
 }
 
 /* Styles the 3rd row in bootstrap grid - hold email */
@@ -107,6 +127,7 @@
 
 /* Styles sub headings */
 .subheading {
+    width: 100%;
     color: lightslategray;
     font-size: 2em;
     border-bottom: 2px solid lightslategray;

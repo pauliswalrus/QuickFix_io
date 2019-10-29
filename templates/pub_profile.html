@@ -6,178 +6,255 @@
     <meta charset="UTF-8">
     <title>Profile Page</title>
 
-    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/pub_profile.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pub_profile.css') }}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
 </head>
 
-{#    <script type="text/javascript">#}
-{#    document.addEventListener('DOMContentLoaded', () => {#}
-{#        var online_status = {{ status }}#}
-{##}
-{#       if (online_status==1) {#}
-{##}
-{#           document.querySelector('#online_stat').innerHTML = "Online"#}
-{##}
-{#       }#}
-{#       else {#}
-{##}
-{#           document.querySelector('#online_stat').innerHTML = "Offline"#}
-{#       }#}
-{##}
-{##}
-{#       document.querySelector('changeStatus').onclick = () => {#}
-{##}
-{#       }#}
-{#    })#}
-{#    </script>#}
 <body>
 
 {% extends "navbar.html" %}
 {% block content %}
-{#    <div class="navbar">#}
-{#        <a class="logo" a href="#">Home</a>#}
-{#        <a href="{{ url_for('profile') }}">{{ thisUser }}</a>#}
-{#        <a href="#">Forums</a>#}
-{#        <a href="{{ url_for('chat') }}" >Chat</a>#}
-{#        <a href="{{ url_for('all_users') }}">Users</a>#}
-{#        <a href="{{ url_for('logout') }}"> Logout </a>#}
-{#    </div>#}
 
     <div class="row">
-    <div class="column left">
 
-        <div>
-
-            <img src="{{ url_for('uploaded_file', filename=user_object.user_photo) }}" height="250px" width="250px"
-                 class="profilePic"/>
-
-            <br>
-
+        <!-- Column 1 - User Photo, User Info -->
+        <div class="col-sm-4 col1_userInfo">
+            <br><img src="{{ url_for('uploaded_file', filename=user_object.user_photo) }}" height="240px" width="240px" class="profilePic"/><br>
             <div id="mUsername">{{ username }}</div>
 
             <hr>
 
             <div id="mFirstLast">{{ firstname }} {{ lastname }}</div>
-
             <div id="mRole">Role: {{ role_name }}</div>
-
             <div id="mEmail">Email: {{ email }}</div>
-
-            <div id="mCredits">Credits: 0</div>
-
-            <hr>
-
-
         </div>
 
 
-    </div>
+        <!-- Column 2 - User About, Courses, Posts, Rooms -->
+        <div class="col-sm-8">
 
-    <div class="column middle">
-
-        <div class="cardContainer">
+        <div id="col2_userInfo">
 
             <div id="aboutMe">
-                <p class="subheading">About Me</p>
-                <p>
-                    {{ about_me }}
-                </p>
-            </div>
+                    <p class="subheading">About</p>
+                    <p>{{ about_me }}</p>
+                </div>
 
 
-            <div id="myCourses">
-                <p class="subheading">{{ username }}'s Courses</p>
-                <p>• Lorem ipsum dolor sit amet, consectetur adipiscing elit<br>
-                    • Nullam non ex quis massa cursus dictum eu eget leo. <br>
-                    • Pellentesque nulla eratpellentesque ut tortor vel <br>
-                    • malesuada vulputate tellus. Vivamus <br>
-                    • laoreet vestibulum velit, at venenatis mauris mollis
-                </p>
-            </div>
+                <div id="myCourses">
+                    <p class="subheading">Courses</p>
 
-        </div>
+                    <div class="table-responsive">
+                    <table class="table table-hover table-fixed">
+                        <thead><tr>
+                                <th>Course_ID</th>
+                                <th>Course Code</th>
+                                <th>Course Name</th>
+                        </tr></thead>
 
-    </div>
+                        {% for course in user_courses %}
+                            <tbody>
+                            <tr>
+                                <td>{{ course.course_id }}</td>
+                                <td>CODE123</td>
+                                <td>{{ course.course_name }}</td>
+                            </tr>
+                            </tbody>
+                        {% endfor %}
 
-    <div class="column right">
+                    </table>
 
-        <div class="cardContainer">
+                </div>
+
+                </div>
+
 
             <div id="studentPublic">
-            <p class="subheading">{{ username }}'s Posts</p>
-
-            {% for room in student_posts %}
-                <div id="linkType"> <a href="{{ url_for('studentpost', studentpost_id=room.id) }}">
-                    <h5>[{{ room.type|upper }}] {{ room.title }} - {{ room.date_posted.strftime('%B %d, %Y') }}</h5>
-                </a></div>
-            {% endfor %}
-
-            </div>
-
-             <div id="tutorPublic">
-            <p class="subheading">{{ username }}'s Rooms</p>
-
-            {% for room in posts %}
-                <div id="linkType"> <a href="{{ url_for('room', room_id=room.id) }}">
-                    <h5>[{{ room.type|upper }}] {{ room.title }} - {{ room.date_posted.strftime('%B %d, %Y') }}</h5>
-                </a></div>
-            {% endfor %}
-
-            </div>
+                    <p class="subheading">Posts</p>
 
 
+                    <div class="table-responsive">
+                    <table class="table">
+                        <thead><tr>
+                                <th>Post</th>
+                                <th>Course</th>
+                                <th>Date</th>
+                        </tr></thead>
 
-            <div id="userUploads">
-                <p class="subheading">My Uploads</p>
+                        {% for room in student_posts %}
+                            <tbody>
+                            <tr>
+                                <td><a href="{{ url_for('studentpost', studentpost_id=room.id) }}">{{ room.title }}</a></td>
+                                <td>{{ room.post_course }}</td>
+                                <td>{{ room.date_posted.strftime('%B %d, %Y') }}</td>
+                            </tr>
+                            </tbody>
+                        {% endfor %}
 
-                {% for file in user_files %}
-                    <a href="{{ url_for('download', dl_name=file.file_name) }}">
-                        <h5>{{ file.file_name }} </h5>
-                    </a>
-                {% endfor %}
-            </div><!-- End User Uploads Div -->
+                    </table>
+
+                </div><!-- end table responsiveness -->
+
+
+
+
+
+{#                    {% for room in student_posts %}#}
+{#                        <div id="linkType"><a href="{{ url_for('studentpost', studentpost_id=room.id) }}">#}
+{#                            <h5>[{{ room.type|upper }}] {{ room.title }}#}
+{#                                - {{ room.date_posted.strftime('%B %d, %Y') }}</h5>#}
+{#                        </a></div>#}
+{#                    {% endfor %}#}
+
+                </div>
+
+
+
+
+
+
+
+            <div id="tutorPublic">
+                    <p class="subheading">Open Rooms</p>
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead><tr>
+                            <th class="col-sm-2">Room</th>
+                            <th class="col-sm-3">Title</th>
+                            <th class="col-sm-1">Public</th>
+                            <th class="col-sm-3">Course</th>
+                            <th class="col-sm-2">Date</th>
+                        </tr></thead>
+
+                        {% for room in posts %}
+                            <tbody>
+                            <tr>
+                                <td><a href="{{ url_for('room', room_id=room.id) }}">{{ room.room_title }}</a></td>
+                                <td>{{ room.title }}</td>
+                                <td>{{ room.visible }}</td>
+                                <td>{{ room.room_course }}</td>
+                                <td>{{ room.date_posted.strftime('%B %d, %Y') }}</td>
+                            </tr>
+                            </tbody>
+                        {% endfor %}
+
+                        </table>
+                    </div> <!-- end table responsive -->
+
+{#                    {% for room in posts %}#}
+{#                        <div id="linkType"><a href="{{ url_for('room', room_id=room.id) }}">#}
+{#                            <h5>[{{ room.type|upper }}] {{ room.title }}#}
+{#                                - {{ room.date_posted.strftime('%B %d, %Y') }}</h5>#}
+{#                        </a></div>#}
+{#                    {% endfor %}#}
+
+                </div>
 
         </div>
 
-    </div>
-
-</div>
+        </div> <!-- end col 2 -->
 
 
 
-{#    <div id="userInfo_bg">#}
-{#        <div id="userInfo">#}
-{#            <h1>{{ firstname }} {{ lastname }}'s Profile:</h1>#}
+
+{#        <div class="column left">#}
+{#            <div>#}
+{#                <img src="{{ url_for('uploaded_file', filename=user_object.user_photo) }}" height="240px" width="240px" class="profilePic"/>#}
+{#                <br>#}
+{#                <div id="mUsername">{{ username }}</div>#}
+{#                <hr>#}
+{#                <div id="mFirstLast">{{ firstname }} {{ lastname }}</div>#}
+{#                <div id="mRole">Role: {{ role_name }}</div>#}
+{#                <div id="mEmail">Email: {{ email }}</div>#}
+{#                <div id="mCredits">Credits: 0</div>#}
+{#                <hr>#}
+{#            </div>#}
+{#        </div><!-- end column left -->#}
 {##}
-{#            <h2>Username: {{ username }}</h2>#}
-{#            <h2>Email: {{ email }}</h2>#}
+{#        <div class="column middle">#}
+{#            <div class="cardContainer">#}
 {##}
-{#            <div id="online_stat"> </div>#}
-{#            <h3>Status: {{ status_string }} </h3>#}
+{#                <div id="aboutMe">#}
+{#                    <p class="subheading">About Me</p>#}
+{#                    <p>{{ about_me }}</p>#}
+{#                </div>#}
 {##}
-{#            <h3>Role : {{ role_name }}</h3>#}
-{#            <div id="profilePic"></div>#}
 {##}
-{#              {% for room in blog_posts %}#}
-{#                    <a href="{{ url_for('room', post_id=room.id) }}">#}
-{#                        <h5>{{ room.type|upper }} : {{ room.title }} - {{ room.subtitle }}</h5>#}
-{#                        By {{ room.author }} on {{ room.date_posted.strftime('%B %d, %Y') }} </a>#}
+{#                <div id="myCourses">#}
+{#                    <p class="subheading">{{ username }}'s Courses</p>#}
+{#                    <p>• Lorem ipsum dolor sit amet, consectetur adipiscing elit<br>#}
+{#                        • Nullam non ex quis massa cursus dictum eu eget leo. <br>#}
+{#                        • Pellentesque nulla eratpellentesque ut tortor vel <br>#}
+{#                        • malesuada vulputate tellus. Vivamus <br>#}
+{#                        • laoreet vestibulum velit, at venenatis mauris mollis#}
+{#                    </p>#}
+{#                </div>#}
 {##}
-{#            {% endfor %}#}
+{#            </div> <!-- end card container -->#}
 {##}
-{#        </div>#}
-{#    </div>#}
+{##}
+{#        </div> <!-- end column middle -->#}
+{##}
+{##}
+{#        <div class="column right">#}
+{##}
+{#            <div class="cardContainer">#}
+{##}
+{#                <div id="studentPublic">#}
+{#                    <p class="subheading">{{ username }}'s Posts</p>#}
+{##}
+{#                    {% for room in student_posts %}#}
+{#                        <div id="linkType"><a href="{{ url_for('studentpost', studentpost_id=room.id) }}">#}
+{#                            <h5>[{{ room.type|upper }}] {{ room.title }}#}
+{#                                - {{ room.date_posted.strftime('%B %d, %Y') }}</h5>#}
+{#                        </a></div>#}
+{#                    {% endfor %}#}
+{##}
+{#                </div>#}
+{##}
+{#                <div id="tutorPublic">#}
+{#                    <p class="subheading">{{ username }}'s Rooms</p>#}
+{##}
+{#                    {% for room in posts %}#}
+{#                        <div id="linkType"><a href="{{ url_for('room', room_id=room.id) }}">#}
+{#                            <h5>[{{ room.type|upper }}] {{ room.title }}#}
+{#                                - {{ room.date_posted.strftime('%B %d, %Y') }}</h5>#}
+{#                        </a></div>#}
+{#                    {% endfor %}#}
+{##}
+{#                </div>#}
+
+
+                {#            <div id="userUploads">#}
+                {#                <p class="subheading">My Uploads</p>#}
+                {##}
+                {#                {% for file in user_files %}#}
+                {#                    <a href="{{ url_for('download', dl_name=file.file_name) }}">#}
+                {#                        <h5>{{ file.file_name }} </h5>#}
+                {#                    </a>#}
+                {#                {% endfor %}#}
+                {#            </div><!-- End User Uploads Div -->#}
+
+            </div>
+
+
+
+
+
 
     <script>
-    let uRole = '{{ role_name }}';
+        let uRole = '{{ role_name }}';
 
         window.onload = function (event) {
 
-                document.getElementById('tutorPublic').style.display = "none";
-                document.getElementById('studentPublic').style.display = "none";
+            document.getElementById('tutorPublic').style.display = "none";
+            document.getElementById('studentPublic').style.display = "none";
 
             if (uRole == 'Student') {
                 document.getElementById('tutorPublic').style.display = "none";
@@ -193,7 +270,7 @@
             }
 
         }
-</script>
+    </script>
 
 {% endblock %}
 
