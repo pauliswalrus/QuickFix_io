@@ -327,6 +327,8 @@ $(document).ready(function () {
     })
 
 
+
+
     //delete chat logs
     $('.deleteLogs').on('click', function () {
 
@@ -450,6 +452,32 @@ $(document).ready(function () {
     // var program_id = $('.program_id option:selected').text();
 
     alert("program_id");
+
+    })
+
+
+
+
+
+
+
+    // for private profile page
+    //edit user
+    $('.editUserProfile').on('click', function () {
+
+        var user_id = $(this).attr('user_id');
+
+        var email = $('#email'+user_id).val();
+
+        req = $.ajax({
+            url: '/editUserProfile',
+            type: 'POST',
+            data: {email: email, id: user_id}
+
+        });
+
+        alert("Email Updated Successfully!");
+        location.reload();
 
     })
 

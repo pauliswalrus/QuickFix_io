@@ -123,7 +123,7 @@ class RoomJoin(FlaskForm):
 class TutorStatus(FlaskForm):
     """ Status"""
 
-    status = SelectField('Status', choices=[('0', 'Offline'), ('1', 'Online')])
+    status = SelectField('Status', choices=[('0', 'Offline'), ('1', 'Online'), ('2', 'Busy')])
     submit_button3 = SubmitField('Change Status')
 
 class ProgramForm(FlaskForm):

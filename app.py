@@ -740,6 +740,9 @@ def profile():
     # online status form
     ts_form = TutorStatus()
 
+    #sets status default index based on userstatus
+    ts_form.status.default = setdbstatus
+
     if ts_form.validate_on_submit():
         s1 = ts_form.status.data
         print(s1)
@@ -961,6 +964,16 @@ def updateRoomProfile():
     room.content = request.form['content']
     # room.date_posted = date_time = datetime.now()
     room.date_posted = datetime.now()
+
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+@app.route('/editUserProfile', methods=['POST'])
+def editUserProfile():
+    user_edit = User.query.filter_by(id=request.form['id']).first()
+
+    user_edit.email = request.form['email']
 
     db.session.commit()
 

@@ -23,15 +23,24 @@
         //hides online status toggle and info if user is a student
         let role = '{{ role_name }}';
 
+
         if (role === "Student") {
             document.getElementById('tutorStatusToggle').style.display = "none";
+            document.getElementById('roomsHeading').style.display = "none";
+            document.getElementById('roomsContent').style.display = "none";
+
+
+
             document.getElementById('tutorStatusHeader').style.display = "none";
+            //document.getElementsByClassName('tutorOnly').style.display = "none";
 
         } else if (role === "Admin") {
 
             document.getElementById('tutorStatusToggle').style.display = "none";
             document.getElementById('tutorStatusHeader').style.display = "none";
+            //document.getElementsByClassName('tutorOnly').style.display = "none";
         }
+
 
 
     })
@@ -43,539 +52,361 @@
 {% extends "navbar.html" %}
 {% block content %}
 
-{#<div class="navbar">#}
-{#    <a class="logo" a href="#">Home</a>#}
-{#    <a href="{{ url_for('profile') }}">{{ username }}</a>#}
-{#    <a href="#">Forums</a>#}
-{#    <a href="{{ url_for('chat') }}">Chat</a>#}
-{#    <a href="{{ url_for('all_users') }}">Users</a>#}
-{#    <a href="{{ url_for('logout') }}"> Logout </a>#}
-{#</div>#}
 
-<div id="leftSideBar"></div>
+    <!-- ---------------------------------- Row 1 - Profile pic, upload new pic  ---------------------------------- -->
+    <div class="row">
 
-<div class="row">
-    <div class="column left">
+        <!-- Column 1 - User Photo -->
+        <div class="col-sm-12">
 
-        <div>
+            <div id="userPhoto">
+                <img src="{{ url_for('uploaded_file', filename=user_object.user_photo) }}" height="250px" width="250px"
+                     class="profilePic"/>
+            </div>
+            <div id="changePhoto">
+                <!-- Trigger/Open The Upload Modal -->
+                <button id="myBtn" class="myBtn btn btn-info uploadPhotoButton"><i
+                        class="glyphicon glyphicon-camera"></i> Upload New Photo
+                </button>
+            </div>
 
-            <img src="{{ url_for('uploaded_file', filename=user_object.user_photo) }}" height="250px" width="250px"
-                 class="profilePic"/>
+        </div> <!-- end column 1 -->
 
-            <br>
+    </div> <!-- end row 1 - profile pic -->
 
-            <!-- Trigger/Open The Modal -->
-            <button id="myBtn" class="myBtn uploadPhotoButton">Change</button>
+
+
+    <!-- ---------------------------------------- Row 2 - User Information  ---------------------------------------- -->
+    <div class="row row2">
+
+        <!-- Column 1 - User Info -->
+        <div class="col-sm-6 row2col1">
+            <span class="userInfoTitles">Name</span><br>
+            <span class="userInfoTitles">Username</span><br>
+            <span class="userInfoTitles">Role</span>
+        </div>
+
+        <!-- Column 2 - User Info -->
+        <div class="col-sm-6">
+            <span class="userInfoData">{{ user_object.firstname }} {{ user_object.lastname }}</span><br>
+            <span class="userInfoData">{{ current_user.username }}</span><br>
+            <span class="userInfoData">{{ role_name }}</span>
+        </div>
+
+    </div>
+
+
+
+    <!-- -------------------------------------------- Row 3 - User Email ------------------------------------------- -->
+    <div class="row row3">
+        <div class="col-sm-12">
+            <span class="userInfoTitles">Email: </span>
+            <span class="userInfoData"><input type="text" class="emailChange" id="email{{ user_object.id }}" value="{{ user_object.email }}"></span>
+            <button class="btn btn-info editUserProfile" user_id="{{ user_object.id }}">Update</button>
             <br><br>
+            <a href="{{ url_for('pub_profile', username=user_object.username) }}">View My Public Profile</a>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <!-- ---------------------------------- Row 4 - Toggle Online Status (Tutor Only) ------------------------------ -->
+    <div class="row">
+        <div class="col-sm-12">
+
             <div id="tutorStatusToggle">
-                Status:
-
-                <b>{{ status_string }}</b>
-
+                <hr>
+                Status: <b>{{ status_string }}</b>
 
                 <form method="post" enctype="multipart/form-data">
                     <fieldset>
                         {{ ts_form.hidden_tag() }}
                         {{ ts_form.status }}<br>
-                        {{ ts_form.submit_button3 }}
+                        {{ ts_form.submit_button3(class_="btn btn-info") }}
                         {{ ts_form.csrf_token }}
                     </fieldset>
                 </form>
-            </div>
 
-            <hr>
-
-            <div id="mFirstLast">{{ user_object.firstname }} {{ user_object.lastname }}</div>
-
-            <div id="mRole">Role: {{ role_name }}</div>
-
-            <div id="mEmail">Email: {{ user_object.email }}</div>
-
-            <div id="mCredits">Credits: 0</div>
-
-            <hr>
-
-            <div>
-
-             <div id="roomPost">
-                    <a href="{{ url_for('add_room') }}">Create A New Room</a>
-                    <hr>
-                </div>
-
-                <div id="studentPost">
-                    <a href="{{ url_for('add_student_post') }}">Ask For Help</a>
-                    <hr>
-                </div>
-
-                <div id="tutorApply">
-                    <a href="{{ url_for('new_tutor') }}">Apply To Be A Tutor</a>
-                    <hr>
-                </div>
-
-                <div id="adminPortal">
-                    <a href="{{ url_for('admin') }}">Admin Portal</a>
-                    <hr>
-                </div>
-
-                <div id="checkApp"><a href="{{ url_for('check_application') }}">Check Application</a></div>
-
-
-            </div>
-
-            <div>
-                <a href="{{ url_for('pub_profile', username=user_object.username) }}">
-                View My Public Profile</a>
-            </div>
-
-{#            <div id="tutorStatusHeader">#}
-{#            <h2>Current Status : {{ status_string }} </h2>#}
-{#            </div>#}
-{##}
-
-
-
-            <!-- UPLOAD NEW PROFILE PIC Modal -->
-            <div id="myModal" class="modal">
-                <!-- Modal content -->
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h4>Upload A New Profile Photo</h4>
-                    <form method="post" enctype="multipart/form-data">
-                        {{ image_form.hidden_tag() }}
-                        {{ image_form.image(class_="chooseFile") }}<br>
-                        {{ image_form.submit_button1 }}
-                        {{ image_form.csrf_token }}
-                    </form>
-                </div>
-            </div> <!-- End Profile Pic Modal Div -->
+            </div> <!-- end tutor status toggle -->
         </div>
+    </div><!-- end row 4 - toggle status -->
 
 
+
+
+
+
+
+    <!-- ---------------------------------------------- Row 5 - About Me ------------------------------------------- -->
+    <div class="row">
+        <div class="col-sm-12">
+            <p class="subheading">About Me <a href="{{ url_for('update_aboutme') }}">update</a></p>
+        </div>
     </div>
-{##}
-{#    <div class="column middle">#}
-{#        <div class="cardContainer"></div>#}
-{#    </div>#}
 
-    <div class="column right">
-
-        <div class="cardContainer">
-
+    <div class="row">
+        <div class="col-sm-12">
 
             <div id="aboutMe">
-                <p class="subheading">About Me <a href="{{ url_for('update_aboutme') }}">update</a> </p>
-                <p>
-                      {{ about_me }}
-                </p>
+                <p>{{ about_me }}</p>
             </div>
 
-
-            <div id="myCourses">
-                <p class="subheading">My Courses <a href="{{ url_for('courses') }}">update</a></p>
-                <p>• Lorem ipsum dolor sit amet, consectetur adipiscing elit<br>
-                    • Nullam non ex quis massa cursus dictum eu eget leo. <br>
-                    • Pellentesque nulla eratpellentesque ut tortor vel <br>
-                    • malesuada vulputate tellus. Vivamus <br>
-                    • laoreet vestibulum velit, at venenatis mauris mollis
-                </p>
-            </div>
-
-{#            <p class="subheading">My Posts <a href="{{ url_for('add_room') }}">Add New Room</a></p>#}
-{##}
-{#            {% for room in room_posts %}#}
-{#                <a href="{{ url_for('room', room_id=room.id) }}">#}
-{#                    <p>[{{ room.type|upper }}] {{ room.title }} - {{ room.date_posted.strftime('%B %d, %Y') }}</p>#}
-{#                </a>#}
-{#            {% endfor %}#}
-
-
-             <div id="myPosts">
-            <p class="subheading">My Posts <a href="{{ url_for('add_student_post') }}">Add New Post</a></p>
-{##}
-{#            {% for room in student_posts %}#}
-{#                <div id="linkType"> <a href="{{ url_for('studentpost', studentpost_id=room.id) }}">#}
-{#                    <h5>[{{ room.type|upper }}] {{ room.title }} - {{ room.date_posted.strftime('%B %d, %Y') }}</h5>#}
-{#                </a></div>#}
-{#            {% endfor %}#}
-
-
-                    <div class="table-responsive">
-            <table class="table">
-                <thead><tr>
-                    <th>Post</th>
-                    <th>Date</th>
-                    <th>Delete</th>
-                </tr></thead>
-
-                {% for room in student_posts %}
-                    <tbody><tr>
-                        <td>
-                            <a href="{{ url_for('studentpost', studentpost_id=room.id) }}">{{ room.title }}</a>
-{#                            <a href="{{ url_for('pub_profile', username=user.username) }}">{{ user.id }}</a>#}
-                        </td>
-                        <td>{{ room.date_posted.strftime('%B %d, %Y') }}
-                        </td>
-                        <td>
-                            <button class="btn btn-danger deleteStudentPost" room_id="{{ room.id }}">
-                                <i class="glyphicon glyphicon-trash"></i>
-                            </button>
-                        </td>
-
-                    </tr></tbody>
-                {% endfor %}
-
-            </table>
-            </div><!-- Tutor Rooms Div -->
+        </div> <!-- end col -->
+    </div><!-- end row 5 - about me -->
 
 
 
 
 
-            </div>
-
-             <div id="myRooms">
-            <p class="subheading">My Rooms <a href="{{ url_for('add_room') }}">Add New Room</a></p>
-
-{#            {% for room in posts %}#}
-{#                <div id="linkType"> <a href="{{ url_for('room', room_id=room.id) }}">#}
-{#                    <h5>[{{ room.type|upper }}] {{ room.title }} - {{ room.date_posted.strftime('%B %d, %Y') }}</h5>#}
-{#                </a></div>#}
-{#            {% endfor %}#}
-{#                 #}
-                 <div class="table-responsive">
-            <table class="table">
-                <thead><tr>
-                    <th>Room</th>
-                    <th>Title</th>
-                    <th>Public</th>
-                    <th>Date</th>
-                    <th>Delete</th>
-                </tr></thead>
-
-                {% for room in posts %}
-                    <tbody><tr>
-                        <td>
-                            <a href="{{ url_for('room', room_id=room.id) }}">{{ room.room_title }}</a>
-{#                            <a href="{{ url_for('pub_profile', username=user.username) }}">{{ user.id }}</a>#}
-                        </td>
-                        <td>{{ room.title }}
-                        </td>
-                        <td>{{ room.visible }}
-                        </td>
-                        <td>{{ room.date_posted.strftime('%B %d, %Y') }}
-                        </td>
-                        <td>
-                            <button class="btn btn-danger deleteButton" room_id="{{ room.id }}">
-                                <i class="glyphicon glyphicon-trash"></i>
-                            </button>
-                        </td>
-
-                    </tr></tbody>
-                {% endfor %}
-
-            </table>
-            </div>
-
-             </div><!-- Tutor Rooms Div -->
-
-
-            <div id="userUploads">
-                <p class="subheading">My Uploads <button id="myBtn" class="myBtn uploadDocsButton">Upload More Documents</button></p>
-{#                <!-- Trigger/Open The Modal -->#}
-{#                {% for file in user_files %}#}
-{#                    <a href="{{ url_for('download', dl_name=file.file_name) }}">#}
-{#                        <h5>{{ file.file_name }} </h5>#}
-{#                    </a>#}
-{#                {% endfor %}#}
-
-
-
-            <div class="table-responsive">
-            <table class="table">
-                <thead><tr>
-                    <th>File</th>
-                    <th>Delete</th>
-                </tr></thead>
-
-                {% for file in user_files %}
-                    <tbody><tr>
-                        <td>
-                            <a href="{{ url_for('download', dl_name=file.file_name) }}">{{ file.file_name }}</a>
-{#                            <a href="{{ url_for('pub_profile', username=user.username) }}">{{ user.id }}</a>#}
-                        </td>
-                        <td>
-                            <button class="btn btn-danger deleteUserFile" file_id="{{ file.file_name }}">
-                                <i class="glyphicon glyphicon-trash"></i>
-                            </button>
-                        </td>
-
-                    </tr></tbody>
-                {% endfor %}
-
-            </table>
-            </div><!-- User Uploads Div -->
-            </div><!-- End User Uploads Div -->
-
-
-
-
-
-            <!-- UPLOAD NEW DOCS Modal -->
-            <div id="myModal2" class="modal">
-                <!-- Modal content -->
-                <div class="modal2-content">
-                    <span class="close">&times;</span>
-                    <h4>Upload A New File</h4>
-                    <form method="post" enctype="multipart/form-data">
-                        {{ file_form.hidden_tag() }}
-                        {{ file_form.file(class_="chooseFile") }}<br>
-                        {{ file_form.submit_button }}
-                        {{ file_form.csrf_token }}
-                    </form>
-                </div>
-            </div><!-- End Modal2 -->
-
+    <!-- ---------------------------------------------- Row 6 - Courses ------------------------------------------- -->
+    <div class="row">
+        <div class="col-sm-12">
+            <p class="subheading">My Courses <a href="{{ url_for('courses') }}">update</a></p>
         </div>
-
     </div>
 
-</div>
+    <div class="row">
+        <div class="col-sm-12">
+
+                <div id="myCourses">
+                    <p>• Lorem ipsum dolor sit amet, consectetur adipiscing elit<br>
+                        • Nullam non ex quis massa cursus dictum eu eget leo. <br>
+                        • Pellentesque nulla eratpellentesque ut tortor vel <br>
+                        • malesuada vulputate tellus. Vivamus <br>
+                        • laoreet vestibulum velit, at venenatis mauris mollis
+                    </p>
+                </div>
+
+        </div> <!-- end col -->
+    </div><!-- end row 6 - courses -->
 
 
-{#<div id="main-section">#}
-{##}
-{#    <!-- Left Column -->#}
-{#    <div id="left_column">#}
-{##}
-{#        <div class="container">#}
-{##}
-{#            <img src="{{ url_for('uploaded_file', filename=user_object.user_photo) }}" height="250px" width="250px"#}
-{#                 class="profilePic"/>#}
-{##}
-{#            <br>#}
-{##}
-{##}
-{#            <!-- Trigger/Open The Modal -->#}
-{#            <button id="myBtn" class="myBtn uploadPhotoButton">Change</button>#}
-{##}
-{#            <div id="mUsername">{{ user_object.username }}</div>#}
-{##}
-{##}
-{#            <hr>#}
-{##}
-{#            <div id="mFirstLast">{{ user_object.firstname }} {{ user_object.lastname }}</div>#}
-{##}
-{#            <div id="mRole">Role: {{ role_name }}</div>#}
-{##}
-{#            <div id="mEmail">Email: {{ user_object.email }}</div>#}
-{##}
-{#            <div id="mCredits">Credits: 0</div>#}
-{##}
-{#            <hr>#}
-{##}
-{##}
-{#            <!-- UPLOAD NEW PROFILE PIC Modal -->#}
-{#            <div id="myModal" class="modal">#}
-{#                <!-- Modal content -->#}
-{#                <div class="modal-content">#}
-{#                    <span class="close">&times;</span>#}
-{#                    <h4>Upload A New Profile Photo</h4>#}
-{#                    <form method="room" enctype="multipart/form-data">#}
-{#                        {{ image_form.hidden_tag() }}#}
-{#                        {{ image_form.image(class_="chooseFile") }}<br>#}
-{#                        {{ image_form.submit_button1 }}#}
-{#                        {{ image_form.csrf_token }}#}
-{#                    </form>#}
-{#                </div>#}
-{#            </div> <!-- End Profile Pic Modal Div -->#}
-{##}
-{##}
-{#        </div><!-- End container div -->#}
-{#    </div><!-- End Left Column -->#}
-{##}
-{##}
-{#    <!-- Middle Column -->#}
-{#    <div id="middle_column">#}
-{##}
-{#        <div class="container">#}
-{##}
-{#            <div id="aboutMe">#}
-{#                <p>About Me</p>#}
-{#                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non ex quis massa cursus dictum eu#}
-{#                    eget#}
-{#                    leo. Pellentesque nulla erat, pellentesque ut tortor vel, malesuada vulputate tellus. Vivamus#}
-{#                    laoreet#}
-{#                    vestibulum velit, at venenatis mauris mollis nec. Cras ut fringilla ligula. Phasellus blandit lectus#}
-{#                    non#}
-{#                    sem placerat, ac venenatis nunc vestibulum. Pellentesque efficitur, magna ac varius lobortis, diam#}
-{#                    lacus#}
-{#                    consectetur mauris, vitae luctus urna justo scelerisque eros. Pellentesque accumsan nisl et dui#}
-{#                    mollis#}
-{#                    feugiat.</p>#}
-{#            </div>#}
-{##}
-{#            <hr>#}
-{##}
-{#            <div id="myCourses">#}
-{#                <p>My Courses</p>#}
-{#                <p>• Lorem ipsum dolor sit amet, consectetur adipiscing elit<br>#}
-{#                    • Nullam non ex quis massa cursus dictum eu eget leo. <br>#}
-{#                    • Pellentesque nulla eratpellentesque ut tortor vel <br>#}
-{#                    • malesuada vulputate tellus. Vivamus <br>#}
-{#                    • laoreet vestibulum velit, at venenatis mauris mollis#}
-{#                </p>#}
-{#            </div>#}
-{##}
-{#        </div>#}
-{#    </div><!-- End Middle Column -->#}
-{##}
-{##}
-{#    <!-- Right Column -->#}
-{#    <div id="right_column" >#}
-{##}
-{#        <div class="container">#}
-{##}
-{#            <h4><a href="{{ url_for('add_post') }}">Add New Post</a></h4>#}
-{#            {% for room in blog_posts %}#}
-{#                <a href="{{ url_for('room', post_id=room.id) }}">#}
-{#                    <h5>{{ room.type|upper }} : {{ room.title }} - {{ room.subtitle }}</h5>#}
-{#                    By {{ room.author }} on {{ room.date_posted.strftime('%B %d, %Y') }} </a>#}
-{#            {% endfor %}#}
-{##}
-{#            <hr>#}
-{##}
-{##}
-{#            <div id="userUploads">#}
-{#                <h4 class="subHeading">Your Uploads: </h4>#}
-{#                <!-- Trigger/Open The Modal -->#}
-{#                <button id="myBtn" class="myBtn uploadDocsButton">Upload More Documents</button>#}
-{##}
-{#                {% for file in user_files %}#}
-{#                    <a href="{{ url_for('download', dl_name=file.file_name) }}">#}
-{#                        <h5>{{ file.file_name }} </h5>#}
-{#                    </a>#}
-{#                {% endfor %}#}
-{#            </div><!-- End User Uploads Div -->#}
-{##}
-{##}
-{#            <!-- UPLOAD NEW DOCS Modal -->#}
-{#            <div id="myModal2" class="modal">#}
-{#                <!-- Modal content -->#}
-{#                <div class="modal2-content">#}
-{#                    <span class="close">&times;</span>#}
-{#                    <h4>Upload A New File</h4>#}
-{#                    <form method="room" enctype="multipart/form-data">#}
-{#                        {{ file_form.hidden_tag() }}#}
-{#                        {{ file_form.file(class_="chooseFile") }}<br>#}
-{#                        {{ file_form.submit_button }}#}
-{#                        {{ file_form.csrf_token }}#}
-{#                    </form>#}
-{#                </div>#}
-{#            </div><!-- End Modal2 -->#}
-{##}
-{#        </div>#}
-{##}
-{#    </div><!-- End Right Column -->#}
-{##}
-{##}
-{#</div>#}
 
 
-{#<div id="userInfo_bg">#}
-{#    <div id="userInfo">#}
-{#        <h1>Hello {{ user_object.firstname }} {{ user_object.lastname }}</h1>#}
-{##}
-{#        <h2>Username: {{ user_object.username }}</h2>#}
-{#        <h2>Email: {{ user_object.email }}</h2>#}
-{##}
-{#        <h3>Credits: 0</h3>#}
-{#        <div id="online_stat"></div>#}
-{#        <h3>Status: {{ status_string }}#}
-{#            <button id="changeStatus">Button</button>#}
-{#        </h3>#}
-{##}
-{##}
-{#        <h3>Role: {{ role_name }}</h3>#}
-{##}
-{##}
-{#        <h4>Upload A New File</h4>#}
-{#        <form method="room" enctype="multipart/form-data">#}
-{#            {{ file_form.hidden_tag() }}#}
-{#            {{ file_form.file }}<br>#}
-{#            {{ file_form.submit_button }}#}
-{#            {{ file_form.csrf_token }}#}
-{#        </form>#}
-{##}
-{#        <h4>Your Files </h4>#}
-{#        {% for file in user_files %}#}
-{#            <a href="{{ url_for('download', dl_name=file.file_name) }}">#}
-{#                <h5>{{ file.file_name }} </h5></a>#}
-{##}
-{#        {% endfor %}#}
-{##}
-{#        <div id="profilePic">#}
-{#            <img src="{{ url_for('uploaded_file', filename=user_object.user_photo) }}" height="200px" width="200px"/>#}
-{#        </div>#}
-{##}
-{#            //<div id="profilePic"></div>#}
-{#        <img src="../static/images/womanWorking.jpg" width="100px" height="100px"/>#}
-{#        <img src="data:;base64,{{ image }}" width="400px" height="400px"/>#}
-{#        <br>#}
-{##}
-{#        <h4>Upload A New Profile Photo</h4>#}
-{#        <form method="room" enctype="multipart/form-data">#}
-{#            {{ image_form.hidden_tag() }}#}
-{#            {{ image_form.file }}<br>#}
-{#            {{ image_form.submit_button }}#}
-{#            {{ image_form.csrf_token }}#}
-{#        </form>#}
-{##}
-{##}
-{#        <h4><a href="{{ url_for('add_post') }}">Add New Post</a></h4>#}
-{#        {% for room in blog_posts %}#}
-{#            <a href="{{ url_for('room', post_id=room.id) }}">#}
-{#                <h5>{{ room.type|upper }} : {{ room.title }} - {{ room.subtitle }}</h5>#}
-{#                By {{ room.author }} on {{ room.date_posted.strftime('%B %d, %Y') }} </a>#}
-{#        {% endfor %}#}
-{##}
-{#    </div>#}
-{#</div>#}
 
 
-<script>
-    // Get the modal
-    let modal = document.getElementsByClassName('modal');
+    <!-- ------------------------------------------------ Row 7 - Posts -------------------------------------------- -->
+    <div class="row">
+        <div class="col-sm-12">
+            <p class="subheading">My Posts <a href="{{ url_for('add_student_post') }}">Add New Post</a></p>
+        </div>
+    </div>
 
-    // Get the button that opens the modal
-    let btn = document.getElementsByClassName("myBtn");
+    <div class="row">
+        <div class="col-sm-12">
 
-    // Get the <span> element that closes the modal
-    let span = document.getElementsByClassName("close");
+            <div id="myPosts">
 
-    // When the user clicks the button, open the modal
-    btn[0].onclick = function () {
-        modal[0].style.display = "block";
-    }
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead><tr>
+                                <th>Post</th>
+                                <th>Date</th>
+                                <th>Delete</th>
+                        </tr></thead>
 
-    btn[1].onclick = function () {
-        modal[1].style.display = "block";
-    }
-    // When the user clicks on <span> (x), close the modal
-    span[0].onclick = function () {
-        modal[0].style.display = "none";
-    }
+                        {% for room in student_posts %}
+                            <tbody>
+                            <tr>
+                                <td><a href="{{ url_for('studentpost', studentpost_id=room.id) }}">{{ room.title }}</a></td>
+                                <td>{{ room.date_posted.strftime('%B %d, %Y') }}</td>
+                                <td><button class="btn btn-danger deleteStudentPost" room_id="{{ room.id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
+                            </tr>
+                            </tbody>
+                        {% endfor %}
 
-    span[1].onclick = function () {
-        modal[1].style.display = "none";
-    }
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
+                    </table>
+
+                </div><!-- end table responsiveness -->
+            </div><!-- end div my posts -->
+
+        </div> <!-- end col -->
+    </div><!-- end row 7 - posts -->
+
+
+
+
+
+
+
+
+
+
+    <!-- ----------------------------------------- Row 8 - Rooms (Tutor Only) -------------------------------------- -->
+    <div class="row tutorOnly">
+        <div class="col-sm-12">
+            <div id="roomsHeading">
+                <p class="subheading">My Rooms <a href="{{ url_for('add_room') }}">Add New Room</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row tutorOnly">
+        <div class="col-sm-12">
+
+        <div id="roomsContent">
+            <div id="myRooms">
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead><tr>
+                            <th>Room</th>
+                            <th>Title</th>
+                            <th>Public</th>
+                            <th>Date</th>
+                            <th>Delete</th>
+                        </tr></thead>
+
+                        {% for room in posts %}
+                            <tbody>
+                            <tr>
+                                <td><a href="{{ url_for('room', room_id=room.id) }}">{{ room.room_title }}</a></td>
+                                <td>{{ room.title }}</td>
+                                <td>{{ room.visible }}</td>
+                                <td>{{ room.date_posted.strftime('%B %d, %Y') }}</td>
+                                <td><button class="btn btn-danger deleteButton" room_id="{{ room.id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
+                            </tr>
+                            </tbody>
+                        {% endfor %}
+
+                        </table>
+                    </div> <!-- end table responsive -->
+
+                </div><!-- end my rooms div -->
+        </div>
+        </div> <!-- end col -->
+    </div><!-- end row 8 - rooms -->
+
+
+
+
+
+
+
+    <!-- ---------------------------------------------- Row 9 - Uploads ------------------------------------------- -->
+    <div class="row">
+        <div class="col-sm-12">
+            <p class="subheading">My Uploads<button id="myBtn" class="myBtn uploadDocsButton">Upload More Documents</button></p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div id="userUploads">
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead><tr>
+                            <th>File</th>
+                            <th>Delete</th>
+                        </tr></thead>
+
+                        {% for file in user_files %}
+                            <tbody>
+                                <tr>
+                                    <td><a href="{{ url_for('download', dl_name=file.file_name) }}">{{ file.file_name }}</a></td>
+                                    <td><button class="btn btn-danger deleteUserFile" file_id="{{ file.file_name }}"><i class="glyphicon glyphicon-trash"></i></button></td>
+                                </tr>
+                            </tbody>
+                        {% endfor %}
+
+                    </table>
+                </div><!-- end table responsive -->
+            </div><!-- end user Uploads Div -->
+
+        </div> <!-- end col -->
+    </div><!-- end row 9 - uploads -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- -------------------------------------------------- MODALS ------------------------------------------------- -->
+
+    <!-- UPLOAD NEW PROFILE PIC Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h4>Upload A New Profile Photo</h4>
+            <form method="post" enctype="multipart/form-data">
+                {{ image_form.hidden_tag() }}
+                {{ image_form.image(class_="chooseFile") }}<br>
+                {{ image_form.submit_button1 }}
+                {{ image_form.csrf_token }}
+            </form>
+        </div>
+    </div> <!-- End Profile Pic Modal Div -->
+
+    <!-- UPLOAD NEW DOCS Modal -->
+    <div id="myModal2" class="modal">
+        <!-- Modal content -->
+        <div class="modal2-content">
+            <span class="close">&times;</span>
+            <h4>Upload A New File</h4>
+            <form method="post" enctype="multipart/form-data">
+                {{ file_form.hidden_tag() }}
+                {{ file_form.file(class_="chooseFile") }}<br>
+                {{ file_form.submit_button }}
+                {{ file_form.csrf_token }}
+            </form>
+        </div>
+    </div><!-- End Modal2 -->
+
+
+
+    <!-- -------------------------------------------------- SCRIPTS ------------------------------------------------ -->
+    <script>
+        // Get the modal
+        let modal = document.getElementsByClassName('modal');
+
+        // Get the button that opens the modal
+        let btn = document.getElementsByClassName("myBtn");
+
+        // Get the <span> element that closes the modal
+        let span = document.getElementsByClassName("close");
+
+        // When the user clicks the button, open the modal
+        btn[0].onclick = function () {
+            modal[0].style.display = "block";
         }
-    }
 
-    let uRole = '{{ role_name }}';
+        btn[1].onclick = function () {
+            modal[1].style.display = "block";
+        }
+        // When the user clicks on <span> (x), close the modal
+        span[0].onclick = function () {
+            modal[0].style.display = "none";
+        }
+
+        span[1].onclick = function () {
+            modal[1].style.display = "none";
+        }
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        let uRole = '{{ role_name }}';
 
         let tStatus = '{{ t_status }}';
 
@@ -633,8 +464,7 @@
         }
 
 
-
-</script>
+    </script>
 
 
 {% endblock %}

@@ -1,31 +1,136 @@
-/* Styles the left information bar */
-#leftSideBar {
-    width: 30%;
-    height: 100%;
-    background-color: #e4eaf0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
+/* Styles the rows in bootstrap grid */
+.row {
+    /*border: 1px solid lightslategray;*/
+    width: 60% !important;
+    margin: 10px 20% 10px 20% !important;
+    max-height: 300px;
+    overflow-y: scroll;
+    /*margin-left: 15% !important;*/
+    /*margin-right: 15% !important;*/
 }
 
-/* Create columns that float next to each other */
-.column {
-    float: left;
-    height: 600px;
-    /*border: 1px solid black;*/
+/* Styles the 2nd row in bootstrap grid - holds user info */
+.row2 {
+    /*background-color: #d1deeb;*/
+    /*border: 2px solid purple;*/
 }
 
-/* Left Column */
-.left {
-    width: 30%;
+/* Styles the 3rd row in bootstrap grid - hold email */
+.row3 {
+    text-align: center;
+    /*border: 2px solid purple;*/
+}
+
+.row2col1 {
+    /*border: 1px solid green;*/
+    text-align: right;
+}
+
+/* Styles div that holds round user photo */
+#userPhoto {
     text-align: center;
 }
 
-/* Right Column */
-.right {
-    width: 70%;
+/* Styles div that holds change photo button */
+#changePhoto {
+    text-align: center;
+    position: absolute;
+    top: 0;
+    right: 20px;
 }
+
+/* Styles div that hold online/offline status */
+#tutorStatusToggle {
+    width: 100%;
+    /*border: 2px solid blue;*/
+    padding: 5px;
+    text-align: center;
+    float: right;
+    height: 100%;
+    font-size: 1.1em
+}
+
+/* Styles div that hold user name, email, role, etc */
+#userInfo {
+    width: 100%;
+    /*border: 2px solid blue;*/
+    padding: 5px;
+    float: left;
+    height: 100%;
+}
+
+/* name, role, username, email headings */
+.userInfoTitles {
+    font-weight: bold !important;
+    font-size: 1.1em !important;
+}
+
+/* Actual data for above (name, role, username, email headings) */
+.userInfoData {
+    /*color: red !important;*/
+    font-size: 1.1em !important;
+}
+
+/* Styles input that holds email */
+.emailChange {
+    width: 200px;
+
+}
+
+/* Styles sub headings */
+.subheading {
+    color: lightslategray;
+    font-size: 2em;
+    border-bottom: 2px solid lightslategray;
+}
+
+/* Styles subheading links */
+.subheading a {
+    font-size: 12px;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*!* Create columns that float next to each other *!*/
+/*.column {*/
+/*    float: left;*/
+/*    height: 600px;*/
+/*    !*border: 1px solid black;*!*/
+/*}*/
+
+/*!* Left Column *!*/
+/*.left {*/
+/*    width: 30%;*/
+/*    text-align: center;*/
+/*}*/
+
+/*!* Right Column *!*/
+/*.right {*/
+/*    width: 70%;*/
+/*}*/
 
 /*.middle {*/
 /*  width: 35%;*/
@@ -56,18 +161,7 @@
   }
 }
 
-/* Styles sub headings */
-.subheading {
-    color: #E46D4E;
-    font-size: 2em;
-    border-bottom: 2px solid #E46D4E;
-}
 
-/* Styles subheading links */
-.subheading a {
-    font-size: 12px;
-
-}
 
 /* Styles username */
 #mUsername {
