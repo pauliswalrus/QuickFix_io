@@ -9,7 +9,11 @@
 
 {% extends "navbar.html" %}
 {% block content %}
-
+                <h4>Tutor Courses</h4>
+                {% for c in t_courses %}
+                <div id="tutorCourses">
+                {{ c.course_name }}
+                {% endfor %}
 
                  <form method="POST" action="">
                   <h2>Pick Courses</h2>
