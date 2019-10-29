@@ -52,6 +52,7 @@
         </div>
 
         <div>
+            {{ post_form.room_course(class_='form-control')  }}
             {{ post_form.content(class_='form-control', placeholder='Content', autocomplete='off') }}
             <ul>
                 {% for error in post_form.content.errors %}

@@ -331,11 +331,16 @@ def add_room():
     user_object = User.query.filter_by(username=current_user.username)
     this_user = User.query.filter_by(username=current_user.username).first()
 
+    user_courses = UserCourses.query.filter_by(user_id=this_user.id).all()
+
+    room_courses = [(k.course_id, k.course_name) for k in user_courses]
+
+    post_form.room_course.choices = room_courses
+
     t_status = "not sure"
 
     if this_user.role == 'S':
         role_name = "Student"
-
         if Tutor.query.filter_by(user_id=this_user.id).first():
             tutor = Tutor.query.filter_by(user_id=this_user.id).first()
             t_status = tutor.tutor_status
@@ -349,10 +354,13 @@ def add_room():
         role_name = "Admin"
         t_status = "Admin"
 
-    if post_form.validate_on_submit():
+    if request.method == 'POST':
         subtitle = post_form.subtitle.data
         title = post_form.title.data
         content = post_form.content.data
+        room_course = post_form.room_course.data
+        course = Course.query.filter_by(course_id=room_course).first()
+        room_course_name = course.course_name
         if current_user.role == 'S':
             type = "Request"
         else:
@@ -361,7 +369,7 @@ def add_room():
         date_time = datetime.now()
         visible = True
         new_room = RoomPost(title=title, room_title=subtitle, author=author, date_posted=date_time, content=content,
-                            type=type, visible=visible)
+                            type=type, room_course=room_course_name, visible=visible)
 
         db.session.add(new_room)
         db.session.commit()
@@ -375,6 +383,7 @@ def add_room():
 # student post
 @app.route('/studentpost/<int:studentpost_id>', methods=['GET', 'POST'])
 def studentpost(studentpost_id):
+
     stdpost = StudentPost.query.filter_by(id=studentpost_id).one()
 
     this_user = User.query.filter_by(username=current_user.username).first()
@@ -486,6 +495,10 @@ def add_student_post():
     user_object = User.query.filter_by(username=current_user.username)
     this_user = User.query.filter_by(username=current_user.username).first()
 
+    user_courses = UserCourses.query.filter_by(user_id=this_user.id).all()
+    post_courses = [(k.course_id, k.course_name) for k in user_courses]
+    post_form.post_course.choices = post_courses
+
     t_status = "not sure"
 
     if this_user.role == 'S':
@@ -504,9 +517,13 @@ def add_student_post():
         role_name = "Admin"
         t_status = "Admin"
 
-    if post_form.validate_on_submit():
+    if request.method == 'POST':
         title = post_form.title.data
         content = post_form.content.data
+        post_course = post_form.post_course.data
+        course = Course.query.filter_by(course_id=post_course).first()
+        post_course_name = course.course_name
+
         if current_user.role == 'S':
             type = "Request"
         else:
@@ -517,7 +534,7 @@ def add_student_post():
 
         # add roompost to database
         blog_post = StudentPost(title=title, author=author, date_posted=date_time, content=content,
-                                type=type)
+                                type=type, post_course=post_course_name)
 
         db.session.add(blog_post)
         db.session.commit()
@@ -528,7 +545,7 @@ def add_student_post():
                            user_object=user_object, this_user=this_user, t_status=t_status, role_name=role_name)
 
 
-# courses page
+# programs page
 @app.route("/courses", methods=['GET', 'POST'])
 def courses():
 
@@ -566,17 +583,6 @@ def courses():
         this_program = Program.query.filter_by(program_id=program_picked).first()
 
         return redirect(url_for('programCourses', program_name=this_program.program_name))
-        # return render_template("programCourses.html", program_name=this_program.program_name, this_user=this_user, t_status=t_status, role_name=role_name)
-
-    # if form.validate_on_submit():
-    #     programID = form.program_options.data
-    #
-    #     return \
-    #         programID
-    # program_picked = Program.query.filter_by(program_id=programID).first()
-    #
-    #
-
 
     return render_template('addTutorCourses.html', username=current_user.username, this_user=this_user, form1=form1, role_name=role_name, t_status=t_status)
 
@@ -588,8 +594,6 @@ def programCourses():
     this_user = User.query.filter_by(username=current_user.username).first()
 
     this_tutor = Tutor.query.filter_by(user_id=this_user.id).first()
-
-    courses_array = this_tutor.tutor_courses
 
     t_status = "not sure"
 
@@ -632,48 +636,7 @@ def programCourses():
         db.session.add(user_course)
         db.session.commit()
 
-        # tutor_course = TutorCourses.query.filter_by(tutor_id=this_tutor.tutor_id).all()
-
-        # tutor_course = TutorCourses(tutor_id=this_tutor.tutor_id, course_name=this_course.course_name, course_id=this_course.course_id)
-        #
-        # db.session.add(tutor_course)
-        # db.session.commit()
-
-        # this_tutor.tutor_courses = [(str(this_course.course_id), this_course.course_name)]
-
-        # this_tutor.tutor_courses = [this_course.course_name]
-        #
-        # course_changed = Tutor.query.filter_by(tutor_id=this_tutor.tutor_id).update(dict(tutor_courses=[this_course.course_name]))
-        #
-
-        # db.session.commit()
-
         return redirect(url_for('profile'))
-
-    # program = Program.query.all()
-    #
-    # program_list = [(k.program_id, k.program_name) for k in available_programs]
-    # form = ProgramForm()
-    #
-    # # form.courses.choices = [(course.program_id, course.course_name)for course in Course.query.filter_by(program_id=2).all()]
-    # form.program_options.choices = program_list
-    #
-    # if request.method == 'POST':
-    #     program_picked = form.program_options.data
-    #
-    #     this_program = Program.query.filter_by(program_id=program_picked).first()
-    #
-    #     return this_program.program_name
-
-    # if form.validate_on_submit():
-    #     programID = form.program_options.data
-    #
-    #     return \
-    #         programID
-    # program_picked = Program.query.filter_by(program_id=programID).first()
-    #
-    #
-
 
     return render_template('programCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status)
 
@@ -890,8 +853,6 @@ def pub_profile(username):
 
     this_user = User.query.filter_by(username=current_user.username).first()
 
-
-
     image_form = ImageUploadForm()
 
     if image_form.validate_on_submit():
@@ -935,7 +896,6 @@ def pub_profile(username):
                            lastname=lastname, email=email, status_string=status_string, posts=posts,
                            role_name=role_name, about_me=about_me, image_form=image_form, user_object=user_object, user_files=user_files,
                            this_user=this_user, student_posts=student_posts)
-
 
 
 # gets profile pics
@@ -1008,48 +968,9 @@ def deleteRoomUploads():
     room = RoomPost.query.filter_by(id=request.form['id']).first()
 
     db.session.query(RoomUpload).filter_by(room_name=room.room_title).delete()
-
-    # delete all messages by room title
-    # db.session.query(Message).filter_by(room=room.room_title).delete()
     db.session.commit()
 
     return jsonify({'result': 'success'})
-
-
-# not working right now
-# @app.route('/uploadRoomFile', methods=['POST'])
-# def uploadRoomFile():
-#     file = request.form.files['fd']
-#     roomName = session.get('roomName')
-#     newFile = RoomUpload(file_name=file.filename, room_name=roomName, username=current_user.username,
-#                          data=file.read())
-#     db.session.add(newFile)
-#     db.session.commit()
-#
-#     return jsonify({'result': 'success'})
-
-#
-# @app.route('/process', methods=['POST'])
-# def process():
-#     email = request.form['email']
-#     name = request.form['name']
-#
-#     if name and email:
-#         newName = name[::-1]
-# 	    return jsonify({'name' : newName})
-#
-# 	return jsonify({'error' : 'Missing data!'})
-
-
-# @app.route('/refreshRoomUploads', methods=['POST'])
-# def refreshRoomUploads():
-#
-#     files = db.session.query(RoomUpload).filter_by(room_name=request.form['name']).all()
-#     room_upload_schema = RoomUploadsSchema(many=True)
-#     room_files = room_upload_schema.dump(files).data
-#     # db.session.refresh(room_files)
-#     # db.session.commit()
-#     return jsonify({'result': 'success', 'room_files': room_files})
 
 # update room
 @app.route('/updateRoom', methods=['POST'])
@@ -1094,7 +1015,6 @@ def editUserProfile():
 # delete room
 @app.route('/deleteRoom', methods=['POST'])
 def deleteRoom():
-
     room = RoomPost.query.filter_by(id=request.form['id']).first()
     db.session.delete(room)
     db.session.commit()
@@ -1127,7 +1047,6 @@ def deleteStudentPost():
 # deletes student posts
 @app.route('/deleteUserFile', methods=['POST'])
 def deleteUserFile():
-
     file = FileUpload.query.filter_by(username=current_user.username, file_name=request.form['id']).first()
 
     db.session.delete(file)
@@ -1219,7 +1138,6 @@ def denyTutor():
 
 @app.route('/deleteApplication', methods=['POST'])
 def deleteApplication():
-
     user = User.query.filter_by(username=current_user.username).first()
     tutor = Tutor.query.filter_by(user_id=user.id).first()
     db.session.delete(tutor)

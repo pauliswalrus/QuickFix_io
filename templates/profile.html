@@ -210,6 +210,7 @@
                     <table class="table">
                         <thead><tr>
                                 <th>Post</th>
+                                <th>Course</th>
                                 <th>Date</th>
                                 <th>Delete</th>
                         </tr></thead>
@@ -218,6 +219,7 @@
                             <tbody>
                             <tr>
                                 <td><a href="{{ url_for('studentpost', studentpost_id=room.id) }}">{{ room.title }}</a></td>
+                                <td>{{ room.post_course }}</td>
                                 <td>{{ room.date_posted.strftime('%B %d, %Y') }}</td>
                                 <td><button class="btn btn-danger deleteStudentPost" room_id="{{ room.id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
                             </tr>
@@ -260,6 +262,7 @@
                             <th>Room</th>
                             <th>Title</th>
                             <th>Public</th>
+                            <th>Course</th>
                             <th>Date</th>
                             <th>Delete</th>
                         </tr></thead>
@@ -270,6 +273,7 @@
                                 <td><a href="{{ url_for('room', room_id=room.id) }}">{{ room.room_title }}</a></td>
                                 <td>{{ room.title }}</td>
                                 <td>{{ room.visible }}</td>
+                                <td>{{ room.room_course }}</td>
                                 <td>{{ room.date_posted.strftime('%B %d, %Y') }}</td>
                                 <td><button class="btn btn-danger deleteButton" room_id="{{ room.id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
                             </tr>
