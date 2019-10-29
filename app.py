@@ -585,34 +585,6 @@ def courses():
 @app.route("/programCourses/", methods=['GET', 'POST'])
 def programCourses():
 
-
-    # this_program = Program.query.filter_by(program_id=program_id).first()
-    #
-    # p_id = this_program.program_id
-
-    # program = Program.query.filter_by(program_name=program_name).first()
-    #
-    # program_courses = Course.query.filter_by(program_id=program.program_id).all()
-    #
-    # program_courses = Course.query.all()
-    #
-    # course_list = [(k.course_id, k.course_name) for k in program_courses]
-    # form = CourseForm()
-    #
-    # if request.method == 'GET':
-    #
-    #     return render_template('programCourses.html', program_name=program.program_name, form=form)
-    #
-    # if request.method == 'POST':
-    #     course_picked = form.course_options.data
-    #
-    #     this_course = Course.query.filter_by(course_id=course_picked).first()
-    #
-    #     return this_course.course_name
-
-    # form.courses.choices = [(course.program_id, course.course_name)for course in Course.query.filter_by(program_id=2).all()]
-    # form.course_options.choices = course_list
-
     this_user = User.query.filter_by(username=current_user.username).first()
 
     this_tutor = Tutor.query.filter_by(user_id=this_user.id).first()
@@ -655,14 +627,17 @@ def programCourses():
 
         this_course = Course.query.filter_by(course_id=course_picked).first()
         this_user = User.query.filter_by(username=current_user.username).first()
-        this_tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        user_course = UserCourses(user_id=this_user.id, course_name=this_course.course_name,
+                                    course_id=this_course.course_id)
+        db.session.add(user_course)
+        db.session.commit()
 
         # tutor_course = TutorCourses.query.filter_by(tutor_id=this_tutor.tutor_id).all()
 
-        tutor_course = TutorCourses(tutor_id=this_tutor.tutor_id, course_name=this_course.course_name, course_id=this_course.course_id)
-
-        db.session.add(tutor_course)
-        db.session.commit()
+        # tutor_course = TutorCourses(tutor_id=this_tutor.tutor_id, course_name=this_course.course_name, course_id=this_course.course_id)
+        #
+        # db.session.add(tutor_course)
+        # db.session.commit()
 
         # this_tutor.tutor_courses = [(str(this_course.course_id), this_course.course_name)]
 
@@ -822,33 +797,35 @@ def profile():
         return redirect(url_for('profile'))
 
     t_status = "not sure"
-    tutor_courses = "none"
 
     posts = RoomPost.query.filter_by(author=this_user.username).order_by(RoomPost.date_posted.desc()).all()
 
     student_posts = StudentPost.query.filter_by(author=this_user.username).order_by(StudentPost.date_posted.desc()).all()
 
+    user_courses = UserCourses.query.filter_by(user_id=this_user.id).all()
+
     if role == "S":
         role_name = "Student"
         student_posts = StudentPost.query.filter_by(author=this_user.username).order_by(StudentPost.date_posted.desc()).all()
 
+        # student = Student.query.filter_by(user_id=this_user.id).first()
+        # user_courses = StudentCourses.query.filter_by(student_id=student.student_id).all()
+
         if Tutor.query.filter_by(user_id=this_user.id).first():
             tutor = Tutor.query.filter_by(user_id=this_user.id).first()
             t_status = tutor.tutor_status
-            tutor_courses = TutorCourses.query.filter_by(tutor_id=tutor.tutor_id).all()
 
     elif role == "T":
         role_name = "Tutor"
         posts = RoomPost.query.filter_by(author=this_user.username).order_by(RoomPost.date_posted.desc()).all()
         tutor = Tutor.query.filter_by(user_id=this_user.id).first()
         t_status = tutor.tutor_status
-        tutor_courses = TutorCourses.query.filter_by(tutor_id=tutor.tutor_id).all()
+
 
     elif role == "A":
         role_name = "Admin"
         posts = RoomPost.query.filter_by(author=this_user.username).order_by(RoomPost.date_posted.desc()).all()
         t_status = "Admin"
-        tutor_courses = "none"
 
     room_posts = RoomPost.query.filter_by(author=current_user.username).order_by(RoomPost.date_posted.desc()).all()
 
@@ -900,7 +877,7 @@ def profile():
     return render_template('profile.html', username=current_user.username, image_fp=image_fp,
                            status_string=status_string, room_posts=room_posts, role_name=role_name, file_form=file_form,
                            user_files=user_files, image_form=image_form, user_object=user_object, this_user=this_user,
-                           status=status, t_status=t_status, about_me=about_me, ts_form=ts_form, setdbstatus=setdbstatus, student_posts=student_posts, posts=posts, tutor_courses=tutor_courses)
+                           status=status, t_status=t_status, about_me=about_me, ts_form=ts_form, setdbstatus=setdbstatus, student_posts=student_posts, posts=posts, user_courses=user_courses)
 
 
 #

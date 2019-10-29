@@ -49,16 +49,14 @@ class Tutor(db.Model):
     application_comments = db.Column(db.Text)
     tutor_courses = db.Column(db.ARRAY(db.Text))
 
-class TutorCourses(db.Model):
+class UserCourses(db.Model):
 
-    __tablename__="tutor_courses"
+    __tablename__="user_courses"
 
-    tutor_course_id = db.Column(db.Integer, primary_key=True)
-    course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'))
-    tutor_id = db.Column(db.Integer, db.ForeignKey('tutor.tutor_id'))
+    user_course_id = db.Column(db.Integer, primary_key=True)
+    course_id = db.Column(db.Integer)
+    user_id = db.Column(db.Integer)
     course_name = db.Column(db.Text)
-
-
 
 class FileUpload(db.Model):
 
