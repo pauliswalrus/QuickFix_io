@@ -203,6 +203,25 @@ def new_student():
 @app.route('/tutor_register', methods=['GET', 'POST'])
 def new_tutor():
     this_user = User.query.filter_by(username=current_user.username).first()
+
+    t_status = "not sure"
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
+
     tutor_form = TutorForm()
     # Updates database if validation is successful
     if tutor_form.validate_on_submit():
@@ -220,16 +239,35 @@ def new_tutor():
         flash('Registered successfully. Please login', 'success')
         return redirect(url_for('home'))
 
-    return render_template("tutor_application.html", form=tutor_form, this_user=this_user)
+    return render_template("tutor_application.html", form=tutor_form, this_user=this_user, t_status=t_status, role_name=role_name)
 
 
 ### check tutor application
 @app.route('/check_application', methods=['GET', 'POST'])
 def check_application():
     this_user = User.query.filter_by(username=current_user.username).first()
+
+    t_status = "not sure"
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
+
     this_tutor = Tutor.query.filter_by(user_id=this_user.id).first()
 
-    return render_template("check_application.html", this_user=this_user, this_tutor=this_tutor)
+    return render_template("check_application.html", this_user=this_user, this_tutor=this_tutor, role_name=role_name, t_status=t_status)
 
 
 # room page
@@ -238,6 +276,24 @@ def room(room_id):
     room = RoomPost.query.filter_by(id=room_id).one()
 
     this_user = User.query.filter_by(username=current_user.username).first()
+
+    t_status = "not sure"
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
 
     comments = RoomComment.query.filter_by(room_id=room_id).order_by(RoomComment.date_posted.desc()).all()
     comment_form = CommentForm()
@@ -265,7 +321,7 @@ def room(room_id):
         rooms = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
 
     return render_template('viewRoom.html', room=room, username=current_user.username, rooms=rooms,
-                           comment_form=comment_form, comments=comments, this_user=this_user)
+                           comment_form=comment_form, comments=comments, this_user=this_user, role_name=role_name, t_status=t_status)
 
 
 # tutor creates room
@@ -275,6 +331,24 @@ def add_room():
 
     user_object = User.query.filter_by(username=current_user.username)
     this_user = User.query.filter_by(username=current_user.username).first()
+
+    t_status = "not sure"
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
 
     if post_form.validate_on_submit():
         subtitle = post_form.subtitle.data
@@ -296,7 +370,7 @@ def add_room():
         return redirect(url_for('home'))
 
     return render_template('addNewRoom.html', username=current_user.username, post_form=post_form,
-                           user_object=user_object, this_user=this_user)
+                           user_object=user_object, this_user=this_user, t_status=t_status, role_name=role_name)
 
 
 # student post
@@ -305,6 +379,24 @@ def studentpost(studentpost_id):
     stdpost = StudentPost.query.filter_by(id=studentpost_id).one()
 
     this_user = User.query.filter_by(username=current_user.username).first()
+
+    t_status = "not sure"
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
 
     # student post comments
     comments = PostComment.query.filter_by(post_id=studentpost_id).order_by(PostComment.date_posted.desc()).all()
@@ -328,7 +420,7 @@ def studentpost(studentpost_id):
         return redirect(url_for('studentpost', studentpost_id=post_id))
 
     return render_template('viewStudentPost.html', post=stdpost, username=current_user.username,
-                           comment_form=comment_form, comments=comments, this_user=this_user)
+                           comment_form=comment_form, comments=comments, this_user=this_user, t_status=t_status, role_name=role_name)
 
 
 # view all student posts
@@ -336,9 +428,27 @@ def studentpost(studentpost_id):
 def allstudentposts():
     this_user = User.query.filter_by(username=current_user.username).first()
 
+    t_status = "not sure"
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
+
     student_posts = StudentPost.query.order_by(StudentPost.date_posted.desc()).all()
 
-    return render_template('studentPosts.html', this_user=this_user, student_posts=student_posts)
+    return render_template('studentPosts.html', this_user=this_user, student_posts=student_posts, role_name=role_name, t_status=t_status)
 
 
 # view all tutor posts
@@ -346,9 +456,27 @@ def allstudentposts():
 def allrooms():
     this_user = User.query.filter_by(username=current_user.username).first()
 
+    t_status = "not sure"
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
+
     room_posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
 
-    return render_template('tutorPosts.html', this_user=this_user, room_posts=room_posts)
+    return render_template('tutorPosts.html', this_user=this_user, room_posts=room_posts, role_name=role_name, t_status=t_status)
 
 
 # new student request help post
@@ -359,6 +487,24 @@ def add_student_post():
     user_object = User.query.filter_by(username=current_user.username)
 
     this_user = User.query.filter_by(username=current_user.username).first()
+
+    t_status = "not sure"
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
 
     if post_form.validate_on_submit():
         title = post_form.title.data
@@ -381,7 +527,7 @@ def add_student_post():
         return redirect(url_for('home'))
 
     return render_template('addNewStudentPost.html', username=current_user.username, post_form=post_form,
-                           user_object=user_object, this_user=this_user)
+                           user_object=user_object, this_user=this_user, t_status=t_status, role_name=role_name)
 
 
 # courses page
@@ -389,6 +535,24 @@ def add_student_post():
 def courses():
 
     this_user = User.query.filter_by(username=current_user.username).first()
+
+    t_status = "not sure"
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
 
     available_programs = Program.query.all()
 
@@ -406,7 +570,7 @@ def courses():
     #
 
 
-    return render_template('addTutorCourses.html', username=current_user.username, this_user=this_user, form=form)
+    return render_template('addTutorCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status)
 
 
 # route for chat - displays public rooms and form to join(create rooms)
@@ -506,6 +670,7 @@ def update_aboutme():
 def profile():
     user_object = User.query.filter_by(username=current_user.username).first()
     this_user = User.query.filter_by(username=current_user.username).first()
+
 
     status = user_object.status
     role = user_object.role
@@ -610,6 +775,8 @@ def pub_profile(username):
     user_object = User.query.filter_by(username=username).first()
 
     this_user = User.query.filter_by(username=current_user.username).first()
+
+
 
     image_form = ImageUploadForm()
 

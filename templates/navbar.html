@@ -34,6 +34,18 @@
                 <a href="{{ url_for('check_application') }}">CHECK APP STATUS</a>
             </span>
 
+            <span id="navRoom">
+                <a href="{{ url_for('add_room') }}">CREATE NEW ROOM</a>
+            </span>
+
+            <span id="navPost">
+                <a href="{{ url_for('add_student_post') }}">CREATE COMMUNITY FORUM POST</a>
+            </span>
+
+            <span id="navAdmin">
+                <a href="{{ url_for('admin') }}">Admin Portal</a>
+            </span>
+
             <hr>
 
             <a href="{{ url_for('profile') }}">Settings</a>
@@ -81,6 +93,8 @@
     window.onload = function (event) {
 
         document.getElementById("navCheck").style.display = "none";
+         document.getElementById("navRoom").style.display = "none";
+         document.getElementById("navAdmin").style.display = "none";
 
         if (userRole == 'Student') {
 
@@ -93,6 +107,7 @@
 
                 document.getElementById("navApply").style.display = "none";
                 document.getElementById("navCheck").style.display = "none";
+                document.getElementById("navRoom").style.display = "block";
 
             } else if (tutorStatus == 'denied') {
 
@@ -105,6 +120,14 @@
 
                 document.getElementById("navApply").style.display = "none";
                 document.getElementById("navCheck").style.display = "none";
+                document.getElementById("navRoom").style.display = "block";
+        } else if (userRole == 'Admin') {
+
+
+                document.getElementById("navRoom").style.display = "none";
+                document.getElementById("navApply").style.display = "none";
+                document.getElementById("navCheck").style.display = "none";
+                document.getElementById("navAdmin").style.display = "block";
         }
 
 
