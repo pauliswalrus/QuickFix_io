@@ -180,10 +180,30 @@
         <div class="col-sm-12">
 
                 <div id="myCourses">
-                    {% for course in user_courses %}
-                    <p> • {{ course.course_name }}<br>
-                    </p>
-                    {% endfor %}
+
+
+                    <div class="table-responsive">
+                    <table class="table">
+                        <thead><tr>
+                                <th>Course_ID</th>
+                                <th>Course</th>
+                                <th>Delete</th>
+                        </tr></thead>
+
+                        {% for course in user_courses %}
+                            <tbody>
+                            <tr>
+                                <td>{{ course.course_id }}</td>
+                                <td>{{ course.course_name }}</td>
+                                <td><button class="btn btn-danger deleteUserCourse" course_id="{{ course.user_course_id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
+                            </tr>
+                            </tbody>
+                        {% endfor %}
+
+                    </table>
+
+                </div>
+
                 </div>
 
         </div> <!-- end col -->

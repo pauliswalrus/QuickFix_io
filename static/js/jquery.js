@@ -482,6 +482,34 @@ $(document).ready(function () {
     })
 
 
+     // for private profile page
+    //edit user
+    $('.deleteUserCourse').on('click', function () {
+
+        var course_id = $(this).attr('course_id');
+
+        var r = confirm("Delete Course?");
+
+        if (r == true) {
+
+            req = $.ajax({
+                url: '/deleteUserCourse',
+                type: 'POST',
+                data: {id: course_id}
+
+            });
+            alert("Course Deleted!")
+            location.reload();
+
+        } else {
+
+            //nothing happens
+
+        }
+
+    })
+
+
 });
 
 

@@ -1055,6 +1055,21 @@ def deleteUserFile():
     return jsonify({'result': 'success'})
 
 
+# deletes student posts
+@app.route('/deleteUserCourse', methods=['POST'])
+def deleteUserCourse():
+
+    user = User.query.filter_by(username=current_user.username).first()
+    user_id = user.id
+
+    user_course = UserCourses.query.filter_by(user_id=user_id, user_course_id=request.form['id']).first()
+
+    db.session.delete(user_course)
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+
 
 @app.route('/editUser', methods=['POST'])
 def editUser():
