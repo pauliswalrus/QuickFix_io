@@ -514,6 +514,8 @@ def profile():
 
     setdbstatus = status
 
+    user_files = FileUpload.query.filter_by(username=current_user.username).all()
+
     # profile picture form
     image_form = ImageUploadForm()
 
@@ -544,7 +546,6 @@ def profile():
         tutor = Tutor.query.filter_by(user_id=this_user.id).first()
         t_status = tutor.tutor_status
 
-
     elif role == "A":
         role_name = "Admin"
         posts = RoomPost.query.filter_by(author=this_user.username).order_by(RoomPost.date_posted.desc()).all()
@@ -552,7 +553,7 @@ def profile():
 
     room_posts = RoomPost.query.filter_by(author=current_user.username).order_by(RoomPost.date_posted.desc()).all()
 
-    user_files = FileUpload.query.filter_by(username=current_user.username).all()
+    # user_files = FileUpload.query.filter_by(username=current_user.username).all()
 
     if status == 0:
         status_string = "Offine"
@@ -818,7 +819,7 @@ def deleteRoom():
 
     return jsonify({'result': 'success'})
 
-# delete room
+# deletes student posts
 @app.route('/deleteStudentPost', methods=['POST'])
 def deleteStudentPost():
     post = StudentPost.query.filter_by(id=request.form['id']).first()
@@ -830,6 +831,19 @@ def deleteStudentPost():
     db.session.commit()
 
     return jsonify({'result': 'success'})
+
+
+# deletes student posts
+@app.route('/deleteUserFile', methods=['POST'])
+def deleteUserFile():
+
+    file = FileUpload.query.filter_by(username=current_user.username, file_name=request.form['id']).first()
+
+    db.session.delete(file)
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
 
 
 @app.route('/editUser', methods=['POST'])

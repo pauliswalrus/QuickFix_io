@@ -274,18 +274,50 @@
                 {% endfor %}
 
             </table>
-            </div><!-- Tutor Rooms Div -->
+            </div>
+
+             </div><!-- Tutor Rooms Div -->
 
 
             <div id="userUploads">
                 <p class="subheading">My Uploads <button id="myBtn" class="myBtn uploadDocsButton">Upload More Documents</button></p>
-                <!-- Trigger/Open The Modal -->
+{#                <!-- Trigger/Open The Modal -->#}
+{#                {% for file in user_files %}#}
+{#                    <a href="{{ url_for('download', dl_name=file.file_name) }}">#}
+{#                        <h5>{{ file.file_name }} </h5>#}
+{#                    </a>#}
+{#                {% endfor %}#}
+
+
+
+            <div class="table-responsive">
+            <table class="table">
+                <thead><tr>
+                    <th>File</th>
+                    <th>Delete</th>
+                </tr></thead>
+
                 {% for file in user_files %}
-                    <a href="{{ url_for('download', dl_name=file.file_name) }}">
-                        <h5>{{ file.file_name }} </h5>
-                    </a>
+                    <tbody><tr>
+                        <td>
+                            <a href="{{ url_for('download', dl_name=file.file_name) }}">{{ file.file_name }}</a>
+{#                            <a href="{{ url_for('pub_profile', username=user.username) }}">{{ user.id }}</a>#}
+                        </td>
+                        <td>
+                            <button class="btn btn-danger deleteUserFile" file_id="{{ file.file_name }}">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            </button>
+                        </td>
+
+                    </tr></tbody>
                 {% endfor %}
+
+            </table>
+            </div><!-- User Uploads Div -->
             </div><!-- End User Uploads Div -->
+
+
+
 
 
             <!-- UPLOAD NEW DOCS Modal -->
@@ -553,7 +585,7 @@
             document.getElementById('adminPortal').style.display = "none";
 
             document.getElementById('myPosts').style.display = "none";
-                document.getElementById('myRooms').style.display = "none";
+            document.getElementById('myRooms').style.display = "none";
 
             if (uRole == 'Student') {
 

@@ -68,6 +68,11 @@
                     <hr>
                 </div>
 
+                <div id="adminPortal">
+                    <a href="{{ url_for('admin') }}">Admin Portal</a>
+                    <hr>
+                </div>
+
                 <div id="checkApp"><a href="{{ url_for('check_application') }}">Check Application</a></div>
 
             </div> <!-- end empty div -->
@@ -125,6 +130,7 @@
         window.onload = function (event) {
 
             document.getElementById('checkApp').style.display = "none";
+            document.getElementById('adminPortal').style.display = "none";
 
             if (uRole == 'Student') {
                 document.getElementById('test').style.color = "purple";
@@ -154,6 +160,16 @@
                 document.getElementById('tutorApply').style.display = "none";
                 document.getElementById('checkApp').style.display = "none";
 
+            } else if (uRole == 'Admin') {
+
+                document.getElementById('test').style.color = "red";
+                document.getElementById('tutorPosts').style.display = "block";
+                document.getElementById('studentPosts').style.display = "block";
+                document.getElementById('adminPortal').style.display = "block";
+                document.getElementById('studentPost').style.display = "none";
+                document.getElementById('tutorApply').style.display = "none";
+                document.getElementById('checkApp').style.display = "none";
+                document.getElementById('roomPost').style.display = "none";
             }
 
 

@@ -137,6 +137,33 @@ $(document).ready(function () {
     })
 
 
+        $('.deleteUserFile').on('click', function () {
+
+        var file_id = $(this).attr('file_id');
+
+        var r = confirm("Delete File?");
+
+        if (r == true) {
+
+            req = $.ajax({
+                url: '/deleteUserFile',
+                type: 'POST',
+                data: {id: file_id}
+
+            });
+            alert("File Deleted!")
+            location.reload();
+
+        } else {
+
+            //nothing happens
+
+        }
+
+    })
+
+
+
 
 
 
