@@ -26,9 +26,13 @@
             <a href="{{ url_for('allstudentposts') }}">Community Forums</a>
 
             <hr>
+            <span id="navApply">
+                <a href="{{ url_for('new_tutor') }}">APPLY TO BE A TUTOR</a>
+            </span>
 
-            <a href="{{ url_for('all_users') }}">APPLY TO BE A TUTOR</a>
-            <a href="{{ url_for('all_users') }}">CHECK APP STATUS</a>
+            <span id="navCheck">
+                <a href="{{ url_for('check_application') }}">CHECK APP STATUS</a>
+            </span>
 
             <hr>
 
@@ -68,6 +72,46 @@
     {% block content %}
     {% endblock %}
 
+<script>
 
+    let userRole = "{{ role_name }}";
+
+    let tutorStatus = "{{ t_status }}";
+
+    window.onload = function (event) {
+
+        document.getElementById("navCheck").style.display = "none";
+
+        if (userRole == 'Student') {
+
+            if (tutorStatus == 'pending') {
+
+                document.getElementById("navApply").style.display = "none";
+                document.getElementById("navCheck").style.display = "block";
+
+            } else if (tutorStatus == 'approved') {
+
+                document.getElementById("navApply").style.display = "none";
+                document.getElementById("navCheck").style.display = "none";
+
+            } else if (tutorStatus == 'denied') {
+
+                document.getElementById("navApply").style.display = "none";
+                document.getElementById("navCheck").style.display = "block";
+
+            }
+
+        } else if (userRole == 'Tutor') {
+
+                document.getElementById("navApply").style.display = "none";
+                document.getElementById("navCheck").style.display = "none";
+        }
+
+
+
+
+    }
+
+</script>
 </body>
 </html>
