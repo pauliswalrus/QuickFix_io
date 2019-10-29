@@ -514,6 +514,32 @@ $(document).ready(function () {
     })
 
 
+        $('.deleteTutorCourse').on('click', function () {
+
+        var course_id = $(this).attr('course_id');
+
+        var r = confirm("Delete Course?");
+
+        if (r == true) {
+
+            req = $.ajax({
+                url: '/deleteTutorCourse',
+                type: 'POST',
+                data: {id: course_id}
+
+            });
+            alert("Course Deleted!")
+            location.reload();
+
+        } else {
+
+            //nothing happens
+
+        }
+
+    })
+
+
          // for private profile page
     //edit user
     $('.addTutorCourse').on('click', function () {

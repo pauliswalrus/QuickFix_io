@@ -57,6 +57,7 @@ class UserCourses(db.Model):
     course_id = db.Column(db.Integer)
     user_id = db.Column(db.Integer)
     course_name = db.Column(db.Text)
+    course_code = db.Column(db.Text)
 
 class TutorCourses(db.Model):
 
@@ -66,6 +67,7 @@ class TutorCourses(db.Model):
     course_id = db.Column(db.Integer)
     user_id = db.Column(db.Integer)
     course_name = db.Column(db.Text)
+    course_code = db.Column(db.Text)
 
 
 class FileUpload(db.Model):
@@ -153,6 +155,15 @@ class Program(db.Model):
     __tablename__ = "program_test"
     program_id = db.Column(db.Integer, primary_key=True)
     program_name = db.Column(db.Text)
+
+class ProgramCourse(db.Model):
+    """ProgramCourse"""
+
+    __tablename__ = "program_course"
+    program_course_id = db.Column(db.Integer, primary_key=True)
+    program_id = db.Column(db.Integer, db.ForeignKey('program_test.program_id'))
+    courseCode = db.Column(db.Text)
+    courseName = db.Column(db.Text)
 
 class Course(db.Model):
     """Course Model"""

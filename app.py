@@ -203,7 +203,7 @@ def new_student():
 def new_tutor():
     this_user = User.query.filter_by(username=current_user.username).first()
 
-    t_courses = TutorCourses.query.filter_by(user_id=this_user.id).all()
+    t_courses = TutorCourses.query.filter_by(user_id=this_user.id).order_by(TutorCourses.tutor_course_id.desc()).all()
 
     t_status = "not sure"
 
@@ -227,8 +227,8 @@ def new_tutor():
         role_name = "Admin"
         t_status = "Admin"
 
-    program_courses = Course.query.all()
-    course_list = [(k.course_id, k.course_name) for k in program_courses]
+    program_courses = ProgramCourse.query.all()
+    course_list = [(k.program_course_id, k.courseName) for k in program_courses]
 
     course_form = TutorCourseForm()
 
@@ -1096,6 +1096,20 @@ def deleteUserCourse():
     user_course = UserCourses.query.filter_by(user_id=user_id, user_course_id=request.form['id']).first()
 
     db.session.delete(user_course)
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+# deletes user_course used in profile
+@app.route('/deleteTutorCourse', methods=['POST'])
+def deleteTutorCourse():
+
+    user = User.query.filter_by(username=current_user.username).first()
+    user_id = user.id
+
+    tutor_course = TutorCourses.query.filter_by(user_id=user_id, tutor_course_id=request.form['id']).first()
+
+    db.session.delete(tutor_course)
     db.session.commit()
 
     return jsonify({'result': 'success'})
