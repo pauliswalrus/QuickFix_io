@@ -166,7 +166,7 @@
     <!-- ---------------------------------------------- Row 6 - Courses ------------------------------------------- -->
     <div class="row">
         <div class="col-sm-12">
-            <p class="subheading">My Courses <a href="{{ url_for('courses') }}">update</a></p>
+            <p class="subheading">My Courses <a href="{{ url_for('programCourses') }}">update</a></p>
         </div>
     </div>
 
@@ -174,12 +174,10 @@
         <div class="col-sm-12">
 
                 <div id="myCourses">
-                    <p>• Lorem ipsum dolor sit amet, consectetur adipiscing elit<br>
-                        • Nullam non ex quis massa cursus dictum eu eget leo. <br>
-                        • Pellentesque nulla eratpellentesque ut tortor vel <br>
-                        • malesuada vulputate tellus. Vivamus <br>
-                        • laoreet vestibulum velit, at venenatis mauris mollis
+                    {% for course in tutor_courses %}
+                    <p> • {{ course.course_name }}<br>
                     </p>
+                    {% endfor %}
                 </div>
 
         </div> <!-- end col -->

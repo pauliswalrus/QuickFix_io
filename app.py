@@ -102,8 +102,7 @@ def admin():
     # approved tutors in desc order
     tutors_approved = db.session.query(User.firstname, User.lastname, User.username, Tutor.user_id, Tutor.tutor_id,
                                        Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name,
-                                       Tutor.application_comments).filter(User.id == Tutor.user_id).order_by(
-        User.id.desc()).all()
+                                       Tutor.application_comments).filter(User.id == Tutor.user_id).order_by(User.id.desc()).all()
 
     this_user = User.query.filter_by(username=current_user.username).first()
 
@@ -485,7 +484,6 @@ def add_student_post():
     post_form = StudentPostForm()
 
     user_object = User.query.filter_by(username=current_user.username)
-
     this_user = User.query.filter_by(username=current_user.username).first()
 
     t_status = "not sure"
@@ -557,8 +555,18 @@ def courses():
     available_programs = Program.query.all()
 
     program_list = [(k.program_id, k.program_name) for k in available_programs]
-    form = ProgramForm()
-    form.program_options.choices = program_list
+    form1 = ProgramForm()
+
+    # form.courses.choices = [(course.program_id, course.course_name)for course in Course.query.filter_by(program_id=2).all()]
+    form1.program_options.choices = program_list
+
+    if request.method == 'POST':
+        program_picked = form1.program_options.data
+
+        this_program = Program.query.filter_by(program_id=program_picked).first()
+
+        return redirect(url_for('programCourses', program_name=this_program.program_name))
+        # return render_template("programCourses.html", program_name=this_program.program_name, this_user=this_user, t_status=t_status, role_name=role_name)
 
     # if form.validate_on_submit():
     #     programID = form.program_options.data
@@ -570,7 +578,129 @@ def courses():
     #
 
 
-    return render_template('addTutorCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status)
+    return render_template('addTutorCourses.html', username=current_user.username, this_user=this_user, form1=form1, role_name=role_name, t_status=t_status)
+
+
+# courses page
+@app.route("/programCourses/", methods=['GET', 'POST'])
+def programCourses():
+
+
+    # this_program = Program.query.filter_by(program_id=program_id).first()
+    #
+    # p_id = this_program.program_id
+
+    # program = Program.query.filter_by(program_name=program_name).first()
+    #
+    # program_courses = Course.query.filter_by(program_id=program.program_id).all()
+    #
+    # program_courses = Course.query.all()
+    #
+    # course_list = [(k.course_id, k.course_name) for k in program_courses]
+    # form = CourseForm()
+    #
+    # if request.method == 'GET':
+    #
+    #     return render_template('programCourses.html', program_name=program.program_name, form=form)
+    #
+    # if request.method == 'POST':
+    #     course_picked = form.course_options.data
+    #
+    #     this_course = Course.query.filter_by(course_id=course_picked).first()
+    #
+    #     return this_course.course_name
+
+    # form.courses.choices = [(course.program_id, course.course_name)for course in Course.query.filter_by(program_id=2).all()]
+    # form.course_options.choices = course_list
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    this_tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+
+    courses_array = this_tutor.tutor_courses
+
+    t_status = "not sure"
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
+
+    # program = Program.query.filter_by(program_name=program_name).first()
+
+    program_courses = Course.query.all()
+    course_list = [(k.course_id, k.course_name) for k in program_courses]
+
+    form = CourseForm()
+
+    form.course_options.choices = course_list
+
+    if request.method == 'GET':
+        return render_template('programCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status)
+
+    if request.method == 'POST':
+
+        course_picked = form.course_options.data
+
+        this_course = Course.query.filter_by(course_id=course_picked).first()
+        this_user = User.query.filter_by(username=current_user.username).first()
+        this_tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+
+        # tutor_course = TutorCourses.query.filter_by(tutor_id=this_tutor.tutor_id).all()
+
+        tutor_course = TutorCourses(tutor_id=this_tutor.tutor_id, course_name=this_course.course_name, course_id=this_course.course_id)
+
+        db.session.add(tutor_course)
+        db.session.commit()
+
+        # this_tutor.tutor_courses = [(str(this_course.course_id), this_course.course_name)]
+
+        # this_tutor.tutor_courses = [this_course.course_name]
+        #
+        # course_changed = Tutor.query.filter_by(tutor_id=this_tutor.tutor_id).update(dict(tutor_courses=[this_course.course_name]))
+        #
+
+        # db.session.commit()
+
+        return redirect(url_for('profile'))
+
+    # program = Program.query.all()
+    #
+    # program_list = [(k.program_id, k.program_name) for k in available_programs]
+    # form = ProgramForm()
+    #
+    # # form.courses.choices = [(course.program_id, course.course_name)for course in Course.query.filter_by(program_id=2).all()]
+    # form.program_options.choices = program_list
+    #
+    # if request.method == 'POST':
+    #     program_picked = form.program_options.data
+    #
+    #     this_program = Program.query.filter_by(program_id=program_picked).first()
+    #
+    #     return this_program.program_name
+
+    # if form.validate_on_submit():
+    #     programID = form.program_options.data
+    #
+    #     return \
+    #         programID
+    # program_picked = Program.query.filter_by(program_id=programID).first()
+    #
+    #
+
+
+    return render_template('programCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status)
 
 
 # route for chat - displays public rooms and form to join(create rooms)
@@ -692,6 +822,7 @@ def profile():
         return redirect(url_for('profile'))
 
     t_status = "not sure"
+    tutor_courses = "none"
 
     posts = RoomPost.query.filter_by(author=this_user.username).order_by(RoomPost.date_posted.desc()).all()
 
@@ -704,17 +835,20 @@ def profile():
         if Tutor.query.filter_by(user_id=this_user.id).first():
             tutor = Tutor.query.filter_by(user_id=this_user.id).first()
             t_status = tutor.tutor_status
+            tutor_courses = TutorCourses.query.filter_by(tutor_id=tutor.tutor_id).all()
 
     elif role == "T":
         role_name = "Tutor"
         posts = RoomPost.query.filter_by(author=this_user.username).order_by(RoomPost.date_posted.desc()).all()
         tutor = Tutor.query.filter_by(user_id=this_user.id).first()
         t_status = tutor.tutor_status
+        tutor_courses = TutorCourses.query.filter_by(tutor_id=tutor.tutor_id).all()
 
     elif role == "A":
         role_name = "Admin"
         posts = RoomPost.query.filter_by(author=this_user.username).order_by(RoomPost.date_posted.desc()).all()
         t_status = "Admin"
+        tutor_courses = "none"
 
     room_posts = RoomPost.query.filter_by(author=current_user.username).order_by(RoomPost.date_posted.desc()).all()
 
@@ -766,7 +900,7 @@ def profile():
     return render_template('profile.html', username=current_user.username, image_fp=image_fp,
                            status_string=status_string, room_posts=room_posts, role_name=role_name, file_form=file_form,
                            user_files=user_files, image_form=image_form, user_object=user_object, this_user=this_user,
-                           status=status, t_status=t_status, about_me=about_me, ts_form=ts_form, setdbstatus=setdbstatus, student_posts=student_posts, posts=posts)
+                           status=status, t_status=t_status, about_me=about_me, ts_form=ts_form, setdbstatus=setdbstatus, student_posts=student_posts, posts=posts, tutor_courses=tutor_courses)
 
 
 #

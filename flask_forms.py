@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, TextAreaField, SelectField, FileField
 from wtforms.validators import InputRequired, Length, EqualTo, ValidationError, Email
-
+from wtforms_sqlalchemy.fields import QuerySelectField
 from passlib.hash import pbkdf2_sha256
 from sqlalq_datamodels import User, FileUpload, RoomPost, choice_query
 
@@ -139,3 +139,7 @@ class CourseForm(FlaskForm):
 
     #course_options = QuerySelectField('course_list', query_factory=choice_query, allow_blank=False, get_label='course_name')
 
+# class PickCourseForm(FlaskForm):
+
+    #programs = SelectField('programs', choices=[])
+    # courses = SelectField('courses', choices=[])

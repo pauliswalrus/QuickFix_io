@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Courses</title>
+</head>
+
+<body>
+
+{% extends "navbar.html" %}
+{% block content %}
+
+
+                 <form method="POST" action="">
+                  <h2>Pick Courses</h2>
+                     {{ form.csrf_token }}
+                  {{ form.course_options  }}
+                     <input type="submit" class="btn btn-primary setProgram" value="Courses">
+              </form>
+
+
+
+{% endblock %}
+</body>
+
+<script charset="utf-8" type="text/javascript">
+
+$(function() {
+
+    // jQuery selection for the 2 select boxes
+    var dropdown = {
+        state: $('#select_state'),
+        county: $('#select_county')
+    };
+
+    // call to update on load
+    updateCounties();
+
+    // function to call XHR and update county dropdown
+    function updateCounties() {
+        var send = {
+            state: dropdown.state.val()
+        };
+        dropdown.county.attr('disabled', 'disabled');
+        dropdown.county.empty();
+        $.getJSON("{{ url_for('_get_counties') }}", send, function(data) {
+            data.forEach(function(item) {
+                dropdown.county.append(
+                    $('<option>', {
+                        value: item[0],
+                        text: item[1]
+                    })
+                );
+            });
+            dropdown.county.removeAttr('disabled');
+        });
+    }
+
+    // event listener to state dropdown change
+    dropdown.state.on('change', function() {
+        updateCounties();
+    });
+
+});
+
+</script>
+</html>

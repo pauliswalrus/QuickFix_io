@@ -49,6 +49,16 @@ class Tutor(db.Model):
     application_comments = db.Column(db.Text)
     tutor_courses = db.Column(db.ARRAY(db.Text))
 
+class TutorCourses(db.Model):
+
+    __tablename__="tutor_courses"
+
+    tutor_course_id = db.Column(db.Integer, primary_key=True)
+    course_id = db.Column(db.Integer, db.ForeignKey('course.course_id'))
+    tutor_id = db.Column(db.Integer, db.ForeignKey('tutor.tutor_id'))
+    course_name = db.Column(db.Text)
+
+
 
 class FileUpload(db.Model):
 
@@ -130,7 +140,7 @@ class PostComment(db.Model):
 class Program(db.Model):
     """Program Model"""
 
-    __tablename__ = "program"
+    __tablename__ = "program_test"
     program_id = db.Column(db.Integer, primary_key=True)
     program_name = db.Column(db.Text)
 
@@ -139,6 +149,7 @@ class Course(db.Model):
 
     __tablename__ = "course"
     course_id = db.Column(db.Integer, primary_key=True)
+    course_code = db.Column(db.Text)
     course_name = db.Column(db.Text)
     program_id = db.Column(db.Integer, db.ForeignKey('program.program_id'))
 
