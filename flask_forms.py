@@ -130,10 +130,13 @@ class TutorStatus(FlaskForm):
 
 class ProgramForm(FlaskForm):
 
-    program_options = SelectField('Programs', id="program_picked" , coerce=int, validators=[InputRequired])
+    program_options = SelectField('Programs', coerce=int, validators=[InputRequired])
 
     #course_options = QuerySelectField('course_list', query_factory=choice_query, allow_blank=False, get_label='course_name')
 
+class TutorCourseForm(FlaskForm):
+
+    tutor_courses = SelectField('Courses', coerce=int, validators=[InputRequired])
 
 class CourseForm(FlaskForm):
 

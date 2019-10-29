@@ -203,13 +203,19 @@ def new_student():
 def new_tutor():
     this_user = User.query.filter_by(username=current_user.username).first()
 
+    t_courses = TutorCourses.query.filter_by(user_id=this_user.id).all()
+
     t_status = "not sure"
 
     if this_user.role == 'S':
         role_name = "Student"
+        t_status = "not sure"
 
         if Tutor.query.filter_by(user_id=this_user.id).first():
             tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            if tutor.tutor_status is None:
+                t_status = "not sure"
+
             t_status = tutor.tutor_status
 
     elif this_user.role == 'T':
@@ -221,30 +227,49 @@ def new_tutor():
         role_name = "Admin"
         t_status = "Admin"
 
+    program_courses = Course.query.all()
+    course_list = [(k.course_id, k.course_name) for k in program_courses]
+
+    course_form = TutorCourseForm()
+
+    course_form.tutor_courses.choices = course_list
+
     tutor_form = TutorForm()
+
+    #
+    # tutor_form.tutor_courses.choices = course_list
+
     # Updates database if validation is successful
     if tutor_form.validate_on_submit():
         about_tutor = tutor_form.about_tutor.data
-
         credentials_file = request.files[tutor_form.credentials_file.name]
-
         user_object = User.query.filter_by(username=current_user.username).first()
-
         tutor_added = Tutor(user_id=user_object.id, about_tutor=about_tutor, application_comments="nothing to add",
                             tutor_status="pending", credentials_file_name=credentials_file.filename,
                             credentials_file_data=credentials_file.read())
         db.session.add(tutor_added)
         db.session.commit()
+        #
+        # course_picked = tutor_form.course_options.data
+        # this_course = Course.query.filter_by(course_id=course_picked).first()
+        # this_user = User.query.filter_by(username=current_user.username).first()
+        # user_course = UserCourses(user_id=this_user.id, course_name=this_course.course_name,
+        #                           course_id=this_course.course_id)
+        # db.session.add(user_course)
+        # db.session.commit()
+
         flash('Registered successfully. Please login', 'success')
         return redirect(url_for('home'))
 
-    return render_template("tutor_application.html", form=tutor_form, this_user=this_user, t_status=t_status, role_name=role_name)
+    return render_template("tutor_application.html", form=tutor_form, this_user=this_user, t_status=t_status, role_name=role_name, course_form=course_form, t_courses=t_courses)
 
 
 ### check tutor application
 @app.route('/check_application', methods=['GET', 'POST'])
 def check_application():
     this_user = User.query.filter_by(username=current_user.username).first()
+
+    tutor_courses = TutorCourses.query.filter_by(user_id=this_user.id).all()
 
     t_status = "not sure"
 
@@ -266,7 +291,7 @@ def check_application():
 
     this_tutor = Tutor.query.filter_by(user_id=this_user.id).first()
 
-    return render_template("check_application.html", this_user=this_user, this_tutor=this_tutor, role_name=role_name, t_status=t_status)
+    return render_template("check_application.html", this_user=this_user, this_tutor=this_tutor, role_name=role_name, t_status=t_status, tutor_courses=tutor_courses)
 
 
 # room page
@@ -1069,6 +1094,36 @@ def deleteUserCourse():
 
     return jsonify({'result': 'success'})
 
+# deletes student posts
+@app.route('/addTutorCourse', methods=['POST'])
+def addTutorCourse():
+
+    user = User.query.filter_by(username=current_user.username).first()
+    user_id = user.id
+
+    this_course = Course.query.filter_by(course_name=request.form['course_name']).first()
+    #
+    # this_course = Course.query.filter_by(course_id=request.form['id']).first()
+
+    tutor_course = TutorCourses(user_id=user_id, course_name=this_course.course_name,
+                              course_id=this_course.course_id)
+    db.session.add(tutor_course)
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+# deletes student posts
+@app.route('/clearTutorCourses', methods=['POST'])
+def clearTutorCourses():
+
+    user = User.query.filter_by(username=current_user.username).first()
+    user_id = user.id
+
+    db.session.query(TutorCourses).filter_by(user_id=user_id).delete()
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
 
 
 @app.route('/editUser', methods=['POST'])
@@ -1154,11 +1209,15 @@ def denyTutor():
 @app.route('/deleteApplication', methods=['POST'])
 def deleteApplication():
     user = User.query.filter_by(username=current_user.username).first()
+
+    db.session.query(TutorCourses).filter_by(user_id=user.id).delete()
+    db.session.commit()
+
     tutor = Tutor.query.filter_by(user_id=user.id).first()
     db.session.delete(tutor)
     db.session.commit()
 
-    return jsonify({'result': 'success'})
+    return redirect(url_for('new_tutor'))
 
 ## tutor chat room controls
 

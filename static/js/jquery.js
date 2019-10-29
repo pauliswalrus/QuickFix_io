@@ -399,6 +399,10 @@ $(document).ready(function () {
 
             });
 
+            req.done(function (data) {
+            window.location.reload(true);
+            });
+
         } else {
 
 
@@ -506,6 +510,45 @@ $(document).ready(function () {
             //nothing happens
 
         }
+
+    })
+
+
+         // for private profile page
+    //edit user
+    $('.addTutorCourse').on('click', function () {
+
+        var course_id = $(this).attr('course_id');
+
+        var course_name = $('#tutorcourse option:selected').text();
+        // var r = confirm("Delete Course?");
+            req = $.ajax({
+                url: '/addTutorCourse',
+                type: 'POST',
+                data: {course_name: course_name}
+
+            });
+
+            req.done(function (data) {
+            window.location.reload(true);
+            });
+
+
+        })
+
+        $('.clearTutorCourses').on('click', function () {
+
+        // var r = confirm("Delete Course?");
+
+            req = $.ajax({
+                url: '/clearTutorCourses',
+                type: 'POST',
+
+            });
+
+            req.done(function () {
+            window.location.reload(true);
+            });
 
     })
 

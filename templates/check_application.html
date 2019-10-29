@@ -47,6 +47,11 @@
                 <label for="statusTutor">Status: </label>
                 <span id="statusTutor">{{ this_tutor.tutor_status|title }} </span>
               <br>
+                <label for="statusTutor">Courses: </label>
+                {% for t in tutor_courses %}
+                <span id="statusTutor">{{ t.course_name|title }}, </span>
+                {% endfor %}
+            <br>
              <label>Credentials:</label> <a href="{{ url_for('download_cred', dl_name=this_tutor.credentials_file_name) }}">{{ this_tutor.credentials_file_name }}</a>
              <br>
                 <label for="appComments">Application Feedback: </label>

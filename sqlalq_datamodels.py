@@ -58,6 +58,16 @@ class UserCourses(db.Model):
     user_id = db.Column(db.Integer)
     course_name = db.Column(db.Text)
 
+class TutorCourses(db.Model):
+
+    __tablename__="tutor_courses"
+
+    tutor_course_id = db.Column(db.Integer, primary_key=True)
+    course_id = db.Column(db.Integer)
+    user_id = db.Column(db.Integer)
+    course_name = db.Column(db.Text)
+
+
 class FileUpload(db.Model):
 
     __tablename__="file_uploads"

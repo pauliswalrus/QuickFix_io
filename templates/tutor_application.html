@@ -12,6 +12,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
 
+        <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
 </head>
 <body>
 {% extends "navbar.html" %}
@@ -22,6 +25,22 @@
     <div id="regForm">
 
         <div id="formTitle">Tutor Application</div>
+
+        <h4>Tutor Courses</h4>
+        {% for c in t_courses %}
+        <div id="tutorCourses">
+        {{ c.course_name }}
+        {% endfor %}
+
+    </div>
+        <form method="post" enctype="multipart/form-data">
+                <div>
+                    {{ course_form.tutor_courses(id='tutorcourse') }}
+                </div>
+                {{ form.tutor_courses }}
+            <button class="btn btn-info addTutorCourse" course_id="{{ course_form.tutor_courses.data }}">Add Course</button>
+            <button class="btn btn-info clearTutorCourses">Clear Course</button>
+        </form>
 
         <hr>
             <form method="post" enctype="multipart/form-data">
