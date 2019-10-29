@@ -2,13 +2,16 @@
 
 QuickFix_io Capstone Project
 
-Sprint 6 - Oct 25 2019 Build
+Sprint 6 - Oct 29 2019 Build
 
 deployed at:
 
 quickfix-io.herokuapp.com
 
 Sprint6: Completed Tasks included in this build
+
+Waiting to integrate new course, program tables
+once they are completed
 
 Authors:
 Austin Paul, Emma Hobden, 
