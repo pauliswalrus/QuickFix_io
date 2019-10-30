@@ -1,77 +1,86 @@
-#bg {
-    /*border: 3px solid red;*/
-    width: 100%;
-    height: calc(100% - 80px);
-    /*background: pink;*/
-    /*background-image: url('../images/551.jpg');*/
-    /*background-size: cover;*/
-    /*!*background-clip: content-box;*!*/
+
+/* Styles div that holds all Rows */
+#rowContainer {
+    border: 2px solid green;
+    width: 90%;
+    margin: 15px 5% 0 5%;
+    /*height: calc(100% - 80px);*/
+    height: 100%;
 
 }
 
-.main-content {
-    width: 70%;
-    margin: 10px 15% 10px 15%;
-    /*border: 2px solid red;*/
-    height: 99%;
-    /*overflow-y: scroll;*/
-    border: 3px solid green;
-}
-
-.row {
-    width: 90% !important;
-    margin: 10px 5% 10px 5% !important;
-}
-
-
-.title1 {
-    font-size: 1.6em;
-    border-bottom: 2px solid #2E2D4D;
-    text-align: center;
-}
-
-.title2 {
-    color: #2E2D4D;
-    font-size: 1.6em;
-}
-
-.forumsPost {
-    /*border: 2px solid red;*/
-    padding: 20px;
-    min-height: 100px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-
-.addPost_link {
+/* Styles link to go back to previous page */
+.goBack {
     color: #D57356;
 }
 
-
-.tableFixHead {
-  overflow-y: auto;
-  height: 460px;
-    width: 90% !important;
-    margin: 10px 5% 10px 5% !important;
-    background-color: white;
-    /*opacity: 0.6%;*/
+/* Styles row class */
+.row {
+    border: 1px solid red;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding: 15px !important;
 }
 
-.tableFixHead table {
-  border-collapse: collapse;
-  width: 100%;
+.row1 {
+    /*padding: 15px !important;*/
 }
 
-.tableFixHead th,
-.tableFixHead td {
-  padding: 8px 16px;
+/* Styles row2 class - Post Title */
+.row2 {
+    /*background-color: pink !important;*/
+    background-color: slategray !important;
+    /*height: 40px !important;*/
+    color: white !important;
+    font-size: 1.6em !important;
+    text-align: center;
+    /*padding: 15px !important;*/
 }
 
-.tableFixHead th {
-  position: sticky;
-  top: 0;
-  background: #778899;
-    color: white;
+/* Styles row5 class - Comments Title */
+.row5 {
+    background-color: lightgray !important;
+    height: 40px !important;
+    color: green !important;
+    font-size: 1.6em !important;
+}
+
+/* Styles row6 class - All Comments */
+.row7 {
+    max-height: 500px !important;
+    overflow-y: scroll !important;
+}
+
+/* Styles form-control class */
+.form-control {
+    width: 100% !important;
+    margin-left: 0 !important;
+}
+
+/* Styles post author link */
+#author {
+    text-align: left;
+}
+
+/* Styles post date & time */
+#dateTime {
+    text-align: right;
+}
+
+#author,
+#dateTime {
+    width: 49%;
+    display: inline-block;
+    height: 30px;
+    margin-top: 0px;
+    vertical-align: middle;
+    text-size: 0.9em;
+    color: slategray;
+}
+
+
+/* Styles Post Content */
+#content {
 }
 
 
@@ -95,6 +104,95 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*#bg {*/
+/*    !*border: 3px solid red;*!*/
+/*    width: 100%;*/
+/*    height: calc(100% - 80px);*/
+/*    !*background: pink;*!*/
+/*    !*background-image: url('../images/551.jpg');*!*/
+/*    !*background-size: cover;*!*/
+/*    !*!*background-clip: content-box;*!*!*/
+
+/*}*/
+
+/*.main-content {*/
+/*    width: 70%;*/
+/*    margin: 10px 15% 10px 15%;*/
+/*    !*border: 2px solid red;*!*/
+/*    height: 99%;*/
+/*    !*overflow-y: scroll;*!*/
+/*    border: 3px solid green;*/
+/*}*/
+
+/*.row {*/
+/*    width: 90% !important;*/
+/*    margin: 10px 5% 10px 5% !important;*/
+/*}*/
+
+/*.title1 {*/
+/*    font-size: 1.6em;*/
+/*    border-bottom: 2px solid #2E2D4D;*/
+/*    text-align: center;*/
+/*}*/
+
+/*.title2 {*/
+/*    color: #2E2D4D;*/
+/*    font-size: 1.6em;*/
+/*}*/
+
+/*.forumsPost {*/
+/*    !*border: 2px solid red;*!*/
+/*    padding: 20px;*/
+/*    min-height: 100px;*/
+/*    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+/*}*/
+
+/*.addPost_link {*/
+/*    color: #D57356;*/
+/*}*/
+
+/*.tableFixHead {*/
+/*  overflow-y: auto;*/
+/*  height: 460px;*/
+/*    width: 90% !important;*/
+/*    margin: 10px 5% 10px 5% !important;*/
+/*    background-color: white;*/
+/*    !*opacity: 0.6%;*!*/
+/*}*/
+
+/*.tableFixHead table {*/
+/*  border-collapse: collapse;*/
+/*  width: 100%;*/
+/*}*/
+
+/*.tableFixHead th,*/
+/*.tableFixHead td {*/
+/*  padding: 8px 16px;*/
+/*}*/
+
+/*.tableFixHead th {*/
+/*  position: sticky;*/
+/*  top: 0;*/
+/*  background: #778899;*/
+/*    color: white;*/
+/*}*/
 
 /*.table {*/
 /*    border: 2px solid green;*/
@@ -124,108 +222,42 @@
 /*th     { background:#eee; }*/
 
 
+/*#mainContent {*/
+/*    width: 100%;*/
+/*    !*border: 2px solid red;*!*/
+/*    display: inline-block;*/
+/*    height: 100%;*/
+/*}*/
+
+/*!* Styles all three column divs on the page *!*/
+/*#left_column,*/
+/*#right_column {*/
+/*    display: inline-block;*/
+/*    !*border: 2px solid red;*!*/
+/*    margin-top: 0px;*/
+/*    vertical-align: middle;*/
+/*}*/
+
+/*#left_column {*/
+/*    width: 69%;*/
+/*    height: 100%;*/
+
+/*}*/
+
+/*#right_column {*/
+/*    width: 30%;*/
+/*    margin-top: -50px;*/
+/*    height: 600px;*/
+/*    overflow-y: scroll;*/
+/*}*/
 
 
-
-
-
-
-
-
-
-
-#mainContent {
-    width: 100%;
-    /*border: 2px solid red;*/
-    display: inline-block;
-    height: 100%;
-}
-
-/* Styles all three column divs on the page */
-#left_column,
-#right_column {
-    display: inline-block;
-    /*border: 2px solid red;*/
-    margin-top: 0px;
-    vertical-align: middle;
-}
-
-#left_column {
-    width: 69%;
-    height: 100%;
-
-}
-
-#right_column {
-    width: 30%;
-    margin-top: -50px;
-    height: 600px;
-    overflow-y: scroll;
-}
-
-
-#cardStyle {
-    width: 80%;
-    margin-left: 10%;
-    margin-right: 10%;
-    margin-top: 5%;
-    text-align: center;
-    /*padding: 20px;*/
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-}
-
-#postTitle {
-    width: 100%;
-    background-color: slategray;
-    height: 40px;
-    color: white;
-    font-size: 1.6em;
-    padding: 5px;
-}
-
-#authorDate {
-    /*border: 1px solid blue;*/
-    /*width: 100%;*/
-}
-
-#author,
-#dateTime {
-    width: 49%;
-    display: inline-block;
-    /*border: 2px solid red;*/
-    height: 30px;
-    margin-top: 0px;
-    vertical-align: middle;
-    text-size: 0.9em;
-    color: slategray;
-}
-
-#author {
-    text-align: left;
-}
-
-#dateTime {
-    text-align: right;
-}
-
-#content {
-    width: 90%;
-    margin-left: 5%;
-    margin-right: 5%;
-    border: 1px solid slategrey;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding: 10px;
-    text-align: left;
-}
-
-#roomTitle {
-    text-align: left;
-    margin-left: 5%;
-    font-weight: bold;
-    color: #395065;
-}
-
-#joinRoomLink {
-    margin-bottom: 10%;
-}
+/*#cardStyle {*/
+/*    width: 80%;*/
+/*    margin-left: 10%;*/
+/*    margin-right: 10%;*/
+/*    margin-top: 5%;*/
+/*    text-align: center;*/
+/*    !*padding: 20px;*!*/
+/*    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+/*}*/

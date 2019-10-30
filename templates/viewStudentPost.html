@@ -9,7 +9,7 @@
 
     <title>Student Post</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    {#    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">#}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/viewPost.css') }}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,66 +19,175 @@
 <body>
 {% extends "navbar.html" %}
 {% block content %}
+    <div id="rowContainer">
 
-
-<!-- Main Section Div -->
-<div id="mainContent">
-
-    <!-- Left Column Div -->
-    <div id="left_column">
-
-        <div id="cardStyle">
-
-            <div id="postTitle">{{ post.title }} </div>
-
-            <div id="authorDate">
-                <div id="author">By: <a href="{{ url_for('pub_profile', username=post.author) }}"> {{ post.author }}</a></div>
-                <div id="dateTime">{{ post.date_posted.strftime('%b %d, %Y') }} at {{ post.date_posted.strftime('%I'':''%M %p') }}</div>
+        <!-- Row 1 -->
+        <div class="row row1">
+            <div class="col-sm-12">
+                <a href="{{ url_for('allstudentposts') }}" class="goBack">Back to All Posts</a>
             </div>
-
-            <div id="roomTitle">{{ post.title }}</div>
-
-            <div id="content">Post Content: {{ post.content|safe }}</div>
+        </div> <!-- end Row 1 -->
 
 
+        <!-- Row 2 - Title -->
+        <div class="row row2">
+            <div class="col-sm-12">
+                <div id="postTitle">{{ post.title }}</div>
+            </div>
+        </div> <!-- end Row 2 - Title -->
+
+
+        <!-- Row 3 - Author | Time, Date -->
+        <div class="row row3">
+            <div class="col-sm-12">
+                <div id="authorDate">
+                    <div id="author">By: <a
+                            href="{{ url_for('pub_profile', username=post.author) }}"> {{ post.author }}</a></div>
+                    <div id="dateTime">{{ post.date_posted.strftime('%b %d, %Y') }}
+                        at {{ post.date_posted.strftime('%I'':''%M %p') }}</div>
+                </div>
+            </div>
+        </div> <!-- end Row 3 - Author | Time, Date -->
+
+
+        <!-- Row 4 - Post Content -->
+        <div class="row row4">
+            <div class="col-sm-12">
+                <div id="content">{{ post.content|safe }}</div>
+            </div>
+        </div> <!-- end Row 4 - Post Content -->
+
+
+        <!-- Row 5 - Comments Title -->
+        <div class="row row5">
+            <div class="col-sm-12">
+                Comments
+            </div>
+        </div> <!-- end Row 5 - Comments Title -->
+
+
+
+        <!-- Row 6 - Write Comment / Submit Comment -->
+        <div class="row row6">
+            <div class="col-sm-12">
 
                 <form method="post">
-{#        <div>{{ post_form.type }}</div>#}
-            <div>
-            {{ comment_form.content(class_='form-control', placeholder='Add A Comment Now!', autocomplete='off') }}
-            <ul>
-                {% for error in comment_form.content.errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
+                    <div>
+                        {{ comment_form.content(class_='form-control commentForm', placeholder='Add A Comment Now!', autocomplete='off') }}
+                        <ul>
+                            {% for error in comment_form.content.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
 
-        <div>{{ comment_form.submit_button(class_='submitButton') }}</div>
+                    <div>{{ comment_form.submit_button(class_='submitButton') }}</div>
 
-        {{ comment_form.csrf_token }}
+                    {{ comment_form.csrf_token }}
 
-    </form>
-            {% for comment in comments %}
-                <div class="roomPosts">
+                </form>
 
+            </div>
+        </div> <!-- end Row 6 - Write Comment / Submit Comment -->
+
+
+
+
+
+        <!-- Row 7 - Actual Comments -->
+        <div class="row row7">
+            <div class="col-sm-12">
+
+
+
+                {% for comment in comments %}
+                    <div class="roomPosts">
                         <h5>{{ comment.content }}</h5>
-                    by <a href="{{ url_for('pub_profile', username=comment.comment_author)}}">{{ comment.comment_author }}</a> on {{ comment.date_posted.strftime('%b %d, %Y') }}
-                        at {{ comment.date_posted.strftime('%I' ':' '%M %p') }}
+                        by <a href="{{ url_for('pub_profile', username=comment.comment_author) }}">
+                        {{ comment.comment_author }}
                     </a>
+                        on {{ comment.date_posted.strftime('%b %d, %Y') }}
+                        at {{ comment.date_posted.strftime('%I' ':' '%M %p') }}
 
-                    <hr>
+                        <hr>
+                    </div>
+                {% endfor %}
 
-                </div>
+            </div>
+        </div> <!-- end Row 7 - Actual Comments -->
 
-            {% endfor %}
-
-        </div>
-
+    </div><!-- end row container -->
 
 
-    </div> <!-- end left column -->
 
-</div><!-- End Main Section -->
+
+
+
+
+
+
+
+    {#<!-- Main Section Div -->#}
+    {#<div id="mainContent">#}
+    {##}
+    {#    <!-- Left Column Div -->#}
+    {#    <div id="left_column">#}
+    {##}
+    {#        <div id="cardStyle">#}
+    {##}
+    {#            <div id="postTitle">{{ post.title }}</div>#}
+    {##}
+    {#            <div id="authorDate">#}
+    {#                <div id="author">By: <a href="{{ url_for('pub_profile', username=post.author) }}"> {{ post.author }}</a></div>#}
+    {#                <div id="dateTime">{{ post.date_posted.strftime('%b %d, %Y') }} at {{ post.date_posted.strftime('%I'':''%M %p') }}</div>#}
+    {#            </div>#}
+    {##}
+    {#            <div id="roomTitle">{{ post.title }}</div>#}
+    {##}
+    {#            <div id="content">Post Content: {{ post.content|safe }}</div>#}
+    {##}
+    {##}
+    {#            <form method="post">#}
+    {#                <div>#}
+    {#                    {{ comment_form.content(class_='form-control', placeholder='Add A Comment Now!', autocomplete='off') }}#}
+    {#                    <ul>#}
+    {#                        {% for error in comment_form.content.errors %}#}
+    {#                            <li>{{ error }}</li>#}
+    {#                        {% endfor %}#}
+    {#                    </ul>#}
+    {#                </div>#}
+    {##}
+    {#                <div>{{ comment_form.submit_button(class_='submitButton') }}</div>#}
+    {##}
+    {#                {{ comment_form.csrf_token }}#}
+    {##}
+    {#            </form>#}
+    {##}
+    {#            {% for comment in comments %}#}
+    {#                <div class="roomPosts">#}
+    {#                    <h5>{{ comment.content }}</h5>#}
+    {#                    by <a href="{{ url_for('pub_profile', username=comment.comment_author)}}">#}
+    {#                    {{ comment.comment_author }}#}
+    {#                </a>#}
+    {#                    on {{ comment.date_posted.strftime('%b %d, %Y') }}#}
+    {#                    at {{ comment.date_posted.strftime('%I' ':' '%M %p') }}#}
+    {##}
+    {#                    <hr>#}
+    {#                </div>#}
+    {#            {% endfor %}#}
+    {##}
+    {##}
+    {##}
+    {##}
+    {##}
+    {##}
+    {#        </div><!-- end card style -->#}
+    {##}
+    {##}
+    {##}
+    {#    </div> <!-- end left column -->#}
+    {##}
+    {#</div><!-- End Main Section -->#}
 
 
 {% endblock %}
