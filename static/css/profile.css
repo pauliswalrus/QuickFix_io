@@ -8,7 +8,7 @@
     /*overflow-x: scroll;*/
 }
 .row_mainTitle{
-    color: slategray;
+    color: #2E2D4D;
     text-align: center;
 }
 
@@ -128,9 +128,10 @@
 /* Styles sub headings */
 .subheading {
     width: 100%;
-    color: lightslategray;
+    /*color: lightslategray;*/
+    color: #2E2D4D;
     font-size: 2em;
-    border-bottom: 2px solid lightslategray;
+    border-bottom: 2px solid #2E2D4D;
 }
 
 /* Styles subheading links */
@@ -156,47 +157,6 @@
     text-decoration: underline;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*!* Create columns that float next to each other *!*/
-/*.column {*/
-/*    float: left;*/
-/*    height: 600px;*/
-/*    !*border: 1px solid black;*!*/
-/*}*/
-
-/*!* Left Column *!*/
-/*.left {*/
-/*    width: 30%;*/
-/*    text-align: center;*/
-/*}*/
-
-/*!* Right Column *!*/
-/*.right {*/
-/*    width: 70%;*/
-/*}*/
-
-/*.middle {*/
-/*  width: 35%;*/
-/*}*/
 
 /* Clear floats after the columns */
 .row:after {

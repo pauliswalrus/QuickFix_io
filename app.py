@@ -489,6 +489,8 @@ def allstudentposts():
 def allrooms():
     this_user = User.query.filter_by(username=current_user.username).first()
 
+    # user_object = User.query.filter_by(username=user.).first()
+
     t_status = "not sure"
 
     if this_user.role == 'S':
@@ -508,6 +510,11 @@ def allrooms():
         t_status = "Admin"
 
     room_posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
+
+    room_posts = db.session.query(User.user_photo, RoomPost.room_course, RoomPost.room_title,
+                                       RoomPost.author, RoomPost.title, RoomPost.date_posted,
+                                       RoomPost.content, RoomPost.id).filter(RoomPost.author == User.username).order_by(
+        RoomPost.date_posted.desc()).all()
 
     return render_template('tutorPosts.html', this_user=this_user, room_posts=room_posts, role_name=role_name, t_status=t_status)
 

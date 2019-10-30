@@ -16,9 +16,9 @@ body, html {
 }
 
 .subheading {
-    color: slategray;
+    color: #2E2D4D;
     font-size: 2em;
-    border-bottom: 2px solid slategray;
+    border-bottom: 2px solid #2E2D4D;
 }
 
 #mUsername {
@@ -28,8 +28,8 @@ body, html {
 
 .table-responsive {
     /*border: 1px solid lightslategray;*/
-    width: 98% !important;
-    margin: 10px 1% 10px 1% !important;
+    /*width: 98% !important;*/
+    /*margin: 10px 1% 10px 1% !important;*/
     padding-left: 0 !important;
     padding-right: 0 !important;
     max-height: 300px;
@@ -38,17 +38,3 @@ body, html {
 }
 
 
-
-
-
-#mFirstLast {
-
-}
-
-#mRole {
-
-}
-
-#mEmail {
-
-}
