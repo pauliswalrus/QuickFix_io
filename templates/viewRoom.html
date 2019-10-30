@@ -39,13 +39,28 @@
 
         <!-- Row 2 - Title -->
         <div class="row row2">
-            <div class="col-sm-12">
+
+            <div class="col-sm-1">
                 <div id="postTitle">
-                    {{ room.room_title }} <a href="{{ url_for('private_chat') }}">Join</a><br>
-                    {{ room.room_code }} {{ room.room_course }}
+
                 </div>
             </div>
+
+            <div class="col-sm-9">
+                <div id="postTitle">
+                    {{ room.room_title }} <br>
+                    <span class="courseInfo">{{ room.room_code }} {{ room.room_course }}</span>
+                </div>
+            </div>
+
+            <div class="col-sm-2">
+                <a href="{{ url_for('private_chat') }}" class="join">Join Room</a><br>
+            </div>
         </div> <!-- end Row 2 - Title -->
+
+
+
+
 
 
         <!-- Row 3 - Author | Time, Date -->
@@ -67,6 +82,9 @@
                 <div id="content">{{ room.content|safe }}</div>
             </div>
         </div> <!-- end Row 4 - Post Content -->
+
+
+        <br><br><br>
 
 
         <!-- Row 5 - Comments Title -->

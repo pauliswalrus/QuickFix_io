@@ -1,7 +1,7 @@
 
 /* Styles div that holds all Rows */
 #rowContainer {
-    border: 2px solid green;
+    /*border: 2px solid green;*/
     width: 90%;
     margin: 15px 5% 0 5%;
     /*height: calc(100% - 80px);*/
@@ -16,17 +16,18 @@
 
 /* Styles row class */
 .row {
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     margin-left: auto !important;
     margin-right: auto !important;
     padding: 15px !important;
 }
 
+/*  ROW 1 - button to go back */
 .row1 {
     /*padding: 15px !important;*/
 }
 
-/* Styles row2 class - Post Title */
+/*  ROW 2 - Post Title */
 .row2 {
     /*background-color: pink !important;*/
     background-color: slategray !important;
@@ -37,19 +38,45 @@
     /*padding: 15px !important;*/
 }
 
-/* Styles row5 class - Comments Title */
-.row5 {
-    background-color: lightgray !important;
-    height: 40px !important;
-    color: green !important;
-    font-size: 1.6em !important;
+/*  ROW 3 - Author | Time, Date  */
+.row3 {
+    padding: 5px !important;
 }
 
-/* Styles row6 class - All Comments */
+/*  ROW 4 - Post Content */
+.row4 {
+    background-color: #dfe7f0 !important;
+    color: #2E2D4D !important;
+}
+
+/*  ROW 3 - Comments Title */
+.row5 {
+    color: #2E2D4D; !important;
+    font-size: 1.6em !important;
+    border-bottom: 3px solid #2E2D4D; !important;
+}
+
+/*  ROW 6 - Write Comment / Submit Comment */
+.row6 {
+
+}
+
+/*  ROW 7 - All Comments */
 .row7 {
     max-height: 500px !important;
     overflow-y: scroll !important;
 }
+
+.courseInfo {
+    color: #dfe7f0 !important;
+    font-size: 0.8em !important;
+}
+
+.join {
+    color: white !important;
+    font-size: 0.8em !important;
+}
+
 
 /* Styles form-control class */
 .form-control {
