@@ -68,7 +68,7 @@
                 {% for post in student_posts %}
                     <tbody>
                     <tr>
-                        <td>CODE1234</td>
+                        <td>{{ post.post_course_code }}</td>
                         <td>{{ post.post_course }}</td>
                         <td><a href="{{ url_for('studentpost', studentpost_id=post.id) }}">{{ post.title }}</a></td>
                         <td><a href="{{ url_for('pub_profile', username=post.author) }}">{{ post.author }}</a></td>
