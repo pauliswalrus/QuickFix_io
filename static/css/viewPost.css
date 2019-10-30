@@ -1,8 +1,28 @@
+#bg {
+    /*border: 3px solid red;*/
+    width: 100%;
+    height: calc(100% - 80px);
+    /*background: pink;*/
+    /*background-image: url('../images/551.jpg');*/
+    /*background-size: cover;*/
+    /*!*background-clip: content-box;*!*/
+
+}
+
 .main-content {
     width: 70%;
     margin: 10px 15% 10px 15%;
-    border: 2px solid red;
+    /*border: 2px solid red;*/
+    height: 99%;
+    /*overflow-y: scroll;*/
+    border: 3px solid green;
 }
+
+.row {
+    width: 90% !important;
+    margin: 10px 5% 10px 5% !important;
+}
+
 
 .title1 {
     font-size: 1.6em;
@@ -14,6 +34,98 @@
     color: #2E2D4D;
     font-size: 1.6em;
 }
+
+.forumsPost {
+    /*border: 2px solid red;*/
+    padding: 20px;
+    min-height: 100px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+.addPost_link {
+    color: #D57356;
+}
+
+
+.tableFixHead {
+  overflow-y: auto;
+  height: 460px;
+    width: 90% !important;
+    margin: 10px 5% 10px 5% !important;
+    background-color: white;
+    /*opacity: 0.6%;*/
+}
+
+.tableFixHead table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.tableFixHead th,
+.tableFixHead td {
+  padding: 8px 16px;
+}
+
+.tableFixHead th {
+  position: sticky;
+  top: 0;
+  background: #778899;
+    color: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*.table {*/
+/*    border: 2px solid green;*/
+/*    height: 460px;*/
+/*    overflow-y: scroll;*/
+
+/*    width: 90% !important;*/
+/*    margin: 10px 5% 10px 5% !important;*/
+
+
+/*}*/
+
+/*tbody {*/
+/*    border: 2px solid green;*/
+/*    height: 460px;*/
+/*    overflow-y: scroll;*/
+/*}*/
+
+/*.table_head thead th {*/
+/*    border: 2px solid blue;*/
+/*    position: sticky;*/
+/*}*/
+
+/*!* Just common table stuff. Really. *!*/
+/*table  { border-collapse: collapse; width: 100%; }*/
+/*th, td { padding: 8px 16px; }*/
+/*th     { background:#eee; }*/
+
+
+
+
 
 
 

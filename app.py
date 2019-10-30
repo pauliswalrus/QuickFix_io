@@ -680,8 +680,6 @@ def programCourses():
 
     return render_template('programCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses)
 
-
-
 # courses page
 @app.route("/tutorCourses/", methods=['GET', 'POST'])
 def tutorCourses():
@@ -734,9 +732,6 @@ def tutorCourses():
         return redirect(url_for('tutorCourses'))
 
     return render_template('tutorCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses)
-
-
-
 
 # route for chat - displays public rooms and form to join(create rooms)
 @app.route("/home", methods=['GET', 'POST'])
