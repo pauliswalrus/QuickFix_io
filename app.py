@@ -142,6 +142,7 @@ def admin_rooms():
 
     return render_template("admin_rooms.html", this_user=this_user, blog_posts = blog_posts)
 
+
 # admin - manage users
 @app.route("/users", methods=['GET', 'POST'])
 def all_users():
@@ -161,6 +162,7 @@ def all_users():
     return render_template('all_users.html', username=current_user.username, all_tutors=all_tutors,
                            online_tutors=online_tutors, busy_tutors=busy_tutors, student_users=student_users,
                            this_user=this_user, users_list=users_list)
+
 
 ### need to rename/refactor to user
 @app.route('/register', methods=['GET', 'POST'])
@@ -991,6 +993,7 @@ def private_chat():
                            room_files=room_files, room=room_object, this_user=this_user, role_name=role_name,
                            roomVisible=roomVisible)
 
+
 # tutor/student updates aboutMe profile section
 @app.route('/update_aboutme', methods=['POST', 'GET'])
 def update_aboutme():
@@ -1005,6 +1008,7 @@ def update_aboutme():
         db.session.commit()
 
     return render_template('aboutMe.html', user_object=user_object, username=current_user.username)
+
 
 # route for personal profile
 @app.route("/profile/", methods=['GET', 'POST'])
@@ -1263,6 +1267,7 @@ def deleteRoomUploads():
 
     return jsonify({'result': 'success'})
 
+
 # update room used in admin
 @app.route('/updateRoom', methods=['POST'])
 def updateRoom():
@@ -1278,7 +1283,8 @@ def updateRoom():
 
     return jsonify({'result': 'success', "room_name": room.room_title})
 
-#update roomprofile?
+
+# update roomprofile?
 @app.route('/updateRoomProfile', methods=['POST'])
 def updateRoomProfile():
     room = RoomPost.query.filter_by(id=request.form['id']).first()
@@ -1293,7 +1299,8 @@ def updateRoomProfile():
 
     return jsonify({'result': 'success'})
 
-#edit user email used in profile
+
+# edit user email used in profile
 @app.route('/editUserProfile', methods=['POST'])
 def editUserProfile():
     user_edit = User.query.filter_by(id=request.form['id']).first()
@@ -1319,6 +1326,7 @@ def deleteRoom():
     db.session.commit()
 
     return jsonify({'result': 'success'})
+
 
 # deletes student posts
 @app.route('/deleteStudentPost', methods=['POST'])
@@ -1355,6 +1363,7 @@ def deleteUserCourse():
 
     return jsonify({'result': 'success'})
 
+
 # deletes user_course used in profile
 @app.route('/deleteTutorCourse', methods=['POST'])
 def deleteTutorCourse():
@@ -1366,6 +1375,7 @@ def deleteTutorCourse():
     db.session.commit()
 
     return jsonify({'result': 'success'})
+
 
 # adds tutor_courses used in tutor_application
 @app.route('/addTutorCourse', methods=['POST'])
@@ -1381,6 +1391,7 @@ def addTutorCourse():
 
     return jsonify({'result': 'success'})
 
+
 # deletes tutor_courses used in tutor application
 @app.route('/clearTutorCourses', methods=['POST'])
 def clearTutorCourses():
@@ -1394,7 +1405,7 @@ def clearTutorCourses():
     return jsonify({'result': 'success'})
 
 
-#edit users admin portal
+# edit users admin portal
 @app.route('/editUser', methods=['POST'])
 def editUser():
     user_edit = User.query.filter_by(id=request.form['id']).first()
@@ -1408,7 +1419,8 @@ def editUser():
 
     return jsonify({'result': 'success'})
 
-#delete user admin portal
+
+# delete user admin portal
 @app.route('/deleteUser', methods=['POST'])
 def deleteUser():
     user = User.query.filter_by(id=request.form['id']).first()
@@ -1472,6 +1484,7 @@ def denyTutor():
 
     return jsonify({'result': 'success'})
 
+
 @app.route('/deleteApplication', methods=['POST'])
 def deleteApplication():
     user = User.query.filter_by(username=current_user.username).first()
@@ -1485,7 +1498,7 @@ def deleteApplication():
 
     return redirect(url_for('new_tutor'))
 
-## tutor chat room controls
+# tutor chat room controls
 
 # tutor makes room private
 @app.route('/privateRoom', methods=['POST'])
@@ -1599,6 +1612,40 @@ def close_room(data):
     # room = data['room']
     room = session.get('roomName')
     print('Tutor ' + current_user.username + ' has closed Room: ' + room + '.')
+
+#
+###
+### error pages 403, 404, 405, 500
+##
+#
+
+
+# 403 status explicitly
+@app.errorhandler(403)
+def forbidden(error):
+
+    return render_template('403.html'), 403
+
+
+# 404 status explicitly
+@app.errorhandler(404)
+def not_found(error):
+
+    return render_template('404.html'), 404
+
+
+# 405 status explicitly
+@app.errorhandler(405)
+def method_not_allowed(error):
+
+    return render_template('405.html'), 405
+
+
+# 500 status explicitly
+@app.errorhandler(500)
+def internal_server_error(error):
+
+    return render_template('500.html'), 500
 
 
 ## CHANGE ME AT DEPLOY
