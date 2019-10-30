@@ -111,6 +111,7 @@ class RoomPost(db.Model):
     content = db.Column(db.Text)
     type = db.Column(db.String(25))
     room_course = db.Column(db.Text)
+    room_code = db.Column(db.Text)
     visible = db.Column(db.Boolean)
 
 # data model for blogpost table recently added in heroku db
@@ -136,6 +137,7 @@ class StudentPost(db.Model):
     date_posted = db.Column(db.DateTime)
     content = db.Column(db.Text)
     post_course = db.Column(db.Text)
+    post_course_code = db.Column(db.Text)
     type = db.Column(db.String(25))
 
 # data model for blogpost table recently added in heroku db

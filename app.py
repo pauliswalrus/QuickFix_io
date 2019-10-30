@@ -355,11 +355,8 @@ def add_room():
 
     user_object = User.query.filter_by(username=current_user.username)
     this_user = User.query.filter_by(username=current_user.username).first()
-
-    user_courses = UserCourses.query.filter_by(user_id=this_user.id).all()
-
+    user_courses = TutorCourses.query.filter_by(user_id=this_user.id).all()
     room_courses = [(k.course_id, k.course_name) for k in user_courses]
-
     post_form.room_course.choices = room_courses
 
     t_status = "not sure"
@@ -384,8 +381,11 @@ def add_room():
         title = post_form.title.data
         content = post_form.content.data
         room_course = post_form.room_course.data
-        course = Course.query.filter_by(course_id=room_course).first()
+        course = TutorCourses.query.filter_by(course_id=room_course).first()
         room_course_name = course.course_name
+        room_code = course.course_code
+        print(course.course_code)
+
         if current_user.role == 'S':
             type = "Request"
         else:
@@ -394,7 +394,7 @@ def add_room():
         date_time = datetime.now()
         visible = True
         new_room = RoomPost(title=title, room_title=subtitle, author=author, date_posted=date_time, content=content,
-                            type=type, room_course=room_course_name, visible=visible)
+                            type=type, room_course=room_course_name, room_code=room_code, visible=visible)
 
         db.session.add(new_room)
         db.session.commit()
@@ -527,14 +527,41 @@ def add_student_post():
     user_object = User.query.filter_by(username=current_user.username)
     this_user = User.query.filter_by(username=current_user.username).first()
 
-    user_courses = UserCourses.query.filter_by(user_id=this_user.id).all()
-    post_courses = [(k.course_id, k.course_name) for k in user_courses]
-    post_form.post_course.choices = post_courses
+    # user_courses = UserCourses.query.filter_by(user_id=this_user.id).all()
+    # post_courses = [(k.course_id, k.course_name) for k in user_courses]
+    # post_form.post_course.choices = post_courses
 
     t_status = "not sure"
 
     if this_user.role == 'S':
         role_name = "Student"
+
+        user_courses = UserCourses.query.filter_by(user_id=this_user.id).all()
+        post_courses = [(k.course_id, k.course_name) for k in user_courses]
+        post_form.post_course.choices = post_courses
+
+        if request.method == 'POST':
+            title = post_form.title.data
+            content = post_form.content.data
+            post_course = post_form.post_course.data
+            course = UserCourses.query.filter_by(course_id=post_course).first()
+            post_course_name = course.course_name
+            post_course_code = course.course_code
+            print(course.course_code)
+
+            if current_user.role == 'S':
+                type = "Request"
+            else:
+                type = "Offer"
+            author = current_user.username
+            date_time = datetime.now()
+            blog_post = StudentPost(title=title, author=author, date_posted=date_time, content=content,
+                                type=type, post_course=post_course_name, post_course_code=post_course_code)
+
+            db.session.add(blog_post)
+            db.session.commit()
+
+            return redirect(url_for('home'))
 
         if Tutor.query.filter_by(user_id=this_user.id).first():
             tutor = Tutor.query.filter_by(user_id=this_user.id).first()
@@ -542,36 +569,65 @@ def add_student_post():
 
     elif this_user.role == 'T':
         role_name = "Tutor"
+
+        user_courses = TutorCourses.query.filter_by(user_id=this_user.id).all()
+        post_courses = [(k.course_id, k.course_name) for k in user_courses]
+        post_form.post_course.choices = post_courses
         tutor = Tutor.query.filter_by(user_id=this_user.id).first()
         t_status = tutor.tutor_status
+
+        if request.method == 'POST':
+            title = post_form.title.data
+            content = post_form.content.data
+            post_course = post_form.post_course.data
+            course = TutorCourses.query.filter_by(course_id=post_course).first()
+            post_course_name = course.course_name
+            post_course_code = course.course_code
+            print(course.course_code)
+
+            if current_user.role == 'S':
+                type = "Request"
+            else:
+                type = "Offer"
+            author = current_user.username
+            date_time = datetime.now()
+            blog_post = StudentPost(title=title, author=author, date_posted=date_time, content=content,
+                                type=type, post_course=post_course_name, post_course_code=post_course_code)
+
+            db.session.add(blog_post)
+            db.session.commit()
+
+            return redirect(url_for('home'))
 
     elif this_user.role == 'A':
         role_name = "Admin"
         t_status = "Admin"
 
-    if request.method == 'POST':
-        title = post_form.title.data
-        content = post_form.content.data
-        post_course = post_form.post_course.data
-        course = Course.query.filter_by(course_id=post_course).first()
-        post_course_name = course.course_name
-
-        if current_user.role == 'S':
-            type = "Request"
-        else:
-            type = "Offer"
-        # type = post_form.type.data
-        author = current_user.username
-        date_time = datetime.now()
-
-        # add roompost to database
-        blog_post = StudentPost(title=title, author=author, date_posted=date_time, content=content,
-                                type=type, post_course=post_course_name)
-
-        db.session.add(blog_post)
-        db.session.commit()
-
-        return redirect(url_for('home'))
+    # if request.method == 'POST':
+    #     title = post_form.title.data
+    #     content = post_form.content.data
+    #     post_course = post_form.post_course.data
+    #     course = ProgramCourse.query.filter_by(course_id=post_course).first()
+    #     course = TutorCourses.query.filter_by(course_id=post_course).first()
+    #     post_course_name = course.course_name
+    #     post_course_code = course.course_code
+    #
+    #     if current_user.role == 'S':
+    #         type = "Request"
+    #     else:
+    #         type = "Offer"
+    #     # type = post_form.type.data
+    #     author = current_user.username
+    #     date_time = datetime.now()
+    #
+    #     # add roompost to database
+    #     blog_post = StudentPost(title=title, author=author, date_posted=date_time, content=content,
+    #                             type=type, post_course=post_course_name)
+    #
+    #     db.session.add(blog_post)
+    #     db.session.commit()
+    #
+    #     return redirect(url_for('home'))
 
     return render_template('addNewStudentPost.html', username=current_user.username, post_form=post_form,
                            user_object=user_object, this_user=this_user, t_status=t_status, role_name=role_name)

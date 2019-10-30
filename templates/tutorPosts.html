@@ -7,7 +7,7 @@
 <head>
     <meta charset=utf-8>
 
-    <title>View Student Posts</title>
+    <title>Available Tutors</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/viewTutorPosts.css') }}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -47,6 +47,8 @@
                     <span class="showRoomTitle"><a href="{{ url_for('room', room_id=room.id) }}" class="showRoomTitle">{{ room.title }}</a></span><br>
 
                     <span class="showCourse">Course: {{ room.room_course }}</span><br>
+
+                    <span>Course Code: {{ room.room_code }}</span><br>
 
                     <span class="showAuthor"> posted by <a href="{{ url_for('pub_profile', username=room.author) }}">{{ room.author }}</a></span>
                     <span class="showTime">at {{ room.date_posted.strftime('%I' ':' '%M %p') }}</span>
