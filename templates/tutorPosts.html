@@ -24,6 +24,28 @@
 {#{% endfor %}#}
 <div id="main-content">
 
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+            <form method="POST" action="">
+                     {{ search_form.csrf_token }}
+                  {{ search_form.select(class_='form-control') }} <br>
+                {{ search_form.search(class_='form-control', placeholder='Search For Room') }} <br>
+                     <input type="submit" class="btn btn-primary" value="Search">
+              </form> <br>
+        </div>
+    </div>
+
     <!-- Row 1 -->
     <div class="row">
         <div class="col-sm-12">

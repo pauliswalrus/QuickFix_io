@@ -492,6 +492,81 @@ def allstudentposts():
     return render_template('studentPosts.html', this_user=this_user, student_posts=student_posts, role_name=role_name, t_status=t_status)
 
 
+# @app.route('/results')
+# def search_results(search):
+#     results = []
+#     search_string = search.data['search']
+#
+#     if search.data['search'] == '':
+#         qry = db.session.query(RoomPost)
+#         results = qry.all()
+#
+#     if not results:
+#         flash('No results found!')
+#         return redirect('/allrooms')
+#     else:
+#         # display results
+#         return render_template('results.html', results=results)
+
+
+@app.route('/results')
+def search_results(search):
+    this_user = User.query.filter_by(username=current_user.username).first()
+    t_status = "not sure"
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
+
+    search_form = TutorSearchForm(request.form)
+
+    results = []
+    search_string = search.data['search']
+
+    if search_string:
+        if search.data['select'] == 'Course Code':
+            qry = db.session.query(RoomPost).filter(RoomPost.room_code.contains(search_string))
+
+            results = qry.all()
+
+        elif search.data['select'] == 'Course Name':
+            qry = db.session.query(RoomPost).filter(RoomPost.room_course.contains(search_string))
+
+            results = qry.all()
+        elif search.data['select'] == 'User Name':
+            qry = db.session.query(RoomPost).filter(
+                RoomPost.author.contains(search_string))
+
+            results = qry.all()
+        else:
+            qry = db.session.query(RoomPost)
+            results = qry.all()
+    else:
+        qry = db.session.query(RoomPost)
+        results = qry.all()
+
+    if not results:
+        flash('No results found!')
+        return redirect('/allrooms')
+    else:
+        # display results
+        room_posts = results
+        # table.border = True
+
+        return render_template('tutorPosts.html', this_user=this_user, room_posts=room_posts, role_name=role_name, t_status=t_status, search_form=search_form)
+
 # view all tutor posts
 @app.route('/allrooms', methods=['GET', 'POST'])
 def allrooms():
@@ -500,6 +575,12 @@ def allrooms():
     # user_object = User.query.filter_by(username=user.).first()
 
     t_status = "not sure"
+
+    search_form = TutorSearchForm(request.form)
+
+    if request.method == 'POST':
+        return search_results(search_form)
+
 
     if this_user.role == 'S':
         role_name = "Student"
@@ -524,7 +605,9 @@ def allrooms():
                                        RoomPost.content, RoomPost.id, RoomPost.room_code).filter(RoomPost.author == User.username).order_by(
         RoomPost.date_posted.desc()).all()
 
-    return render_template('tutorPosts.html', this_user=this_user, room_posts=room_posts, role_name=role_name, t_status=t_status)
+    return render_template('tutorPosts.html', this_user=this_user, room_posts=room_posts, role_name=role_name, t_status=t_status, search_form=search_form)
+
+
 
 
 # new student request help post

@@ -6,7 +6,6 @@ from passlib.hash import pbkdf2_sha256
 from sqlalq_datamodels import User, FileUpload, RoomPost, choice_query
 
 
-
 ###     AUTHOR: AUSTIN PAUL
 ###     DATE: OCT 25
 ###     QUICKFIX_IO DIRTYBITS
@@ -53,6 +52,7 @@ class TutorForm(FlaskForm):
     credentials_file = FileField('file_upload', validators=[InputRequired(message="Select a file")])
     submit_button = SubmitField('Create Account')
 
+
 class LoginForm(FlaskForm):
     """ Login form """
 
@@ -66,6 +66,7 @@ class RoomCreate(FlaskForm):
 
     room_made = StringField('Private Room ', validators=[InputRequired(message="Must enter a room name")])
     submit_button = SubmitField('Room')
+
 
 class RoomForm(FlaskForm):
     """ RoomPost Form """
@@ -81,12 +82,14 @@ class RoomForm(FlaskForm):
         if room_object:
             raise ValidationError("A room with this name already exists. Please try a different name")
 
+
 class CommentForm(FlaskForm):
     """ RoomPost Form """
 
     # type = SelectField('type_label', choices=[('Request', 'Request'), ('Offer', 'Offer')])
     content = TextAreaField('content_label', validators=[InputRequired(message="Post required")])
     submit_button = SubmitField('Add Comment')
+
 
 class StudentPostForm(FlaskForm):
     """ RoomPost Form """
@@ -95,6 +98,7 @@ class StudentPostForm(FlaskForm):
     content = TextAreaField('content_label', validators=[InputRequired(message="Post required")])
     post_course = SelectField('Courses', coerce=int, validators=[InputRequired])
     submit_button = SubmitField('Add Post')
+
 
 class StudentCommentForm(FlaskForm):
     """ RoomPost Form """
@@ -110,11 +114,13 @@ class FileUploadForm(FlaskForm):
     file = FileField('file_upload', validators=[InputRequired(message="Select a file")])
     submit_button = SubmitField('Add New File')
 
+
 class ImageUploadForm(FlaskForm):
     """ file upload """
 
     image = FileField('image_upload', validators=[InputRequired(message="Select an image")])
     submit_button1 = SubmitField('Add New Image')
+
 
 class RoomJoin(FlaskForm):
     """ Room Create """
@@ -122,11 +128,21 @@ class RoomJoin(FlaskForm):
     room_private = StringField('Private Room')
     submit_button2 = SubmitField('Begin Private Chat')
 
+
 class TutorStatus(FlaskForm):
     """ Status"""
 
     status = SelectField('Status', choices=[('0', 'Offline'), ('1', 'Online'), ('2', 'Busy')])
     submit_button3 = SubmitField('Change Status')
+
+
+class TutorSearchForm(FlaskForm):
+    choices = [('Course Code', 'Course Code'),
+               ('Course Name', 'Course Name'),
+               ('User Name', 'User Name')]
+    select = SelectField('Search For Room:', choices=choices)
+    search = StringField('Search For Room', validators=[InputRequired])
+
 
 class ProgramForm(FlaskForm):
 
@@ -134,9 +150,11 @@ class ProgramForm(FlaskForm):
 
     #course_options = QuerySelectField('course_list', query_factory=choice_query, allow_blank=False, get_label='course_name')
 
+
 class TutorCourseForm(FlaskForm):
 
     tutor_courses = SelectField('Courses', coerce=int, validators=[InputRequired])
+
 
 class CourseForm(FlaskForm):
 
@@ -144,7 +162,3 @@ class CourseForm(FlaskForm):
 
     #course_options = QuerySelectField('course_list', query_factory=choice_query, allow_blank=False, get_label='course_name')
 
-# class PickCourseForm(FlaskForm):
-
-    #programs = SelectField('programs', choices=[])
-    # courses = SelectField('courses', choices=[])
