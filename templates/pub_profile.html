@@ -30,7 +30,7 @@
             <hr>
 
             <div id="mFirstLast">{{ firstname }} {{ lastname }}</div>
-            <div id="mRole">Role: {{ role_name }}</div>
+            <div id="mRole">Role: {{ pub_role_name }}</div>
             <div id="mEmail">Email: {{ email }}</div>
         </div>
 
@@ -61,7 +61,7 @@
                             <tbody>
                             <tr>
                                 <td>{{ course.course_id }}</td>
-                                <td>CODE123</td>
+                                <td>{{ course.course_code }}</td>
                                 <td>{{ course.course_name }}</td>
                             </tr>
                             </tbody>
@@ -249,7 +249,7 @@
 
 
     <script>
-        let uRole = '{{ role_name }}';
+        let uRole = '{{ pub_role_name }}';
 
         window.onload = function (event) {
 

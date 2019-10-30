@@ -789,9 +789,7 @@ def profile():
     t_status = "not sure"
 
     posts = RoomPost.query.filter_by(author=this_user.username).order_by(RoomPost.date_posted.desc()).all()
-
     student_posts = StudentPost.query.filter_by(author=this_user.username).order_by(StudentPost.date_posted.desc()).all()
-
     user_courses = UserCourses.query.filter_by(user_id=this_user.id).all()
 
     if role == "S":
@@ -814,8 +812,7 @@ def profile():
 
     elif role == "A":
         role_name = "Admin"
-        posts = RoomPost.query.filter_by(author=this_user.username).order_by(RoomPost.date_posted.desc()).all()
-        t_status = "Admin"
+
 
     room_posts = RoomPost.query.filter_by(author=current_user.username).order_by(RoomPost.date_posted.desc()).all()
 
@@ -876,11 +873,29 @@ def profile():
 @app.route("/profile/<username>", methods=['GET', 'POST'])
 def pub_profile(username):
     thisUser = current_user.username
+    #public profile person
     user_object = User.query.filter_by(username=username).first()
 
     this_user = User.query.filter_by(username=current_user.username).first()
+    this_role = this_user.role
+    t_status = "not sure"
 
-    user_courses = UserCourses.query.filter_by(user_id=this_user.id).all()
+    user_courses = UserCourses.query.filter_by(user_id=user_object.id).order_by(UserCourses.user_course_id.desc()).all()
+
+    if this_role == "S":
+        student_posts = StudentPost.query.filter_by(author=username).order_by(StudentPost.date_posted.desc()).all()
+        role_name = "Student"
+
+    elif this_role == "T":
+        posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+        role_name = "Tutor"
+
+    elif this_role == "A":
+        posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
+        t_status = "Admin"
+        role_name = "Admin"
 
     image_form = ImageUploadForm()
 
@@ -897,22 +912,22 @@ def pub_profile(username):
     lastname = user_object.lastname
     email = user_object.email
     status = user_object.status
-    role = user_object.role
+    pub_role = user_object.role
     about_me = user_object.about_me
 
     posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
 
     student_posts = StudentPost.query.filter_by(author=username).order_by(StudentPost.date_posted.desc()).all()
 
-    if role == "S":
+    if pub_role == "S":
         student_posts = StudentPost.query.filter_by(author=username).order_by(StudentPost.date_posted.desc()).all()
-        role_name = "Student"
-    elif role == "T":
+        pub_role_name = "Student"
+    elif pub_role == "T":
         posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
-        role_name = "Tutor"
-    elif role == "A":
+        pub_role_name = "Tutor"
+    elif pub_role == "A":
         posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
-        role_name = "Admin"
+        pub_role_name = "Admin"
 
     if status == 0:
         status_string = "Offline"
@@ -924,7 +939,7 @@ def pub_profile(username):
     return render_template('pub_profile.html', thisUser=thisUser, username=username, firstname=firstname,
                            lastname=lastname, email=email, status_string=status_string, posts=posts,
                            role_name=role_name, about_me=about_me, image_form=image_form, user_object=user_object, user_files=user_files,
-                           this_user=this_user, student_posts=student_posts, user_courses=user_courses)
+                           this_user=this_user, student_posts=student_posts, user_courses=user_courses, pub_role_name=pub_role_name, t_status=t_status)
 
 
 # gets profile pics
