@@ -577,6 +577,12 @@ def add_student_post():
                            user_object=user_object, this_user=this_user, t_status=t_status, role_name=role_name)
 
 
+# new student request help post
+@app.route('/error_template')
+def error_template():
+
+    return render_template('errorTemplate.html')
+
 # programs page
 @app.route("/courses", methods=['GET', 'POST'])
 def courses():

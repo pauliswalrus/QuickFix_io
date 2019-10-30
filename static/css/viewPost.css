@@ -1,3 +1,27 @@
+.main-content {
+    width: 70%;
+    margin: 10px 15% 10px 15%;
+    border: 2px solid red;
+}
+
+.title1 {
+    font-size: 1.6em;
+    border-bottom: 2px solid #2E2D4D;
+    text-align: center;
+}
+
+.title2 {
+    color: #2E2D4D;
+    font-size: 1.6em;
+}
+
+
+
+
+
+
+
+
 #mainContent {
     width: 100%;
     /*border: 2px solid red;*/

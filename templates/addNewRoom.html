@@ -4,8 +4,9 @@
 
     <title>Create A New Room</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    {#    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">#}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/cardStyleForm.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/addNewRoom.css') }}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -16,62 +17,51 @@
 {% extends "navbar.html" %}
 {% block content %}
 
-{#<div class="navbar">#}
-{#    <a class="logo" href="{{ url_for('chat', username=username) }}">Home</a>#}
-{#    <a href="{{ url_for('profile', username=username) }}">{{ username }}</a>#}
-{#    <a href="#">Forums</a>#}
-{#    <a href="{{ url_for('chat', username=username) }}">Chat</a>#}
-{#    <a href="{{ url_for('all_users') }}">Users</a>#}
-{#    <a href="{{ url_for('logout') }}"> Logout </a>#}
-{#</div>#}
-
-<div id="main-section">
+    <div id="main-section">
 
     <div id="regForm">
+        <div id="formTitle"> Create A New Room</div>
 
-    <div id="formTitle"> Create A New Room</div>
+        <form action="{{ url_for('add_room') }}" , method="post">
+            <div>
+                {{ post_form.subtitle(class_='form-control', placeholder='Room Name', autocomplete='off', autofocus=true) }}
+                <ul>
+                    {% for error in post_form.subtitle.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
 
-    <form action="{{ url_for('add_room') }}", method="post">
+            <div>
+                {{ post_form.title(class_='form-control', placeholder='Title', autocomplete='off') }}
+                <ul>
+                    {% for error in post_form.title.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
 
-        <div>
-            {{ post_form.subtitle(class_='form-control', placeholder='Room Name', autocomplete='off', autofocus=true) }}
-            <ul>
-                {% for error in post_form.subtitle.errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
+            <div>
+                {{ post_form.room_course(class_='form-control') }} <br>
+                {{ post_form.content(class_='form-control', placeholder='Content', autocomplete='off') }}
+                <ul>
+                    {% for error in post_form.content.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
 
-        <div>
-            {{ post_form.title(class_='form-control', placeholder='Title', autocomplete='off') }}
-            <ul>
-                {% for error in post_form.title.errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
+            <div>{{ post_form.submit_button(class_='submitButton') }}</div>
+            {{ post_form.csrf_token }}
 
-        <div>
-            {{ post_form.room_course(class_='form-control')  }}
-            {{ post_form.content(class_='form-control', placeholder='Content', autocomplete='off') }}
-            <ul>
-                {% for error in post_form.content.errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
+        </form>
 
-        <div>
-            {{ post_form.submit_button(class_='submitButton') }}
-        </div>
+    </div> <!-- end regForm -->
 
-        {{ post_form.csrf_token }}
 
-    </form>
+</div> <!-- end main section -->
 
-    </div>
 
 {% endblock %}
-</div>
 </body>
 </html>

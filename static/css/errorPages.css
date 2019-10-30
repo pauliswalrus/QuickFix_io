@@ -1,0 +1,61 @@
+/* Defines the style for navbar.html */
+
+
+
+/* Styles the QuickFix written logo */
+.logo {
+  font-family: 'Amatic SC', cursive;
+  font-size: 3em !important;
+  text-align: center;
+  padding: 5px !important;
+  /*border: 1px solid red;*/
+  width: 250px;
+  background-image: url('../images/logo3.png');
+  background-size: cover;
+  height: 80px;
+
+}
+
+/* Styles entire horizontal navigation bar */
+#navBar {
+  width: 100%;
+  height: 80px;
+  background-color: slategrey;
+  top:0;
+  z-index: 5;
+}
+
+/* Styles links in nav bar */
+#navBar a,
+#navBar a:active,
+#navBar a:visited,
+#navBar span {
+  color: white;
+  padding: 25px;
+  /*font-size: 1.2em;*/
+    text-decoration: none;
+}
+
+/* Styles link in nav bar - on hover */
+#navBar a:hover,
+#navBar span:hover {
+  color: #395065;
+  text-decoration: none;
+}
+
+
+
+/* Class that floats elements right */
+.fl_right {
+  float: right;
+}
+
+/* Class that floats elements left */
+.fl_left {
+  float: left;
+}
+
+
+#main-content {
+
+}

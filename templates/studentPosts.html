@@ -21,26 +21,51 @@
 {% extends "navbar.html" %}
 {% block content %}
 
-<a href="{{ url_for('add_student_post') }}">Add New Post</a>
+    <div class="main-content">
 
-    <div class="column right" id="studentPosts">
-        <div class="cardContainer">
-            <h3>These Students Need Help:</h3>
-            {% for post in student_posts %}
-                <div>
-                    <a href="{{ url_for('studentpost', studentpost_id=post.id) }}">
-                        <div id="postTypeTitle">[{{ post.type|upper }}] {{ post.title }}</div>
-                        <div id="postAuthorTime">
-                            by {{ post.author }} on {{ post.date_posted.strftime('%b %d, %Y') }}
-                            at {{ post.date_posted.strftime('%I' ':' '%M %p') }}
-                        </div>
-                    </a>
-                    <hr>
-                </div>
+        <!-- Row 1 -->
+        <div class="row">
+            <div class="col-sm-12">
+                <a href="{{ url_for('add_student_post') }}">Add New Post</a>
+            </div>
+        </div> <!-- end Row 1 - add post -->
 
-            {% endfor %}
-        </div>
-    </div>
+        <!-- Row 2 -->
+        <div class="row title1">
+            <div class="col-sm-12">
+                <span class="title2">Community Forums</span>
+            </div>
+        </div> <!-- end Row 2 - title -->
+
+        <!-- Row 3 -->
+        <div class="row">
+            <div class="col-sm-12">
+                <p>Sort / Search?</p>
+            </div>
+        </div> <!-- end Row 3 - sort search -->
+
+        <!-- Row 4 -->
+        <div class="row">
+            <div class="col-sm-12">
+
+                {% for post in student_posts %}
+
+                    <div>
+                        <a href="{{ url_for('studentpost', studentpost_id=post.id) }}">
+                            <div id="postTypeTitle">{{ post.title }}</div>
+                            <div id="postAuthorTime">
+                                by {{ post.author }} on {{ post.date_posted.strftime('%b %d, %Y') }}
+                                at {{ post.date_posted.strftime('%I' ':' '%M %p') }}
+                            </div>
+                        </a>
+                        <hr>
+                    </div>
+
+                {% endfor %}
+            </div>
+        </div> <!-- end Row 4 - posts -->
+
+    </div> <!-- end Main Content -->
 
 
 
@@ -50,18 +75,33 @@
 
 
 
-{#    {% for post in student_posts %}#}
-{#        <div id="postTitle">{{ post.title }} </div>#}
-{#        #}
-{#        <div id="authorDate">#}
-{#            <div id="author">By: <a href="{{ url_for('pub_profile', username=post.author) }}"> {{ post.author }}</a></div>#}
-{#            <div id="dateTime">{{ post.date_posted.strftime('%b %d, %Y') }} at {{ post.date_posted.strftime('%I'':''%M %p') }}</div>#}
-{#        </div>#}
-{#        #}
-{#        <div id="roomTitle">{{ post.title }}</div>#}
-{#        <div id="content">Post Content: {{ post.content|safe }}</div>#}
-{##}
-{#    {% endfor %}#}
+
+
+
+
+
+
+    {#<a href="{{ url_for('add_student_post') }}">Add New Post</a>#}
+    {##}
+    {#    <div class="column right" id="studentPosts">#}
+    {#        <div class="cardContainer">#}
+    {#            <h3>Community Forums</h3>#}
+    {#            {% for post in student_posts %}#}
+    {#                <div>#}
+    {#                    <a href="{{ url_for('studentpost', studentpost_id=post.id) }}">#}
+    {#                        <div id="postTypeTitle">[{{ post.type|upper }}] {{ post.title }}</div>#}
+    {#                        <div id="postAuthorTime">#}
+    {#                            by {{ post.author }} on {{ post.date_posted.strftime('%b %d, %Y') }}#}
+    {#                            at {{ post.date_posted.strftime('%I' ':' '%M %p') }}#}
+    {#                        </div>#}
+    {#                    </a>#}
+    {#                    <hr>#}
+    {#                </div>#}
+    {##}
+    {#            {% endfor %}#}
+    {#        </div>#}
+    {#    </div>#}
+
 
 
 
