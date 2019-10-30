@@ -46,7 +46,11 @@
                             <span class="subHeading">Status: </span>
                             {{ tutor.tutor_status }}
                         </p>
-
+{#                            {% if tutor %}#}
+{#                            {% for t in tutor_courses %}#}
+{#                            {{ tutor.course_name }}#}
+{##}
+{#                                {% endfor %}#}
                         <p>
                             <span class="subHeading">Credentials: </span>
                             <a href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>

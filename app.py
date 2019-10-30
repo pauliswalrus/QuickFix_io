@@ -128,10 +128,13 @@ def admin_approved():
     # approved tutors in desc order
     tutors_approved = db.session.query(User.firstname, User.lastname, User.username, Tutor.user_id, Tutor.tutor_id,
                                        Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name,
-                                       Tutor.application_comments).filter(User.id == Tutor.user_id).order_by(
+                                       Tutor.application_comments, TutorCourses.course_name).filter(User.id == Tutor.user_id, TutorCourses.user_id == Tutor.user_id).order_by(
         User.id.desc()).all()
 
-    return render_template("admin_approved.html", this_user=this_user, tutors_approved=tutors_approved)
+    tutor_courses = TutorCourses.query.filter_by(user_id=this_user.id).all()
+
+
+    return render_template("admin_approved.html", this_user=this_user, tutors_approved=tutors_approved, tutor_courses=tutor_courses)
 
 
 #### admin route, will contain links to all users info etc
