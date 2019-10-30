@@ -12,11 +12,17 @@ from flask_uploads import UploadSet, configure_uploads, IMAGES, send_from_direct
 from flask_forms import *
 from sqlalq_datamodels import *
 
-###     AUTHOR: AUSTIN PAUL
-###     DATE: OCT 25
-###     QUICKFIX_IO DIRTYBITS
-###     SPRINT 6 OCT 25 BUILD DEPLOYED AT
-###     quickfix-io.herokuapp.com
+
+######################################################
+##
+# AUTHOR: AUSTIN PAUL
+# DATE: OCT 25
+# QUICKFIX_IO DIRTYBITS
+# SPRINT 6 OCT 25 BUILD DEPLOYED AT
+# quickfix-io.herokuapp.com
+##
+######################################################
+
 
 # socketio init
 socketio = SocketIO(app)
