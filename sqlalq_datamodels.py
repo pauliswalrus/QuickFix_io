@@ -154,7 +154,7 @@ class Program(db.Model):
 
     __tablename__ = "program_test"
     program_id = db.Column(db.Integer, primary_key=True)
-    program_name = db.Column(db.Text)
+    programName = db.Column(db.Text)
 
 class ProgramCourse(db.Model):
     """ProgramCourse"""

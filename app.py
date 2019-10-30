@@ -226,13 +226,13 @@ def new_tutor():
     elif this_user.role == 'A':
         role_name = "Admin"
         t_status = "Admin"
-
-    program_courses = ProgramCourse.query.all()
-    course_list = [(k.program_course_id, k.courseName) for k in program_courses]
-
-    course_form = TutorCourseForm()
-
-    course_form.tutor_courses.choices = course_list
+    #
+    # program_courses = ProgramCourse.query.filter_by(program_id=program_id).all()
+    # course_list = [(k.program_course_id, k.courseName) for k in program_courses]
+    #
+    # course_form = TutorCourseForm()
+    #
+    # course_form.tutor_courses.choices = course_list
 
     tutor_form = TutorForm()
 
@@ -261,7 +261,7 @@ def new_tutor():
         flash('Registered successfully. Please login', 'success')
         return redirect(url_for('home'))
 
-    return render_template("tutor_application.html", form=tutor_form, this_user=this_user, t_status=t_status, role_name=role_name, course_form=course_form, t_courses=t_courses)
+    return render_template("tutor_application.html", form=tutor_form, this_user=this_user, t_status=t_status, role_name=role_name, t_courses=t_courses)
 
 
 ### check tutor application
@@ -576,12 +576,10 @@ def add_student_post():
     return render_template('addNewStudentPost.html', username=current_user.username, post_form=post_form,
                            user_object=user_object, this_user=this_user, t_status=t_status, role_name=role_name)
 
-
-# new student request help post
 @app.route('/error_template')
 def error_template():
 
-    return render_template('errorTemplate.html')
+    return render_template("errorTemplate.html")
 
 # programs page
 @app.route("/courses", methods=['GET', 'POST'])
@@ -591,6 +589,13 @@ def courses():
 
     t_status = "not sure"
 
+    available_programs = Program.query.all()
+
+    program_list = [(k.program_id, k.programName) for k in available_programs]
+    form1 = ProgramForm()
+
+    form1.program_options.choices = program_list
+
     if this_user.role == 'S':
         role_name = "Student"
 
@@ -598,36 +603,59 @@ def courses():
             tutor = Tutor.query.filter_by(user_id=this_user.id).first()
             t_status = tutor.tutor_status
 
+        if request.method == 'POST':
+            program_picked = form1.program_options.data
+            this_program = Program.query.filter_by(program_id=program_picked).first()
+
+            program_courses = ProgramCourse.query.filter_by(program_id=program_picked).all()
+
+            return redirect(url_for('programCourses', program_id=program_picked))
+
     elif this_user.role == 'T':
         role_name = "Tutor"
         tutor = Tutor.query.filter_by(user_id=this_user.id).first()
         t_status = tutor.tutor_status
 
+        if request.method == 'POST':
+            program_picked = form1.program_options.data
+            this_program = Program.query.filter_by(program_id=program_picked).first()
+            program_courses = ProgramCourse.query.filter_by(program_id=program_picked).all()
+
+            return redirect(url_for('tutorCourses', program_id=program_picked))
+
     elif this_user.role == 'A':
         role_name = "Admin"
         t_status = "Admin"
 
-    available_programs = Program.query.all()
+    # available_programs = Program.query.all()
+    #
+    # program_list = [(k.program_id, k.programName) for k in available_programs]
+    # form1 = ProgramForm()
 
-    program_list = [(k.program_id, k.program_name) for k in available_programs]
-    form1 = ProgramForm()
+    # # form.courses.choices = [(course.program_id, course.course_name)for course in Course.query.filter_by(program_id=2).all()]
+    # form1.program_options.choices = program_list
+    #
+    # if request.method == 'POST':
+    #     program_picked = form1.program_options.data
+    #     this_program = Program.query.filter_by(program_id=program_picked).first()
+    #
+    #     program_courses = ProgramCourse.query.filter_by(program_id=program_picked).all()
+    #
+    #     return redirect(url_for('tutorCourses', program_id=program_picked))
 
-    # form.courses.choices = [(course.program_id, course.course_name)for course in Course.query.filter_by(program_id=2).all()]
-    form1.program_options.choices = program_list
+    # if request.method == 'POST':
+    #     program_picked = form1.program_options.data
+    #
+    #     this_program = Program.query.filter_by(program_id=program_picked).first()
+    #
+    #     return redirect(url_for('programCourses', programName=this_program.program_id))
 
-    if request.method == 'POST':
-        program_picked = form1.program_options.data
-
-        this_program = Program.query.filter_by(program_id=program_picked).first()
-
-        return redirect(url_for('programCourses', program_name=this_program.program_name))
-
-    return render_template('addTutorCourses.html', username=current_user.username, this_user=this_user, form1=form1, role_name=role_name, t_status=t_status)
+    return render_template('courses.html', username=current_user.username, this_user=this_user, form1=form1, role_name=role_name, t_status=t_status)
 
 
 # courses page
-@app.route("/programCourses/", methods=['GET', 'POST'])
-def programCourses():
+@app.route("/programCourses/<int:program_id>", methods=['GET', 'POST'])
+def programCourses(program_id):
 
     this_user = User.query.filter_by(username=current_user.username).first()
 
@@ -635,6 +663,7 @@ def programCourses():
 
     u_courses = UserCourses.query.filter_by(user_id=this_user.id).order_by(UserCourses.user_course_id.desc()).all()
 
+    this_program = Program.query.filter_by(program_id=program_id).first()
     t_status = "not sure"
 
     if this_user.role == 'S':
@@ -655,7 +684,7 @@ def programCourses():
 
     # program = Program.query.filter_by(program_name=program_name).first()
 
-    program_courses = ProgramCourse.query.all()
+    program_courses = ProgramCourse.query.filter_by(program_id=program_id).all()
     course_list = [(k.program_course_id, k.courseName) for k in program_courses]
 
     form = CourseForm()
@@ -663,7 +692,7 @@ def programCourses():
     form.course_options.choices = course_list
 
     if request.method == 'GET':
-        return render_template('programCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses)
+        return render_template('programCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
 
     if request.method == 'POST':
 
@@ -676,17 +705,20 @@ def programCourses():
         db.session.add(user_course)
         db.session.commit()
 
-        return redirect(url_for('programCourses'))
+        return redirect(url_for('programCourses',program_id=program_id))
 
-    return render_template('programCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses)
+    return render_template('programCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
+
+
 
 # courses page
-@app.route("/tutorCourses/", methods=['GET', 'POST'])
-def tutorCourses():
+@app.route("/tutorCourses/<int:program_id>", methods=['GET', 'POST'])
+def tutorCourses(program_id):
 
     this_user = User.query.filter_by(username=current_user.username).first()
     this_tutor = Tutor.query.filter_by(user_id=this_user.id).first()
     u_courses = TutorCourses.query.filter_by(user_id=this_user.id).order_by(TutorCourses.tutor_course_id.desc()).all()
+    this_program = Program.query.filter_by(program_id=program_id).first()
 
     t_status = "not sure"
 
@@ -706,9 +738,9 @@ def tutorCourses():
         role_name = "Admin"
         t_status = "Admin"
 
-    # program = Program.query.filter_by(program_name=program_name).first()
 
-    program_courses = ProgramCourse.query.all()
+    # program = Program.query.filter_by(program_name=program_name).first()
+    program_courses = ProgramCourse.query.filter_by(program_id=program_id).all()
     course_list = [(k.program_course_id, k.courseName) for k in program_courses]
 
     form = CourseForm()
@@ -716,10 +748,9 @@ def tutorCourses():
     form.course_options.choices = course_list
 
     if request.method == 'GET':
-        return render_template('tutorCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses)
+        return render_template('tutorCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
 
     if request.method == 'POST':
-
         course_picked = form.course_options.data
 
         this_course = ProgramCourse.query.filter_by(program_course_id=course_picked).first()
@@ -729,9 +760,103 @@ def tutorCourses():
         db.session.add(tutor_course)
         db.session.commit()
 
-        return redirect(url_for('tutorCourses'))
+        return redirect(url_for('tutorCourses', program_id=program_id))
 
-    return render_template('tutorCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses)
+    return render_template('tutorCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
+
+
+# programs page
+@app.route("/applicationBegin", methods=['GET', 'POST'])
+def applicationBegin():
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    t_status = "not sure"
+    available_programs = Program.query.all()
+    program_list = [(k.program_id, k.programName) for k in available_programs]
+    form1 = ProgramForm()
+    form1.program_options.choices = program_list
+
+    if request.method == 'POST':
+        program_picked = form1.program_options.data
+        this_program = Program.query.filter_by(program_id=program_picked).first()
+        program_courses = ProgramCourse.query.filter_by(program_id=program_picked).all()
+
+        return redirect(url_for('applicationCourses', program_id=program_picked))
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
+
+    return render_template('applicationBegin.html', username=current_user.username, this_user=this_user, form1=form1, role_name=role_name, t_status=t_status)
+
+
+# courses page
+@app.route("/applicationCourses/<int:program_id>", methods=['GET', 'POST'])
+def applicationCourses(program_id):
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+    this_tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+    u_courses = TutorCourses.query.filter_by(user_id=this_user.id).order_by(TutorCourses.tutor_course_id.desc()).all()
+
+    this_program = Program.query.filter_by(program_id=program_id).first()
+
+    t_status = "not sure"
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
+
+
+    # program = Program.query.filter_by(program_name=program_name).first()
+    program_courses = ProgramCourse.query.filter_by(program_id=program_id).all()
+    course_list = [(k.program_course_id, k.courseName) for k in program_courses]
+
+    form = CourseForm()
+
+    form.course_options.choices = course_list
+
+    if request.method == 'GET':
+        return render_template('applicationCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
+
+    if request.method == 'POST':
+        course_picked = form.course_options.data
+
+        this_course = ProgramCourse.query.filter_by(program_course_id=course_picked).first()
+        this_user = User.query.filter_by(username=current_user.username).first()
+        tutor_course = TutorCourses(user_id=this_user.id, course_name=this_course.courseName,
+                                    course_id=this_course.program_course_id, course_code=this_course.courseCode)
+        db.session.add(tutor_course)
+        db.session.commit()
+
+        return redirect(url_for('applicationCourses',program_id=program_id))
+
+    return render_template('applicationCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
+
 
 # route for chat - displays public rooms and form to join(create rooms)
 @app.route("/home", methods=['GET', 'POST'])

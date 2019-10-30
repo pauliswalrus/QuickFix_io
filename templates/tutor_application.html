@@ -26,12 +26,30 @@
 
         <div id="formTitle">Tutor Application</div>
 
+
+
 {#        <h4>Tutor Courses</h4>#}
 {#        {% for c in t_courses %}#}
 {#        <div id="tutorCourses">#}
 {#        {{ c.course_name }}#}
 {#        {% endfor %}#}
+                                <form method="post" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                {{ form.about_tutor (class_='form-control', placeholder='Tell us why we should hire you!', autocomplete='off') }}<br>
+                <div>
+                    {{ form.credentials_file }}
+                </div><br>
+                <button type=submit class="btn btn-info">Apply</button>
+                {{ form.csrf_token }}
+            </form>
 
+                <a href="{{ url_for('home') }}" >
+                    <button class="btn btn-warning warning">Cancel Application</button>
+                </a>
+
+                <a href="{{ url_for('applicationBegin') }}" >
+                    <button class="btn btn-primary warning ">Program Selection</button>
+                </a>
                     <div id="myCourses">
 
 
@@ -41,7 +59,7 @@
                                 <th class="col-sm-2">Course_ID</th>
                                 <th class="col-sm-3">Course Code</th>
                                 <th class="col-sm-6">Course Name</th>
-                                <ht class="col-sm-6">Delete</ht>
+                                <th class="col-sm-6">Delete</th>
                         </tr></thead>
 
                         {% for t in t_courses %}
@@ -62,25 +80,25 @@
                 </div>
 
     </div>
-        <form method="post" enctype="multipart/form-data">
-                <div>
-                    {{ course_form.tutor_courses(id='tutorcourse') }}
-                </div>
-                {{ form.tutor_courses }}
-            <button class="btn btn-info addTutorCourse" course_id="{{ course_form.tutor_courses.data }}">Add Course</button>
-            <button class="btn btn-info clearTutorCourses">Clear Course</button>
-        </form>
+{#        <form method="post" enctype="multipart/form-data">#}
+{#                <div>#}
+{#                    {{ course_form.tutor_courses(id='tutorcourse') }}#}
+{#                </div>#}
+{#                {{ form.tutor_courses }}#}
+{#            <button class="btn btn-info addTutorCourse" course_id="{{ course_form.tutor_courses.data }}">Add Course</button>#}
+{#            <button class="btn btn-info clearTutorCourses">Clear Course</button>#}
+{#        </form>#}
 
         <hr>
-            <form method="post" enctype="multipart/form-data">
-                {{ form.hidden_tag() }}
-                {{ form.about_tutor (class_='form-control', placeholder='Tell us why we should hire you!', autocomplete='off') }}<br>
-                <div>
-                    {{ form.credentials_file }}
-                </div>
-                <button type=submit class="btn btn-info">Apply</button>
-                {{ form.csrf_token }}
-            </form>
+{#            <form method="post" enctype="multipart/form-data">#}
+{#                {{ form.hidden_tag() }}#}
+{#                {{ form.about_tutor (class_='form-control', placeholder='Tell us why we should hire you!', autocomplete='off') }}<br>#}
+{#                <div>#}
+{#                    {{ form.credentials_file }}#}
+{#                </div>#}
+{#                <button type=submit class="btn btn-info">Apply</button>#}
+{#                {{ form.csrf_token }}#}
+{#            </form>#}
 
     <a href="{{ url_for('home') }}">Change your mind? Return home.</a>
 

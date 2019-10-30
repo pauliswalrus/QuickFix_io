@@ -25,9 +25,13 @@
 {#                {{ c.course_name }}#}
 {#                {% endfor %}#}
 
-                <h2>Pick Courses <a href="{{ url_for('profile') }}" >
+                <h2>Courses For {{ this_program.programName }} <a href="{{ url_for('profile') }}" >
                     <button class="btn btn-primary warning ">Return To Profile</button>
-                </a></h2>
+                </a>
+                         <a href="{{ url_for('courses') }}" >
+                    <button class="btn btn-primary warning ">Change Program</button>
+                </a>
+                </h2>
 
                  <form method="POST" action="">
                      {{ form.csrf_token }}

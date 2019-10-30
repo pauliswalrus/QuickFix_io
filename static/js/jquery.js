@@ -451,13 +451,13 @@ $(document).ready(function () {
     })
 
 
-    $('.setProgram').on('click',function () {
-
-    // var program_id = $('.program_id option:selected').text();
-
-    alert("program_id");
-
-    })
+    // $('.setProgram').on('click',function () {
+    //
+    // // var program_id = $('.program_id option:selected').text();
+    //
+    // alert("program_id");
+    //
+    // })
 
 
 
@@ -575,6 +575,16 @@ $(document).ready(function () {
             req.done(function () {
             window.location.reload(true);
             });
+
+    })
+
+
+    $('.setProgram').on('click',function () {
+
+
+    var program_name = $('#program_name option:selected').text();
+
+    alert(program_name);
 
     })
 
