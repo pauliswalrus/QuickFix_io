@@ -76,7 +76,7 @@ def logout():
     db.session.commit()
 
     logout_user()
-    flash('You logged out!', 'success')
+    # flash('You logged out!', 'success')
     return redirect(url_for('login'))
 
 
@@ -463,6 +463,65 @@ def studentpost(studentpost_id):
     return render_template('viewStudentPost.html', post=stdpost, username=current_user.username,
                            comment_form=comment_form, comments=comments, this_user=this_user, t_status=t_status, role_name=role_name)
 
+# searchs studentposts
+@app.route('/forum_results')
+def forum_search_results(search):
+    this_user = User.query.filter_by(username=current_user.username).first()
+    t_status = "not sure"
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
+
+    search_form = TutorSearchForm(request.form)
+
+    results = []
+    search_string = search.data['search']
+
+    if search_string:
+        if search.data['select'] == 'Course Code':
+            qry = db.session.query(StudentPost).filter(StudentPost.post_course_code.contains(search_string))
+
+            results = qry.all()
+
+        elif search.data['select'] == 'Course Name':
+            qry = db.session.query(StudentPost).filter(StudentPost.post_course.contains(search_string))
+
+            results = qry.all()
+        elif search.data['select'] == 'User Name':
+            qry = db.session.query(StudentPost).filter(
+                StudentPost.author.contains(search_string))
+
+            results = qry.all()
+        else:
+            qry = db.session.query(RoomPost)
+            results = qry.all()
+    else:
+        qry = db.session.query(RoomPost)
+        results = qry.all()
+
+    if not results:
+        flash('No results found!')
+        return redirect('/allstudentposts')
+    else:
+        # display results
+        student_posts = results
+        # table.border = True
+
+        return render_template('studentPosts.html', this_user=this_user, student_posts=student_posts, role_name=role_name, t_status=t_status, search_form=search_form)
+
 
 # view all student posts
 @app.route('/allstudentposts', methods=['GET', 'POST'])
@@ -470,6 +529,12 @@ def allstudentposts():
     this_user = User.query.filter_by(username=current_user.username).first()
 
     t_status = "not sure"
+
+
+    search_form = ForumSearchForm(request.form)
+
+    if request.method == 'POST':
+        return forum_search_results(search_form)
 
     if this_user.role == 'S':
         role_name = "Student"
@@ -489,26 +554,9 @@ def allstudentposts():
 
     student_posts = StudentPost.query.order_by(StudentPost.date_posted.desc()).all()
 
-    return render_template('studentPosts.html', this_user=this_user, student_posts=student_posts, role_name=role_name, t_status=t_status)
+    return render_template('studentPosts.html', this_user=this_user, student_posts=student_posts, role_name=role_name, t_status=t_status, search_form=search_form)
 
-
-# @app.route('/results')
-# def search_results(search):
-#     results = []
-#     search_string = search.data['search']
-#
-#     if search.data['search'] == '':
-#         qry = db.session.query(RoomPost)
-#         results = qry.all()
-#
-#     if not results:
-#         flash('No results found!')
-#         return redirect('/allrooms')
-#     else:
-#         # display results
-#         return render_template('results.html', results=results)
-
-
+# searches rooms
 @app.route('/results')
 def search_results(search):
     this_user = User.query.filter_by(username=current_user.username).first()
