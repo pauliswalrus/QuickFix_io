@@ -588,6 +588,19 @@ $(document).ready(function () {
     })
 
 
+    $('.resetPosts').on('click',function () {
+
+            req = $.ajax({
+                url: '/allstudentposts',
+                type: 'POST',
+
+            });
+
+
+
+    })
+
+
 });
 
 
