@@ -463,6 +463,7 @@ def studentpost(studentpost_id):
     return render_template('viewStudentPost.html', post=stdpost, username=current_user.username,
                            comment_form=comment_form, comments=comments, this_user=this_user, t_status=t_status, role_name=role_name)
 
+
 # searchs studentposts
 @app.route('/forum_results')
 def forum_search_results(search):
@@ -492,17 +493,17 @@ def forum_search_results(search):
 
     if search_string:
         if search.data['select'] == 'Course Code':
-            qry = db.session.query(StudentPost).filter(StudentPost.post_course_code.contains(search_string))
+            qry = db.session.query(StudentPost).filter(StudentPost.post_course_code.contains(search_string)).order_by(StudentPost.date_posted.desc())
 
             results = qry.all()
 
         elif search.data['select'] == 'Course Name':
-            qry = db.session.query(StudentPost).filter(StudentPost.post_course.contains(search_string))
+            qry = db.session.query(StudentPost).filter(StudentPost.post_course.contains(search_string)).order_by(StudentPost.date_posted.desc())
 
             results = qry.all()
         elif search.data['select'] == 'User Name':
             qry = db.session.query(StudentPost).filter(
-                StudentPost.author.contains(search_string))
+                StudentPost.author.contains(search_string)).order_by(StudentPost.date_posted.desc())
 
             results = qry.all()
         else:
@@ -556,6 +557,7 @@ def allstudentposts():
 
     return render_template('studentPosts.html', this_user=this_user, student_posts=student_posts, role_name=role_name, t_status=t_status, search_form=search_form)
 
+
 # searches rooms
 @app.route('/results')
 def search_results(search):
@@ -585,17 +587,32 @@ def search_results(search):
 
     if search_string:
         if search.data['select'] == 'Course Code':
-            qry = db.session.query(RoomPost).filter(RoomPost.room_code.contains(search_string))
+            # qry = db.session.query(User.user_photo, RoomPost).filter(RoomPost.room_code.contains(search_string))
+
+            qry = db.session.query(User.user_photo, RoomPost.room_course, RoomPost.room_title,
+                                          RoomPost.author, RoomPost.title, RoomPost.date_posted,
+                                          RoomPost.content, RoomPost.id, RoomPost.room_code).filter(
+                RoomPost.author == User.username).filter(RoomPost.room_code.contains(search_string)).order_by(RoomPost.date_posted.desc())
 
             results = qry.all()
 
         elif search.data['select'] == 'Course Name':
             qry = db.session.query(RoomPost).filter(RoomPost.room_course.contains(search_string))
 
+            qry = db.session.query(User.user_photo, RoomPost.room_course, RoomPost.room_title,
+                                   RoomPost.author, RoomPost.title, RoomPost.date_posted,
+                                   RoomPost.content, RoomPost.id, RoomPost.room_code).filter(
+                RoomPost.author == User.username).filter(RoomPost.room_course.contains(search_string)).order_by(RoomPost.date_posted.desc())
+
             results = qry.all()
         elif search.data['select'] == 'User Name':
             qry = db.session.query(RoomPost).filter(
                 RoomPost.author.contains(search_string))
+
+            qry = db.session.query(User.user_photo, RoomPost.room_course, RoomPost.room_title,
+                                   RoomPost.author, RoomPost.title, RoomPost.date_posted,
+                                   RoomPost.content, RoomPost.id, RoomPost.room_code).filter(
+                RoomPost.author == User.username).filter(RoomPost.author.contains(search_string)).order_by(RoomPost.date_posted.desc())
 
             results = qry.all()
         else:
@@ -614,6 +631,7 @@ def search_results(search):
         # table.border = True
 
         return render_template('tutorPosts.html', this_user=this_user, room_posts=room_posts, role_name=role_name, t_status=t_status, search_form=search_form)
+
 
 # view all tutor posts
 @app.route('/allrooms', methods=['GET', 'POST'])
