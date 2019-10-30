@@ -584,7 +584,6 @@ $(document).ready(function () {
 
     var program_name = $('#program_name option:selected').text();
 
-    alert(program_name);
 
     })
 
