@@ -668,6 +668,63 @@ def programCourses():
     return render_template('programCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses)
 
 
+
+# courses page
+@app.route("/tutorCourses/", methods=['GET', 'POST'])
+def tutorCourses():
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+    this_tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+    u_courses = TutorCourses.query.filter_by(user_id=this_user.id).order_by(TutorCourses.tutor_course_id.desc()).all()
+
+    t_status = "not sure"
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
+
+    # program = Program.query.filter_by(program_name=program_name).first()
+
+    program_courses = ProgramCourse.query.all()
+    course_list = [(k.program_course_id, k.courseName) for k in program_courses]
+
+    form = CourseForm()
+
+    form.course_options.choices = course_list
+
+    if request.method == 'GET':
+        return render_template('tutorCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses)
+
+    if request.method == 'POST':
+
+        course_picked = form.course_options.data
+
+        this_course = ProgramCourse.query.filter_by(program_course_id=course_picked).first()
+        this_user = User.query.filter_by(username=current_user.username).first()
+        tutor_course = TutorCourses(user_id=this_user.id, course_name=this_course.courseName,
+                                    course_id=this_course.program_course_id, course_code=this_course.courseCode)
+        db.session.add(tutor_course)
+        db.session.commit()
+
+        return redirect(url_for('tutorCourses'))
+
+    return render_template('tutorCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses)
+
+
+
+
 # route for chat - displays public rooms and form to join(create rooms)
 @app.route("/home", methods=['GET', 'POST'])
 def home():
@@ -766,7 +823,6 @@ def profile():
     user_object = User.query.filter_by(username=current_user.username).first()
     this_user = User.query.filter_by(username=current_user.username).first()
 
-
     status = user_object.status
     role = user_object.role
     image_fp = user_object.user_photo
@@ -792,6 +848,8 @@ def profile():
     student_posts = StudentPost.query.filter_by(author=this_user.username).order_by(StudentPost.date_posted.desc()).all()
     user_courses = UserCourses.query.filter_by(user_id=this_user.id).all()
 
+    tutor_courses = TutorCourses.query.filter_by(user_id=this_user.id).all()
+
     if role == "S":
         role_name = "Student"
         student_posts = StudentPost.query.filter_by(author=this_user.username).order_by(StudentPost.date_posted.desc()).all()
@@ -812,7 +870,6 @@ def profile():
 
     elif role == "A":
         role_name = "Admin"
-
 
     room_posts = RoomPost.query.filter_by(author=current_user.username).order_by(RoomPost.date_posted.desc()).all()
 
@@ -864,7 +921,7 @@ def profile():
     return render_template('profile.html', username=current_user.username, image_fp=image_fp,
                            status_string=status_string, room_posts=room_posts, role_name=role_name, file_form=file_form,
                            user_files=user_files, image_form=image_form, user_object=user_object, this_user=this_user,
-                           status=status, t_status=t_status, about_me=about_me, ts_form=ts_form, setdbstatus=setdbstatus, student_posts=student_posts, posts=posts, user_courses=user_courses)
+                           status=status, t_status=t_status, about_me=about_me, ts_form=ts_form, setdbstatus=setdbstatus, student_posts=student_posts, posts=posts, user_courses=user_courses, tutor_courses=tutor_courses)
 
 
 #
@@ -890,6 +947,7 @@ def pub_profile(username):
         posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
         tutor = Tutor.query.filter_by(user_id=this_user.id).first()
         t_status = tutor.tutor_status
+        user_courses = TutorCourses.query.filter_by(user_id=user_object.id).order_by(TutorCourses.tutor_course_id.desc()).all()
         role_name = "Tutor"
 
     elif this_role == "A":
@@ -1064,13 +1122,10 @@ def deleteRoom():
     room = RoomPost.query.filter_by(id=request.form['id']).first()
     db.session.delete(room)
     db.session.commit()
-
     db.session.query(RoomComment).filter_by(room_id=room.id).delete()
     db.session.commit()
-
     db.session.query(RoomUpload).filter_by(room_name=room.title).delete()
     db.session.commit()
-
     db.session.query(Message).filter_by(room=room.title).delete()
     db.session.commit()
 
@@ -1080,10 +1135,8 @@ def deleteRoom():
 @app.route('/deleteStudentPost', methods=['POST'])
 def deleteStudentPost():
     post = StudentPost.query.filter_by(id=request.form['id']).first()
-
     db.session.delete(post)
     db.session.commit()
-
     db.session.query(PostComment).filter_by(post_id=room.id).delete()
     db.session.commit()
 
@@ -1107,9 +1160,7 @@ def deleteUserCourse():
 
     user = User.query.filter_by(username=current_user.username).first()
     user_id = user.id
-
     user_course = UserCourses.query.filter_by(user_id=user_id, user_course_id=request.form['id']).first()
-
     db.session.delete(user_course)
     db.session.commit()
 
@@ -1121,9 +1172,7 @@ def deleteTutorCourse():
 
     user = User.query.filter_by(username=current_user.username).first()
     user_id = user.id
-
     tutor_course = TutorCourses.query.filter_by(user_id=user_id, tutor_course_id=request.form['id']).first()
-
     db.session.delete(tutor_course)
     db.session.commit()
 
@@ -1135,9 +1184,7 @@ def addTutorCourse():
 
     user = User.query.filter_by(username=current_user.username).first()
     user_id = user.id
-
     this_course = ProgramCourse.query.filter_by(courseName=request.form['course_name']).first()
-
     tutor_course = TutorCourses(user_id=user_id, course_name=this_course.courseName,
                               course_id=this_course.program_course_id, course_code=this_course.courseCode)
     db.session.add(tutor_course)

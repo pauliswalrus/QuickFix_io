@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Courses</title>
+
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+</head>
+
+<body>
+
+{% extends "navbar.html" %}
+{% block content %}
+{#                <h4>My Courses</h4>#}
+{#                {% for c in u_courses %}#}
+{#                <div id="tutorCourses">#}
+{#                {{ c.course_name }}#}
+{#                {% endfor %}#}
+                <h2>Tutor Courses<a href="{{ url_for('profile') }}" >
+                    <button class="btn btn-primary warning ">Return To Profile</button>
+                </a></h2>
+
+                 <form method="POST" action="">
+                     {{ form.csrf_token }}
+                  {{ form.course_options(class_='form-control', id='tutorcourse') }} <br>
+                     <input type="submit" class="btn btn-primary addTutorCourse" course_id="{{ form.course_options.data }}" value="Add Course">
+              </form> <br>
+
+            <div id="myCourses">
+
+
+                    <div class="table-responsive">
+                    <table class="table table-hover table-fixed">
+                        <thead><tr>
+                                <th class="col-sm-2">Course_ID</th>
+                                <th class="col-sm-3">Course Code</th>
+                                <th class="col-sm-6">Course Name</th>
+                        </tr></thead>
+
+                        {% for c in u_courses %}
+                            <tbody>
+                            <tr>
+                                <td>{{ c.course_id }}</td>
+                                <td>{{ c.course_code }}</td>
+                                <td>{{ c.course_name }}</td>
+                                <td><button class="btn btn-danger deleteTutorCourse" course_id="{{ c.tutor_course_id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
+                            </tr>
+                            </tbody>
+                        {% endfor %}
+
+                    </table>
+
+                </div>
+
+                </div>
+{##}
+{#                 <form method="POST" action="">#}
+{#                  <h2>Pick Courses</h2>#}
+{#                     {{ form.csrf_token }}#}
+{#                  {{ form.course_options(class_='form-control') }} <br>#}
+{#                     <input type="submit" class="btn btn-primary" value="Add Course">#}
+{#              </form><br>#}
+{#                <a href="{{ url_for('profile') }}" >#}
+{#                    <button class="btn btn-primary warning ">Return To Profile</button>#}
+{#                </a>#}
+{##}
+
+{% endblock %}
+</body>
+
+</html>

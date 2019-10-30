@@ -5,20 +5,16 @@
     <title>Courses</title>
 </head>
 
-{% extends "bootstrap/base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
 <body>
 
 
 
 {% extends "navbar.html" %}
 {% block content %}
-
-
                  <form method="POST" action="">
                   <h2>Pick Program</h2>
                      {{ form.csrf_token }}
-                  {{ wtf.form_field(form.program_options, class='program_id') }}
+                  {{ (form.program_options(class='program_id') }}
                   <input type="button" class="btn btn-primary setProgram" >
               </form>
 
