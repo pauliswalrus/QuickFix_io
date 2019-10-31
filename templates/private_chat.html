@@ -163,7 +163,7 @@
                             <p class="my-msg">
                                 {#                    <img src="{{ url_for('uploaded_file', filename=this_user.user_photo) }}" height="50px" width="50px" class="profilePic_sm"/>#}
                                 <span class="my-username">{{ msg.username }}</span>
-                                <span class="timestamp">{{ msg.timestamp }}</span>
+                                <span class="timestamp">{{ msg.created_at }}</span>
                                 <br>
                                 <span class="my-msg">{{ msg.message }}</span>
                             </p>
@@ -420,7 +420,7 @@
         {#    }#}
         {##}
         {##}
-        {#}#}
+
 
 
     }
