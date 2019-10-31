@@ -480,8 +480,8 @@ $(document).ready(function () {
 
         });
         alert("This Room is Private!")
-        $('.privateButton').fadeOut(200);
-        $('.publicButton').fadeIn(200);
+        $('.privateButton').hide();
+        $('.publicButton').show();
 
 
 
@@ -500,8 +500,8 @@ $(document).ready(function () {
 
         });
         alert("This Room is Public!")
-        $('.publicButton').fadeOut(200);
-        $('.privateButton').fadeIn(200);
+        $('.publicButton').hide();
+        $('.privateButton').show();
 
 
     })

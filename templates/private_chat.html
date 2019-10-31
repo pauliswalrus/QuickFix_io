@@ -25,6 +25,41 @@
 
     <script src="https://kit.fontawesome.com/2f55668b75.js" crossorigin="anonymous"></script>
 
+
+    <script>
+
+        $(document).ready(function () {
+
+            let roomAuth = '{{ authorName }}';
+            var roomVisible = '{{ roomVisible }}';
+
+            $('#button_close').hide();
+            $('#tutorControls_heading').hide();
+
+            $('#privateButton').hide();
+            $('#publicButton').hide();
+
+            if (roomAuth === username) {
+
+                $('#tutorControls_heading').show();
+
+                if (roomVisible === 'True') {
+
+                    $('#privateButton').show()
+
+                } else if (roomVisible === 'False') {
+                    $('#publicButton').show();
+
+                }
+
+
+            }
+
+
+        });
+
+    </script>
+
 </head>
 <body>
 
@@ -138,7 +173,7 @@
                             <p class="others-msg">
                                 {#                    <img src="{{ url_for('uploaded_file', filename=this_user.user_photo) }}" height="50px" width="50px" class="profilePic_sm"/>#}
                                 <span class="other-username">{{ msg.username }}</span>
-                                <span class="other-timestamp">{{ msg.timestamp }}</span>
+                                <span class="other-timestamp">{{ msg.created_at }}</span>
                                 <br>
                                 <span class="others-msg">{{ msg.message }}</span>
                             </p>
@@ -344,8 +379,8 @@
 <script>
     window.onload = function () {
 
-        document.getElementById('button_close').style.display = "none";
-        document.getElementById('tutorControls_heading').style.display = "none";
+        {#document.getElementById('button_close').style.display = "none";#}
+        {#document.getElementById('tutorControls_heading').style.display = "none";#}
 
         {#document.getElementById('privateButton').style.display = "none";#}
         {#document.getElementById('publicButton').style.display = "none";#}
@@ -353,29 +388,29 @@
         let objDiv = document.getElementById("display-message-section");
         objDiv.scrollTop = objDiv.scrollHeight;
 
-
-        //limits the private room button to the author of the room
-        let roomAuth = '{{ authorName }}';
-
-        var roomVisible = '{{ roomVisible }}';
-
-
-        if (roomAuth === username) {
-
-            document.getElementById('button_close').style.display = "block";
-            document.getElementById('tutorControls_heading').style.display = "block";
-
-            if (roomVisible === "True") {
-
-                document.getElementById('privateButton').style.display = "block";
-
-            } else if (roomVisible === "False") {
-
-                document.getElementById('publicButton').style.display = "block";
-            }
-
-
-        }
+        {##}
+        {#//limits the private room button to the author of the room#}
+        {#let roomAuth = '{{ authorName }}';#}
+        {##}
+        {#var roomVisible = '{{ roomVisible }}';#}
+        {##}
+        {##}
+        {#if (roomAuth === username) {#}
+        {##}
+        {#    document.getElementById('button_close').style.display = "block";#}
+        {#    document.getElementById('tutorControls_heading').style.display = "block";#}
+        {##}
+        {#    if (roomVisible === "True") {#}
+        {##}
+        {#        document.getElementById('privateButton').style.display = "block";#}
+        {##}
+        {#    } else if (roomVisible === "False") {#}
+        {##}
+        {#        document.getElementById('publicButton').style.display = "block";#}
+        {#    }#}
+        {##}
+        {##}
+        {#}#}
 
 
     }
