@@ -19,15 +19,18 @@
 
     <script>
 
+
+
+
     $(document).ready(function () {
 
-    $('#createRoom').hide()
+    $('#createRoom').hide();
 
-        var role = `{{ role_name }}`;
+        var roleName = `{{ role_name }}`;
 
-        if (role === 'Tutor' || role === 'Admin' ) {
+        if (roleName === 'Tutor' || roleName === 'Admin' ) {
 
-                $('#createRoom').show()
+                $('#createRoom').show();
 
         }
 

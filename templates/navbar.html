@@ -11,15 +11,15 @@
 
 
        <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+{#    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>#}
 
 
     <script>
 
     $(document).ready(function () {
 
-        let role = "{{ role_name }}";
-        let tutor_status = "{{ t_status }}";
+        let userRole = "{{ role_name }}";
+        let t_status = "{{ t_status }}";
 
         $('#navCheck').hide();
         $('#navRoom').hide();
@@ -27,9 +27,9 @@
         $('#roomsContent').hide();
         $('#roomsHeading').hide();
 
-        if (role === 'Student') {
+        if (userRole === 'Student') {
 
-            if (tutor_status === 'pending') {
+            if (t_status === 'pending') {
 
                 $('#navApply').hide();
                 $('#navCheck').show();
@@ -48,7 +48,7 @@
 
         }
 
-        else if (role === 'Tutor') {
+        else if (userRole === 'Tutor') {
 
             $('#navApply').hide();
             $('#navCheck').hide();
@@ -56,7 +56,7 @@
 
         }
 
-        else if (role === 'Admin') {
+        else if (userRole === 'Admin') {
 
             $('#navApply').hide();
             $('#navCheck').hide();
