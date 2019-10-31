@@ -34,15 +34,15 @@
 {#{% extends "navbar.html" %}#}
 {#{% block content %}#}
     <!-- Row 1 - Title -->
-    <div class="row row1">
-        <div class="col-sm-12">
-            <div id="postTitle">
-                {{ room.room_title }} <br>
-                <span class="courseInfo">{{ room.room_code }} {{ room.room_course }}</span>
-            </div>
-        </div>
-    </div> <!-- end Row 1 - Title -->
-
+{#    <div class="row row1">#}
+{#        <div class="col-sm-12">#}
+{#            <div id="postTitle">#}
+{#                {{ room.room_title }} <br>#}
+{#                <span class="courseInfo">{{ room.room_code }} {{ room.room_course }}</span>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div> <!-- end Row 1 - Title -->#}
+{##}
 
 <div id="main-section">
 
@@ -50,10 +50,10 @@
 
     <div id="chatWindowHeader">
         <div id="room-name">
+        {{ roomName }}
 
         </div>
     </div>
-{{ roomName }}
 
     <div id="leftColumn">
         Room Information:
