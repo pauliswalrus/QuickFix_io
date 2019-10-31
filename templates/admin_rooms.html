@@ -19,7 +19,7 @@
 {% block content %}
     <div id="main-content">
 
-        <div class="sectionTitle">Active Rooms (<a href="{{ url_for('courses') }}">courses</a>)</div>
+        <div class="sectionTitle">Active Rooms </div>
 
 
         {% for room in blog_posts %}
@@ -39,7 +39,7 @@
 
                         <div class="row">
 
-                            <div class="col-sm-5">
+                            <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="emailInput{{ room.id }}">Room Name: </label>
                                     <br>
@@ -64,7 +64,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
                                 <p><span class="subHeading">Author: </span>
                                     <a href="{{ url_for('pub_profile', username=room.author) }}"> {{ room.author|upper }}</a>
                                 </p>
@@ -89,7 +89,7 @@
                                     {{ room.room_code }}</p>
                             </div>
 
-                            <div class="col-sm-4">
+                            <div class="col-sm-2">
                                 <a href="{{ url_for('chat_log', room_id=room.id) }}">
                                     <button class="btn btn-primary viewButton" room_id="{{ room.id }}">View Logs
                                     </button>

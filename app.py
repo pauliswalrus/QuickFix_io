@@ -161,9 +161,9 @@ def admin_posts():
     this_user = User.query.filter_by(username=current_user.username).first()
 
     # rooms desc by date
-    forum_posts = StudentPost.query.order_by(RoomPost.date_posted.desc()).all()
+    forum_posts = StudentPost.query.order_by(StudentPost.date_posted.desc()).all()
 
-    return render_template("admin_posts.html", this_user=this_user, blog_posts = blog_posts)
+    return render_template("admin_posts.html", this_user=this_user, forum_posts=forum_posts)
 
 
 # admin - manage users
@@ -403,7 +403,6 @@ def add_room():
 
     if request.method == 'POST':
         subtitle = post_form.subtitle.data
-        title = post_form.title.data
         content = post_form.content.data
         room_course = post_form.room_course.data
         course = TutorCourses.query.filter_by(course_id=room_course).first()
@@ -418,7 +417,7 @@ def add_room():
         author = current_user.username
         date_time = datetime.now()
         visible = True
-        new_room = RoomPost(title=title, room_title=subtitle, author=author, date_posted=date_time, content=content,
+        new_room = RoomPost(room_title=subtitle, author=author, date_posted=date_time, content=content,
                             type=type, room_course=room_course_name, room_code=room_code, visible=visible)
 
         db.session.add(new_room)
@@ -1507,7 +1506,7 @@ def deleteStudentPost():
     post = StudentPost.query.filter_by(id=request.form['id']).first()
     db.session.delete(post)
     db.session.commit()
-    db.session.query(PostComment).filter_by(post_id=room.id).delete()
+    db.session.query(PostComment).filter_by(post_id=post.id).delete()
     db.session.commit()
 
     return jsonify({'result': 'success'})
