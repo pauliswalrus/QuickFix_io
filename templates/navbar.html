@@ -11,7 +11,7 @@
 
 
        <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
-{#    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>#}
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
 
 
     <script>
@@ -24,8 +24,8 @@
         $('#navCheck').hide();
         $('#navRoom').hide();
         $('#navAdmin').hide();
-        $('#roomsContent').hide();
-        $('#roomsHeading').hide();
+        {#$('#roomsContent').hide();#}
+        {#$('#roomsHeading').hide();#}
 
         if (userRole === 'Student') {
 
@@ -42,7 +42,7 @@
 
             } else if (t_status === 'denied') {
 
-                $('#navApply').hide();
+                $('#navApply').show();
                 $('#navCheck').hide();
             }
 

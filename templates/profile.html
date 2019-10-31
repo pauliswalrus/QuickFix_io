@@ -20,34 +20,31 @@
 
     $(document).ready(function () {
 
-    {#$('#studentPublic').hide();#}
-    $('#tutorCourses').hide();
-    $('#userCourses').show();
+        $('#tutorCourses').hide();
+        $('#userCourses').hide();
 
-    $('#tutorStatusToggle').hide();
-    $('#roomsContent').hide();
-    $('#roomsHeading').hide();
+        var roleName = `{{ role_name }}`;
 
+        if (roleName === 'Student') {
 
+            $('#userCourses').show();
+            $('#tutorStatusToggle').hide();
+            $('#roomsContent').hide();
+            $('#roomsHeading').hide();
 
-        var role = `{{ role_name }}`;
+        } else if (roleName === 'Tutor') {
 
-        if (role === 'Tutor') {
+            $('#tutorCourses').show();
+            {#$('#myRooms').hide();#}
 
-                $('#tutorCourses').show();
-                $('#userCourses').hide();
-                $('#tutorStatusToggle').show();
-                $('#roomsContent').show();
-                $('#roomsHeading').show();
+        } else if (roleName === 'Admin') {
 
-
-        } else if (role === 'Admin') {
-
-                $('#tutorCourses').show();
-                $('#userCourses').hide();
-                $('#tutorStatusToggle').hide();
-                $('#roomsContent').show();
-                $('#roomsHeading').show();
+            $('#tutorCourses').show();
+            $('#userCourses').hide();
+            $('#tutorStatusToggle').hide();
+            {##}
+            {#$('#roomsContent').show();#}
+            {#$('#roomsHeading').show();#}
 
 
         }
@@ -59,18 +56,63 @@
 </script>
 </head>
 
-<script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', () => {
 
+
+{#<script type="text/javascript">#}
+{#    document.addEventListener('DOMContentLoaded', () => {#}
+{##}
+{##}
+{#        document.getElementById('userCourses').style.display = "none";#}
+{#        document.getElementById('tutorCourses').style.display = "none";#}
+{##}
+{#        //hides online status toggleff and info if user is a student#}
+{#        let role = '{{ role_name }}';#}
+{##}
+{##}
+{##}
+{#        if (role === 'Student') {#}
+{##}
+{#            document.getElementById('tutorStatusToggle').style.display = "none";#}
+{#            document.getElementById('roomsHeading').style.display = "none";#}
+{#            document.getElementById('roomsContent').style.display = "none";#}
+            {#document.getElementById('tutorStatusHeader').style.display = "none";#}
+{##}
+{#            document.getElementById('userCourses').style.display = "block";#}
+{##}
+{#        } else if (role === 'Admin') {#}
+{##}
+{#                document.getElementById('tutorStatusToggle').style.display = "none";#}
+{##}
+                {#document.getElementById('tutorStatusToggle').style.display = "none";#}
+                {#document.getElementById('tutorStatusHeader').style.display = "none";#}
+{#                //document.getElementsByClassName('tutorOnly').style.display = "none";#}
+{##}
+{#        } else if (role === 'Tutor') {#}
+{##}
+{#                document.getElementById('tutorCourses').style.display = "block";#}
+                {##}
+                {#document.getElementById('tutorStatusToggle').style.display = "none";#}
+                {#document.getElementById('tutorStatusHeader').style.display = "none";#}
+{#                //document.getElementsByClassName('tutorOnly').style.display = "none";#}
+{#        }#}
+{##}
+{##}
+{##}
+{#    })#}
+{#</script>#}
+
+{#<script type="text/javascript">#}
+{#    document.addEventListener('DOMContentLoaded', () => {#}
+{##}
         {##}
         {#document.getElementById('userCourses').style.display = "none";#}
         {#document.getElementById('tutor_courses').style.display = "none";#}
-
-        //hides online status toggleff and info if user is a student
+{##}
+{#        //hides online status toggleff and info if user is a student#}
         {#let role = '{{ role_name }}';#}
-
-
-
+{##}
+{##}
+{##}
         {#if (role === 'Student') {#}
         {##}
         {#    document.getElementById('tutorStatusToggle').style.display = "none";#}
@@ -87,11 +129,11 @@
         {##}
         {#        document.getElementById('tutorCourses').style.display = "block";#}
         {##}
-
-
-
-    })
-</script>
+{##}
+{##}
+{##}
+{#    })#}
+{#</script>#}
 
 
 <body>
