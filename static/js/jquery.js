@@ -29,7 +29,6 @@ $(document).ready(function () {
 
     })
 
-
         //update room
     $('.updateButtonProfile').on('click', function () {
 
@@ -55,15 +54,6 @@ $(document).ready(function () {
         });
 
     })
-
-
-
-
-
-
-
-
-
 
 
     //make room private - private chat
@@ -110,19 +100,19 @@ $(document).ready(function () {
 
     })
 
-        //delete room
-    $('.deleteStudentPost').on('click', function () {
+    //delete room
+    $('.deletePost').on('click', function () {
 
-        var room_id = $(this).attr('room_id');
+        var post_id = $(this).attr('post_id');
 
         var r = confirm("Delete Post?");
 
         if (r == true) {
 
             req = $.ajax({
-                url: '/deleteStudentPost',
+                url: '/deletePost',
                 type: 'POST',
-                data: {id: room_id}
+                data: {id: post_id}
 
             });
             alert("Post Deleted!")
@@ -137,34 +127,61 @@ $(document).ready(function () {
     })
 
 
-            //update room
-    $('.updateButtonProfile').on('click', function () {
+    //update room
+    $('.updatePost').on('click', function () {
 
-        var room_id = $(this).attr('room_id');
+        var post_id = $(this).attr('post_id');
 
-        var name = $('#nameInput' + room_id).val();
+        var title = $('#titleInput' + post_id).val();
 
-        var title = $('#titleInput' + room_id).val()
+         var content = $('#contentInput' + post_id).val();
 
 
         req = $.ajax({
-            url: '/updateRoomProfile',
+            url: '/updatePost',
             type: 'POST',
-            data: {name: name, title: title, id: room_id}
+            data: {content: content, title: title, id: post_id}
 
         });
 
         req.done(function (data) {
 
-            $('#roomSection' + room_id).fadeOut(1000).fadeIn(1000);
-            $('#memberNumber' + room_id).text(data.room_name);
+            $('#roomSection' + post_id).fadeOut(1000).fadeIn(1000);
+            $('#memberNumber' + post_id).text(data.post_title);
 
         });
 
     })
 
+        //delete room
+    $('.deletePostComments').on('click', function () {
 
-        $('.deleteUserFile').on('click', function () {
+        var post_id = $(this).attr('post_id');
+
+        var r = confirm("Clear Post Comments?");
+
+        if (r == true) {
+
+            req = $.ajax({
+                url: '/deletePostComments',
+                type: 'POST',
+                data: {id: post_id}
+
+            });
+            alert("Comments Deleted!")
+            location.reload();
+
+        } else {
+
+            //nothing happens
+
+        }
+
+    })
+
+
+
+    $('.deleteUserFile').on('click', function () {
 
         var file_id = $(this).attr('file_id');
 
@@ -190,19 +207,6 @@ $(document).ready(function () {
     })
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     //delete room
     $('.deleteButton').on('click', function () {
 
@@ -221,6 +225,33 @@ $(document).ready(function () {
 
             });
             alert("Room Deleted!")
+            location.reload();
+
+        } else {
+
+            //nothing happens
+
+        }
+
+    })
+
+
+            //delete room
+    $('.deleteRoomComments').on('click', function () {
+
+        var room_id = $(this).attr('room_id');
+
+        var r = confirm("Clear Room Comments?");
+
+        if (r == true) {
+
+            req = $.ajax({
+                url: '/deleteRoomComments',
+                type: 'POST',
+                data: {id: room_id}
+
+            });
+            alert("Comments Deleted!")
             location.reload();
 
         } else {
@@ -328,7 +359,6 @@ $(document).ready(function () {
 
     })
 
-
     //edit user
     $('.editUserForm').on('click', function () {
 
@@ -352,9 +382,6 @@ $(document).ready(function () {
         location.reload();
 
     })
-
-
-
 
     //delete chat logs
     $('.deleteLogs').on('click', function () {
@@ -437,7 +464,6 @@ $(document).ready(function () {
 
     })
 
-
     //make room private - private chat
     $('.privateButton').on('click', function () {
 
@@ -476,21 +502,6 @@ $(document).ready(function () {
 
 
     })
-
-
-    // $('.setProgram').on('click',function () {
-    //
-    // // var program_id = $('.program_id option:selected').text();
-    //
-    // alert("program_id");
-    //
-    // })
-
-
-
-
-
-
 
     // for private profile page
     //edit user
@@ -541,7 +552,7 @@ $(document).ready(function () {
     })
 
 
-        $('.deleteTutorCourse').on('click', function () {
+    $('.deleteTutorCourse').on('click', function () {
 
         var course_id = $(this).attr('course_id');
 
@@ -614,18 +625,18 @@ $(document).ready(function () {
 
     })
 
-
-    $('.resetPosts').on('click',function () {
-
-            req = $.ajax({
-                url: '/allstudentposts',
-                type: 'POST',
-
-            });
-
-
-
-    })
+    //
+    // $('.resetPosts').on('click',function () {
+    //
+    //         req = $.ajax({
+    //             url: '/allstudentposts',
+    //             type: 'POST',
+    //
+    //         });
+    //
+    //
+    //
+    // })
 
 
 });

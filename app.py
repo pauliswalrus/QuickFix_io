@@ -1499,10 +1499,23 @@ def deleteRoom():
 
     return jsonify({'result': 'success'})
 
+# delete chat logs for room admin portal
+@app.route('/deleteRoomComments', methods=['POST'])
+def deleteRoomComments():
+    room = RoomPost.query.filter_by(id=request.form['id']).first()
+
+    # delete all messages by room title
+    db.session.query(RoomComment).filter_by(room_id=room.id).delete()
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+
+
 
 # deletes student posts
-@app.route('/deleteStudentPost', methods=['POST'])
-def deleteStudentPost():
+@app.route('/deletePost', methods=['POST'])
+def deletePost():
     post = StudentPost.query.filter_by(id=request.form['id']).first()
     db.session.delete(post)
     db.session.commit()
@@ -1510,6 +1523,41 @@ def deleteStudentPost():
     db.session.commit()
 
     return jsonify({'result': 'success'})
+
+
+# deletes student posts
+@app.route('/updatePost', methods=['POST'])
+def updatePost():
+    # post = StudentPost.query.filter_by(id=request.form['id']).first()
+    # db.session.delete(post)
+    # db.session.commit()
+    # db.session.query(PostComment).filter_by(post_id=post.id).delete()
+    # db.session.commit()
+
+    post = StudentPost.query.filter_by(id=request.form['id']).first()
+
+    post.title = request.form['title']
+    post.content = request.form['content']
+    # room.date_posted = date_time = datetime.now()
+    post.date_posted = datetime.now()
+
+    db.session.commit()
+
+    return jsonify({'result': 'success', "post_title": post.title})
+
+    return jsonify({'result': 'success'})
+
+# delete chat logs for room admin portal
+@app.route('/deletePostComments', methods=['POST'])
+def deletePostComments():
+    post = StudentPost.query.filter_by(id=request.form['id']).first()
+
+    # delete all messages by room title
+    db.session.query(PostComment).filter_by(post_id=post.id).delete()
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
 
 
 # deletes userupload used in profile
