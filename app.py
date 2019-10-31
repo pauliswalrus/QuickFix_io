@@ -75,7 +75,7 @@ def logout():
 
 
 #### admin route, will contain links to all users info etc
-#### admin - pending applications
+# admin - pending applications
 @app.route('/admin')
 def admin():
     if session["userRole"] != "A":
@@ -110,8 +110,9 @@ def admin():
                            blog_posts=blog_posts, tutors=tutors, this_user=this_user, tutors_approved=tutors_approved,
                            tutors_pending=tutors_pending)
 
+
 #### admin route, will contain links to all users info etc
-#### admin - approved applications
+# admin - approved applications
 @app.route('/admin_approved')
 def admin_approved():
     if session["userRole"] != "A":
@@ -129,7 +130,7 @@ def admin_approved():
 
 
 #### admin route, will contain links to all users info etc
-#### admin - manage rooms
+# admin - manage rooms
 @app.route('/admin_rooms')
 def admin_rooms():
     if session["userRole"] != "A":
@@ -164,7 +165,7 @@ def all_users():
                            this_user=this_user, users_list=users_list)
 
 
-### need to rename/refactor to user
+# need to rename/refactor to user
 @app.route('/register', methods=['GET', 'POST'])
 def new_student():
     reg_form = RegistrationForm()
@@ -200,7 +201,7 @@ def new_student():
     return render_template("register_now.html", form=reg_form)
 
 
-### tutor application/registration page
+# tutor application/registration page
 @app.route('/tutor_register', methods=['GET', 'POST'])
 def new_tutor():
     this_user = User.query.filter_by(username=current_user.username).first()
@@ -266,7 +267,7 @@ def new_tutor():
     return render_template("tutor_application.html", form=tutor_form, this_user=this_user, t_status=t_status, role_name=role_name, t_courses=t_courses)
 
 
-### check tutor application
+# check tutor application
 @app.route('/check_application', methods=['GET', 'POST'])
 def check_application():
     this_user = User.query.filter_by(username=current_user.username).first()
@@ -634,10 +635,12 @@ def add_student_post():
     return render_template('addNewStudentPost.html', username=current_user.username, post_form=post_form,
                            user_object=user_object, this_user=this_user, t_status=t_status, role_name=role_name)
 
+
 @app.route('/error_template')
 def error_template():
 
     return render_template("errorTemplate.html")
+
 
 # programs page
 @app.route("/courses", methods=['GET', 'POST'])
@@ -766,7 +769,6 @@ def programCourses(program_id):
         return redirect(url_for('programCourses',program_id=program_id))
 
     return render_template('programCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
-
 
 
 # courses page
@@ -1499,6 +1501,7 @@ def deleteApplication():
     return redirect(url_for('new_tutor'))
 
 # tutor chat room controls
+
 
 # tutor makes room private
 @app.route('/privateRoom', methods=['POST'])
