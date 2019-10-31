@@ -54,7 +54,9 @@
             </div>
 
             <div class="col-sm-2">
-                <a href="{{ url_for('private_chat') }}" class="join">Join Room</a><br>
+                <a href="{{ url_for('private_chat') }}" class="join">
+                    <button class="btn btn-warning ">Join This Room</button>
+                </a>
             </div>
         </div> <!-- end Row 2 - Title -->
 
@@ -109,7 +111,7 @@
                         </ul>
                     </div>
 
-                    <div>{{ comment_form.submit_button(class_='submitButton') }}</div>
+                    <div>{{ comment_form.submit_button(class_='submitButton btn btn-warning') }}</div>
 
                     {{ comment_form.csrf_token }}
 
@@ -121,7 +123,7 @@
 
 
         <!-- Row 6 - Actual Comments -->
-        <div class="row row6">
+        <div class="row row7">
             <div class="col-sm-12">
 
 
@@ -143,7 +145,7 @@
 
 
             </div>
-        </div> <!-- end Row 6 - Actual Comments -->
+        </div> <!-- end Row 7 - Actual Comments -->
 
     </div><!-- end row container -->
 

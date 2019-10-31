@@ -33,27 +33,33 @@
 <body>
 {#{% extends "navbar.html" %}#}
 {#{% block content %}#}
-    <!-- Row 1 - Title -->
-{#    <div class="row row1">#}
-{#        <div class="col-sm-12">#}
-{#            <div id="postTitle">#}
-{#                {{ room.room_title }} <br>#}
-{#                <span class="courseInfo">{{ room.room_code }} {{ room.room_course }}</span>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div> <!-- end Row 1 - Title -->#}
-{##}
+
 
 <div id="main-section">
+
+    <!-- Row 1 - Room Name-->
+    <div class="row row1">
+        <div class="col-sm-12">
+            <div id="chatWindowHeader">
+                <div id="room-name">
+                    {{ roomName }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
 
 
 
     <div id="chatWindowHeader">
         <div id="room-name">
-        {{ roomName }}
-
+            {{ roomName }}
         </div>
     </div>
+
 
     <div id="leftColumn">
         Room Information:
@@ -106,7 +112,6 @@
 {#                    <img src="{{ url_for('uploaded_file', filename=this_user.user_photo) }}" height="50px" width="50px" class="profilePic_sm"/>#}
                     <span class="other-username">{{ msg.username }}</span>
                     <span class="other-timestamp">{{ msg.timestamp }}</span>
-
                     <br>
                     <span class="others-msg">{{ msg.message }}</span>
                 </p>

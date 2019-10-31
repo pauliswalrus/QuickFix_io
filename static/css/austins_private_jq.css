@@ -2,22 +2,19 @@
 /* Author: Emma Hobden */
 /* Styles row class */
 .row {
-    /*border: 1px solid red;*/
+    border: 1px solid red;
     margin-left: auto !important;
     margin-right: auto !important;
     padding: 15px !important;
 }
 
 
-/*  ROW 1 - Post Room Title */
+/*  ROW 1 - Room Name */
 .row1 {
-    /*background-color: pink !important;*/
     background-color: slategray !important;
-    /*height: 40px !important;*/
     color: white !important;
     font-size: 1.6em !important;
     text-align: center;
-    /*padding: 15px !important;*/
 }
 
 .courseInfo {
@@ -56,23 +53,23 @@ body {
 #main-section {
     padding: 10px 5px 10px 5px;
     width: 100%;
-    /*border: 2px solid purple;*/
+    border: 2px solid purple;
     height: 100%;
 }
 
-/* Styles Room Name Container */
-#chatWindowHeader {
-    background-color: slategrey;
-    height: 60px;
-    width: 100%;
-    top: 0px;
-}
+/*!* Styles Room Name Container *!*/
+/*#chatWindowHeader {*/
+/*    background-color: slategrey;*/
+/*    height: 60px;*/
+/*    width: 100%;*/
+/*    top: 0px;*/
+/*}*/
 
-/* Styles Room Name p in #chatWindowHeader */
-#room-name {
-    color: white;
-    font-size: 2.5em;
-}
+/*!* Styles Room Name p in #chatWindowHeader *!*/
+/*#room-name {*/
+/*    color: white;*/
+/*    font-size: 2.5em;*/
+/*}*/
 
 /* -------------------------------------------------- LEFT COLUMN -------------------------------------------------- */
 
