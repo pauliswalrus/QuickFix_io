@@ -224,7 +224,7 @@ def new_student():
 
 
 # tutor application/registration page
-@app.route('/tutor_register', methods=['GET', 'POST'])
+@app.route('/application_submit', methods=['GET', 'POST'])
 def new_tutor():
     this_user = User.query.filter_by(username=current_user.username).first()
 
@@ -286,7 +286,7 @@ def new_tutor():
         flash('Registered successfully. Please login', 'success')
         return redirect(url_for('home'))
 
-    return render_template("tutor_application.html", form=tutor_form, this_user=this_user, t_status=t_status, role_name=role_name, t_courses=t_courses)
+    return render_template("applicationSubmit.html", form=tutor_form, this_user=this_user, t_status=t_status, role_name=role_name, t_courses=t_courses)
 
 
 # check tutor application
@@ -691,7 +691,6 @@ def allrooms():
 
 
 
-
 # new student request help post
 @app.route('/add_student_post', methods=['GET', 'POST'])
 def add_student_post():
@@ -812,9 +811,9 @@ def error_template():
     return render_template("errorTemplate.html")
 
 
-# programs page
-@app.route("/profilePrograms", methods=['GET', 'POST'])
-def profilePrograms():
+# programs page from profile
+@app.route("/profile_programs", methods=['GET', 'POST'])
+def profile_programs():
 
     this_user = User.query.filter_by(username=current_user.username).first()
 
@@ -840,7 +839,7 @@ def profilePrograms():
 
             program_courses = ProgramCourse.query.filter_by(program_id=program_picked).all()
 
-            return redirect(url_for('programCourses', program_id=program_picked))
+            return redirect(url_for('student_courses', program_id=program_picked))
 
     elif this_user.role == 'T':
         role_name = "Tutor"
@@ -852,41 +851,19 @@ def profilePrograms():
             this_program = Program.query.filter_by(program_id=program_picked).first()
             program_courses = ProgramCourse.query.filter_by(program_id=program_picked).all()
 
-            return redirect(url_for('tutorCourses', program_id=program_picked))
+            return redirect(url_for('tutor_courses', program_id=program_picked))
 
     elif this_user.role == 'A':
         role_name = "Admin"
         t_status = "Admin"
 
-    # available_programs = Program.query.all()
-    #
-    # program_list = [(k.program_id, k.programName) for k in available_programs]
-    # form1 = ProgramForm()
-
-    # # form.profilePrograms.choices = [(course.program_id, course.course_name)for course in Course.query.filter_by(program_id=2).all()]
-    # form1.program_options.choices = program_list
-    #
-    # if request.method == 'POST':
-    #     program_picked = form1.program_options.data
-    #     this_program = Program.query.filter_by(program_id=program_picked).first()
-    #
-    #     program_courses = ProgramCourse.query.filter_by(program_id=program_picked).all()
-    #
-    #     return redirect(url_for('tutorCourses', program_id=program_picked))
-
-    # if request.method == 'POST':
-    #     program_picked = form1.program_options.data
-    #
-    #     this_program = Program.query.filter_by(program_id=program_picked).first()
-    #
-    #     return redirect(url_for('programCourses', programName=this_program.program_id))
 
     return render_template('profilePrograms.html', username=current_user.username, this_user=this_user, form1=form1, role_name=role_name, t_status=t_status)
 
 
-# profilePrograms page
-@app.route("/programCourses/<int:program_id>", methods=['GET', 'POST'])
-def programCourses(program_id):
+# profile_programs page
+@app.route("/student_courses/<int:program_id>", methods=['GET', 'POST'])
+def student_courses(program_id):
 
     this_user = User.query.filter_by(username=current_user.username).first()
 
@@ -923,7 +900,7 @@ def programCourses(program_id):
     form.course_options.choices = course_list
 
     if request.method == 'GET':
-        return render_template('programCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
+        return render_template('studentCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
 
     if request.method == 'POST':
 
@@ -936,14 +913,14 @@ def programCourses(program_id):
         db.session.add(user_course)
         db.session.commit()
 
-        return redirect(url_for('programCourses',program_id=program_id))
+        return redirect(url_for('student_courses', program_id=program_id))
 
-    return render_template('programCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
+    return render_template('studentCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
 
 
-# profilePrograms page
-@app.route("/tutorCourses/<int:program_id>", methods=['GET', 'POST'])
-def tutorCourses(program_id):
+# profile_programs page
+@app.route("/tutor_courses/<int:program_id>", methods=['GET', 'POST'])
+def tutor_courses(program_id):
 
     this_user = User.query.filter_by(username=current_user.username).first()
     this_tutor = Tutor.query.filter_by(user_id=this_user.id).first()
@@ -990,14 +967,14 @@ def tutorCourses(program_id):
         db.session.add(tutor_course)
         db.session.commit()
 
-        return redirect(url_for('tutorCourses', program_id=program_id))
+        return redirect(url_for('tutor_courses', program_id=program_id))
 
     return render_template('tutorCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
 
 
 # programs page
-@app.route("/applicationBegin", methods=['GET', 'POST'])
-def applicationBegin():
+@app.route("/application_begin", methods=['GET', 'POST'])
+def application_begin():
 
     this_user = User.query.filter_by(username=current_user.username).first()
 
@@ -1012,7 +989,7 @@ def applicationBegin():
         this_program = Program.query.filter_by(program_id=program_picked).first()
         program_courses = ProgramCourse.query.filter_by(program_id=program_picked).all()
 
-        return redirect(url_for('applicationCourses', program_id=program_picked))
+        return redirect(url_for('application_courses', program_id=program_picked))
 
     if this_user.role == 'S':
         role_name = "Student"
@@ -1033,9 +1010,9 @@ def applicationBegin():
     return render_template('applicationBegin.html', username=current_user.username, this_user=this_user, form1=form1, role_name=role_name, t_status=t_status)
 
 
-# profilePrograms page
-@app.route("/applicationCourses/<int:program_id>", methods=['GET', 'POST'])
-def applicationCourses(program_id):
+# profile_programs page
+@app.route("/application_courses/<int:program_id>", methods=['GET', 'POST'])
+def application_courses(program_id):
 
     this_user = User.query.filter_by(username=current_user.username).first()
     this_tutor = Tutor.query.filter_by(user_id=this_user.id).first()
@@ -1083,7 +1060,7 @@ def applicationCourses(program_id):
         db.session.add(tutor_course)
         db.session.commit()
 
-        return redirect(url_for('applicationCourses',program_id=program_id))
+        return redirect(url_for('application_courses', program_id=program_id))
 
     return render_template('applicationCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
 

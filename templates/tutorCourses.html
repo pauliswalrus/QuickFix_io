@@ -21,7 +21,7 @@
 {% block content %}
 {#                <h4>My Courses</h4>#}
 {#                {% for c in u_courses %}#}
-{#                <div id="tutorCourses">#}
+{#                <div id="tutor_courses">#}
 {#                {{ c.course_name }}#}
 {#                {% endfor %}#}
                 <h2>Courses For {{ this_program.programName }}
@@ -29,7 +29,7 @@
                     <button class="btn btn-primary warning ">Return To Profile</button>
                 </a>
 
-                     <a href="{{ url_for('profilePrograms') }}" >
+                     <a href="{{ url_for('profile_programs') }}" >
                     <button class="btn btn-primary warning ">Change Program</button>
                 </a>
 
