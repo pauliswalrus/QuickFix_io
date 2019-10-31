@@ -12,11 +12,17 @@ from flask_uploads import UploadSet, configure_uploads, IMAGES, send_from_direct
 from flask_forms import *
 from sqlalq_datamodels import *
 
-###     AUTHOR: AUSTIN PAUL
-###     DATE: OCT 25
-###     QUICKFIX_IO DIRTYBITS
-###     SPRINT 6 OCT 25 BUILD DEPLOYED AT
-###     quickfix-io.herokuapp.com
+
+######################################################
+##
+# AUTHOR: AUSTIN PAUL
+# DATE: OCT 25
+# QUICKFIX_IO DIRTYBITS
+# SPRINT 6 OCT 25 BUILD DEPLOYED AT
+# quickfix-io.herokuapp.com
+##
+######################################################
+
 
 # socketio init
 socketio = SocketIO(app)
@@ -70,7 +76,7 @@ def logout():
     db.session.commit()
 
     logout_user()
-    flash('You logged out!', 'success')
+    # flash('You logged out!', 'success')
     return redirect(url_for('login'))
 
 
@@ -126,7 +132,10 @@ def admin_approved():
                                        Tutor.application_comments).filter(User.id == Tutor.user_id).order_by(
         User.id.desc()).all()
 
-    return render_template("admin_approved.html", this_user=this_user, tutors_approved=tutors_approved)
+    tutor_courses = TutorCourses.query.filter_by(user_id=this_user.id).all()
+
+
+    return render_template("admin_approved.html", this_user=this_user, tutors_approved=tutors_approved, tutor_courses=tutor_courses)
 
 
 #### admin route, will contain links to all users info etc
@@ -459,12 +468,78 @@ def studentpost(studentpost_id):
                            comment_form=comment_form, comments=comments, this_user=this_user, t_status=t_status, role_name=role_name)
 
 
+# searchs studentposts
+@app.route('/forum_results')
+def forum_search_results(search):
+    this_user = User.query.filter_by(username=current_user.username).first()
+    t_status = "not sure"
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
+
+    search_form = TutorSearchForm(request.form)
+
+    results = []
+    search_string = search.data['search']
+
+    if search_string:
+        if search.data['select'] == 'Course Code':
+            qry = db.session.query(StudentPost).filter(StudentPost.post_course_code.contains(search_string)).order_by(StudentPost.date_posted.desc())
+
+            results = qry.all()
+
+        elif search.data['select'] == 'Course Name':
+            qry = db.session.query(StudentPost).filter(StudentPost.post_course.contains(search_string)).order_by(StudentPost.date_posted.desc())
+
+            results = qry.all()
+        elif search.data['select'] == 'User Name':
+            qry = db.session.query(StudentPost).filter(
+                StudentPost.author.contains(search_string)).order_by(StudentPost.date_posted.desc())
+
+            results = qry.all()
+        else:
+            qry = db.session.query(RoomPost)
+            results = qry.all()
+    else:
+        qry = db.session.query(RoomPost)
+        results = qry.all()
+
+    if not results:
+        flash('No results found!')
+        return redirect('/allstudentposts')
+    else:
+        # display results
+        student_posts = results
+        # table.border = True
+
+        return render_template('studentPosts.html', this_user=this_user, student_posts=student_posts, role_name=role_name, t_status=t_status, search_form=search_form)
+
+
 # view all student posts
 @app.route('/allstudentposts', methods=['GET', 'POST'])
 def allstudentposts():
     this_user = User.query.filter_by(username=current_user.username).first()
 
     t_status = "not sure"
+
+
+    search_form = ForumSearchForm(request.form)
+
+    if request.method == 'POST':
+        return forum_search_results(search_form)
 
     if this_user.role == 'S':
         role_name = "Student"
@@ -484,7 +559,82 @@ def allstudentposts():
 
     student_posts = StudentPost.query.order_by(StudentPost.date_posted.desc()).all()
 
-    return render_template('studentPosts.html', this_user=this_user, student_posts=student_posts, role_name=role_name, t_status=t_status)
+    return render_template('studentPosts.html', this_user=this_user, student_posts=student_posts, role_name=role_name, t_status=t_status, search_form=search_form)
+
+
+# searches rooms
+@app.route('/results')
+def search_results(search):
+    this_user = User.query.filter_by(username=current_user.username).first()
+    t_status = "not sure"
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
+
+    search_form = TutorSearchForm(request.form)
+
+    results = []
+    search_string = search.data['search']
+
+    if search_string:
+        if search.data['select'] == 'Course Code':
+            # qry = db.session.query(User.user_photo, RoomPost).filter(RoomPost.room_code.contains(search_string))
+
+            qry = db.session.query(User.user_photo, RoomPost.room_course, RoomPost.room_title,
+                                          RoomPost.author, RoomPost.title, RoomPost.date_posted,
+                                          RoomPost.content, RoomPost.id, RoomPost.room_code).filter(
+                RoomPost.author == User.username).filter(RoomPost.room_code.contains(search_string)).order_by(RoomPost.date_posted.desc())
+
+            results = qry.all()
+
+        elif search.data['select'] == 'Course Name':
+            qry = db.session.query(RoomPost).filter(RoomPost.room_course.contains(search_string))
+
+            qry = db.session.query(User.user_photo, RoomPost.room_course, RoomPost.room_title,
+                                   RoomPost.author, RoomPost.title, RoomPost.date_posted,
+                                   RoomPost.content, RoomPost.id, RoomPost.room_code).filter(
+                RoomPost.author == User.username).filter(RoomPost.room_course.contains(search_string)).order_by(RoomPost.date_posted.desc())
+
+            results = qry.all()
+        elif search.data['select'] == 'User Name':
+            qry = db.session.query(RoomPost).filter(
+                RoomPost.author.contains(search_string))
+
+            qry = db.session.query(User.user_photo, RoomPost.room_course, RoomPost.room_title,
+                                   RoomPost.author, RoomPost.title, RoomPost.date_posted,
+                                   RoomPost.content, RoomPost.id, RoomPost.room_code).filter(
+                RoomPost.author == User.username).filter(RoomPost.author.contains(search_string)).order_by(RoomPost.date_posted.desc())
+
+            results = qry.all()
+        else:
+            qry = db.session.query(RoomPost)
+            results = qry.all()
+    else:
+        qry = db.session.query(RoomPost)
+        results = qry.all()
+
+    if not results:
+        flash('No results found!')
+        return redirect('/allrooms')
+    else:
+        # display results
+        room_posts = results
+        # table.border = True
+
+        return render_template('tutorPosts.html', this_user=this_user, room_posts=room_posts, role_name=role_name, t_status=t_status, search_form=search_form)
 
 
 # view all tutor posts
@@ -495,6 +645,12 @@ def allrooms():
     # user_object = User.query.filter_by(username=user.).first()
 
     t_status = "not sure"
+
+    search_form = TutorSearchForm(request.form)
+
+    if request.method == 'POST':
+        return search_results(search_form)
+
 
     if this_user.role == 'S':
         role_name = "Student"
@@ -519,7 +675,9 @@ def allrooms():
                                        RoomPost.content, RoomPost.id, RoomPost.room_code).filter(RoomPost.author == User.username).order_by(
         RoomPost.date_posted.desc()).all()
 
-    return render_template('tutorPosts.html', this_user=this_user, room_posts=room_posts, role_name=role_name, t_status=t_status)
+    return render_template('tutorPosts.html', this_user=this_user, room_posts=room_posts, role_name=role_name, t_status=t_status, search_form=search_form)
+
+
 
 
 # new student request help post

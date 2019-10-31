@@ -1,5 +1,40 @@
 /* Chat.css - Defines the styles for the chat_join.html page */
 /* Author: Emma Hobden */
+/* Styles row class */
+.row {
+    /*border: 1px solid red;*/
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding: 15px !important;
+}
+
+
+/*  ROW 1 - Post Room Title */
+.row1 {
+    /*background-color: pink !important;*/
+    background-color: slategray !important;
+    /*height: 40px !important;*/
+    color: white !important;
+    font-size: 1.6em !important;
+    text-align: center;
+    /*padding: 15px !important;*/
+}
+
+.courseInfo {
+    color: #dfe7f0 !important;
+    font-size: 0.8em !important;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 /* ---------------------------------------------------- GENERAL ---------------------------------------------------- */

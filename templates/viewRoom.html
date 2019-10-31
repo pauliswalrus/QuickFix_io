@@ -1,10 +1,15 @@
+<!--
+    viewRoom.html
+    show individual tutor room post w/comments
+  -->
+
 <html lang=en>
 <head>
     <meta charset=utf-8>
 
     <title>{{ room.room_title }} Lobby</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    {#    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">#}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/viewPost.css') }}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,148 +21,294 @@
 {% extends "navbar.html" %}
 {% block content %}
 
-{#<div class="navbar">#}
-{#    <a class="logo" href="#">Home</a>#}
-{#    <a href="{{ url_for('profile', username=username) }}">{{ username }}</a>#}
-{#    <a href="#">Forums</a>#}
-{#    <a href="{{ url_for('chat', username=username) }}">Chat</a>#}
-{#    <a href="{{ url_for('all_users') }}">Users</a>#}
-{#    <a href="{{ url_for('logout') }}"> Logout </a>#}
-{#</div>#}
+    <div id="rowContainer">
 
 
-<!-- Main Section Div -->
-<div id="mainContent">
-
-    <!-- Left Column Div -->
-    <div id="left_column">
-
-        <div id="cardStyle">
-
-            <div id="postTitle">{{ room.title }} </div>
+        <!-- Row 1 -->
+        <div class="row row1">
+            <div class="col-sm-12">
+                <a href="{{ url_for('allrooms') }}" class="goBack">Back to All Tutor Rooms</a>
+            </div>
+        </div> <!-- end Row 1 -->
 
 
 
-            <div id="authorDate">
-                <div id="author">By: <a href="{{ url_for('pub_profile', username=room.author) }}"> {{ room.author }}</a></div>
-                <div id="dateTime">{{ room.date_posted.strftime('%b %d, %Y') }} at {{ room.date_posted.strftime('%I'':''%M %p') }}</div>
+{#      {{ room.title }}        #}
+
+
+
+        <!-- Row 2 - Title -->
+        <div class="row row2">
+
+            <div class="col-sm-1">
+                <div id="postTitle">
+
+                </div>
             </div>
 
-            <div id="roomTitle">{{ room.room_title }}</div>
+            <div class="col-sm-9">
+                <div id="postTitle">
+                    {{ room.room_title }} <br>
+                    <span class="courseInfo">{{ room.room_code }} {{ room.room_course }}</span>
+                </div>
+            </div>
 
-            <div id="content">Post Content: {{ room.content|safe }}</div>
+            <div class="col-sm-2">
+                <a href="{{ url_for('private_chat') }}" class="join">Join Room</a><br>
+            </div>
+        </div> <!-- end Row 2 - Title -->
 
-            <div id="joinRoomLink"><a href="{{ url_for('private_chat') }}">Join {{ room.room_title }}</a></div>
 
 
+
+
+
+        <!-- Row 3 - Author | Time, Date -->
+        <div class="row row3">
+            <div class="col-sm-12">
+                <div id="authorDate">
+                    <div id="author">By: <a
+                            href="{{ url_for('pub_profile', username=room.author) }}"> {{ room.author }}</a></div>
+                    <div id="dateTime">{{ room.date_posted.strftime('%b %d, %Y') }}
+                        at {{ room.date_posted.strftime('%I'':''%M %p') }}</div>
+                </div>
+            </div>
+        </div> <!-- end Row 3 - Author | Time, Date -->
+
+
+        <!-- Row 4 - Post Content -->
+        <div class="row row4">
+            <div class="col-sm-12">
+                <div id="content">{{ room.content|safe }}</div>
+            </div>
+        </div> <!-- end Row 4 - Post Content -->
+
+
+        <br><br><br>
+
+
+        <!-- Row 5 - Comments Title -->
+        <div class="row row5">
+            <div class="col-sm-12">
+                Comments
+            </div>
+        </div> <!-- end Row 5 - Comments Title -->
+
+
+
+        <!-- Row 6 - Write Comment / Submit Comment -->
+        <div class="row row6">
+            <div class="col-sm-12">
                 <form method="post">
-{#        <div>{{ post_form.type }}</div>#}
-            <div>
-            {{ comment_form.content(class_='form-control', placeholder='Add A Comment Now!', autocomplete='off') }}
-            <ul>
-                {% for error in comment_form.content.errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
+                    <div>
+                        {{ comment_form.content(class_='form-control', placeholder='Add A Comment Now!', autocomplete='off') }}
+                        <ul>
+                            {% for error in comment_form.content.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
 
-        <div>{{ comment_form.submit_button(class_='submitButton') }}</div>
+                    <div>{{ comment_form.submit_button(class_='submitButton') }}</div>
 
-        {{ comment_form.csrf_token }}
+                    {{ comment_form.csrf_token }}
 
-    </form>
-            {% for comment in comments %}
-                <div class="roomPosts">
+                </form>
+            </div>
+        </div> <!-- end Row 6 - Write Comment / Submit Comment -->
+
+
+
+
+        <!-- Row 6 - Actual Comments -->
+        <div class="row row6">
+            <div class="col-sm-12">
+
+
+                {% for comment in comments %}
+                    <div class="roomPosts">
 
                         <h5>{{ comment.content }}</h5>
-                    by <a href="{{ url_for('pub_profile', username=comment.comment_author)}}">{{ comment.comment_author }}</a> on {{ comment.date_posted.strftime('%b %d, %Y') }}
+                        by <a
+                            href="{{ url_for('pub_profile', username=comment.comment_author) }}">{{ comment.comment_author }}</a>
+                        on {{ comment.date_posted.strftime('%b %d, %Y') }}
                         at {{ comment.date_posted.strftime('%I' ':' '%M %p') }}
-                    </a>
+                        </a>
 
-                    <hr>
+                        <hr>
 
-                </div>
+                    </div>
 
-            {% endfor %}
+                {% endfor %}
 
 
+            </div>
+        </div> <!-- end Row 6 - Actual Comments -->
 
-{#    <form method="room">#}
-{#        <div>{{ post_form.type }}</div>#}
-{#        <div>#}
-{#            {{ comment_form.content(class_='form-control', placeholder='Add A Comment Now!', autocomplete='off') }}#}
-{#            <ul>#}
-{#                {% for error in comment_form.content.errors %}#}
-{#                    <li>{{ error }}</li>#}
-{#                {% endfor %}#}
-{#            </ul>#}
-{#        </div>#}
-{##}
-{#        <div>{{ comment_form.submit_button(class_='submitButton') }}</div>#}
-{##}
-{#        {{ comment_form.csrf_token }}#}
-{##}
-{#    </form>#}
-        </div>
+    </div><!-- end row container -->
 
 
 
-    </div>
-
-    <!-- Right Column Div -->
-    <div id="right_column">
-
-            <h5>View Recent Room Posts:</h5>
-
-            {% for room in rooms %}
-                <div class="roomPosts">
-
-                    <a href="{{ url_for('room', room_id=room.id) }}">
-                        <h5>[{{ room.type|upper }}] {{ room.title }}</h5>
-                        by {{ room.author }} on {{ room.date_posted.strftime('%b %d, %Y') }}
-                        at {{ room.date_posted.strftime('%I' ':' '%M %p') }}
-                    </a>
-
-                    <hr>
-
-                </div>
-
-            {% endfor %}
 
 
-    </div>
 
 
-{#    <div class="container">#}
-{##}
-{#        <div class="row">#}
-{#            <div class="col-lg-8 col-md-10 mx-auto">#}
-{#                <div class="room-heading">#}
-{#                    <h1>{{ room.title }}</h1>#}
-{#                    <h2 class="subheading">{{ room.room_title }}</h2>#}
-{#                    <span class="meta">Posted by#}
-{#                {{ room.author }}#}
-{#                on {{ room.date_posted.strftime('%b %d, %Y') }} at {{ room.date_posted.strftime('%I'':''%M %p') }}</span>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{##}
-{##}
-{#        <!-- Post Content -->#}
-{#        <article>#}
-{#            <div class="container">#}
-{#                <div class="row">#}
-{#                    <div class="col-lg-8 col-md-10 mx-auto">#}
-{#                        {{ room.content|safe }}#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#            <a href="{{ url_for('private_chat') }}">Join This Room</a>#}
-{#        </article>#}
-{##}
-{#    </div><!-- End Container -->#}
 
-</div><!-- End Main Section -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {#    <!-- Main Section Div -->#}
+    {#    <div id="mainContent">#}
+    {##}
+    {#        <!-- Left Column Div -->#}
+    {#        <div id="left_column">#}
+    {##}
+    {#            <div id="cardStyle">#}
+    {##}
+    {#                <div id="postTitle">{{ room.title }} </div>#}
+    {##}
+    {##}
+    {#                <div id="authorDate">#}
+    {##}
+    {#                    <div id="author">#}
+    {#                        By: <a href="{{ url_for('pub_profile', username=room.author) }}"> {{ room.author }}</a>#}
+    {#                    </div>#}
+    {##}
+    {#                    <div id="dateTime">{{ room.date_posted.strftime('%b %d, %Y') }}#}
+    {#                        at {{ room.date_posted.strftime('%I'':''%M %p') }}</div>#}
+    {#                </div>#}
+    {##}
+    {#                <div id="roomTitle">#}
+    {#                    {{ room.room_title }}#}
+    {#                </div>#}
+    {##}
+    {#                <div id="content">#}
+    {#                    Post Content: {{ room.content|safe }}#}
+    {#                </div>#}
+    {##}
+    {#                <div id="joinRoomLink">#}
+    {#                    <a href="{{ url_for('private_chat') }}">Join {{ room.room_title }}</a>#}
+    {#                </div>#}
+    {##}
+    {##}
+    {#                <form method="post">#}
+    {#                    <div>#}
+    {#                        {{ comment_form.content(class_='form-control', placeholder='Add A Comment Now!', autocomplete='off') }}#}
+    {#                        <ul>#}
+    {#                            {% for error in comment_form.content.errors %}#}
+    {#                                <li>{{ error }}</li>#}
+    {#                            {% endfor %}#}
+    {#                        </ul>#}
+    {#                    </div>#}
+    {##}
+    {#                    <div>{{ comment_form.submit_button(class_='submitButton') }}</div>#}
+    {##}
+    {#                    {{ comment_form.csrf_token }}#}
+    {##}
+    {#                </form>#}
+    {#                {% for comment in comments %}#}
+    {#                    <div class="roomPosts">#}
+    {##}
+    {#                        <h5>{{ comment.content }}</h5>#}
+    {#                        by <a#}
+    {#                            href="{{ url_for('pub_profile', username=comment.comment_author) }}">{{ comment.comment_author }}</a>#}
+    {#                        on {{ comment.date_posted.strftime('%b %d, %Y') }}#}
+    {#                        at {{ comment.date_posted.strftime('%I' ':' '%M %p') }}#}
+    {#                        </a>#}
+    {##}
+    {#                        <hr>#}
+    {##}
+    {#                    </div>#}
+    {##}
+    {#                {% endfor %}#}
+    {##}
+    {##}
+    {##}
+    {#    <form method="room">#}
+    {#        <div>{{ post_form.type }}</div>#}
+    {#        <div>#}
+    {#            {{ comment_form.content(class_='form-control', placeholder='Add A Comment Now!', autocomplete='off') }}#}
+    {#            <ul>#}
+    {#                {% for error in comment_form.content.errors %}#}
+    {#                    <li>{{ error }}</li>#}
+    {#                {% endfor %}#}
+    {#            </ul>#}
+    {#        </div>#}
+    {##}
+    {#        <div>{{ comment_form.submit_button(class_='submitButton') }}</div>#}
+    {##}
+    {#        {{ comment_form.csrf_token }}#}
+    {##}
+    {#    </form>#}
+    {#            </div>#}
+    {##}
+    {##}
+    {#        </div>#}
+    {##}
+    {#        <!-- Right Column Div -->#}
+    {#        <div id="right_column">#}
+    {##}
+    {#            <h5>View Recent Room Posts:</h5>#}
+    {##}
+    {#            {% for room in rooms %}#}
+    {#                <div class="roomPosts">#}
+    {##}
+    {#                    <a href="{{ url_for('room', room_id=room.id) }}">#}
+    {#                        <h5>[{{ room.type|upper }}] {{ room.title }}</h5>#}
+    {#                        by {{ room.author }} on {{ room.date_posted.strftime('%b %d, %Y') }}#}
+    {#                        at {{ room.date_posted.strftime('%I' ':' '%M %p') }}#}
+    {#                    </a>#}
+    {##}
+    {#                    <hr>#}
+    {##}
+    {#                </div>#}
+    {##}
+    {#            {% endfor %}#}
+    {##}
+    {##}
+    {#        </div>#}
+    {##}
+    {##}
+    {#    <div class="container">#}
+    {##}
+    {#        <div class="row">#}
+    {#            <div class="col-lg-8 col-md-10 mx-auto">#}
+    {#                <div class="room-heading">#}
+    {#                    <h1>{{ room.title }}</h1>#}
+    {#                    <h2 class="subheading">{{ room.room_title }}</h2>#}
+    {#                    <span class="meta">Posted by#}
+    {#                {{ room.author }}#}
+    {#                on {{ room.date_posted.strftime('%b %d, %Y') }} at {{ room.date_posted.strftime('%I'':''%M %p') }}</span>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {##}
+    {##}
+    {#        <!-- Post Content -->#}
+    {#        <article>#}
+    {#            <div class="container">#}
+    {#                <div class="row">#}
+    {#                    <div class="col-lg-8 col-md-10 mx-auto">#}
+    {#                        {{ room.content|safe }}#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#            <a href="{{ url_for('private_chat') }}">Join This Room</a>#}
+    {#        </article>#}
+    {##}
+    {#    </div><!-- End Container -->#}
+    {##}
+    {#    </div><!-- End Main Section -->#}
 
 {% endblock %}
 </body>

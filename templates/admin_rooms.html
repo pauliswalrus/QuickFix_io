@@ -71,12 +71,22 @@
 
                                 <p><span class="subHeading">Public: </span>
                                     {{ room.visible }}</p>
-
-                                 <p><span class="subHeading">Code: </span>
-                                    {{ room.room_code }}</p>
+{##}
+{#                                 <p><span class="subHeading">Course Name: </span>#}
+{#                                    {{ room.room_course }}</p>#}
+{##}
+{#                                  <p><span class="subHeading">Course Code: </span>#}
+{#                                    {{ room.room_code }}</p>#}
 
                                 <p><span class="subHeading">Date: </span>
                                     {{ room.date_posted.strftime('%Y-%m-%d') }}</p>
+
+
+                                       <p><span class="subHeading">Course Name: </span>
+                                    {{ room.room_course }}</p>
+
+                                  <p><span class="subHeading">Course Code: </span>
+                                    {{ room.room_code }}</p>
                             </div>
 
                             <div class="col-sm-4">
