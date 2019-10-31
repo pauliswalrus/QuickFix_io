@@ -813,8 +813,8 @@ def error_template():
 
 
 # programs page
-@app.route("/courses", methods=['GET', 'POST'])
-def courses():
+@app.route("/profilePrograms", methods=['GET', 'POST'])
+def profilePrograms():
 
     this_user = User.query.filter_by(username=current_user.username).first()
 
@@ -863,7 +863,7 @@ def courses():
     # program_list = [(k.program_id, k.programName) for k in available_programs]
     # form1 = ProgramForm()
 
-    # # form.courses.choices = [(course.program_id, course.course_name)for course in Course.query.filter_by(program_id=2).all()]
+    # # form.profilePrograms.choices = [(course.program_id, course.course_name)for course in Course.query.filter_by(program_id=2).all()]
     # form1.program_options.choices = program_list
     #
     # if request.method == 'POST':
@@ -881,10 +881,10 @@ def courses():
     #
     #     return redirect(url_for('programCourses', programName=this_program.program_id))
 
-    return render_template('courses.html', username=current_user.username, this_user=this_user, form1=form1, role_name=role_name, t_status=t_status)
+    return render_template('profilePrograms.html', username=current_user.username, this_user=this_user, form1=form1, role_name=role_name, t_status=t_status)
 
 
-# courses page
+# profilePrograms page
 @app.route("/programCourses/<int:program_id>", methods=['GET', 'POST'])
 def programCourses(program_id):
 
@@ -941,7 +941,7 @@ def programCourses(program_id):
     return render_template('programCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
 
 
-# courses page
+# profilePrograms page
 @app.route("/tutorCourses/<int:program_id>", methods=['GET', 'POST'])
 def tutorCourses(program_id):
 
@@ -1033,7 +1033,7 @@ def applicationBegin():
     return render_template('applicationBegin.html', username=current_user.username, this_user=this_user, form1=form1, role_name=role_name, t_status=t_status)
 
 
-# courses page
+# profilePrograms page
 @app.route("/applicationCourses/<int:program_id>", methods=['GET', 'POST'])
 def applicationCourses(program_id):
 
