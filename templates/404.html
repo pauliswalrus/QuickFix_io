@@ -1,10 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/errorPages.css') }}">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Amatic+SC&display=swap');
+    </style>
+    <title>QuickFix - 404 Page Not Found</title>
+
+        <style>
+        body
+        {
+            background-image: url('/static/images/404-3.png');
+            height: 100%;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    </style>
+
 </head>
 <body>
+
+    <!-- whole nav bar -->
+    <div id="navBar">
+
+        <a href="{{ url_for('home') }}" class="fl_left logo"></a>
+
+        <a href="{{ url_for('logout') }}" class="fl_right"> Login </a>
+
+    </div>
 
 </body>
 </html>
