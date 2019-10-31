@@ -1,99 +1,274 @@
-/* Chat.css - Defines the styles for the Chat.html page */
-/* Author: Emma Hobden */
+/*
+ * private_chat.css - used in private_chat.html
+ */
+
+/* Styles the main-section div which holds all page content */
+#main-section {
+    /*padding: 10px 5px 10px 5px;*/
+    width: 100%;
+    /*height: calc(100% - 80px);*/
+    height: 100%;
+    /*border: 2px solid purple;*/
+
+}
 
 
-/* Styles the body of the page */
-body {
-    margin-top: 0px;
-    background-image: url('../images/trashImgs/teamChat2.png');
-    background-size: cover;
+.row {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    /*border: 1px solid red;*/
+    /*margin-left: auto !important;*/
+    /*margin-right: auto !important;*/
+    padding: 15px !important;
 
+    /*width: 90% !important;*/
+    /*margin: 10px 5% 10px 5% !important;*/
+}
+
+
+/*  ROW 1 - Room Name */
+.row1 {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    background-color: slategray !important;
+    color: white !important;
+    font-size: 1.6em !important;
+    text-align: center;
+}
+
+.row2 {
+    padding: 0 !important;
+}
+
+#left_col {
+    /*background-color: pink;*/
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    height: calc(100% - 80px);
+    overflow-y: scroll;
+    overflow-x: scroll;
+}
+
+#right_col {
+    /*height: 100%;*/
+
+}
+
+.roomInfoHeading {
+    font-size: 1.8em !important;
+    color: #424066;
+    border-bottom: 2px solid #424066;
+}
+
+
+.courseInfo {
+    color: #dfe7f0 !important;
+    font-size: 0.8em !important;
 }
 
 /* Styles the python variable that holds the current local time date */
 #currDate {
-    font-size: 2em;
-    float: right;
-    padding-right: 1em;
-    font-family: 'Lato', sans-serif;
+    font-size: 1.2em;
+    color: #424066;
 }
 
-/* Styles the left column list of chat rooms & header */
-#left_column {
-    margin-top: 2em;
-    float: left; /* Make this div as wide as its contents */
-    min-height: 60vh;
-    padding-left: 1em;
-    padding-top: 3em;
-    padding-right:1em;
-    border-right: 0.5px solid #898c91;
+/* Styles button that opens the upload form */
+#button_upload {
+    width: 100%;
 }
 
-/* Styles the python variable that holds the list of rooms */
-#left_column p {
-    padding-left: 2em;
-    padding-right: 2em;
+.row_typeMsg {
+    /*border: 2px solid red;*/
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-/* Styles the hover on the list of rooms */
-#left_column p:hover {
-    background-color: #E46D4E;
-    color: #F8F3F2;
-    cursor: pointer;
+.glyphicon {
+    width: 100%;
+    font-size: 15px;
 }
 
-/* Styles the Heading4 in left column */
-#left_column h4 {padding-left: 0.5em;}
+#button_upload:hover {
+    /*color: #888888;*/
+}
+
+/* Styles the div where user types msg */
+#type_msg {
+    width: 100%;
+    /*border: 2px solid blue;*/
+    /*color: darkslategray;*/
+    /*height: 40px;*/
+    /*width: 80%;*/
+}
+
+.type_msg {
+    width: 100%;
+    height: 38px;
+    /*margin-top: 0;*/
+    /*margin-bottom: 0;*/
 
 
-/* Right Panel of Chat Window */
-#middle_column {
-    overflow: hidden; /* Make this div take up the rest of the horizontal space, and no more */
-    padding: 10px;
 }
 
 
-/* Styles where messages are displayed */
+
+
+.padding-0 {
+    padding-right: 1 !important;
+    padding-left: 1 !important;
+    margin: 0;
+    /*border: 1px solid green;*/
+}
+
+
+
+/* Styles the button to send a msg */
+#button_send {
+    /*color: white;*/
+    /*background-color: slategray;*/
+    /*width: 10%;*/
+    /*height: 40px;*/
+    /*float: right;*/
+    /*border-style: none;*/
+}
+
+
+
+/* ---------------------------------------------------- GENERAL ---------------------------------------------------- */
+html, body {
+    /*height:100%;*/
+}
+/* Styles the body of the page */
+body {
+    /*background-image: url('../images/teamChat2.png');*/
+    /*background-size: cover;*/
+}
+
+
+
+
+
+/* -------------------------------------------------- LEFT COLUMN -------------------------------------------------- */
+
+
+
+
+/* -------------------------------------------------- RIGHT COLUMN ------------------------------------------------- */
+
+
+
+/* Styles div where messages are displayed */
 #display-message-section {
-    height: 450px;
-    width: 80%;
-    margin-right: 20%;
-    border: 2px solid #3F3D54;
+    width: 100%;
+    height: 80%;
     overflow-y: auto; /*Make  this section scrollable */
+
     padding: 5px;
+    /*background-color: #F2F3F7;*/
 }
 
-/* Styles the div that holds the type msg & send msg */
-#input-area {
-    bottom: 0;
-    /*border: 2px solid green;*/
-    border: 2px solid #3F3D54;
-    width: 80%;
-    margin-right: 20%;
+/*!* Styles the div that holds the type msg & send msg & upload docs button *!*/
+/*#input-area {*/
+/*    bottom: 0;*/
+/*    width: 100%;*/
+/*    margin-top: 10px;*/
+/*}*/
+
+
+
+
+
+
+
+
+
+/*!* Styles button that opens the upload form *!*/
+/*#uploadNewDocs {*/
+/*    width: 40px;*/
+/*    height: 40px;*/
+/*    color: white;*/
+/*    background-color: slategray;*/
+/*    float: left;*/
+/*    border-style: none;*/
+/*    font-size: 1.5em;*/
+/*}*/
+
+/*#uploadNewDocs:hover {*/
+/*    color: #888888;*/
+/*}*/
+
+/*!* Styles the div where user types msg *!*/
+/*#user_message {*/
+/*    color: darkslategray;*/
+/*    height: 40px;*/
+/*    width: 80%;*/
+/*}*/
+
+/*!* Styles the button to send a msg *!*/
+/*#send_message {*/
+/*    color: white;*/
+/*    background-color: slategray;*/
+/*    width: 10%;*/
+/*    height: 40px;*/
+/*    float: right;*/
+/*    border-style: none;*/
+/*}*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Styles the window that holds upload docs form - hidden as default */
+#upload {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    width: 600px;
+    margin-left: 25%;
+    margin-right: 25%;
+    height: 200px;
+    left: 0;
+    top: 200px;
+    padding: 20px;
+    text-align: center;
+    overflow: auto; /* Enable scroll if needed */
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
 }
 
-/* where user types msg */
-#user_message {
-    color: #3F3D54;
-    height: 30px;
-    width: 90%;
-}
-
-/* send button to send msg */
-#send_message {
-    color: white;
-    background-color: #3F3D54;
-    width: 10%;
-    height: 30px;
+/* Styles the X to close the upload docs window */
+.closeWindow {
+    color: #aaaaaa;
     float: right;
-    border: 2px solid #3F3D54;
+    font-size: 28px;
+    font-weight: bold;
 }
 
-
-/* Room Name H1 */
-#room-name {
-    color: white;
-    font-size: 2em;
+.closeWindow:hover,
+.closeWindow:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 
@@ -101,77 +276,72 @@ body {
 .my-username {
     font-weight: bold;
     font-size: 1.4em;
-    color: white;
+    color: #395065;
     padding-right: 5px;
 }
 
+/* Current user's msg timestamp */
 .timestamp {
-    color: white;
-    font-size:0.7em;
+    color: #395065;
+    font-size: 0.7em;
 }
 
+/* Current user's message bubble */
 .my-msg {
-    color: white;
+    color: #395065;
     text-align: left;
-    border: 2px solid #807E93;
-    background-color: #807E93;
+    border: 2px solid #E8EAEF;
+    background-color: #E8EAEF;
     border-radius: 20px 20px 20px 0px;
     padding-left: 10px;
-
-    width: 60%;
+    width: 55%;
     margin-right: 40%;
 }
 
-
-
-
+/* Other user's username in chat */
 .other-username {
     font-weight: bold;
     font-size: 1.4em;
-    color: white;
+    color: #395065;
 }
 
+/* Other user's msg timestamp */
 .other-timestamp {
-    color: white;
-    font-size:0.7em;
+    color: #395065;
+    font-size: 0.7em;
     padding-right: 5px;
 }
 
+/* Other user's message bubble */
 .others-msg {
-    color: white;
+    color: #395065;
     text-align: right;
-    border: 2px solid #A2A1AF;
-    background-color: #A2A1AF;
+    border: 2px solid #F2F3F7;
+    background-color: #F2F3F7;
     border-radius: 20px 20px 0px 20px;
     padding-right: 10px;
-
-    width: 60%;
+    width: 55%;
     margin-left: 40%;
 }
 
 
-
-
-
-
-
-/* Styles Room name Container */
-#chatWindowHeader {
-    border: 2px solid #3F3D54;
-    background-color: #3F3D54;
-
-    width: 80%;
-    margin-right: 20%;
-
+#privateButton {
+   display: none;
 }
 
-/* Styles Room name and Date spans */
-#room-name, #date {
-    display: inline-block;
+#publicButton {
+   display: none;
 }
 
-/* Styles Date */
-#date {
-    float: right;
-    font-size: 1.1em;
+.uploadDocsButton {
+    background-color: white;
+    border: none;
+    color: #26346f;
+    font-size: 12px;
 }
+
+.uploadDocsButton:hover {
+    text-decoration: underline;
+}
+
+

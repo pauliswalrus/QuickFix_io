@@ -484,6 +484,7 @@ $(document).ready(function () {
         $('.publicButton').fadeIn(200);
 
 
+
     })
 
     //public room - private chat
