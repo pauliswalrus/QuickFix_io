@@ -8,6 +8,67 @@
     <style>
         @import url('https://fonts.googleapis.com/css?family=Amatic+SC&display=swap');
     </style>
+
+
+       <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+
+
+    <script>
+
+    $(document).ready(function () {
+
+        let role = "{{ role_name }}";
+        let tutor_status = "{{ t_status }}";
+
+        $('#navCheck').hide();
+        $('#navRoom').hide();
+        $('#navAdmin').hide();
+        $('#roomsContent').hide();
+        $('#roomsHeading').hide();
+
+        if (role === 'Student') {
+
+            if (tutor_status === 'pending') {
+
+                $('#navApply').hide();
+                $('#navCheck').show();
+
+            } else if (tutor_status === 'approved') {
+
+                $('#navRoom').show();
+                $('#navApply').hide();
+                $('#navCheck').hide();
+
+            } else if (tutor_status === 'denied') {
+
+                $('#navApply').hide();
+                $('#navCheck').hide();
+            }
+
+        }
+
+        else if (role === 'Tutor') {
+
+            $('#navApply').hide();
+            $('#navCheck').hide();
+            $('#navRoom').show();
+
+        }
+
+        else if (role === 'Admin') {
+
+            $('#navApply').hide();
+            $('#navCheck').hide();
+            $('#navRoom').show();
+            $('#navAdmin').show();
+
+        }
+
+    });
+
+
+    </script>
 </head>
 <body>
 
@@ -85,57 +146,60 @@
     {% block content %}
     {% endblock %}
 
-<script>
+{#<script>#}
+{##}
+{#    let userRole = "{{ role_name }}";#}
+{##}
+{#    let tutorStatus = "{{ t_status }}";#}
+{##}
+{#    window.onload = function (event) {#}
+{##}
+{#        document.getElementById("navCheck").style.display = "none";#}
+{#        document.getElementById("navRoom").style.display = "none";#}
+{#        document.getElementById("navAdmin").style.display = "none";#}
+{##}
+{#        if (userRole == 'Student') {#}
+{##}
+{#            if (tutorStatus == 'pending') {#}
+{##}
+{#                document.getElementById("navApply").style.display = "none";#}
+{#                document.getElementById("navCheck").style.display = "block";#}
+{##}
+{#            } else if (tutorStatus == 'approved') {#}
+{##}
+{#                document.getElementById("navApply").style.display = "none";#}
+{#                document.getElementById("navCheck").style.display = "none";#}
+{#                document.getElementById("navRoom").style.display = "block";#}
+{##}
+{#            } else if (tutorStatus == 'denied') {#}
+{##}
+{#                document.getElementById("navApply").style.display = "none";#}
+{#                document.getElementById("navCheck").style.display = "block";#}
+{##}
+{#            }#}
+{##}
+{#        } else if (userRole == 'Tutor') {#}
+{##}
+{#            document.getElementById("navApply").style.display = "none";#}
+{#            document.getElementById("navCheck").style.display = "none";#}
+{#            document.getElementById("navRoom").style.display = "block";#}
+{##}
+{#        } else if (userRole == 'Admin') {#}
+{##}
+{##}
+{#            document.getElementById("navRoom").style.display = "none";#}
+{#            document.getElementById("navApply").style.display = "none";#}
+{#            document.getElementById("navCheck").style.display = "none";#}
+{#            document.getElementById("navAdmin").style.display = "block";#}
+{#        }#}
+{##}
+{##}
+{#    }#}
+{##}
+{##}
+{##}
 
-    let userRole = "{{ role_name }}";
-
-    let tutorStatus = "{{ t_status }}";
-
-    window.onload = function (event) {
-
-        document.getElementById("navCheck").style.display = "none";
-         document.getElementById("navRoom").style.display = "none";
-         document.getElementById("navAdmin").style.display = "none";
-
-        if (userRole == 'Student') {
-
-            if (tutorStatus == 'pending') {
-
-                document.getElementById("navApply").style.display = "none";
-                document.getElementById("navCheck").style.display = "block";
-
-            } else if (tutorStatus == 'approved') {
-
-                document.getElementById("navApply").style.display = "none";
-                document.getElementById("navCheck").style.display = "none";
-                document.getElementById("navRoom").style.display = "block";
-
-            } else if (tutorStatus == 'denied') {
-
-                document.getElementById("navApply").style.display = "none";
-                document.getElementById("navCheck").style.display = "block";
-
-            }
-
-        } else if (userRole == 'Tutor') {
-
-                document.getElementById("navApply").style.display = "none";
-                document.getElementById("navCheck").style.display = "none";
-                document.getElementById("navRoom").style.display = "block";
-        } else if (userRole == 'Admin') {
-
-
-                document.getElementById("navRoom").style.display = "none";
-                document.getElementById("navApply").style.display = "none";
-                document.getElementById("navCheck").style.display = "none";
-                document.getElementById("navAdmin").style.display = "block";
-        }
-
-
-
-
-    }
-
-</script>
+{##}
+{#</script>#}
 </body>
 </html>
