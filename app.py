@@ -1188,9 +1188,9 @@ def profile():
 
     posts = RoomPost.query.filter_by(author=this_user.username).order_by(RoomPost.date_posted.desc()).all()
     student_posts = StudentPost.query.filter_by(author=this_user.username).order_by(StudentPost.date_posted.desc()).all()
-    user_courses = UserCourses.query.filter_by(user_id=this_user.id).all()
+    user_courses = UserCourses.query.filter_by(user_id=this_user.id).order_by(UserCourses.user_course_id.desc()).all()
 
-    tutor_courses = TutorCourses.query.filter_by(user_id=this_user.id).all()
+    tutor_courses = TutorCourses.query.filter_by(user_id=this_user.id).order_by(TutorCourses.tutor_course_id.desc()).all()
 
     if role == "S":
         role_name = "Student"
