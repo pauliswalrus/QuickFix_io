@@ -39,7 +39,7 @@
 
         <div class="row">
             <div class="col-sm-8 course_title">
-                <div class="title">Courses For {{ this_program.programName }}</div>
+                Courses For {{ this_program.programName }}
             </div>
 
             <div class="col-sm-4 change_btn">
@@ -64,6 +64,7 @@
     </h2>
 
     <form method="POST" action="">
+        <h2 class="title">Pick Program</h2>
         {{ form.csrf_token }}
         {{ form.course_options(class_='form-control') }} <br>
         <input type="submit" class="btn btn-primary" value="Add Course">
