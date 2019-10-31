@@ -32,7 +32,7 @@
 
         var role = `{{ role_name }}`;
 
-        if (role === 'Tutor' || role === 'Admin' ) {
+        if (role === 'Tutor') {
 
                 $('#tutorCourses').show();
                 $('#userCourses').hide();
@@ -40,12 +40,15 @@
                 $('#roomsContent').show();
                 $('#roomsHeading').show();
 
-            {##}
-            {#           document.getElementById('tutorStatusToggle').style.display = "none";#}
-            {#document.getElementById('roomsHeading').style.display = "none";#}
-            {#document.getElementById('roomsContent').style.display = "none";#}
-            {##}
-            {#document.getElementById('tutorStatusToggle').style.display = "none";#}
+
+        } else if (role === 'Admin') {
+
+                $('#tutorCourses').show();
+                $('#userCourses').hide();
+                $('#tutorStatusToggle').hide();
+                $('#roomsContent').show();
+                $('#roomsHeading').show();
+
 
         }
 
