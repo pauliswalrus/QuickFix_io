@@ -1338,7 +1338,7 @@ def pub_profile(username):
     pub_role = user_object.role
     about_me = user_object.about_me
 
-    posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
+    posts = RoomPost.query.filter_by(author=username, visible=True).order_by(RoomPost.date_posted.desc()).all()
 
     student_posts = StudentPost.query.filter_by(author=username).order_by(StudentPost.date_posted.desc()).all()
 
