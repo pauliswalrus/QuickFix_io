@@ -62,40 +62,31 @@
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', () => {
 
-
-        document.getElementById('userCourses').style.display = "none";
-        document.getElementById('tutor_courses').style.display = "none";
+        {##}
+        {#document.getElementById('userCourses').style.display = "none";#}
+        {#document.getElementById('tutor_courses').style.display = "none";#}
 
         //hides online status toggleff and info if user is a student
-        let role = '{{ role_name }}';
+        {#let role = '{{ role_name }}';#}
 
 
 
-        if (role === 'Student') {
-
-            document.getElementById('tutorStatusToggle').style.display = "none";
-            document.getElementById('roomsHeading').style.display = "none";
-            document.getElementById('roomsContent').style.display = "none";
-            {#document.getElementById('tutorStatusHeader').style.display = "none";#}
-
-            document.getElementById('userCourses').style.display = "block";
-
-        } else if (role === 'Admin') {
-
-                document.getElementById('tutorStatusToggle').style.display = "none";
-
-                {#document.getElementById('tutorStatusToggle').style.display = "none";#}
-                {#document.getElementById('tutorStatusHeader').style.display = "none";#}
-                //document.getElementsByClassName('tutorOnly').style.display = "none";
-
-        } else if (role === 'Tutor') {
-
-                document.getElementById('tutorCourses').style.display = "block";
-                {##}
-                {#document.getElementById('tutorStatusToggle').style.display = "none";#}
-                {#document.getElementById('tutorStatusHeader').style.display = "none";#}
-                //document.getElementsByClassName('tutorOnly').style.display = "none";
-        }
+        {#if (role === 'Student') {#}
+        {##}
+        {#    document.getElementById('tutorStatusToggle').style.display = "none";#}
+        {#    document.getElementById('roomsHeading').style.display = "none";#}
+        {#    document.getElementById('roomsContent').style.display = "none";#}
+        {#    document.getElementById('userCourses').style.display = "block";#}
+        {##}
+        {#else if (role === 'Admin') {#}
+        {##}
+        {#        document.getElementById('tutorStatusToggle').style.display = "none";#}
+        {##}
+        {##}
+        {#else if (role === 'Tutor') {#}
+        {##}
+        {#        document.getElementById('tutorCourses').style.display = "block";#}
+        {##}
 
 
 
