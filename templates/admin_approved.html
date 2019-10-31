@@ -46,6 +46,13 @@
                             <span class="subHeading">Status: </span>
                             {{ tutor.tutor_status }}
                         </p>
+
+                        <p>
+                            <span class="subHeading">Application: </span>
+                            <a href="{{ url_for('check_application', user_id=tutor.user_id) }}">{{ tutor.username }}' Application </a>
+
+                        </p>
+
 {#                            {% if tutor %}#}
 {#                            {% for t in tutor_courses %}#}
 {#                            {{ tutor.course_name }}#}

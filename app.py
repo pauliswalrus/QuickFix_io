@@ -290,9 +290,10 @@ def new_tutor():
 
 
 # check tutor application
-@app.route('/check_application', methods=['GET', 'POST'])
-def check_application():
-    this_user = User.query.filter_by(username=current_user.username).first()
+@app.route('/check_application/<int:user_id>', methods=['GET', 'POST'])
+def check_application(user_id):
+
+    this_user = User.query.filter_by(id=user_id).first()
 
     tutor_courses = TutorCourses.query.filter_by(user_id=this_user.id).all()
 

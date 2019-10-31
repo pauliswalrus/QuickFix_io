@@ -91,7 +91,7 @@
             <span id="navApply"><a href="{{ url_for('application_begin') }}">Apply To Be a Tutor</a></span>
 
             <span id="navCheck">
-                <a href="{{ url_for('check_application') }}">Check Application Status</a>
+                <a href="{{ url_for('check_application', user_id=this_user.id) }}">Check Application Status</a>
             </span>
 
             <span id="navRoom" >
