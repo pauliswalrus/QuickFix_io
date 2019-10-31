@@ -153,6 +153,19 @@ def admin_rooms():
     return render_template("admin_rooms.html", this_user=this_user, blog_posts = blog_posts)
 
 
+@app.route('/admin_posts')
+def admin_posts():
+    if session["userRole"] != "A":
+        return "You are not an authorized admin. Please go back."
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    # rooms desc by date
+    forum_posts = StudentPost.query.order_by(RoomPost.date_posted.desc()).all()
+
+    return render_template("admin_posts.html", this_user=this_user, blog_posts = blog_posts)
+
+
 # admin - manage users
 @app.route("/users", methods=['GET', 'POST'])
 def all_users():
