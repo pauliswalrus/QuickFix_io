@@ -24,12 +24,14 @@
 
     {#$('#studentPublic').hide();#}
     $('#tutorPublic').hide();
+    $('#mStatus').hide();
 
         var role = `{{ pub_role_name }}`;
 
         if (role === 'Tutor' || role === 'Admin' ) {
 
-                $('#tutorPublic').show()
+                $('#tutorPublic').show();
+                $('#mStatus').show();
 
         }
 
@@ -57,6 +59,7 @@
             <div id="mFirstLast">{{ firstname }} {{ lastname }}</div>
             <div id="mRole">Role: {{ pub_role_name }}</div>
             <div id="mEmail">Email: {{ email }}</div>
+            <div id="mStatus">Status: <b>{{ status_string }}</b></div>
         </div>
 
 
@@ -106,15 +109,20 @@
                     <div class="table-responsive">
                     <table class="table table-hover">
                         <thead><tr>
-                                <th>Post</th>
-                                <th>Course</th>
-                                <th>Date</th>
+{#                                <th>Post</th>#}
+{#                                <th>Course</th>#}
+{#                                <th>Date</th>#}
+                            <th class="col-sm-2">Post</th>
+                            <th class="col-sm-2">Code</th>
+                            <th class="col-sm-3">Course</th>
+                            <th class="col-sm-3">Date</th>
                         </tr></thead>
 
                         {% for room in student_posts %}
                             <tbody>
                             <tr>
                                 <td><a href="{{ url_for('studentpost', studentpost_id=room.id) }}">{{ room.title }}</a></td>
+                                <td>{{ room.post_course_code }}</td>
                                 <td>{{ room.post_course }}</td>
                                 <td>{{ room.date_posted.strftime('%B %d, %Y') }}</td>
                             </tr>
@@ -151,18 +159,16 @@
                     <table class="table table-hover">
                         <thead><tr>
                             <th class="col-sm-2">Room</th>
-                            <th class="col-sm-3">Title</th>
-                            <th class="col-sm-1">Public</th>
+                            <th class="col-sm-2">Code</th>
                             <th class="col-sm-3">Course</th>
-                            <th class="col-sm-2">Date</th>
+                            <th class="col-sm-3">Date</th>
                         </tr></thead>
 
                         {% for room in posts %}
                             <tbody>
                             <tr>
                                 <td><a href="{{ url_for('room', room_id=room.id) }}">{{ room.room_title }}</a></td>
-                                <td>{{ room.title }}</td>
-                                <td>{{ room.visible }}</td>
+                                <td>{{ room.room_code }}</td>
                                 <td>{{ room.room_course }}</td>
                                 <td>{{ room.date_posted.strftime('%B %d, %Y') }}</td>
                             </tr>
