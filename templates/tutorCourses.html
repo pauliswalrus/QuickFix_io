@@ -5,8 +5,7 @@
     <title>Courses</title>
 
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/addCourses.css') }}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -19,66 +18,104 @@
 
 {% extends "navbar.html" %}
 {% block content %}
-{#                <h4>My Courses</h4>#}
-{#                {% for c in u_courses %}#}
-{#                <div id="tutor_courses">#}
-{#                {{ c.course_name }}#}
-{#                {% endfor %}#}
-                <h2>Courses For {{ this_program.programName }}
-                    <a href="{{ url_for('profile') }}" >
-                    <button class="btn btn-primary warning ">Return To Profile</button>
-                </a>
+    {#                <h4>My Courses</h4>#}
+    {#                {% for c in u_courses %}#}
+    {#                <div id="tutor_courses">#}
+    {#                {{ c.course_name }}#}
+    {#                {% endfor %}#}
 
-                     <a href="{{ url_for('profile_programs') }}" >
+
+
+    <div id="main-content">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <a href="{{ url_for('profile') }}">
+                    <button class="btn btn-primary" value="Return To Profile">
+                        <i class="glyphicon glyphicon-arrow-left"></i> Return To Profile
+                    </button>
+                </a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-8 course_title">
+                <div class="title">Courses For {{ this_program.programName }}</div>
+            </div>
+
+            <div class="col-sm-4 change_btn">
+                <a href="{{ url_for('profile_programs') }}">
                     <button class="btn btn-primary warning ">Change Program</button>
                 </a>
+            </div>
+        </div>
 
-                </h2>
-
-                 <form method="POST" action="">
-                     {{ form.csrf_token }}
-                  {{ form.course_options(class_='form-control', id='tutorcourse') }} <br>
-                     <input type="submit" class="btn btn-primary" course_id="{{ form.course_options.data }}" value="Add Course">
-              </form> <br>
-
-            <div id="myCourses">
+    </div>
 
 
-                    <div class="table-responsive">
-                    <table class="table table-hover table-fixed">
-                        <thead><tr>
-                                <th class="col-sm-2">Course_ID</th>
-                                <th class="col-sm-3">Course Code</th>
-                                <th class="col-sm-6">Course Name</th>
-                        </tr></thead>
 
-                        {% for c in u_courses %}
-                            <tbody>
-                            <tr>
-                                <td>{{ c.course_id }}</td>
-                                <td>{{ c.course_code }}</td>
-                                <td>{{ c.course_name }}</td>
-                                <td><button class="btn btn-danger deleteTutorCourse" course_id="{{ c.tutor_course_id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
-                            </tr>
-                            </tbody>
-                        {% endfor %}
 
-                    </table>
 
-                </div>
+    <h2>Courses For {{ this_program.programName }}
+        <a href="{{ url_for('profile') }}">
+            <button class="btn btn-primary warning ">Return To Profile</button>
+        </a>
 
-                </div>
-{##}
-{#                 <form method="POST" action="">#}
-{#                  <h2>Pick Courses</h2>#}
-{#                     {{ form.csrf_token }}#}
-{#                  {{ form.course_options(class_='form-control') }} <br>#}
-{#                     <input type="submit" class="btn btn-primary" value="Add Course">#}
-{#              </form><br>#}
-{#                <a href="{{ url_for('profile') }}" >#}
-{#                    <button class="btn btn-primary warning ">Return To Profile</button>#}
-{#                </a>#}
-{##}
+        <a href="{{ url_for('profile_programs') }}">
+            <button class="btn btn-primary warning ">Change Program</button>
+        </a>
+
+    </h2>
+
+    <form method="POST" action="">
+        {{ form.csrf_token }}
+        {{ form.course_options(class_='form-control', id='tutorcourse') }} <br>
+        <input type="submit" class="btn btn-primary" course_id="{{ form.course_options.data }}" value="Add Course">
+    </form> <br>
+
+    <div id="myCourses">
+
+
+        <div class="table-responsive">
+            <table class="table table-hover table-fixed">
+                <thead>
+                <tr>
+                    <th class="col-sm-2">Course_ID</th>
+                    <th class="col-sm-3">Course Code</th>
+                    <th class="col-sm-6">Course Name</th>
+                </tr>
+                </thead>
+
+                {% for c in u_courses %}
+                    <tbody>
+                    <tr>
+                        <td>{{ c.course_id }}</td>
+                        <td>{{ c.course_code }}</td>
+                        <td>{{ c.course_name }}</td>
+                        <td>
+                            <button class="btn btn-danger deleteTutorCourse" course_id="{{ c.tutor_course_id }}"><i
+                                    class="glyphicon glyphicon-trash"></i></button>
+                        </td>
+                    </tr>
+                    </tbody>
+                {% endfor %}
+
+            </table>
+
+        </div>
+
+    </div>
+    {##}
+    {#                 <form method="POST" action="">#}
+    {#                  <h2>Pick Courses</h2>#}
+    {#                     {{ form.csrf_token }}#}
+    {#                  {{ form.course_options(class_='form-control') }} <br>#}
+    {#                     <input type="submit" class="btn btn-primary" value="Add Course">#}
+    {#              </form><br>#}
+    {#                <a href="{{ url_for('profile') }}" >#}
+    {#                    <button class="btn btn-primary warning ">Return To Profile</button>#}
+    {#                </a>#}
+    {##}
 
 {% endblock %}
 </body>

@@ -1,0 +1,22 @@
+html, body {
+        height: 100%;
+        margin: 0px;
+}
+
+#main-content {
+    border: 1px solid red;
+    width: 100%;
+    height: 100%;
+}
+
+.course_title {
+    text-align: center;
+}
+
+.change_btn {
+    text-align: left;
+}
+
+.title {
+    font-size: 1.6em;
+}
