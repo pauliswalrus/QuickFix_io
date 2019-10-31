@@ -19,14 +19,19 @@
 <body>
 {% extends "navbar.html" %}
 {% block content %}
-    <div id="rowContainer">
 
-        <!-- Row 1 -->
+    <!-- Row 1 -->
         <div class="row row1">
             <div class="col-sm-12">
-                <a href="{{ url_for('allstudentposts') }}" class="goBack">Back to All Posts</a>
+                <a href="{{ url_for('allstudentposts') }}" class="goBack">
+                    <button class="btn btn-primary"><i class="glyphicon glyphicon-arrow-left"></i> Back to All Posts</button>
+                </a>
             </div>
         </div> <!-- end Row 1 -->
+
+    <div id="rowContainer">
+
+
 
 
         <!-- Row 2 - Title -->
@@ -84,7 +89,7 @@
                         </ul>
                     </div>
 
-                    <div>{{ comment_form.submit_button(class_='submitButton') }}</div>
+                    <div>{{ comment_form.submit_button(class_='submitButton btn btn-warning') }}</div>
 
                     {{ comment_form.csrf_token }}
 

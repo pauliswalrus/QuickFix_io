@@ -26,6 +26,15 @@
                 <div class="sectionText">
                     <h3>Find a tutor</h3>
                     <p>Our tutors are qualified and pre-approved <br>to help you get started in seconds</p>
+
+                <br><br>
+                    <div id="onlineTutors">
+                        <h5 id="test">Current online tutors: </h5>
+                        {% for user in online_users %}
+                            <a href="{{ url_for('pub_profile', username=user.username) }}">{{ user.username }}, </a>
+                        {% endfor %}
+                    </div>
+
                 </div>
 
             </div>

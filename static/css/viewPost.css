@@ -25,6 +25,8 @@
 /*  ROW 1 - button to go back */
 .row1 {
     /*padding: 15px !important;*/
+    /*border: 1px solid red;*/
+    padding-left: 0 !important;
 }
 
 /*  ROW 2 - Post Title */

@@ -14,7 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
 
-        <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
 
     <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
 
@@ -25,89 +25,114 @@
 {% extends "navbar.html" %}
 {% block content %}
 
-    <div id="bg">
+    <div id="main_container">
 
-        {#    <div class="main-content">#}
-
-        <!-- Row 1 -->
-        <div class="row">
-            <div class="col-sm-12">
-                <a href="{{ url_for('add_student_post') }}" class="addPost_link">Add New Post</a>
-            </div>
-        </div> <!-- end Row 1 - add post -->
-
-
-        <!-- Row 2 -->
-        <div class="row title1">
-            <div class="col-sm-12">
-                <span class="title2">Community Forums</span>
-            </div>
-        </div> <!-- end Row 2 - title -->
+{#        <!-- Row 2 -->#}
+{#        <div class="row add_room">#}
+{#            <div class="col-sm-12">#}
+{##}
+{#                <a href="{{ url_for('add_student_post') }}">#}
+{#                    <button class="btn btn-warning">#}
+{#                        <i class="glyphicon glyphicon-plus-sign"></i>#}
+{#                    </button>#}
+{#                </a>#}
+{#            </div>#}
+{#        </div> <!-- end row 2 -->#}
 
 
-        <!-- Row 3 -->
-        <div class="row">
-            <div class="col-sm-12">
-        <div class="col-sm-12">
-            {% with messages = get_flashed_messages() %}
-               {% if messages %}
-                 <ul class=flashes>
-                 {% for message in messages %}
-                    <li>{{ message }}</li>
-                  {% endfor %}
-                  </ul>
-               {% endif %}
-            {% endwith %}
-            <form method="POST" action="">
-                     {{ search_form.csrf_token }}
-                  {{ search_form.select(class_='form-control') }} <br>
-                {{ search_form.search(class_='form-control', placeholder='Search Forums') }} <br>
-                     <input type="submit" class="btn btn-primary" value="Search">
-              </form>
-                <a href="{{ url_for('allstudentposts') }}" >
-                    <button class="btn btn-primary warning ">All Posts</button>
-                </a><br>
+        <div id="top_container">
 
-            </div>
-
-        </div> <!-- end Row 3 - sort search -->
+{#        	<!-- Row 1 -->#}
+{#    		<div class="row">#}
+{#        		<div class="col-sm-12">#}
+{#            		<a href="{{ url_for('add_student_post') }}" class="addPost_link">Add New Post</a>#}
+{#        		</div>#}
+{#    		</div> <!-- end Row 1 - add post -->#}
 
 
-        <br><br>
 
 
-        <div class="tableFixHead">
-            <table>
-                <thead>
-                <tr>
-                    <th>Code</th>
-                    <th>Course</th>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                </tr>
-                </thead>
 
-                {% for post in student_posts %}
-                    <tbody>
-                    <tr>
-                        <td>{{ post.post_course_code }}</td>
-                        <td>{{ post.post_course }}</td>
-                        <td><a href="{{ url_for('studentpost', studentpost_id=post.id) }}">{{ post.title }}</a></td>
-                        <td><a href="{{ url_for('pub_profile', username=post.author) }}">{{ post.author }}</a></td>
-                        <td>{{ post.date_posted.strftime('%b %d, %Y') }}</td>
-                        <td>{{ post.date_posted.strftime('%I' ':' '%M %p') }}</td>
-                    </tr>
-                    </tbody>
-                {% endfor %}
+            <div class="row">
+                <div class="col-sm-12">
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            <ul class=flashes>
+                                {% for message in messages %}
+                                    <li>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    {% endwith %}
 
+                    <form method="POST" action="">
+                        {{ search_form.csrf_token }}
+                        {{ search_form.select(class_='form-control') }} <br>
+                        {{ search_form.search(class_='form-control', placeholder='Search Forums') }} <br>
 
-            </table>
+                        <input type="submit" class="btn btn-primary" value="Search">
+
+                        <a href="{{ url_for('allstudentposts') }}">
+                            <input type="" class="btn btn-warning" value="Reset Values">
+                        </a>
+
+                        <a href="{{ url_for('add_student_post') }}">
+                            <input type="" class="btn btn-primary create_new" value="Create New Post">
+                        </a>
+
+                    </form>
+
+                    <br><br>
+
+                </div>
+            </div> <!-- end row 1 -->
+
+            <!-- Row 2 -->
+            <div class="row title1">
+                <div class="col-sm-12">
+                    <span class="title2">Community Forums</span>
+                </div>
+            </div> <!-- end row 2 -->
+
         </div>
 
 
-    </div> <!-- end bg -->
+        <div id="bottom_container">
+
+            <div class="tableFixHead">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Course</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                    </tr>
+                    </thead>
+
+                    {% for post in student_posts %}
+                        <tbody>
+                        <tr>
+                            <td>{{ post.post_course_code }}</td>
+                            <td>{{ post.post_course }}</td>
+                            <td><a href="{{ url_for('studentpost', studentpost_id=post.id) }}">{{ post.title }}</a></td>
+                            <td><a href="{{ url_for('pub_profile', username=post.author) }}">{{ post.author }}</a></td>
+                            <td>{{ post.date_posted.strftime('%b %d, %Y') }}</td>
+                            <td>{{ post.date_posted.strftime('%I' ':' '%M %p') }}</td>
+                        </tr>
+                        </tbody>
+                    {% endfor %}
+
+
+                </table>
+
+        </div>
+
+    </div>
+
+
 
 {% endblock %}
 </body>

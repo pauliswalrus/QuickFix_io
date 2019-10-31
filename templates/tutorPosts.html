@@ -17,74 +17,206 @@
 <body>
 {% extends "navbar.html" %}
 {% block content %}
-{#{% for room in room_posts %}#}
+
+
+    <div id="main_container">
+
+{#        <!-- Row 2 -->#}
+{#        <div class="row add_room">#}
+{#            <div class="col-sm-12">#}
 {##}
-{#            {{ room.room_code }}#}
-{##}
-{#{% endfor %}#}
-<div id="main-content">
+{#                <a href="{{ url_for('add_room') }}">#}
+{#                    <button class="btn btn-warning">#}
+{#                        <i class="glyphicon glyphicon-plus-sign"></i>#}
+{#                    </button>#}
+{#                </a>#}
+{#            </div>#}
+{#        </div> <!-- end row 2 -->#}
 
 
-    <div class="row">
-        <div class="col-sm-12">
-            {% with messages = get_flashed_messages() %}
-               {% if messages %}
-                 <ul class=flashes>
-                 {% for message in messages %}
-                    <li>{{ message }}</li>
-                  {% endfor %}
-                  </ul>
-               {% endif %}
-            {% endwith %}
-            <form method="POST" action="">
-                     {{ search_form.csrf_token }}
-                  {{ search_form.select(class_='form-control') }} <br>
-                {{ search_form.search(class_='form-control', placeholder='Search Rooms') }} <br>
-                     <input type="submit" class="btn btn-primary" value="Search">
-              </form>                 <a href="{{ url_for('allrooms') }}" >
-                    <button class="btn btn-primary warning ">All Rooms</button>
-                </a><br><br>
+        <div id="top_container">
+
+<br>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            <ul class=flashes>
+                                {% for message in messages %}
+                                    <li>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    {% endwith %}
+
+                    <form method="POST" action="">
+                        {{ search_form.csrf_token }}
+                        {{ search_form.select(class_='form-control filter_type') }}<br>
+                        {{ search_form.search(class_='form-control filter_string', placeholder='Search Rooms') }} <br>
+                        <input type="submit" class="btn btn-primary" value="Search">
+                        <a href="{{ url_for('allrooms') }}">
+                            <input type="" class="btn btn-warning" value="Reset Values">
+                        </a>
+                        <a href="{{ url_for('add_room') }}">
+                            <input type="" class="btn btn-primary create_new" value="Create New Room">
+                        </a>
+                    </form>
+
+                    <br><br>
+
+                </div>
+            </div> <!-- end row 1 -->
+
+            <!-- Row 2 -->
+            <div class="row title1">
+                <div class="col-sm-12">
+                    <span class="title2">Open Rooms</span>
+                </div>
+            </div> <!-- end row 2 -->
+
         </div>
-    </div>
-
-    <!-- Row 1 -->
-    <div class="row">
-        <div class="col-sm-12">
-            <h3>Available Tutors:</h3>
-        </div>
-    </div>
 
 
-    <!-- for every tutor room, create 3 new rows -->
-    {% for room in room_posts %}
+        <div id="bottom_container">
+            <!-- for every tutor room, create 3 new rows -->
+            {% for room in room_posts %}
 
-        <div class="row row_main">
+                <div class="row_a_container">
+                <div class="row row_a">
 
-            <div class="row row_a">
+                    <div class="col-sm-2">
+                        <div id="userPhoto">
+                            <img src="{{ url_for('uploaded_file', filename=room.user_photo) }}" height="100px" width="100px" class="profilePic"/>
+                        </div>
 
-                <div class="col-sm-2">
+                    </div><!-- end row_a col 1 -->
 
-                    <div id="userPhoto">
-                        <img src="{{ url_for('uploaded_file', filename=room.user_photo) }}" height="100px" width="100px" class="profilePic"/>
+                    <div class="col-sm-8">
+                        <span class="showRoomTitle">
+                            <a href="{{ url_for('room', room_id=room.id) }}" class="showRoomTitle">{{ room.room_title }}</a>
+                        </span><br>
+                        <span class="showCourse">Course: {{ room.room_course }}</span><br>
+                        <span>Course Code: {{ room.room_code }}</span><br>
+                        <span class="showAuthor"> posted by
+                            <a href="{{ url_for('pub_profile', username=room.author) }}">{{ room.author }}</a>
+                        </span>
+                        <span class="showTime">at {{ room.date_posted.strftime('%I' ':' '%M %p') }}</span>
                     </div>
 
-                </div><!-- end row_a col 1 -->
+                    <div class="col-sm-2 postDate">
+                        <span class="showDate">{{ room.date_posted.strftime('%b %d, %Y') }}</span>
+                    </div>
 
-                <div class="col-sm-8">
-                    <span class="showRoomTitle"><a href="{{ url_for('room', room_id=room.id) }}" class="showRoomTitle">{{ room.title }}</a></span><br>
-
-                    <span class="showCourse">Course: {{ room.room_course }}</span><br>
-
-                    <span>Course Code: {{ room.room_code }}</span><br>
-
-                    <span class="showAuthor"> posted by <a href="{{ url_for('pub_profile', username=room.author) }}">{{ room.author }}</a></span>
-                    <span class="showTime">at {{ room.date_posted.strftime('%I' ':' '%M %p') }}</span>
+                </div> <!-- end row a -->
                 </div>
+            {% endfor %}
 
-                <div class="col-sm-2 postDate">
-                    <span class="showDate">{{ room.date_posted.strftime('%b %d, %Y') }}</span>
-                </div>
-            </div> <!-- end row a -->
+        </div>
+
+    </div>
+
+{% endblock %}
+</body>
+</html>
+
+
+
+
+{#    <div id="main-content">#}
+{##}
+{##}
+{#        <div class="row">#}
+{##}
+{#            <div class="col-sm-12">#}
+{##}
+{#                {% with messages = get_flashed_messages() %}#}
+{#                    {% if messages %}#}
+{#                        <ul class=flashes>#}
+{#                            {% for message in messages %}#}
+{#                                <li>{{ message }}</li>#}
+{#                            {% endfor %}#}
+{#                        </ul>#}
+{#                    {% endif %}#}
+{#                {% endwith %}#}
+{##}
+{#                <form method="POST" action="">#}
+{#                    {{ search_form.csrf_token }}#}
+{#                    {{ search_form.select(class_='form-control') }} <br>#}
+{#                    {{ search_form.search(class_='form-control', placeholder='Search Rooms') }} <br>#}
+{#                    <input type="submit" class="btn btn-primary" value="Search">#}
+{#                </form>#}
+{##}
+{#                <a href="{{ url_for('allrooms') }}">#}
+{#                    <button class="btn btn-primary warning ">All Rooms</button>#}
+{#                </a>#}
+{##}
+{#                <br><br>#}
+{##}
+{#            </div>#}
+{#        </div> <!-- end row 1 -->#}
+{##}
+{##}
+{#        <!-- Row 2 -->#}
+{#        <div class="row">#}
+{#            <div class="col-sm-12">#}
+{#                <h3>Available Tutors:</h3>#}
+{#            </div>#}
+{#        </div> <!-- end row 2 -->#}
+{##}
+{##}
+{#        <div class="row row_postContent">#}
+{##}
+{##}
+{#            <!-- for every tutor room, create 3 new rows -->#}
+{#            {% for room in room_posts %}#}
+{##}
+{#                <div class="row row_main">#}
+{##}
+{#                    <div class="row row_a">#}
+{##}
+{#                        <div class="col-sm-2">#}
+{##}
+{#                            <div id="userPhoto">#}
+{#                                <img src="{{ url_for('uploaded_file', filename=room.user_photo) }}" height="100px"#}
+{#                                     width="100px" class="profilePic"/>#}
+{#                            </div>#}
+{##}
+{#                        </div><!-- end row_a col 1 -->#}
+{##}
+{#                        <div class="col-sm-8">#}
+{#                            <span class="showRoomTitle">#}
+{#                                <a href="{{ url_for('room', room_id=room.id) }}"#}
+{#                                   class="showRoomTitle">{{ room.title }}</a>#}
+{#                            </span><br>#}
+{##}
+{#                            <span class="showCourse">Course: {{ room.room_course }}</span><br>#}
+{##}
+{#                            <span>Course Code: {{ room.room_code }}</span><br>#}
+{##}
+{#                            <span class="showAuthor"> posted by#}
+{#                                <a href="{{ url_for('pub_profile', username=room.author) }}">{{ room.author }}</a>#}
+{#                            </span>#}
+{#                            <span class="showTime">at {{ room.date_posted.strftime('%I' ':' '%M %p') }}</span>#}
+{#                        </div>#}
+{##}
+{#                        <div class="col-sm-2 postDate">#}
+{#                            <span class="showDate">{{ room.date_posted.strftime('%b %d, %Y') }}</span>#}
+{#                        </div>#}
+{#                    </div> <!-- end row a -->#}
+{##}
+{##}
+{#                </div><!-- end main row -->#}
+{##}
+{##}
+{#            {% endfor %}#}
+{##}
+{##}
+{#        </div>#}
+{##}
+{##}
+{#    </div> <!-- end main content -->#}
+
 
 
 
@@ -100,32 +232,11 @@
 {#            </div> <!-- end row -->#}
 
 
-
-
-
-
-
-
-
-
 {#            <div class="row row_c">#}
 {#                <div class="col-sm-12">#}
 {#                    {{ room.room_title }}#}
 {#                </div><!-- end col -->#}
 {#            </div> <!-- end row -->#}
-
-        </div><!-- end main row -->
-
-
-    {% endfor %}
-
-
-
-</div>
-{% endblock %}
-</body>
-
-</html>
 
 
 {#
@@ -160,48 +271,40 @@
 #}
 
 
-
-
-
-
-
-
-
-
-    {##}
-    {##}
-    {##}
-    {#                        <a href="{{ url_for('room', room_id=room.id) }}">#}
-    {#                    <div id="postTypeTitle">{{ room.title }} - {{ room.room_title }}</div>#}
-    {#                    <div id="postAuthorTime">by {{ room.author }} on {{ room.date_posted.strftime('%b %d, %Y') }}at {{ room.date_posted.strftime('%I' ':' '%M %p') }}</div>#}
-    {#                </a>#}
-    {##}
-    {##}
-    {##}
-    {##}
-    {##}
-    {##}
-    {##}
-    {##}
-    {#        <div class="row">#}
-    {#            <div class="col-sm-12">#}
-    {#                <a href="{{ url_for('room', room_id=room.id) }}">#}
-    {#                    <div id="postTypeTitle">{{ room.title }} - {{ room.room_title }}</div>#}
-    {#                    <div id="postAuthorTime">by {{ room.author }} on {{ room.date_posted.strftime('%b %d, %Y') }}at {{ room.date_posted.strftime('%I' ':' '%M %p') }}</div>#}
-    {#                </a>#}
-    {#            </div> <!-- end col -->#}
-    {#        </div> <!-- end row -->#}
-    {##}
-    {##}
-    {##}
-    {#        <div class="row">#}
-    {#            <div class="col-sm-12">#}
-    {#                <a href="{{ url_for('room', room_id=room.id) }}">#}
-    {#                    <div id="postTypeTitle">{{ room.title }} - {{ room.room_title }}</div>#}
-    {#                    <div id="postAuthorTime">by {{ room.author }} on {{ room.date_posted.strftime('%b %d, %Y') }}at {{ room.date_posted.strftime('%I' ':' '%M %p') }}</div>#}
-    {#                </a>#}
-    {#            </div> <!-- end col -->#}
-    {#        </div> <!-- end row -->#}
+{##}
+{##}
+{##}
+{#                        <a href="{{ url_for('room', room_id=room.id) }}">#}
+{#                    <div id="postTypeTitle">{{ room.title }} - {{ room.room_title }}</div>#}
+{#                    <div id="postAuthorTime">by {{ room.author }} on {{ room.date_posted.strftime('%b %d, %Y') }}at {{ room.date_posted.strftime('%I' ':' '%M %p') }}</div>#}
+{#                </a>#}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{##}
+{#        <div class="row">#}
+{#            <div class="col-sm-12">#}
+{#                <a href="{{ url_for('room', room_id=room.id) }}">#}
+{#                    <div id="postTypeTitle">{{ room.title }} - {{ room.room_title }}</div>#}
+{#                    <div id="postAuthorTime">by {{ room.author }} on {{ room.date_posted.strftime('%b %d, %Y') }}at {{ room.date_posted.strftime('%I' ':' '%M %p') }}</div>#}
+{#                </a>#}
+{#            </div> <!-- end col -->#}
+{#        </div> <!-- end row -->#}
+{##}
+{##}
+{##}
+{#        <div class="row">#}
+{#            <div class="col-sm-12">#}
+{#                <a href="{{ url_for('room', room_id=room.id) }}">#}
+{#                    <div id="postTypeTitle">{{ room.title }} - {{ room.room_title }}</div>#}
+{#                    <div id="postAuthorTime">by {{ room.author }} on {{ room.date_posted.strftime('%b %d, %Y') }}at {{ room.date_posted.strftime('%I' ':' '%M %p') }}</div>#}
+{#                </a>#}
+{#            </div> <!-- end col -->#}
+{#        </div> <!-- end row -->#}
 
 
 

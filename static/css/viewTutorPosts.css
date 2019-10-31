@@ -1,17 +1,95 @@
+#main_container {
+    width: 100%;
+    height: 100%;
+    /*background-color: red;*/
+}
+
+.glyphicon-plus-sign {
+    font-size: 20px;
+}
+
+.create_new {
+    float: right;
+}
+
+.add_room {
+    padding-left: 20px;
+}
+
+.search_heading {
+    color: #2E2D4D;
+    font-size: 1.6em;
+}
+
+.title1 {
+    font-size: 1.6em;
+    border-bottom: 2px solid #2E2D4D;
+    text-align: center;
+}
+
+.title2 {
+    color: #2E2D4D;
+    font-size: 1.6em;
+}
+
+#top_container {
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+    /*height: 30px;*/
+    /*background-color: blue;*/
+}
+
+#bottom_container {
+    width: 100%;
+    /*margin-left: 15%;*/
+    /*margin-right: 15%;*/
+    height: 600px;
+    /*background-color: pink;*/
+    overflow-y: scroll;
+    /*border: 2px solid blue;*/
+
+}
+
+
+.row_a_container {
+    /*border: 2px solid pink;*/
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    /*margin-bottom: 20px;*/
+    width: 70% !important;
+    margin: 10px 15% 20px 15%;
+    /*margin-left: 10%;*/
+    /*margin-right: 10%;*/
+}
+
+
+
+
+
+
 #main-content {
-    /*border: 1px solid green;*/
+    border: 1px solid green;
+    /*width: 100%;*/
     width: 70%;
     margin-left: 15%;
     margin-right: 15%;
 }
 
 .row_main {
+
     width: 100% !important;
+    /*margin: 10px 5% 20px 5%;*/
     padding-left: 10px;
     padding-right: 10px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     margin-bottom: 20px;
+    border: 1px solid red;
     /*background-color: #aaaaaa;*/
+}
+
+.row_postContent {
+    border: 1px solid blue;
+
 }
 
 .row_a {
@@ -50,6 +128,19 @@
     border-radius: 100px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+
+
+.postContainer {
+    /*border: 2px solid blue;*/
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    height: 500px;
+    overflow-y: scroll;
+}
+
+
+
 
 /*.row {*/
 /*    !*border: 1px solid red;*!*/
