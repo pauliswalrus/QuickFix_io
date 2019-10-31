@@ -30,7 +30,7 @@
 
 {#        <h4>Tutor Courses</h4>#}
 {#        {% for c in t_courses %}#}
-{#        <div id="tutorCourses">#}
+{#        <div id="tutor_courses">#}
 {#        {{ c.course_name }}#}
 {#        {% endfor %}#}
                                 <form method="post" enctype="multipart/form-data">
@@ -47,7 +47,7 @@
                     <button class="btn btn-warning warning">Cancel Application</button>
                 </a>
 
-                <a href="{{ url_for('applicationBegin') }}" >
+                <a href="{{ url_for('application_begin') }}" >
                     <button class="btn btn-primary warning ">Program Selection</button>
                 </a>
                     <div id="myCourses">

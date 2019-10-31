@@ -21,14 +21,14 @@
 {% block content %}
 {#                <h4>My Courses</h4>#}
 {#                {% for c in u_courses %}#}
-{#                <div id="tutorCourses">#}
+{#                <div id="tutor_courses">#}
 {#                {{ c.course_name }}#}
 {#                {% endfor %}#}
                 <h2>Courses For {{ this_program.programName }}</h2>
                 <h2><a href="{{ url_for('home') }}" >
                     <button class="btn btn-primary warning ">Cancel Application</button>
                 </a>
-                    <a href="{{ url_for('applicationBegin') }}" >
+                    <a href="{{ url_for('application_begin') }}" >
                     <button class="btn btn-primary warning ">Change Program</button>
                 </a>
 
@@ -44,7 +44,7 @@
                   {{ form.course_options(class_='form-control', id='tutorcourse') }} <br>
                      <input type="submit" class="btn btn-primary" course_id="{{ form.course_options.data }}" value="Add Course">
               </form> <br>
-{#                <a href="{{ url_for('applicationBegin') }}" >#}
+{#                <a href="{{ url_for('application_begin') }}" >#}
 {#                    <button class="btn btn-primary warning ">Return Change Program</button>#}
 {#                </a>#}
             <div id="myCourses">
