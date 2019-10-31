@@ -115,10 +115,12 @@
                 <div class="roomInfoHeading">Room Files</div>
                 <br>
                 <button class="btn btn-primary refreshRoomUploads" room_name="{{ roomName }}">Update File</button>
+                <br><br>
                 <div id="file_list">
                     {% for file in room_files %}
                         <a href="{{ url_for('room_download', dl_name=file.file_name) }}">
-                            <h5>{{ file.file_name }} </h5></a>
+                            <b>{{ file.file_name }}</b> <br>
+                            Uploaded By : {{ file.username }}</a> <br><br>
                     {% endfor %}
 
                 </div>
