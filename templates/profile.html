@@ -14,6 +14,46 @@
 
     <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+
+
+        <script>
+
+    $(document).ready(function () {
+
+    {#$('#studentPublic').hide();#}
+    $('#tutorCourses').hide();
+    $('#userCourses').hide();
+
+    $('#tutorStatusToggle').hide();
+    $('#roomsContent').hide();
+    $('#roomsHeading').hide();
+
+
+
+        var role = `{{ role_name }}`;
+
+        if (role === 'Tutor' || role === 'Admin' ) {
+
+                $('#tutorCourses').show();
+                $('#userCourses').hide();
+                $('#tutorStatusToggle').show();
+                $('#roomsContent').show();
+                $('#roomsHeading').show();
+
+            {##}
+            {#           document.getElementById('tutorStatusToggle').style.display = "none";#}
+            {#document.getElementById('roomsHeading').style.display = "none";#}
+            {#document.getElementById('roomsContent').style.display = "none";#}
+            {##}
+            {#document.getElementById('tutorStatusToggle').style.display = "none";#}
+
+        }
+
+
+        });
+
+
+</script>
 </head>
 
 <script type="text/javascript">
@@ -47,7 +87,7 @@
 
         } else if (role === 'Tutor') {
 
-                document.getElementById('tutor_courses').style.display = "block";
+                document.getElementById('tutorCourses').style.display = "block";
                 {##}
                 {#document.getElementById('tutorStatusToggle').style.display = "none";#}
                 {#document.getElementById('tutorStatusHeader').style.display = "none";#}
@@ -123,7 +163,7 @@
     <div class="row row3">
         <div class="col-sm-12">
             <span class="userInfoTitles">Email: </span>
-            <span class="userInfoData"><input type="text" class="emailChange" id="email{{ user_object.id }}" value="{{ user_object.email }}"></span>
+            <span class="userInfoData"><input type="email" class="emailChange" id="email{{ user_object.id }}" value="{{ user_object.email }}"></span>
             <button class="btn btn-info editUserProfile" user_id="{{ user_object.id }}">Update</button>
             <br><br>
             <a href="{{ url_for('pub_profile', username=user_object.username) }}">View My Public Profile</a>
