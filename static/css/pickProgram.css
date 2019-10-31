@@ -1,0 +1,18 @@
+body {
+    height: 100%;
+}
+
+#main-content {
+    width: 70%;
+    margin: 20px 15% 0 15%;
+    /*border: 1px solid red;*/
+}
+
+.title {
+    color: #2E2D4D;
+    border-bottom: 2px solid #2E2D4D;
+}
+
+.btn {
+    float: right;
+}

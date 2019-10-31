@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pickProgram.css') }}">
+
     <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
 </head>
@@ -15,17 +17,23 @@
 <body>
 
 
-
 {% extends "navbar.html" %}
 {% block content %}
-                 <form method="POST" action="">
-                  <h2>Pick Program</h2>
-                     {{ form1.csrf_token }}
-                     {{ form1.program_options(class_='form-control', id='program_name') }} <br>
-                  <input type="submit" class="btn btn-primary setProgram" value="Program"><br>
-                </form>
 
+    <div id="main-content">
 
+    <br><br>
+
+    <form method="POST" action="">
+        <h2 class="title">Pick Program</h2>
+        {{ form1.csrf_token }}
+        {{ form1.program_options(class_='form-control', id='program_name') }} <br>
+        <button type="submit" class="btn btn-primary setProgram" value="Next">
+            Next <i class="glyphicon glyphicon-arrow-right"></i>
+        </button><br>
+    </form>
+
+    </div>
 
 {% endblock %}
 </body>
