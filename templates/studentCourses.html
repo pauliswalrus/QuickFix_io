@@ -18,15 +18,14 @@
 
 {% extends "navbar.html" %}
 {% block content %}
-    {#                <h4>My Courses</h4>#}
-    {#                {% for c in u_courses %}#}
-    {#                <div id="tutor_courses">#}
-    {#                {{ c.course_name }}#}
-    {#                {% endfor %}#}
+
 
 
     <div id="main-content">
 
+        <br>
+
+        <!-- row 1 - Go Back -->
         <div class="row">
             <div class="col-sm-12">
                 <a href="{{ url_for('profile') }}">
@@ -35,73 +34,156 @@
                     </button>
                 </a>
             </div>
-        </div>
+        </div> <!-- end row 1 - Go Back -->
 
-        <div class="row">
-            <div class="col-sm-8 course_title">
-                Courses For {{ this_program.programName }}
+
+
+
+
+        <!-- row 2 - Program Choice / Change Program button -->
+        <div class="row row2">
+            <div class="col-sm-12 course_title">
+                <div class="programName">Courses For {{ this_program.programName }}
+                    <button class="btn btn-warning ">Change</button>
+                    <BR><BR>
+                </div>
+
             </div>
+        </div><!-- end row 2 - Program Choice / Change Program button -->
 
-            <div class="col-sm-4 change_btn">
-                <a href="{{ url_for('profile_programs') }}">
-                    <button class="btn btn-primary">Change Program</button>
-                </a>
+
+
+
+        <!-- row 3 - Pick Course, Add Course, Add Course Button -->
+        <div class="row row3">
+            <div class="col-sm-12">
+                <form method="POST" action="">
+                    <h2 class="title">Add Courses</h2>
+                    {{ form.csrf_token }}
+                    {{ form.course_options(class_='form-control') }} <br>
+                    <input type="submit" class="btn btn-primary btn_add" value="Add Course">
+                </form> <br>
             </div>
-        </div>
-
-    </div>
+        </div> <!-- end row 3 - Pick Course, Add Course, Add Course Button -->
 
 
+        <br><br>
 
 
-    <h2>Courses For {{ this_program.programName }}
-        <a href="{{ url_for('profile') }}">
-        <button class="btn btn-primary warning ">Return To Profile</button>
-    </a>
-        <a href="{{ url_for('profile_programs') }}">
-            <button class="btn btn-primary warning ">Change Program</button>
-        </a>
-    </h2>
+        <div class="row row4">
+            <div class="col-sm-12">
 
-    <form method="POST" action="">
-        <h2 class="title">Pick Program</h2>
-        {{ form.csrf_token }}
-        {{ form.course_options(class_='form-control') }} <br>
-        <input type="submit" class="btn btn-primary" value="Add Course">
-    </form> <br>
+                <div id="myCourses">
 
-    <div id="myCourses">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-fixed">
+                            <thead>
+                            <tr>
+                                <th class="col-sm-2">Course_ID</th>
+                                <th class="col-sm-3">Course Code</th>
+                                <th class="col-sm-6">Course Name</th>
+                            </tr>
+                            </thead>
+
+                            {% for c in u_courses %}
+                                <tbody>
+                                <tr>
+                                    <td>{{ c.course_id }}</td>
+                                    <td>{{ c.course_code }}</td>
+                                    <td>{{ c.course_name }}</td>
+                                    <td>
+                                        <button class="btn btn-danger deleteUserCourse" course_id="{{ c.user_course_id }}">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            {% endfor %}
+
+                        </table>
+
+                    </div> <!-- end table-responsive -->
+
+                </div> <!-- end div id myCourses -->
+            </div>
+        </div> <!-- end row3  - scrollable -->
 
 
-        <div class="table-responsive">
-            <table class="table table-hover table-fixed">
-                <thead>
-                <tr>
-                    <th class="col-sm-2">Course_ID</th>
-                    <th class="col-sm-3">Course Code</th>
-                    <th class="col-sm-6">Course Name</th>
-                </tr>
-                </thead>
+    </div> <!-- end main content -->
 
-                {% for c in u_courses %}
-                    <tbody>
-                    <tr>
-                        <td>{{ c.course_id }}</td>
-                        <td>{{ c.course_code }}</td>
-                        <td>{{ c.course_name }}</td>
-                        <td>
-                            <button class="btn btn-danger deleteUserCourse" course_id="{{ c.user_course_id }}"><i
-                                    class="glyphicon glyphicon-trash"></i></button>
-                        </td>
-                    </tr>
-                    </tbody>
-                {% endfor %}
 
-            </table>
 
-        </div>
 
-    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{#    <h2>Courses For {{ this_program.programName }}#}
+{#        <a href="{{ url_for('profile') }}">#}
+{#        <button class="btn btn-primary warning ">Return To Profile</button>#}
+{#    </a>#}
+{#        <a href="{{ url_for('profile_programs') }}">#}
+{#            <button class="btn btn-primary warning ">Change Program</button>#}
+{#        </a>#}
+{#    </h2>#}
+{##}
+{#    <form method="POST" action="">#}
+{#        <h2 class="title">Pick Program</h2>#}
+{#        {{ form.csrf_token }}#}
+{#        {{ form.course_options(class_='form-control') }} <br>#}
+{#        <input type="submit" class="btn btn-primary" value="Add Course">#}
+{#    </form> <br>#}
+{##}
+{#    <div id="myCourses">#}
+{##}
+{##}
+{#        <div class="table-responsive">#}
+{#            <table class="table table-hover table-fixed">#}
+{#                <thead>#}
+{#                <tr>#}
+{#                    <th class="col-sm-2">Course_ID</th>#}
+{#                    <th class="col-sm-3">Course Code</th>#}
+{#                    <th class="col-sm-6">Course Name</th>#}
+{#                </tr>#}
+{#                </thead>#}
+{##}
+{#                {% for c in u_courses %}#}
+{#                    <tbody>#}
+{#                    <tr>#}
+{#                        <td>{{ c.course_id }}</td>#}
+{#                        <td>{{ c.course_code }}</td>#}
+{#                        <td>{{ c.course_name }}</td>#}
+{#                        <td>#}
+{#                            <button class="btn btn-danger deleteUserCourse" course_id="{{ c.user_course_id }}"><i#}
+{#                                    class="glyphicon glyphicon-trash"></i></button>#}
+{#                        </td>#}
+{#                    </tr>#}
+{#                    </tbody>#}
+{#                {% endfor %}#}
+{##}
+{#            </table>#}
+{##}
+{#        </div>#}
+{##}
+{#    </div>#}
+
+
+
+
     {##}
     {#                 <form method="POST" action="">#}
     {#                  <h2>Pick Courses</h2>#}
