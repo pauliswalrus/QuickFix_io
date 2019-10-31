@@ -12,6 +12,31 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+
+        <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+
+{#    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>#}
+
+    <script>
+
+    $(document).ready(function () {
+
+    $('#createRoom').hide()
+
+        var role = `{{ role_name }}`;
+
+        if (role === 'Tutor' || role === 'Admin' ) {
+
+                $('#createRoom').show()
+
+        }
+
+
+        });
+
+
+</script>
+
 </head>
 
 <body>
@@ -57,9 +82,8 @@
                         <input type="submit" class="btn btn-primary" value="Search">
                         <a href="{{ url_for('allrooms') }}">
                             <input type="" class="btn btn-warning" value="Reset Values">
-                        </a>
-                        <a href="{{ url_for('add_room') }}">
-                            <input type="" class="btn btn-primary create_new" value="Create New Room">
+                        </a><a href="{{ url_for('add_room') }}">
+                            <input type="" id="createRoom" class="btn btn-primary create_new" value="Create New Room">
                         </a>
                     </form>
 
@@ -116,7 +140,62 @@
 
     </div>
 
+<
+
+{#<script>#}
+{##}
+    {#let userRole = "{{ role_name }}";#}
+{#    let userRole = "{{ role_name }}";#}
+{#    let tutorStatus = "{{ t_status }}";#}
+{##}
+{#    document.onload = function (event) {#}
+{##}
+{##}
+{#            document.getElementById("createRoom").style.display = "none";#}
+{##}
+{##}
+{#        if (userRole === 'Student') {#}
+{##}
+{#            document.getElementById("createRoom").style.display = "none";#}
+{##}
+{#        }#}
+{##}
+{#        else if (userRole === 'Tutor') {#}
+{##}
+{#            document.getElementById("createRoom").style.display = "block";#}
+{#        }#}
+{##}
+{#        else if (userRole === 'Admin') {#}
+{##}
+{#            document.getElementById("createRoom").style.display = "block";#}
+{##}
+{##}
+{#        }#}
+{##}
+{##}
+{##}
+{##}
+{#    }#}
+{##}
+{#</script>#}
+
+
 {% endblock %}
+
+
+{#<script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"> </script>#}
+{##}
+{#<script>#}
+{##}
+{#    $(document).ready(function () {#}
+{##}
+{#    $('#createRoom').hide()#}
+{##}
+{##}
+{#        });#}
+{##}
+{##}
+{#</script>#}
 </body>
 </html>
 

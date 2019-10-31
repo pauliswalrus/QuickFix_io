@@ -2,6 +2,8 @@
 
 $(document).ready(function () {
 
+    $('#createRoom').hide()
+
     //update room
     $('.updateButton').on('click', function () {
 
