@@ -16,9 +16,9 @@ from sqlalq_datamodels import *
 ######################################################
 ##
 # AUTHOR: AUSTIN PAUL
-# DATE: OCT 32
+# DATE: NOV 1
 # QUICKFIX_IO DIRTYBITS
-# SPRINT 6 OCT 25 BUILD DEPLOYED AT
+# PRESENTATION 1 BUILD DEPLOYED AT
 # quickfix-io.herokuapp.com
 ##
 ######################################################
