@@ -27,9 +27,9 @@
         <!-- row 1 - Go Back -->
         <div class="row">
             <div class="col-sm-12">
-                <a href="{{ url_for('profile') }}">
-                    <button class="btn btn-primary" value="Return To Profile">
-                        <i class="glyphicon glyphicon-arrow-left"></i> Return To Profile
+                <a href="{{ url_for('profile_programs') }}">
+                    <button class="btn btn-warning" value="Return To Profile">
+                        <i class="glyphicon glyphicon-arrow-left"></i> Back
                     </button>
                 </a>
             </div>
@@ -43,8 +43,7 @@
         <div class="row row2">
             <div class="col-sm-12 course_title">
                 <div class="programName">Courses For {{ this_program.programName }}
-                    <button class="btn btn-warning ">Change</button>
-                    <BR><BR>
+                    <a href="{{ url_for('profile_programs') }}" class="small_link">Change Program</a>
                 </div>
 
             </div>
@@ -105,6 +104,19 @@
                 </div> <!-- end div id myCourses -->
             </div>
         </div> <!-- end row4  - scrollable -->
+<br><br>
+<!-- row 1 - Go Back -->
+        <div class="row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+                <a href="{{ url_for('profile') }}">
+                    <button class="btn btn-primary btn-block" value="Return To Profile">
+                        <i class="glyphicon glyphicon glyphicon-ok"></i>
+                    </button>
+                </a>
+            </div>
+            <div class="col-sm-4"></div>
+        </div> <!-- end row 1 - Go Back -->
 
 
     </div> <!-- end main content -->

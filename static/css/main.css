@@ -1,5 +1,7 @@
 /* Defines the style for navbar.html */
-
+body, html {
+  /*height: 100%;*/
+}
 
 
 /* Styles the QuickFix written logo */

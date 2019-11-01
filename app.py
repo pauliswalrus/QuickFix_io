@@ -223,7 +223,7 @@ def new_student():
     return render_template("register_now.html", form=reg_form)
 
 
-# tutor application/registration page
+# tutor application/registration page - submit
 @app.route('/application_submit', methods=['GET', 'POST'])
 def new_tutor():
     this_user = User.query.filter_by(username=current_user.username).first()

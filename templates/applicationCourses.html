@@ -23,29 +23,45 @@
 
     <div id="main-content">
 
-        <br>
+    <br>
 
-
-        <!-- row 1 - Go Back -->
         <div class="row">
             <div class="col-sm-12">
-                <a href="{{ url_for('home') }}">
-                    <button class="btn btn-primary" value="Return To Profile">
-                        <i class="glyphicon glyphicon-arrow-left"></i> Return Home
+                <a href="{{ url_for('application_begin') }}">
+                    <button type="submit" class="btn btn-warning">
+                        <i class="glyphicon glyphicon-arrow-left"></i> Back
                     </button>
                 </a>
             </div>
-        </div> <!-- end row 1 - Go Back -->
+        </div>
+
+
+        <div class="row row1">
+            <div class="col-sm-12">
+                <div id="formTitle">Tutor Application</div>
+            </div>
+        </div>
+
+        <br>
+
+
+{#        <!-- row 1 - Go Back -->#}
+{#        <div class="row">#}
+{#            <div class="col-sm-12">#}
+{#                <a href="{{ url_for('home') }}">#}
+{#                    <button class="btn btn-warning" value="Return To Profile">#}
+{#                        <i class="glyphicon glyphicon-arrow-left"></i> Return Home#}
+{#                    </button>#}
+{#                </a>#}
+{#            </div>#}
+{#        </div> <!-- end row 1 - Go Back -->#}
 
 
         <!-- row 2 - Program Choice / Change Program button -->
         <div class="row row2">
             <div class="col-sm-12 course_title">
-                <div class="programName">Courses For {{ this_program.programName }}
-                    <a href="{{ url_for('application_begin') }}">
-                        <button class="btn btn-warning ">Change</button>
-                    </a>
-                    <BR><BR>
+                <div class="programName">Showing courses For {{ this_program.programName }}
+                    <a href="{{ url_for('application_begin') }}" class="small_link">Change Program</a>
                 </div>
 
             </div>
@@ -55,7 +71,7 @@
         <!-- row 3 - Pick Course, Add Course, Add Course Button -->
         <div class="row row3">
             <div class="col-sm-12">
-
+                <h2 class="title">Add Courses</h2>
                 <form method="POST" action="">
                     {{ form.csrf_token }}
                     {{ form.course_options(class_='form-control', id='tutorcourse') }} <br>
@@ -113,7 +129,9 @@
         <div class="row row5">
             <div class="col-sm-12">
                 <a href="{{  url_for('new_tutor') }}">
-                    <button class="btn btn-primary btn_add">Continue Application</button>
+                    <button class="btn btn-info btn_add">
+                        Continue Application <i class="glyphicon glyphicon-arrow-right"></i>
+                    </button>
                 </a>
             </div>
         </div>

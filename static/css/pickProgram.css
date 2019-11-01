@@ -1,3 +1,14 @@
+/* Styles title of form */
+#formTitle {
+    width: 100%;
+    color: slategrey;
+    font-size: 3em;
+    margin-bottom: 10px;
+    text-align: center;
+    border-bottom: 2px solid slategrey;
+}
+
+
 body {
     height: 100%;
 }
@@ -10,9 +21,9 @@ body {
 
 .title {
     color: #2E2D4D;
-    border-bottom: 2px solid #2E2D4D;
+    /*border-bottom: 2px solid #2E2D4D;*/
 }
 
-.btn {
+.setProgram {
     float: right;
 }

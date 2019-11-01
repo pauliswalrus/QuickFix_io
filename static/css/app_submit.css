@@ -1,0 +1,107 @@
+body, html {
+    height: 100%;
+    width: 100%;
+}
+
+
+#main_page {
+    height: 100%;
+    width: 70%;
+    margin-left: 15%;
+    margin-right: 15%;
+    /*border: 2px solid red;*/
+}
+
+
+/* Styles title of form */
+#formTitle {
+    width: 100%;
+    color: slategrey;
+    font-size: 3em;
+    margin-bottom: 10px;
+    text-align: center;
+    border-bottom: 2px solid slategrey;
+}
+
+
+.sub_title {
+    color: #2E2D4D;
+    text-align: left;
+    font-size: 1.4em;
+}
+
+/*.submit_app {*/
+/*    float: right;*/
+/*}*/
+
+.fl_right {
+    float: right;
+}
+
+.fl_left {
+    float: left;
+}
+
+.fl_middle {
+    text-align: center;
+}
+
+
+#course_list {
+    /*width: 80%;*/
+    /*border: 2px solid blue;*/
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* OG */
+
+
+/*!* Styles the main section div that hols all page content under navbar *!*/
+/*#main-section {*/
+/*    width: 60%;*/
+/*    margin-left: 20%;*/
+/*    margin-right: 20%;*/
+/*    margin-top: 5%;*/
+/*    text-align: center;*/
+/*    padding: 20px;*/
+/*    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
+/*}*/
+
+
+
+/*!* Styles submit button *!*/
+/*.submitButton {*/
+/*    width: 30%;*/
+/*    margin-top: 10px;*/
+/*    margin-right: 35%;*/
+/*    margin-bottom: 10px;*/
+/*    margin-left: 35%;*/
+/*    background-color: #395065;*/
+/*    color: white;*/
+/*    border: 3px solid #395065;*/
+/*}*/
+
+/*!* Styles submit button on mouse-over *!*/
+/*.submitButton:hover {*/
+/*    background-color: white;*/
+/*    color: #395065;*/
+/*!*    border: 3px solid #395065;*!*/
+/*}*/

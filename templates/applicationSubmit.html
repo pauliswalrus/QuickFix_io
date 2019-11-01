@@ -7,12 +7,12 @@
     <meta charset="UTF-8">
     <title>Register</title>
 
-    <link rel="stylesheet" href="{{url_for('static', filename='css/cardStyleForm.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app_submit.css') }}">
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
 
-        <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
 
     <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
 </head>
@@ -20,47 +20,98 @@
 {% extends "navbar.html" %}
 {% block content %}
 
-<div id="main-section">
-
-    <div id="regForm">
-
-        <div id="formTitle">Tutor Application</div>
 
 
+    <div id="main_page">
 
-{#        <h4>Tutor Courses</h4>#}
-{#        {% for c in t_courses %}#}
-{#        <div id="tutor_courses">#}
-{#        {{ c.course_name }}#}
-{#        {% endfor %}#}
-                                <form method="post" enctype="multipart/form-data">
-                {{ form.hidden_tag() }}
-                {{ form.about_tutor (class_='form-control', placeholder='Tell us why we should hire you!', autocomplete='off') }}<br>
-                <div>
-                    {{ form.credentials_file }}
-                </div><br>
-                <button type=submit class="btn btn-info">Apply</button>
-                {{ form.csrf_token }}
-            </form>
+    <br>
 
-                <a href="{{ url_for('home') }}" >
-                    <button class="btn btn-warning warning">Cancel Application</button>
+
+         <div class="row">
+            <div class="col-sm-4">
+                <a href="{{ url_for('home') }}">
+                    <button type="submit" class="btn btn-danger fl_left">
+                        <i class="glyphicon glyphicon-remove"></i> Cancel Application
+                    </button>
                 </a>
 
-                <a href="{{ url_for('application_begin') }}" >
-                    <button class="btn btn-primary warning ">Program Selection</button>
-                </a>
-                    <div id="myCourses">
+            </div>
+
+             <div class="col-sm-4"></div>
+             <div class="col-sm-4"></div>
+        </div>
 
 
-                    <div class="table-responsive">
+        <div class="row row1">
+            <div class="col-sm-12">
+                <div id="formTitle">Tutor Application</div>
+            </div>
+        </div>
+
+        <br><br>
+
+
+        <div class="row row2">
+
+            <div class="col-sm-12">
+
+                <form method="post" enctype="multipart/form-data">
+
+                    <p class="sub_title">Why Should We Hire You?</p>
+                    {{ form.hidden_tag() }}
+                    {{ form.about_tutor (class_='form-control', placeholder='Why would you make a good tutor?', autocomplete='off') }}
+
+                    <br><br>
+
+                    <p class="sub_title">Upload Your Credentials</p>
+                    <div>{{ form.credentials_file }}</div>
+
+                    <br>
+
+                    <button type="submit" class="btn btn-info btn-block">
+                        Submit Application <i class="glyphicon glyphicon glyphicon-ok"></i>
+                    </button>
+
+                    {{ form.csrf_token }}
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+
+<br><br><br>
+
+
+        <div class="row row3">
+            <div class="col-sm-12">
+                <div class="sub_title">Review Your Courses</div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+        <div class="row">
+            <div class="col-sm-12">
+
+                <div id="course_list">
+
+                <div class="table-responsive">
                     <table class="table table-hover table-fixed">
-                        <thead><tr>
-                                <th class="col-sm-2">Course_ID</th>
-                                <th class="col-sm-3">Course Code</th>
-                                <th class="col-sm-6">Course Name</th>
-                                <th class="col-sm-6">Delete</th>
-                        </tr></thead>
+                        <thead>
+                        <tr>
+                            <th class="col-sm-2">Course_ID</th>
+                            <th class="col-sm-3">Course Code</th>
+                            <th class="col-sm-6">Course Name</th>
+                            <th class="col-sm-6">Delete</th>
+                        </tr>
+                        </thead>
 
                         {% for t in t_courses %}
                             <tbody>
@@ -68,7 +119,11 @@
                                 <td>{{ t.course_id }}</td>
                                 <td>{{ t.course_code }}</td>
                                 <td>{{ t.course_name }}</td>
-                                <td><button class="btn btn-danger deleteTutorCourse" course_id="{{ t.tutor_course_id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
+                                <td>
+                                    <button class="btn btn-danger deleteTutorCourse"
+                                            course_id="{{ t.tutor_course_id }}"><i
+                                            class="glyphicon glyphicon-trash"></i></button>
+                                </td>
                             </tr>
                             </tbody>
                         {% endfor %}
@@ -77,35 +132,129 @@
 
                 </div>
 
-                </div>
+            </div>
+
+            </div>
+        </div>
+
+
+
 
     </div>
-{#        <form method="post" enctype="multipart/form-data">#}
-{#                <div>#}
-{#                    {{ course_form.tutor_courses(id='tutorcourse') }}#}
-{#                </div>#}
-{#                {{ form.tutor_courses }}#}
-{#            <button class="btn btn-info addTutorCourse" course_id="{{ course_form.tutor_courses.data }}">Add Course</button>#}
-{#            <button class="btn btn-info clearTutorCourses">Clear Course</button>#}
-{#        </form>#}
 
-        <hr>
+
+
+
+
+
+
+
+
+
+
+{##}
+{##}
+{#    <div id="main-section">#}
+{##}
+{##}
+{#        <div id="regForm">#}
+{##}
+{#            <div id="formTitle">Tutor Application</div>#}
+{##}
+{##}
+{##}
+{##}
 {#            <form method="post" enctype="multipart/form-data">#}
+{#                <p class="sub_title">Why Should We Hire You?</p><br>#}
 {#                {{ form.hidden_tag() }}#}
-{#                {{ form.about_tutor (class_='form-control', placeholder='Tell us why we should hire you!', autocomplete='off') }}<br>#}
-{#                <div>#}
-{#                    {{ form.credentials_file }}#}
-{#                </div>#}
-{#                <button type=submit class="btn btn-info">Apply</button>#}
+{#                {{ form.about_tutor (class_='form-control', placeholder='Why would you make a good tutor?', autocomplete='off') }}<br><br>#}
+{##}
+{#                <p class="sub_title">Upload Your Credentials</p><br>#}
+{#                <div>{{ form.credentials_file }}</div>#}
+{#                <br>#}
+{#                <button type="submit" class="btn btn-info">Submit Application</button>#}
+{#                <a href="{{ url_for('home') }}"><button type="submit" class="btn btn-warning">Cancel Application</button></a>#}
 {#                {{ form.csrf_token }}#}
 {#            </form>#}
+{##}
+{##}
+{##}
+{##}
+{##}
+{#            <a href="{{ url_for('home') }}"><button type="submit" class="btn btn-warning">Cancel Application</button></a>#}
+{##}
+{##}
+{##}
+{##}
+{#            <a href="{{ url_for('application_begin') }}">#}
+{#                <button class="btn btn-primary warning ">Program Selection</button>#}
+{#            </a>#}
+{##}
+{##}
+{##}
+{##}
+{##}
+{#            <div id="myCourses">#}
+{##}
+{#                <div class="table-responsive">#}
+{#                    <table class="table table-hover table-fixed">#}
+{#                        <thead>#}
+{#                        <tr>#}
+{#                            <th class="col-sm-2">Course_ID</th>#}
+{#                            <th class="col-sm-3">Course Code</th>#}
+{#                            <th class="col-sm-6">Course Name</th>#}
+{#                            <th class="col-sm-6">Delete</th>#}
+{#                        </tr>#}
+{#                        </thead>#}
+{##}
+{#                        {% for t in t_courses %}#}
+{#                            <tbody>#}
+{#                            <tr>#}
+{#                                <td>{{ t.course_id }}</td>#}
+{#                                <td>{{ t.course_code }}</td>#}
+{#                                <td>{{ t.course_name }}</td>#}
+{#                                <td>#}
+{#                                    <button class="btn btn-danger deleteTutorCourse"#}
+{#                                            course_id="{{ t.tutor_course_id }}"><i#}
+{#                                            class="glyphicon glyphicon-trash"></i></button>#}
+{#                                </td>#}
+{#                            </tr>#}
+{#                            </tbody>#}
+{#                        {% endfor %}#}
+{##}
+{#                    </table>#}
+{##}
+{#                </div>#}
+{##}
+{#            </div>#}
+{##}
+{#        </div>#}
+        {#        <form method="post" enctype="multipart/form-data">#}
+        {#                <div>#}
+        {#                    {{ course_form.tutor_courses(id='tutorcourse') }}#}
+        {#                </div>#}
+        {#                {{ form.tutor_courses }}#}
+        {#            <button class="btn btn-info addTutorCourse" course_id="{{ course_form.tutor_courses.data }}">Add Course</button>#}
+        {#            <button class="btn btn-info clearTutorCourses">Clear Course</button>#}
+        {#        </form>#}
+{##}
+{#        <hr>#}
+        {#            <form method="post" enctype="multipart/form-data">#}
+        {#                {{ form.hidden_tag() }}#}
+        {#                {{ form.about_tutor (class_='form-control', placeholder='Tell us why we should hire you!', autocomplete='off') }}<br>#}
+        {#                <div>#}
+        {#                    {{ form.credentials_file }}#}
+        {#                </div>#}
+        {#                <button type=submit class="btn btn-info">Apply</button>#}
+        {#                {{ form.csrf_token }}#}
+        {#            </form>#}
+{##}
+{#        <a href="{{ url_for('home') }}">Change your mind? Return home.</a>#}
+{##}
+{#    </div>#}
 
-    <a href="{{ url_for('home') }}">Change your mind? Return home.</a>
 
     </div>
-
-
-</div>
 {% endblock %}
 </body>
 </html>

@@ -1,4 +1,7 @@
-/* Admin portal functions */
+/* e.stopImmediatePropagation();
+e.stopPropagation;
+
+Admin portal functions */
 
 $(document).ready(function () {
 
@@ -576,6 +579,8 @@ $(document).ready(function () {
             //nothing happens
 
         }
+
+
 
     })
 

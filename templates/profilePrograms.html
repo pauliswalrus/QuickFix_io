@@ -22,7 +22,17 @@
 
     <div id="main-content">
 
-    <br><br>
+    <div class="row">
+            <div class="col-sm-12">
+                <a href="{{ url_for('profile') }}">
+                    <button type="submit" class="btn btn-warning">
+                        <i class="glyphicon glyphicon-arrow-left"></i> Back to Profile
+                    </button>
+                </a>
+            </div>
+        </div>
+
+        <br><br>
 
     <form method="POST" action="">
         <h2 class="title">Pick Program</h2>

@@ -20,21 +20,39 @@
 {% extends "navbar.html" %}
 {% block content %}
 
-<div id="main-content">
+    <div id="main-content">
 
-<br><br>
+        <div class="row">
+            <div class="col-sm-12">
+                <a href="{{ url_for('home') }}">
+                    <button type="submit" class="btn btn-warning">
+                        <i class="glyphicon glyphicon-arrow-left"></i> Return Home
+                    </button>
+                </a>
+            </div>
+        </div>
 
 
-    <form method="POST" action="">
-        <h2 class="title">Pick a Program to Tutor For</h2>
-        {{ form1.csrf_token }}
-        {{ form1.program_options(class_='form-control', id='program_name') }} <br>
-        <button type="submit" class="btn btn-primary setProgram" value="Next">
-            Next <i class="glyphicon glyphicon-arrow-right"></i>
-        </button><br>
-    </form>
+        <div class="row row1">
+            <div class="col-sm-12">
+                <div id="formTitle">Tutor Application</div>
+            </div>
+        </div>
 
-</div>
+        <br><br>
+
+
+        <form method="POST" action="">
+            <h2 class="title">Choose a Program</h2>
+            {{ form1.csrf_token }}
+            {{ form1.program_options(class_='form-control', id='program_name') }} <br>
+            <button type="submit" class="btn btn-info setProgram" value="Next">
+                Next <i class="glyphicon glyphicon-arrow-right"></i>
+            </button>
+            <br>
+        </form>
+
+    </div>
 
 {% endblock %}
 </body>

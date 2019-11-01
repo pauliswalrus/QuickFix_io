@@ -1,7 +1,28 @@
+/* Styles title of form */
+#formTitle {
+    width: 100%;
+    color: slategrey;
+    font-size: 3em;
+    margin-bottom: 10px;
+    text-align: center;
+    border-bottom: 2px solid slategrey;
+}
+
+
 html, body {
         height: 100%;
         margin: 0px;
 }
+
+.small_link {
+    font-size: 12px;
+    color: slategrey;
+}
+
+.small_link:hover {
+    color: #2E2D4D;
+}
+
 
 #main-content {
     /*border: 1px solid red;*/
@@ -23,12 +44,12 @@ html, body {
 
 .title {
     color: #2E2D4D;
-    border-bottom: 2px solid #2E2D4D;
+    /*border-bottom: 2px solid #2E2D4D;*/
 }
 
 
 .programName {
-    font-size: 1.6em;
+    font-size: 1.2em !important;
     color: #2E2D4D;
     /*border-bottom: 2px solid #2E2D4D;*/
 }
@@ -39,11 +60,17 @@ html, body {
 }
 
 .row4 {
-    max-height: 300px;
+    max-height: 200px;
+    /*border: 2px solid red;*/
     /*background-color: pink;*/
     overflow-y: scroll;
 }
 
 .btn_add {
     float: right;
+}
+
+.change_btn {
+    /*background-color: white !important;*/
+    /*color: red !important;*/
 }
