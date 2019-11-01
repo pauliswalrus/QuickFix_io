@@ -9,6 +9,7 @@
 
     <link rel="stylesheet" href="{{url_for('static', filename='css/cardStyleForm.css')}}">
 
+{#    <link rel="stylesheet" href="{{ url_for('static', filename='css/app_submit.css') }}">#}
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -16,6 +17,33 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
 
     <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+
+    <script>
+
+    $(document).ready(function () {
+
+        $('#reApp').hide();
+
+        var this_user = `{{ this_user }}`;
+
+        var app_user = `{{ app_user }}`;
+
+        if (this_user === app_user) {
+
+            $('#reApp').show();
+
+
+        } else {
+
+
+
+        }
+
+
+        });
+
+
+</script>
 </head>
 <body>
 {% extends "navbar.html" %}
@@ -31,16 +59,16 @@
           <div class="form-inline">
             <div class="form-group">
               <label for="tutorName">Name: </label>
-              <span id="tutorName">{{ this_user.firstname }} {{ this_user.lastname }} </span>
+              <span id="tutorName">{{ app_user.firstname }} {{ app_user.lastname }} </span>
               <br>
               <label for="tutorUsername">Username: </label>
-              <span id="tutorName">{{ this_user.username }}</span>
+              <span id="tutorName">{{ app_user.username }}</span>
               <br>
-               <label for="userId">User Id</label>
-                  <span id="userID">{{ this_user.id }} </span>
-              <label for="tutID">Tutor Id</label>
-                <span id="tutID">{{ this_tutor.tutor_id }} </span>
-              <br>
+{#               <label for="userId">User Id</label>#}
+{#                  <span id="userID">{{ this_user.id }} </span>#}
+{#              <label for="tutID">Tutor Id</label>#}
+{#                <span id="tutID">{{ this_tutor.tutor_id }} </span>#}
+{#              <br>#}
               <label for="aboutTutor">Reason: </label>
               <span id="aboutTutor">{{ this_tutor.about_tutor }}</span>
               <br>
@@ -65,13 +93,13 @@
 
       </div>
 
-
+    <div id="reApp">
     <a href="{{ url_for('home') }}">Change your mind? Return home.</a> <br>
 
 {#    <button class="btn btn-primary deleteApplication" >Re-Apply</button>#}
     <b><a href="{{ url_for('new_tutor') }}">
         <button class="btn btn-primary deleteApplication" >Re-Apply</button>
-    </a></b>
+    </a></b></div>
 
 
 {% endblock %}

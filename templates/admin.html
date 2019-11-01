@@ -52,6 +52,13 @@
                             <a href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>
                         </p>
 
+
+                        <p>
+                            <span class="subHeading">Application: </span>
+                            <a href="{{ url_for('check_application', user_id=tutor.user_id) }}">{{ tutor.username }}' Application </a>
+
+                        </p>
+
                         <button class="btn btn-primary approveTutor" user_id="{{ tutor.user_id }}">Approve Tutor
                         </button>
 
@@ -59,7 +66,7 @@
 
                         <p>
                             <span class="subHeading">Feedback: </span>
-                            <input type="text" class="form-control" id="appComments"
+                            <input type="text" class="form-control" placeholder="nothing to add" id="appComments"
                                    value="{{ tutor.application_comments }}">
                             <button class="btn btn-warning denyTutor" user_id="{{ tutor.user_id }}">Deny Application
                             </button>

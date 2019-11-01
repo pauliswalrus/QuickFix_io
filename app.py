@@ -129,7 +129,7 @@ def admin_approved():
     # approved tutors in desc order
     tutors_approved = db.session.query(User.firstname, User.lastname, User.username, Tutor.user_id, Tutor.tutor_id,
                                        Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name,
-                                       Tutor.application_comments).filter(User.id == Tutor.user_id).order_by(
+                                       Tutor.application_comments).filter(User.id == Tutor.user_id, Tutor.tutor_status == 'approved').order_by(
         User.id.desc()).all()
 
     tutor_courses = TutorCourses.query.filter_by(user_id=this_user.id).all()
@@ -293,9 +293,10 @@ def new_tutor():
 @app.route('/check_application/<int:user_id>', methods=['GET', 'POST'])
 def check_application(user_id):
 
-    this_user = User.query.filter_by(id=user_id).first()
+    this_user = User.query.filter_by(id=current_user.id).first()
+    app_user = User.query.filter_by(id=user_id).first()
 
-    tutor_courses = TutorCourses.query.filter_by(user_id=this_user.id).all()
+    tutor_courses = TutorCourses.query.filter_by(user_id=app_user.id).all()
 
     t_status = "not sure"
 
@@ -315,9 +316,9 @@ def check_application(user_id):
         role_name = "Admin"
         t_status = "Admin"
 
-    this_tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+    this_tutor = Tutor.query.filter_by(user_id=app_user.id).first()
 
-    return render_template("check_application.html", this_user=this_user, this_tutor=this_tutor, role_name=role_name, t_status=t_status, tutor_courses=tutor_courses)
+    return render_template("check_application.html", this_user=this_user, this_tutor=this_tutor, role_name=role_name, t_status=t_status, tutor_courses=tutor_courses, app_user=app_user)
 
 
 # room page
@@ -690,7 +691,6 @@ def allrooms():
         RoomPost.date_posted.desc()).all()
 
     return render_template('tutorPosts.html', this_user=this_user, room_posts=room_posts, role_name=role_name, t_status=t_status, search_form=search_form)
-
 
 
 # new student request help post
@@ -1522,7 +1522,7 @@ def updatePost():
 
     db.session.commit()
 
-    return jsonify({'result': 'success', "post_title": post.title})
+    # return jsonify({'result': 'success', "post_title": post.title})
 
     return jsonify({'result': 'success'})
 

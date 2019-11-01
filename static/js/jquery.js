@@ -13,9 +13,9 @@ $(document).ready(function () {
 
         var name = $('#nameInput' + room_id).val();
 
-        var title = $('#titleInput' + room_id).val()
+        var title = $('#titleInput' + room_id).val();
 
-        var content = $('#contentInput' + room_id).val()
+        var content = $('#contentInput' + room_id).val();
 
         req = $.ajax({
             url: '/updateRoom',
@@ -111,7 +111,7 @@ $(document).ready(function () {
 
         var r = confirm("Delete Post?");
 
-        if (r == true) {
+        if (r === true) {
 
             req = $.ajax({
                 url: '/deletePost',
@@ -164,7 +164,7 @@ $(document).ready(function () {
 
         var r = confirm("Clear Post Comments?");
 
-        if (r == true) {
+        if (r === true) {
 
             req = $.ajax({
                 url: '/deletePostComments',
