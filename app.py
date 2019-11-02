@@ -134,7 +134,6 @@ def admin_approved():
 
     tutor_courses = TutorCourses.query.filter_by(user_id=this_user.id).all()
 
-
     return render_template("admin_approved.html", this_user=this_user, tutors_approved=tutors_approved, tutor_courses=tutor_courses)
 
 
@@ -217,7 +216,7 @@ def new_student():
         db.session.add(student)
         db.session.commit()
 
-        flash('Registered successfully. Please login', 'success')
+        # flash('Registered successfully. Please login', 'success')
         return redirect(url_for('login'))
 
     return render_template("register_now.html", form=reg_form)
