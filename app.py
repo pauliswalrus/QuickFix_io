@@ -16,7 +16,7 @@ from sqlalq_datamodels import *
 ######################################################
 ##
 # AUTHOR: AUSTIN PAUL
-# DATE: NOV 1
+# DATE: NOV 2
 # QUICKFIX_IO DIRTYBITS
 # PRESENTATION 1 BUILD DEPLOYED AT
 # quickfix-io.herokuapp.com
@@ -53,6 +53,7 @@ def login():
         user_object = User.query.filter_by(username=login_form.username.data).first()
         login_user(user_object)
 
+
         # session['userName'] = user_object.username
         session['userRole'] = user_object.role
 
@@ -61,6 +62,9 @@ def login():
             return redirect(url_for('admin'))
 
         else:
+            #
+            user_object.status = 1
+            db.session.commit()
 
             return redirect(url_for('home'))
 
@@ -80,8 +84,7 @@ def logout():
     return redirect(url_for('login'))
 
 
-#### admin route, will contain links to all users info etc
-# admin - pending applications
+# admin - pending tutor applications
 @app.route('/admin')
 def admin():
     if session["userRole"] != "A":
@@ -117,7 +120,6 @@ def admin():
                            tutors_pending=tutors_pending)
 
 
-#### admin route, will contain links to all users info etc
 # admin - approved applications
 @app.route('/admin_approved')
 def admin_approved():
@@ -137,7 +139,6 @@ def admin_approved():
     return render_template("admin_approved.html", this_user=this_user, tutors_approved=tutors_approved, tutor_courses=tutor_courses)
 
 
-#### admin route, will contain links to all users info etc
 # admin - manage rooms
 @app.route('/admin_rooms')
 def admin_rooms():
@@ -152,6 +153,7 @@ def admin_rooms():
     return render_template("admin_rooms.html", this_user=this_user, blog_posts = blog_posts)
 
 
+# admin - manage community forum posts
 @app.route('/admin_posts')
 def admin_posts():
     if session["userRole"] != "A":
@@ -186,7 +188,7 @@ def all_users():
                            this_user=this_user, users_list=users_list)
 
 
-# need to rename/refactor to user
+# need to rename/refactor to student?
 @app.route('/register', methods=['GET', 'POST'])
 def new_student():
     reg_form = RegistrationForm()
@@ -288,7 +290,7 @@ def new_tutor():
     return render_template("applicationSubmit.html", form=tutor_form, this_user=this_user, t_status=t_status, role_name=role_name, t_courses=t_courses)
 
 
-# check tutor application
+# check tutor application, accessed by applicant by navbar OR admin from portal
 @app.route('/check_application/<int:user_id>', methods=['GET', 'POST'])
 def check_application(user_id):
 
@@ -320,7 +322,7 @@ def check_application(user_id):
     return render_template("check_application.html", this_user=this_user, this_tutor=this_tutor, role_name=role_name, t_status=t_status, tutor_courses=tutor_courses, app_user=app_user)
 
 
-# room page
+# room page (lobby)
 @app.route('/room/<int:room_id>', methods=['GET', 'POST'])
 def room(room_id):
     room = RoomPost.query.filter_by(id=room_id).one()
@@ -430,7 +432,7 @@ def add_room():
                            user_object=user_object, this_user=this_user, t_status=t_status, role_name=role_name)
 
 
-# student post
+# community forum post -- need refactor to post
 @app.route('/studentpost/<int:studentpost_id>', methods=['GET', 'POST'])
 def studentpost(studentpost_id):
 
@@ -481,7 +483,7 @@ def studentpost(studentpost_id):
                            comment_form=comment_form, comments=comments, this_user=this_user, t_status=t_status, role_name=role_name)
 
 
-# searchs studentposts
+# searches community forums
 @app.route('/forum_results')
 def forum_search_results(search):
     this_user = User.query.filter_by(username=current_user.username).first()
@@ -541,7 +543,7 @@ def forum_search_results(search):
         return render_template('studentPosts.html', this_user=this_user, student_posts=student_posts, role_name=role_name, t_status=t_status, search_form=search_form)
 
 
-# view all student posts
+# view all community forum posts -- need refactor to post
 @app.route('/allstudentposts', methods=['GET', 'POST'])
 def allstudentposts():
     this_user = User.query.filter_by(username=current_user.username).first()
@@ -650,7 +652,7 @@ def search_results(search):
         return render_template('tutorPosts.html', this_user=this_user, room_posts=room_posts, role_name=role_name, t_status=t_status, search_form=search_form)
 
 
-# view all tutor posts
+# view all public tutor room
 @app.route('/allrooms', methods=['GET', 'POST'])
 def allrooms():
     this_user = User.query.filter_by(username=current_user.username).first()
@@ -692,7 +694,7 @@ def allrooms():
     return render_template('tutorPosts.html', this_user=this_user, room_posts=room_posts, role_name=role_name, t_status=t_status, search_form=search_form)
 
 
-# new student request help post
+# add a new community forum post -- need refactor to post
 @app.route('/add_student_post', methods=['GET', 'POST'])
 def add_student_post():
     post_form = StudentPostForm()
@@ -806,13 +808,7 @@ def add_student_post():
                            user_object=user_object, this_user=this_user, t_status=t_status, role_name=role_name)
 
 
-@app.route('/error_template')
-def error_template():
-
-    return render_template("errorTemplate.html")
-
-
-# programs page from profile
+# pick programs page from profile
 @app.route("/profile_programs", methods=['GET', 'POST'])
 def profile_programs():
 
@@ -862,7 +858,7 @@ def profile_programs():
     return render_template('profilePrograms.html', username=current_user.username, this_user=this_user, form1=form1, role_name=role_name, t_status=t_status)
 
 
-# profile_programs page
+# student courses page accessed from profile programs
 @app.route("/student_courses/<int:program_id>", methods=['GET', 'POST'])
 def student_courses(program_id):
 
@@ -919,7 +915,7 @@ def student_courses(program_id):
     return render_template('studentCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
 
 
-# profile_programs page
+# tutor courses page accessed from profile programs
 @app.route("/tutor_courses/<int:program_id>", methods=['GET', 'POST'])
 def tutor_courses(program_id):
 
@@ -973,7 +969,7 @@ def tutor_courses(program_id):
     return render_template('tutorCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
 
 
-# programs page
+# tutor application program pick page
 @app.route("/application_begin", methods=['GET', 'POST'])
 def application_begin():
 
@@ -1011,7 +1007,7 @@ def application_begin():
     return render_template('applicationBegin.html', username=current_user.username, this_user=this_user, form1=form1, role_name=role_name, t_status=t_status)
 
 
-# profile_programs page
+# tutor application courses accessed from application begin page
 @app.route("/application_courses/<int:program_id>", methods=['GET', 'POST'])
 def application_courses(program_id):
 
@@ -1066,14 +1062,14 @@ def application_courses(program_id):
     return render_template('applicationCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
 
 
-# route for chat - displays public rooms and form to join(create rooms)
+# route for home page - displays links to profile, find tutors, community forums. etc
 @app.route("/home", methods=['GET', 'POST'])
 def home():
     date_stamp = strftime('%A, %B %d', localtime())
     this_user = User.query.filter_by(username=current_user.username).first()
 
     one = 1
-    online_users = User.query.filter_by(status=one).all()
+    online_users = User.query.filter_by(status=1, role="T").all()
 
     t_status = "not sure"
 
@@ -1367,7 +1363,7 @@ def download(dl_name):
     return send_file(BytesIO(file_data.data), attachment_filename=file_data.file_name, as_attachment=True)
 
 
-# download tutor credit
+# download tutor credentials
 @app.route('/credentials/<string:dl_name>/')
 def download_cred(dl_name):
     # file_data = FileUpload.query.first()
@@ -1379,7 +1375,7 @@ def download_cred(dl_name):
 
 ## admin portal functions
 
-# admin chatlog for each room admin portal
+# admin view chatlog for each room admin portal
 @app.route('/chat_log/<int:room_id>', methods=['GET', 'POST'])
 def chat_log(room_id):
     if session["userRole"] != "A":
@@ -1477,7 +1473,8 @@ def deleteRoom():
 
     return jsonify({'result': 'success'})
 
-# delete chat logs for room admin portal
+
+# delete comments on room pages from admin portal
 @app.route('/deleteRoomComments', methods=['POST'])
 def deleteRoomComments():
     room = RoomPost.query.filter_by(id=request.form['id']).first()
@@ -1489,9 +1486,7 @@ def deleteRoomComments():
     return jsonify({'result': 'success'})
 
 
-
-
-# deletes student posts
+# deletes community forum posts
 @app.route('/deletePost', methods=['POST'])
 def deletePost():
     post = StudentPost.query.filter_by(id=request.form['id']).first()
@@ -1503,7 +1498,7 @@ def deletePost():
     return jsonify({'result': 'success'})
 
 
-# deletes student posts
+# updates community forums posts
 @app.route('/updatePost', methods=['POST'])
 def updatePost():
     # post = StudentPost.query.filter_by(id=request.form['id']).first()
@@ -1525,7 +1520,7 @@ def updatePost():
 
     return jsonify({'result': 'success'})
 
-# delete chat logs for room admin portal
+# delete community forum post comments
 @app.route('/deletePostComments', methods=['POST'])
 def deletePostComments():
     post = StudentPost.query.filter_by(id=request.form['id']).first()
@@ -1535,7 +1530,6 @@ def deletePostComments():
     db.session.commit()
 
     return jsonify({'result': 'success'})
-
 
 
 # deletes userupload used in profile
@@ -1562,7 +1556,7 @@ def deleteUserCourse():
     return jsonify({'result': 'success'})
 
 
-# deletes user_course used in profile
+# deletes tutor used in profile and tutor application.
 @app.route('/deleteTutorCourse', methods=['POST'])
 def deleteTutorCourse():
 
@@ -1575,7 +1569,7 @@ def deleteTutorCourse():
     return jsonify({'result': 'success'})
 
 
-# adds tutor_courses used in tutor_application
+# adds tutor_courses used in tutor_application and tutor profile
 @app.route('/addTutorCourse', methods=['POST'])
 def addTutorCourse():
 
@@ -1590,7 +1584,7 @@ def addTutorCourse():
     return jsonify({'result': 'success'})
 
 
-# deletes tutor_courses used in tutor application
+# deletes tutor_courses used in tutor application and profile
 @app.route('/clearTutorCourses', methods=['POST'])
 def clearTutorCourses():
 
@@ -1683,6 +1677,7 @@ def denyTutor():
     return jsonify({'result': 'success'})
 
 
+# deletes tutor application redirects to new application
 @app.route('/deleteApplication', methods=['POST'])
 def deleteApplication():
     user = User.query.filter_by(username=current_user.username).first()
@@ -1694,12 +1689,12 @@ def deleteApplication():
     db.session.delete(tutor)
     db.session.commit()
 
-    return redirect(url_for('new_tutor'))
+    return redirect(url_for('application_begin'))
 
 # tutor chat room controls
 
 
-# tutor makes room private
+# makes room private used in chat and admin portal
 @app.route('/privateRoom', methods=['POST'])
 def privateRoom():
     room = RoomPost.query.filter_by(id=request.form['id']).first()
@@ -1714,7 +1709,7 @@ def privateRoom():
     return jsonify({'result': 'success', 'room_status': room.visible})
 
 
-# tutor makes room private
+# makes room private used in chat and admin portal
 @app.route('/publicRoom', methods=['POST'])
 def publicRoom():
     room = RoomPost.query.filter_by(id=request.form['id']).first()
