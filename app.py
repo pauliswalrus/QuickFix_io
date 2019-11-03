@@ -94,7 +94,7 @@ def admin():
     users_list = User.query.order_by(User.id.desc()).all()
     all_files = FileUpload.query.all()
 
-    # rooms desc by date
+    # rooms desc by date - refactor to rooms
     blog_posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
 
     tutors = Tutor.query.filter_by(tutor_status="pending").all()
@@ -150,7 +150,7 @@ def admin_rooms():
     # rooms desc by date
     blog_posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
 
-    return render_template("admin_rooms.html", this_user=this_user, blog_posts = blog_posts)
+    return render_template("admin_rooms.html", this_user=this_user, blog_posts=blog_posts)
 
 
 # admin - manage community forum posts
@@ -1068,7 +1068,6 @@ def home():
     date_stamp = strftime('%A, %B %d', localtime())
     this_user = User.query.filter_by(username=current_user.username).first()
 
-    one = 1
     online_users = User.query.filter_by(status=1, role="T").all()
 
     t_status = "not sure"
@@ -1266,6 +1265,7 @@ def profile():
 #
 # public profile accessed by users from online user links.
 #
+
 @app.route("/profile/<username>", methods=['GET', 'POST'])
 def pub_profile(username):
     thisUser = current_user.username
