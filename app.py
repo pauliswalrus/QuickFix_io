@@ -15,8 +15,8 @@ from sqlalq_datamodels import *
 
 ######################################################
 ##
-# AUTHOR: AUSTIN PAUL
-# DATE: NOV 2
+# AUTHOR: AUSTIN PAUL, EMMA HOBDEN, HALEY WALBOURNE, SARTHAK JAIN
+# DATE: NOV 3
 # QUICKFIX_IO DIRTYBITS
 # PRESENTATION 1 BUILD DEPLOYED AT
 # quickfix-io.herokuapp.com
@@ -62,7 +62,7 @@ def login():
             return redirect(url_for('admin'))
 
         else:
-            #
+            # sets status to online at login
             user_object.status = 1
             db.session.commit()
 
@@ -550,7 +550,6 @@ def allstudentposts():
 
     t_status = "not sure"
 
-
     search_form = ForumSearchForm(request.form)
 
     if request.method == 'POST':
@@ -657,8 +656,6 @@ def search_results(search):
 def allrooms():
     this_user = User.query.filter_by(username=current_user.username).first()
 
-    # user_object = User.query.filter_by(username=user.).first()
-
     t_status = "not sure"
 
     search_form = TutorSearchForm(request.form)
@@ -701,10 +698,6 @@ def add_student_post():
 
     user_object = User.query.filter_by(username=current_user.username)
     this_user = User.query.filter_by(username=current_user.username).first()
-
-    # user_courses = UserCourses.query.filter_by(user_id=this_user.id).all()
-    # post_courses = [(k.course_id, k.course_name) for k in user_courses]
-    # post_form.post_course.choices = post_courses
 
     t_status = "not sure"
 
@@ -778,32 +771,6 @@ def add_student_post():
         role_name = "Admin"
         t_status = "Admin"
 
-    # if request.method == 'POST':
-    #     title = post_form.title.data
-    #     content = post_form.content.data
-    #     post_course = post_form.post_course.data
-    #     course = ProgramCourse.query.filter_by(course_id=post_course).first()
-    #     course = TutorCourses.query.filter_by(course_id=post_course).first()
-    #     post_course_name = course.course_name
-    #     post_course_code = course.course_code
-    #
-    #     if current_user.role == 'S':
-    #         type = "Request"
-    #     else:
-    #         type = "Offer"
-    #     # type = post_form.type.data
-    #     author = current_user.username
-    #     date_time = datetime.now()
-    #
-    #     # add roompost to database
-    #     blog_post = StudentPost(title=title, author=author, date_posted=date_time, content=content,
-    #                             type=type, post_course=post_course_name)
-    #
-    #     db.session.add(blog_post)
-    #     db.session.commit()
-    #
-    #     return redirect(url_for('home'))
-
     return render_template('addNewStudentPost.html', username=current_user.username, post_form=post_form,
                            user_object=user_object, this_user=this_user, t_status=t_status, role_name=role_name)
 
@@ -853,7 +820,6 @@ def profile_programs():
     elif this_user.role == 'A':
         role_name = "Admin"
         t_status = "Admin"
-
 
     return render_template('profilePrograms.html', username=current_user.username, this_user=this_user, form1=form1, role_name=role_name, t_status=t_status)
 
@@ -1192,9 +1158,6 @@ def profile():
         role_name = "Student"
         student_posts = StudentPost.query.filter_by(author=this_user.username).order_by(StudentPost.date_posted.desc()).all()
 
-        # student = Student.query.filter_by(user_id=this_user.id).first()
-        # user_courses = StudentCourses.query.filter_by(student_id=student.student_id).all()
-
         if Tutor.query.filter_by(user_id=this_user.id).first():
             tutor = Tutor.query.filter_by(user_id=this_user.id).first()
             t_status = tutor.tutor_status
@@ -1501,12 +1464,6 @@ def deletePost():
 # updates community forums posts
 @app.route('/updatePost', methods=['POST'])
 def updatePost():
-    # post = StudentPost.query.filter_by(id=request.form['id']).first()
-    # db.session.delete(post)
-    # db.session.commit()
-    # db.session.query(PostComment).filter_by(post_id=post.id).delete()
-    # db.session.commit()
-
     post = StudentPost.query.filter_by(id=request.form['id']).first()
 
     post.title = request.form['title']

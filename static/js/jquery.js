@@ -1,7 +1,13 @@
 /* e.stopImmediatePropagation();
 e.stopPropagation;
 
-Admin portal functions */
+AUTHOR: AUSTIN PAUL, EMMA HOBDEN, HALEY WALBOURNE, SARTHAK JAIN
+DATE: NOV 3
+QUICKFIX_IO DIRTYBITS
+PRESENTATION 1 BUILD DEPLOYED AT
+quickfix-io.herokuapp.com
+
+Admin portal functions and application functions*/
 
 $(document).ready(function () {
 

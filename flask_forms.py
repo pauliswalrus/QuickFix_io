@@ -6,10 +6,10 @@ from passlib.hash import pbkdf2_sha256
 from sqlalq_datamodels import User, FileUpload, RoomPost, choice_query
 
 
-###     AUTHOR: AUSTIN PAUL
-###     DATE: OCT 25
+###     AUTHOR: AUSTIN PAUL, EMMA HOBDEN, HALEY WALBOURNE, SARTHAK JAIN
+###     DATE: NOV 3
 ###     QUICKFIX_IO DIRTYBITS
-###     SPRINT 6 OCT 25 BUILD DEPLOYED AT
+###     BUILD DEPLOYED AT
 ###     quickfix-io.herokuapp.com
 
 

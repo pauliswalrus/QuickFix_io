@@ -2,7 +2,9 @@
 
 QuickFix_io Capstone Project
 
-Nov 1 Presentation Build 1
+Nov 3 Presentation Build 1.03
+
+Post-presentation bug fixes and comment cleanup
 
 deployed at:
 

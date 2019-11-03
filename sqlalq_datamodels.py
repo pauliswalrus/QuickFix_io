@@ -4,10 +4,10 @@ from flask_login import UserMixin
 from __init__ import app
 
 
-###     AUTHOR: AUSTIN PAUL
-###     DATE: OCT 25
+###     AUTHOR: AUSTIN PAUL, EMMA HOBDEN, HALEY WALBOURNE, SARTHAK JAIN
+###     DATE: OCT NOV 3
 ###     QUICKFIX_IO DIRTYBITS
-###     SPRINT 6 OCT 25 BUILD DEPLOYED AT
+###     PRESENTATION BUILD DEPLOYED AT
 ###     quickfix-io.herokuapp.com
 
 db = SQLAlchemy(app)
@@ -27,6 +27,7 @@ class User(UserMixin, db.Model):
     user_photo = db.Column(db.Text)
     about_me = db.Column(db.Text)
 
+
 class Student(db.Model):
 
     __tablename__="student"
@@ -35,6 +36,7 @@ class Student(db.Model):
     school_id = db.Column(db.Integer)
     program_id = db.Column(db.Integer)
     user_id = db.Column(db.Integer)
+
 
 class Tutor(db.Model):
 
@@ -49,6 +51,7 @@ class Tutor(db.Model):
     application_comments = db.Column(db.Text)
     tutor_courses = db.Column(db.ARRAY(db.Text))
 
+
 class UserCourses(db.Model):
 
     __tablename__="user_courses"
@@ -58,6 +61,7 @@ class UserCourses(db.Model):
     user_id = db.Column(db.Integer)
     course_name = db.Column(db.Text)
     course_code = db.Column(db.Text)
+
 
 class TutorCourses(db.Model):
 
@@ -77,6 +81,7 @@ class FileUpload(db.Model):
     username = db.Column(db.String(25), nullable=False)
     file_name = db.Column(db.Text, nullable=False)
     data = db.Column(db.LargeBinary)
+
 
 class RoomUpload(db.Model):
 
@@ -98,6 +103,7 @@ class Message(db.Model):
     room = db.Column(db.String(50), nullable=False)
     created_at = db.Column(db.Text)
 
+
 # data model for blogpost table recently added in heroku db
 class RoomPost(db.Model):
     """ Blogpost Model"""
@@ -113,6 +119,7 @@ class RoomPost(db.Model):
     room_course = db.Column(db.Text)
     room_code = db.Column(db.Text)
     visible = db.Column(db.Boolean)
+
 
 # data model for blogpost table recently added in heroku db
 class RoomComment(db.Model):
@@ -140,6 +147,7 @@ class StudentPost(db.Model):
     post_course_code = db.Column(db.Text)
     type = db.Column(db.String(25))
 
+
 # data model for blogpost table recently added in heroku db
 class PostComment(db.Model):
     """Student Post Comment Model"""
@@ -151,12 +159,14 @@ class PostComment(db.Model):
     date_posted = db.Column(db.DateTime)
     content = db.Column(db.Text)
 
+
 class Program(db.Model):
     """Program Model"""
 
     __tablename__ = "program_test"
     program_id = db.Column(db.Integer, primary_key=True)
     programName = db.Column(db.Text)
+
 
 class ProgramCourse(db.Model):
     """ProgramCourse"""
@@ -166,6 +176,7 @@ class ProgramCourse(db.Model):
     program_id = db.Column(db.Integer, db.ForeignKey('program_test.program_id'))
     courseCode = db.Column(db.Text)
     courseName = db.Column(db.Text)
+
 
 class Course(db.Model):
     """Course Model"""
@@ -182,6 +193,7 @@ class Course(db.Model):
 # class RoomUploadsSchema(ma.ModelSchema):
 #     class Meta:
 #         model = RoomUpload
+
 
 def choice_query():
     return Course.query
