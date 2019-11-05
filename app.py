@@ -15,8 +15,7 @@ from sqlalq_datamodels import *
 
 ######################################################
 ##
-# AUTHOR: AUSTIN PAUL, EMMA HOBDEN, HALEY WALBOURNE, SARTHAK JAIN
-# DATE: NOV 3
+# AUTHOR: AUSTIN PAUL, EMMA HOBDEN, HALEY WALBOURNE
 # QUICKFIX_IO DIRTYBITS
 # PRESENTATION 1 BUILD DEPLOYED AT
 # quickfix-io.herokuapp.com

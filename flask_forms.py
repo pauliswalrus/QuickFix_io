@@ -6,7 +6,7 @@ from passlib.hash import pbkdf2_sha256
 from sqlalq_datamodels import User, FileUpload, RoomPost, choice_query
 
 
-###     AUTHOR: AUSTIN PAUL, EMMA HOBDEN, HALEY WALBOURNE, SARTHAK JAIN
+###     AUTHOR: AUSTIN PAUL, EMMA HOBDEN, HALEY WALBOURNE
 ###     DATE: NOV 3
 ###     QUICKFIX_IO DIRTYBITS
 ###     BUILD DEPLOYED AT
