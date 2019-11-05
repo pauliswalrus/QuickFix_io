@@ -251,18 +251,8 @@ def new_tutor():
     elif this_user.role == 'A':
         role_name = "Admin"
         t_status = "Admin"
-    #
-    # program_courses = ProgramCourse.query.filter_by(program_id=program_id).all()
-    # course_list = [(k.program_course_id, k.courseName) for k in program_courses]
-    #
-    # course_form = TutorCourseForm()
-    #
-    # course_form.tutor_courses.choices = course_list
 
     tutor_form = TutorForm()
-
-    #
-    # tutor_form.tutor_courses.choices = course_list
 
     # Updates database if validation is successful
     if tutor_form.validate_on_submit():
@@ -274,16 +264,7 @@ def new_tutor():
                             credentials_file_data=credentials_file.read())
         db.session.add(tutor_added)
         db.session.commit()
-        #
-        # course_picked = tutor_form.course_options.data
-        # this_course = Course.query.filter_by(course_id=course_picked).first()
-        # this_user = User.query.filter_by(username=current_user.username).first()
-        # user_course = UserCourses(user_id=this_user.id, course_name=this_course.course_name,
-        #                           course_id=this_course.course_id)
-        # db.session.add(user_course)
-        # db.session.commit()
 
-        flash('Registered successfully. Please login', 'success')
         return redirect(url_for('home'))
 
     return render_template("applicationSubmit.html", form=tutor_form, this_user=this_user, t_status=t_status, role_name=role_name, t_courses=t_courses)
@@ -1475,6 +1456,7 @@ def updatePost():
     # return jsonify({'result': 'success', "post_title": post.title})
 
     return jsonify({'result': 'success'})
+
 
 # delete community forum post comments
 @app.route('/deletePostComments', methods=['POST'])
