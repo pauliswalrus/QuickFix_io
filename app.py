@@ -1652,7 +1652,6 @@ def deleteRoomUploads():
 def updateRoom():
     room = RoomPost.query.filter_by(id=request.form['id']).first()
 
-    room.title = request.form['name']
     room.room_title = request.form['title']
     room.content = request.form['content']
     # room.date_posted = date_time = datetime.now()
@@ -1660,7 +1659,8 @@ def updateRoom():
 
     db.session.commit()
 
-    return jsonify({'result': 'success', "room_name": room.room_title})
+    return jsonify({'result': 'success', "room_title": room.room_title})
+
 
 
 # Admin Portal - Update Room Profile?
