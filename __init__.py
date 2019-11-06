@@ -1,9 +1,8 @@
 from flask import Flask
 
 ###     AUTHOR: AUSTIN PAUL
-###     DATE: OCT 25
+###     DATE: NOV 6
 ###     QUICKFIX_IO DIRTYBITS
-###     SPRINT 6 OCT 25 BUILD DEPLOYED AT
 ###     quickfix-io.herokuapp.com
 
 app = Flask(__name__)
