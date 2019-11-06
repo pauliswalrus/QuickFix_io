@@ -13,15 +13,14 @@ from flask_forms import *
 from sqlalq_datamodels import *
 
 
-######################################################
+############################################################################################################
 ##
 # AUTHOR: AUSTIN PAUL, EMMA HOBDEN, HALEY WALBOURNE
 # QUICKFIX_IO DIRTYBITS
 # PRESENTATION 1 BUILD DEPLOYED AT
 # quickfix-io.herokuapp.com
 ##
-######################################################
-
+############################################################################################################
 
 # socketio init
 socketio = SocketIO(app)
@@ -43,7 +42,14 @@ def load_user(id):
     return User.query.get(int(id))
 
 
-# main route login
+############################################################################################################
+##
+# BASIC PAGES / FUNCTIONS
+##
+############################################################################################################
+
+
+# Login Page/Function
 @app.route('/', methods=['GET', 'POST'])
 def login():
     login_form = LoginForm()
@@ -70,7 +76,7 @@ def login():
     return render_template("login.html", form=login_form)
 
 
-# logout route
+# Logout Function
 @app.route("/logout", methods=['GET'])
 def logout():
     # sets status to offline at logout
@@ -83,111 +89,7 @@ def logout():
     return redirect(url_for('login'))
 
 
-# admin - pending tutor applications
-@app.route('/admin')
-def admin():
-    if session["userRole"] != "A":
-        return "You are not an authorized admin. Please go back."
-
-    # users in desc order
-    users_list = User.query.order_by(User.id.desc()).all()
-    all_files = FileUpload.query.all()
-
-    # rooms desc by date - refactor to rooms
-    blog_posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
-
-    tutors = Tutor.query.filter_by(tutor_status="pending").all()
-
-
-    # grabs all pending tutors, grabs info from User and Tutor table
-    tutors_pending = db.session.query(User.firstname, User.lastname, User.username, Tutor.user_id, Tutor.tutor_id,
-                                      Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name,
-                                      Tutor.application_comments).filter(User.id == Tutor.user_id,
-                                                                         Tutor.tutor_status == "pending").order_by(
-        Tutor.tutor_id.desc()).all()
-    # tutors_approved = Tutor.query.filter_by(tutor_status="approved").all()
-
-    # approved tutors in desc order
-    tutors_approved = db.session.query(User.firstname, User.lastname, User.username, Tutor.user_id, Tutor.tutor_id,
-                                       Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name,
-                                       Tutor.application_comments).filter(User.id == Tutor.user_id).order_by(User.id.desc()).all()
-
-    this_user = User.query.filter_by(username=current_user.username).first()
-
-    return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files,
-                           blog_posts=blog_posts, tutors=tutors, this_user=this_user, tutors_approved=tutors_approved,
-                           tutors_pending=tutors_pending)
-
-
-# admin - approved applications
-@app.route('/admin_approved')
-def admin_approved():
-    if session["userRole"] != "A":
-        return "You are not an authorized admin. Please go back."
-
-    this_user = User.query.filter_by(username=current_user.username).first()
-
-    # approved tutors in desc order
-    tutors_approved = db.session.query(User.firstname, User.lastname, User.username, Tutor.user_id, Tutor.tutor_id,
-                                       Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name,
-                                       Tutor.application_comments).filter(User.id == Tutor.user_id, Tutor.tutor_status == 'approved').order_by(
-        User.id.desc()).all()
-
-    tutor_courses = TutorCourses.query.filter_by(user_id=this_user.id).all()
-
-    return render_template("admin_approved.html", this_user=this_user, tutors_approved=tutors_approved, tutor_courses=tutor_courses)
-
-
-# admin - manage rooms
-@app.route('/admin_rooms')
-def admin_rooms():
-    if session["userRole"] != "A":
-        return "You are not an authorized admin. Please go back."
-
-    this_user = User.query.filter_by(username=current_user.username).first()
-
-    # rooms desc by date
-    blog_posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
-
-    return render_template("admin_rooms.html", this_user=this_user, blog_posts=blog_posts)
-
-
-# admin - manage community forum posts
-@app.route('/admin_posts')
-def admin_posts():
-    if session["userRole"] != "A":
-        return "You are not an authorized admin. Please go back."
-
-    this_user = User.query.filter_by(username=current_user.username).first()
-
-    # rooms desc by date
-    forum_posts = StudentPost.query.order_by(StudentPost.date_posted.desc()).all()
-
-    return render_template("admin_posts.html", this_user=this_user, forum_posts=forum_posts)
-
-
-# admin - manage users
-@app.route("/users", methods=['GET', 'POST'])
-def all_users():
-    if session["userRole"] != "A":
-        return "You are not an authorized admin. Please go back."
-
-    # users in desc order
-    users_list = User.query.order_by(User.id.desc()).all()
-
-    all_tutors = User.query.filter_by(role='T').all()
-    online_tutors = User.query.filter_by(status=1, role='T').all()
-    busy_tutors = User.query.filter_by(status=2, role='T').all()
-    student_users = User.query.filter_by(role='S').all()
-
-    this_user = User.query.filter_by(username=current_user.username).first()
-
-    return render_template('all_users.html', username=current_user.username, all_tutors=all_tutors,
-                           online_tutors=online_tutors, busy_tutors=busy_tutors, student_users=student_users,
-                           this_user=this_user, users_list=users_list)
-
-
-# need to rename/refactor to student?
+# Registration Page/Function
 @app.route('/register', methods=['GET', 'POST'])
 def new_student():
     reg_form = RegistrationForm()
@@ -223,7 +125,338 @@ def new_student():
     return render_template("register_now.html", form=reg_form)
 
 
-# tutor application/registration page - submit
+# Home Page
+@app.route("/home", methods=['GET', 'POST'])
+def home():
+    date_stamp = strftime('%A, %B %d', localtime())
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    online_users = User.query.filter_by(status=1, role="T").all()
+
+    t_status = "not sure"
+
+    if this_user.role == 'S':
+        posts = RoomPost.query.filter_by(type="Offer").filter_by(visible=True).order_by(
+            RoomPost.date_posted.desc()).all()
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
+        role_name = "Admin"
+        t_status = "Admin"
+
+    offerhelp = RoomPost.query.filter_by(type="Offer").filter_by(visible=True).order_by(
+        RoomPost.date_posted.desc()).all()
+    askforhelp = StudentPost.query.order_by(StudentPost.date_posted.desc()).all()
+
+    return render_template('home_page.html', username=current_user.username, role=current_user.role,
+                           date_stamp=date_stamp,
+                           online_users=online_users, posts=posts, offerhelp=offerhelp, askforhelp=askforhelp,
+                           role_name=role_name, this_user=this_user, t_status=t_status)
+
+
+############################################################################################################
+##
+# ADMIN PAGES / FUNCTIONS
+##
+############################################################################################################
+
+# View Pending Tutor Applications
+@app.route('/admin')
+def admin():
+    if session["userRole"] != "A":
+        return "You are not an authorized admin. Please go back."
+
+    # users in desc order
+    users_list = User.query.order_by(User.id.desc()).all()
+    all_files = FileUpload.query.all()
+
+    # rooms desc by date - refactor to rooms
+    blog_posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
+
+    tutors = Tutor.query.filter_by(tutor_status="pending").all()
+
+
+    # grabs all pending tutors, grabs info from User and Tutor table
+    tutors_pending = db.session.query(User.firstname, User.lastname, User.username, Tutor.user_id, Tutor.tutor_id,
+                                      Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name,
+                                      Tutor.application_comments).filter(User.id == Tutor.user_id,
+                                                                         Tutor.tutor_status == "pending").order_by(
+        Tutor.tutor_id.desc()).all()
+    # tutors_approved = Tutor.query.filter_by(tutor_status="approved").all()
+
+    # approved tutors in desc order
+    tutors_approved = db.session.query(User.firstname, User.lastname, User.username, Tutor.user_id, Tutor.tutor_id,
+                                       Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name,
+                                       Tutor.application_comments).filter(User.id == Tutor.user_id).order_by(User.id.desc()).all()
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    return render_template("admin.html", username=current_user.username, users_list=users_list, all_files=all_files,
+                           blog_posts=blog_posts, tutors=tutors, this_user=this_user, tutors_approved=tutors_approved,
+                           tutors_pending=tutors_pending)
+
+
+# View Approved Tutor Applications
+@app.route('/admin_approved')
+def admin_approved():
+    if session["userRole"] != "A":
+        return "You are not an authorized admin. Please go back."
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    # approved tutors in desc order
+    tutors_approved = db.session.query(User.firstname, User.lastname, User.username, Tutor.user_id, Tutor.tutor_id,
+                                       Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name,
+                                       Tutor.application_comments).filter(User.id == Tutor.user_id, Tutor.tutor_status == 'approved').order_by(
+        User.id.desc()).all()
+
+    tutor_courses = TutorCourses.query.filter_by(user_id=this_user.id).all()
+
+    return render_template("admin_approved.html", this_user=this_user, tutors_approved=tutors_approved, tutor_courses=tutor_courses)
+
+
+# Download Tutor Credentials
+@app.route('/credentials/<string:dl_name>/')
+def download_cred(dl_name):
+    # file_data = FileUpload.query.first()
+    file_data = Tutor.query.filter_by(credentials_file_name=dl_name).first()
+
+    return send_file(BytesIO(file_data.credentials_file_data), attachment_filename=file_data.credentials_file_name,
+                     as_attachment=True)
+
+
+# Approve Tutor
+@app.route('/approveTutor', methods=['POST'])
+def approveTutor():
+    user = User.query.filter_by(id=request.form['id']).first()
+    tutor = Tutor.query.filter_by(user_id=user.id).first()
+    user.role = "T"
+    tutor.tutor_status = "approved"
+    db.session.commit()
+
+    student = Student.query.filter_by(user_id=user.id).first()
+    db.session.delete(student)
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+
+# Deny Tutor
+@app.route('/denyTutor', methods=['POST'])
+def denyTutor():
+    user = User.query.filter_by(id=request.form['id']).first()
+
+    tutor = Tutor.query.filter_by(user_id=user.id).first()
+    tutor.application_comments = request.form['comments']
+    tutor.tutor_status = "denied"
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+
+# Delete Tutor Application (redirects to new application)
+@app.route('/deleteApplication', methods=['POST'])
+def deleteApplication():
+    user = User.query.filter_by(username=current_user.username).first()
+
+    db.session.query(TutorCourses).filter_by(user_id=user.id).delete()
+    db.session.commit()
+
+    tutor = Tutor.query.filter_by(user_id=user.id).first()
+    db.session.delete(tutor)
+    db.session.commit()
+
+    return redirect(url_for('application_begin'))
+
+
+# Manage Users
+@app.route("/users", methods=['GET', 'POST'])
+def all_users():
+    if session["userRole"] != "A":
+        return "You are not an authorized admin. Please go back."
+
+    # users in desc order
+    users_list = User.query.order_by(User.id.desc()).all()
+
+    all_tutors = User.query.filter_by(role='T').all()
+    online_tutors = User.query.filter_by(status=1, role='T').all()
+    busy_tutors = User.query.filter_by(status=2, role='T').all()
+    student_users = User.query.filter_by(role='S').all()
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    return render_template('all_users.html', username=current_user.username, all_tutors=all_tutors,
+                           online_tutors=online_tutors, busy_tutors=busy_tutors, student_users=student_users,
+                           this_user=this_user, users_list=users_list)
+
+
+# Edit User
+@app.route('/editUser', methods=['POST'])
+def editUser():
+    user_edit = User.query.filter_by(id=request.form['id']).first()
+
+    user_edit.username = request.form['username']
+    user_edit.firstname = request.form['firstname']
+    user_edit.lastname = request.form['lastname']
+    user_edit.email = request.form['email']
+
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+
+# Delete User
+@app.route('/deleteUser', methods=['POST'])
+def deleteUser():
+    user = User.query.filter_by(id=request.form['id']).first()
+
+    #deletes all trace of users
+    db.session.query(RoomPost).filter_by(author=user.username).delete()
+    db.session.commit()
+    db.session.query(StudentPost).filter_by(author=user.username).delete()
+    db.session.commit()
+    db.session.query(PostComment).filter_by(comment_author=user.username).delete()
+    db.session.commit()
+    db.session.query(RoomComment).filter_by(comment_author=user.username).delete()
+    db.session.commit()
+    db.session.query(FileUpload).filter_by(username=user.username).delete()
+    db.session.commit()
+
+    if user.role == "T":
+        tutor = Tutor.query.filter_by(user_id=user.id).first()
+        db.session.delete(tutor)
+        db.session.commit()
+
+        db.session.delete(user)
+        db.session.commit()
+
+    elif user.role == "S":
+        student = Student.query.filter_by(user_id=user.id).first()
+        db.session.delete(student)
+        db.session.commit()
+
+        db.session.delete(user)
+        db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+
+# Manage Rooms
+@app.route('/admin_rooms')
+def admin_rooms():
+    if session["userRole"] != "A":
+        return "You are not an authorized admin. Please go back."
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    # rooms desc by date
+    blog_posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
+
+    return render_template("admin_rooms.html", this_user=this_user, blog_posts=blog_posts)
+
+
+# Delete Room
+@app.route('/deleteRoom', methods=['POST'])
+def deleteRoom():
+    room = RoomPost.query.filter_by(id=request.form['id']).first()
+    db.session.delete(room)
+    db.session.commit()
+    db.session.query(RoomComment).filter_by(room_id=room.id).delete()
+    db.session.commit()
+    db.session.query(RoomUpload).filter_by(room_name=room.title).delete()
+    db.session.commit()
+    db.session.query(Message).filter_by(room=room.title).delete()
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+
+# Delete Comments on Rooms
+@app.route('/deleteRoomComments', methods=['POST'])
+def deleteRoomComments():
+    room = RoomPost.query.filter_by(id=request.form['id']).first()
+
+    # delete all messages by room title
+    db.session.query(RoomComment).filter_by(room_id=room.id).delete()
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+
+# Manage Community Forum Posts
+@app.route('/admin_posts')
+def admin_posts():
+    if session["userRole"] != "A":
+        return "You are not an authorized admin. Please go back."
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    # rooms desc by date
+    forum_posts = StudentPost.query.order_by(StudentPost.date_posted.desc()).all()
+
+    return render_template("admin_posts.html", this_user=this_user, forum_posts=forum_posts)
+
+
+# Delete Community Forum Posts
+@app.route('/deletePost', methods=['POST'])
+def deletePost():
+    post = StudentPost.query.filter_by(id=request.form['id']).first()
+    db.session.delete(post)
+    db.session.commit()
+    db.session.query(PostComment).filter_by(post_id=post.id).delete()
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+
+# Update Community Forums Posts
+@app.route('/updatePost', methods=['POST'])
+def updatePost():
+    post = StudentPost.query.filter_by(id=request.form['id']).first()
+
+    post.title = request.form['title']
+    post.content = request.form['content']
+    # room.date_posted = date_time = datetime.now()
+    post.date_posted = datetime.now()
+
+    db.session.commit()
+
+    # return jsonify({'result': 'success', "post_title": post.title})
+
+    return jsonify({'result': 'success'})
+
+
+# Delete Community Forum Post Comments
+@app.route('/deletePostComments', methods=['POST'])
+def deletePostComments():
+    post = StudentPost.query.filter_by(id=request.form['id']).first()
+
+    # delete all messages by room title
+    db.session.query(PostComment).filter_by(post_id=post.id).delete()
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+
+############################################################################################################
+##
+# TUTOR SPECIFIC PAGES/FUNCTIONS
+##
+############################################################################################################
+
+
+# Tutor Application Page - Submit
 @app.route('/application_submit', methods=['GET', 'POST'])
 def new_tutor():
     this_user = User.query.filter_by(username=current_user.username).first()
@@ -270,7 +503,7 @@ def new_tutor():
     return render_template("applicationSubmit.html", form=tutor_form, this_user=this_user, t_status=t_status, role_name=role_name, t_courses=t_courses)
 
 
-# check tutor application, accessed by applicant by navbar OR admin from portal
+# Check Tutor Application (accessed by applicant by navbar OR admin from portal)
 @app.route('/check_application/<int:user_id>', methods=['GET', 'POST'])
 def check_application(user_id):
 
@@ -302,7 +535,242 @@ def check_application(user_id):
     return render_template("check_application.html", this_user=this_user, this_tutor=this_tutor, role_name=role_name, t_status=t_status, tutor_courses=tutor_courses, app_user=app_user)
 
 
-# room page (lobby)
+# Add Tutor Courses (used in tutor_application and tutor profile)
+@app.route('/addTutorCourse', methods=['POST'])
+def addTutorCourse():
+
+    user = User.query.filter_by(username=current_user.username).first()
+    user_id = user.id
+    this_course = ProgramCourse.query.filter_by(courseName=request.form['course_name']).first()
+    tutor_course = TutorCourses(user_id=user_id, course_name=this_course.courseName,
+                              course_id=this_course.program_course_id, course_code=this_course.courseCode)
+    db.session.add(tutor_course)
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+
+# Delete Tutor Courses (used in tutor application and profile)
+@app.route('/clearTutorCourses', methods=['POST'])
+def clearTutorCourses():
+
+    user = User.query.filter_by(username=current_user.username).first()
+    user_id = user.id
+
+    db.session.query(TutorCourses).filter_by(user_id=user_id).delete()
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+
+# Tutor Courses Page - accessed from profile programs
+@app.route("/tutor_courses/<int:program_id>", methods=['GET', 'POST'])
+def tutor_courses(program_id):
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+    this_tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+    u_courses = TutorCourses.query.filter_by(user_id=this_user.id).order_by(TutorCourses.tutor_course_id.desc()).all()
+    this_program = Program.query.filter_by(program_id=program_id).first()
+
+    t_status = "not sure"
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
+
+
+    # program = Program.query.filter_by(program_name=program_name).first()
+    program_courses = ProgramCourse.query.filter_by(program_id=program_id).all()
+    course_list = [(k.program_course_id, k.courseName) for k in program_courses]
+
+    form = CourseForm()
+
+    form.course_options.choices = course_list
+
+    if request.method == 'GET':
+        return render_template('tutorCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
+
+    if request.method == 'POST':
+        course_picked = form.course_options.data
+
+        this_course = ProgramCourse.query.filter_by(program_course_id=course_picked).first()
+        this_user = User.query.filter_by(username=current_user.username).first()
+        tutor_course = TutorCourses(user_id=this_user.id, course_name=this_course.courseName,
+                                    course_id=this_course.program_course_id, course_code=this_course.courseCode)
+        db.session.add(tutor_course)
+        db.session.commit()
+
+        return redirect(url_for('tutor_courses', program_id=program_id))
+
+    return render_template('tutorCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
+
+
+# Tutor Application - Choose a Program Page
+@app.route("/application_begin", methods=['GET', 'POST'])
+def application_begin():
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    t_status = "not sure"
+    available_programs = Program.query.all()
+    program_list = [(k.program_id, k.programName) for k in available_programs]
+    form1 = ProgramForm()
+    form1.program_options.choices = program_list
+
+    if request.method == 'POST':
+        program_picked = form1.program_options.data
+        this_program = Program.query.filter_by(program_id=program_picked).first()
+        program_courses = ProgramCourse.query.filter_by(program_id=program_picked).all()
+
+        return redirect(url_for('application_courses', program_id=program_picked))
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
+
+    return render_template('applicationBegin.html', username=current_user.username, this_user=this_user, form1=form1, role_name=role_name, t_status=t_status)
+
+
+# Tutor Application Courses - accessed from application begin page
+@app.route("/application_courses/<int:program_id>", methods=['GET', 'POST'])
+def application_courses(program_id):
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+    this_tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+    u_courses = TutorCourses.query.filter_by(user_id=this_user.id).order_by(TutorCourses.tutor_course_id.desc()).all()
+
+    this_program = Program.query.filter_by(program_id=program_id).first()
+
+    t_status = "not sure"
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
+
+
+    # program = Program.query.filter_by(program_name=program_name).first()
+    program_courses = ProgramCourse.query.filter_by(program_id=program_id).all()
+    course_list = [(k.program_course_id, k.courseName) for k in program_courses]
+
+    form = CourseForm()
+
+    form.course_options.choices = course_list
+
+    if request.method == 'GET':
+        return render_template('applicationCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
+
+    if request.method == 'POST':
+        course_picked = form.course_options.data
+
+        this_course = ProgramCourse.query.filter_by(program_course_id=course_picked).first()
+        this_user = User.query.filter_by(username=current_user.username).first()
+        tutor_course = TutorCourses(user_id=this_user.id, course_name=this_course.courseName,
+                                    course_id=this_course.program_course_id, course_code=this_course.courseCode)
+        db.session.add(tutor_course)
+        db.session.commit()
+
+        return redirect(url_for('application_courses', program_id=program_id))
+
+    return render_template('applicationCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
+
+
+# Tutor - Delete Courses (used in profile and tutor application)
+@app.route('/deleteTutorCourse', methods=['POST'])
+def deleteTutorCourse():
+
+    user = User.query.filter_by(username=current_user.username).first()
+    user_id = user.id
+    tutor_course = TutorCourses.query.filter_by(user_id=user_id, tutor_course_id=request.form['id']).first()
+    db.session.delete(tutor_course)
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+
+############################################################################################################
+##
+# FIND A TUTOR PAGES
+##
+############################################################################################################
+
+
+# View All Public Tutor Rooms
+@app.route('/allrooms', methods=['GET', 'POST'])
+def allrooms():
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    t_status = "not sure"
+
+    search_form = TutorSearchForm(request.form)
+
+    if request.method == 'POST':
+        return search_results(search_form)
+
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
+
+    # room_posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
+
+
+    room_posts = db.session.query(User.user_photo, RoomPost.room_course, RoomPost.room_title,
+                                       RoomPost.author, RoomPost.title, RoomPost.date_posted,
+                                       RoomPost.content, RoomPost.id, RoomPost.room_code).filter(RoomPost.author == User.username, RoomPost.visible == True).order_by(
+        RoomPost.date_posted.desc()).all()
+
+    return render_template('tutorPosts.html', this_user=this_user, room_posts=room_posts, role_name=role_name, t_status=t_status, search_form=search_form)
+
+
+# View a Specific Tutor Room (lobby)
 @app.route('/room/<int:room_id>', methods=['GET', 'POST'])
 def room(room_id):
     room = RoomPost.query.filter_by(id=room_id).one()
@@ -356,7 +824,7 @@ def room(room_id):
                            comment_form=comment_form, comments=comments, this_user=this_user, role_name=role_name, t_status=t_status)
 
 
-# tutor creates room
+# Tutor Creates New Room
 @app.route('/add_room', methods=['GET', 'POST'])
 def add_room():
     post_form = RoomForm()
@@ -412,151 +880,7 @@ def add_room():
                            user_object=user_object, this_user=this_user, t_status=t_status, role_name=role_name)
 
 
-# community forum post -- need refactor to post
-@app.route('/studentpost/<int:studentpost_id>', methods=['GET', 'POST'])
-def studentpost(studentpost_id):
-
-    stdpost = StudentPost.query.filter_by(id=studentpost_id).one()
-
-    this_user = User.query.filter_by(username=current_user.username).first()
-
-    t_status = "not sure"
-
-    if this_user.role == 'S':
-        role_name = "Student"
-
-        if Tutor.query.filter_by(user_id=this_user.id).first():
-            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
-            t_status = tutor.tutor_status
-
-    elif this_user.role == 'T':
-        role_name = "Tutor"
-        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
-        t_status = tutor.tutor_status
-
-    elif this_user.role == 'A':
-        role_name = "Admin"
-        t_status = "Admin"
-
-    # student post comments
-    comments = PostComment.query.filter_by(post_id=studentpost_id).order_by(PostComment.date_posted.desc()).all()
-    comment_form = CommentForm()
-
-    session['postName'] = stdpost.title
-    session['userName'] = current_user.username
-    session['author'] = stdpost.author
-
-    if comment_form.validate_on_submit():
-        post_id = stdpost.id
-        comment_author = current_user.username
-        content = comment_form.content.data
-        date_time = datetime.now()
-
-        comment_post = PostComment(post_id=studentpost_id, comment_author=comment_author, date_posted=date_time,
-                                   content=content)
-        db.session.add(comment_post)
-        db.session.commit()
-
-        return redirect(url_for('studentpost', studentpost_id=post_id))
-
-    return render_template('viewStudentPost.html', post=stdpost, username=current_user.username,
-                           comment_form=comment_form, comments=comments, this_user=this_user, t_status=t_status, role_name=role_name)
-
-
-# searches community forums
-@app.route('/forum_results')
-def forum_search_results(search):
-    this_user = User.query.filter_by(username=current_user.username).first()
-    t_status = "not sure"
-
-    if this_user.role == 'S':
-        role_name = "Student"
-
-        if Tutor.query.filter_by(user_id=this_user.id).first():
-            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
-            t_status = tutor.tutor_status
-
-    elif this_user.role == 'T':
-        role_name = "Tutor"
-        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
-        t_status = tutor.tutor_status
-
-    elif this_user.role == 'A':
-        role_name = "Admin"
-        t_status = "Admin"
-
-    search_form = TutorSearchForm(request.form)
-
-    results = []
-    search_string = search.data['search']
-
-    if search_string:
-        if search.data['select'] == 'Course Code':
-            qry = db.session.query(StudentPost).filter(StudentPost.post_course_code.contains(search_string)).order_by(StudentPost.date_posted.desc())
-
-            results = qry.all()
-
-        elif search.data['select'] == 'Course Name':
-            qry = db.session.query(StudentPost).filter(StudentPost.post_course.contains(search_string)).order_by(StudentPost.date_posted.desc())
-
-            results = qry.all()
-        elif search.data['select'] == 'User Name':
-            qry = db.session.query(StudentPost).filter(
-                StudentPost.author.contains(search_string)).order_by(StudentPost.date_posted.desc())
-
-            results = qry.all()
-        else:
-            qry = db.session.query(RoomPost)
-            results = qry.all()
-    else:
-        qry = db.session.query(RoomPost)
-        results = qry.all()
-
-    if not results:
-        flash('No results found!')
-        return redirect('/allstudentposts')
-    else:
-        # display results
-        student_posts = results
-        # table.border = True
-
-        return render_template('studentPosts.html', this_user=this_user, student_posts=student_posts, role_name=role_name, t_status=t_status, search_form=search_form)
-
-
-# view all community forum posts -- need refactor to post
-@app.route('/allstudentposts', methods=['GET', 'POST'])
-def allstudentposts():
-    this_user = User.query.filter_by(username=current_user.username).first()
-
-    t_status = "not sure"
-
-    search_form = ForumSearchForm(request.form)
-
-    if request.method == 'POST':
-        return forum_search_results(search_form)
-
-    if this_user.role == 'S':
-        role_name = "Student"
-
-        if Tutor.query.filter_by(user_id=this_user.id).first():
-            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
-            t_status = tutor.tutor_status
-
-    elif this_user.role == 'T':
-        role_name = "Tutor"
-        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
-        t_status = tutor.tutor_status
-
-    elif this_user.role == 'A':
-        role_name = "Admin"
-        t_status = "Admin"
-
-    student_posts = StudentPost.query.order_by(StudentPost.date_posted.desc()).all()
-
-    return render_template('studentPosts.html', this_user=this_user, student_posts=student_posts, role_name=role_name, t_status=t_status, search_form=search_form)
-
-
-# searches rooms
+# Find a Tutor Page - Search for a Room
 @app.route('/results')
 def search_results(search):
     this_user = User.query.filter_by(username=current_user.username).first()
@@ -631,18 +955,24 @@ def search_results(search):
         return render_template('tutorPosts.html', this_user=this_user, room_posts=room_posts, role_name=role_name, t_status=t_status, search_form=search_form)
 
 
-# view all public tutor room
-@app.route('/allrooms', methods=['GET', 'POST'])
-def allrooms():
+############################################################################################################
+##
+# COMMUNITY FORUMS PAGES
+##
+############################################################################################################
+
+
+# View all Community Forums Posts
+@app.route('/allstudentposts', methods=['GET', 'POST'])
+def allstudentposts():
     this_user = User.query.filter_by(username=current_user.username).first()
 
     t_status = "not sure"
 
-    search_form = TutorSearchForm(request.form)
+    search_form = ForumSearchForm(request.form)
 
     if request.method == 'POST':
-        return search_results(search_form)
-
+        return forum_search_results(search_form)
 
     if this_user.role == 'S':
         role_name = "Student"
@@ -660,18 +990,63 @@ def allrooms():
         role_name = "Admin"
         t_status = "Admin"
 
-    # room_posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
+    student_posts = StudentPost.query.order_by(StudentPost.date_posted.desc()).all()
+
+    return render_template('studentPosts.html', this_user=this_user, student_posts=student_posts, role_name=role_name, t_status=t_status, search_form=search_form)
 
 
-    room_posts = db.session.query(User.user_photo, RoomPost.room_course, RoomPost.room_title,
-                                       RoomPost.author, RoomPost.title, RoomPost.date_posted,
-                                       RoomPost.content, RoomPost.id, RoomPost.room_code).filter(RoomPost.author == User.username, RoomPost.visible == True).order_by(
-        RoomPost.date_posted.desc()).all()
+# View a Specific Community Forum Post
+@app.route('/studentpost/<int:studentpost_id>', methods=['GET', 'POST'])
+def studentpost(studentpost_id):
 
-    return render_template('tutorPosts.html', this_user=this_user, room_posts=room_posts, role_name=role_name, t_status=t_status, search_form=search_form)
+    stdpost = StudentPost.query.filter_by(id=studentpost_id).one()
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    t_status = "not sure"
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
+
+    # student post comments
+    comments = PostComment.query.filter_by(post_id=studentpost_id).order_by(PostComment.date_posted.desc()).all()
+    comment_form = CommentForm()
+
+    session['postName'] = stdpost.title
+    session['userName'] = current_user.username
+    session['author'] = stdpost.author
+
+    if comment_form.validate_on_submit():
+        post_id = stdpost.id
+        comment_author = current_user.username
+        content = comment_form.content.data
+        date_time = datetime.now()
+
+        comment_post = PostComment(post_id=studentpost_id, comment_author=comment_author, date_posted=date_time,
+                                   content=content)
+        db.session.add(comment_post)
+        db.session.commit()
+
+        return redirect(url_for('studentpost', studentpost_id=post_id))
+
+    return render_template('viewStudentPost.html', post=stdpost, username=current_user.username,
+                           comment_form=comment_form, comments=comments, this_user=this_user, t_status=t_status, role_name=role_name)
 
 
-# add a new community forum post -- need refactor to post
+# Add a New Community Forum Post
 @app.route('/add_student_post', methods=['GET', 'POST'])
 def add_student_post():
     post_form = StudentPostForm()
@@ -755,66 +1130,10 @@ def add_student_post():
                            user_object=user_object, this_user=this_user, t_status=t_status, role_name=role_name)
 
 
-# pick programs page from profile
-@app.route("/profile_programs", methods=['GET', 'POST'])
-def profile_programs():
-
+# Community Forums Page - Search
+@app.route('/forum_results')
+def forum_search_results(search):
     this_user = User.query.filter_by(username=current_user.username).first()
-
-    t_status = "not sure"
-
-    available_programs = Program.query.all()
-
-    program_list = [(k.program_id, k.programName) for k in available_programs]
-    form1 = ProgramForm()
-
-    form1.program_options.choices = program_list
-
-    if this_user.role == 'S':
-        role_name = "Student"
-
-        if Tutor.query.filter_by(user_id=this_user.id).first():
-            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
-            t_status = tutor.tutor_status
-
-        if request.method == 'POST':
-            program_picked = form1.program_options.data
-            this_program = Program.query.filter_by(program_id=program_picked).first()
-
-            program_courses = ProgramCourse.query.filter_by(program_id=program_picked).all()
-
-            return redirect(url_for('student_courses', program_id=program_picked))
-
-    elif this_user.role == 'T':
-        role_name = "Tutor"
-        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
-        t_status = tutor.tutor_status
-
-        if request.method == 'POST':
-            program_picked = form1.program_options.data
-            this_program = Program.query.filter_by(program_id=program_picked).first()
-            program_courses = ProgramCourse.query.filter_by(program_id=program_picked).all()
-
-            return redirect(url_for('tutor_courses', program_id=program_picked))
-
-    elif this_user.role == 'A':
-        role_name = "Admin"
-        t_status = "Admin"
-
-    return render_template('profilePrograms.html', username=current_user.username, this_user=this_user, form1=form1, role_name=role_name, t_status=t_status)
-
-
-# student courses page accessed from profile programs
-@app.route("/student_courses/<int:program_id>", methods=['GET', 'POST'])
-def student_courses(program_id):
-
-    this_user = User.query.filter_by(username=current_user.username).first()
-
-    this_tutor = Tutor.query.filter_by(user_id=this_user.id).first()
-
-    u_courses = UserCourses.query.filter_by(user_id=this_user.id).order_by(UserCourses.user_course_id.desc()).all()
-
-    this_program = Program.query.filter_by(program_id=program_id).first()
     t_status = "not sure"
 
     if this_user.role == 'S':
@@ -833,259 +1152,64 @@ def student_courses(program_id):
         role_name = "Admin"
         t_status = "Admin"
 
-    # program = Program.query.filter_by(program_name=program_name).first()
+    search_form = TutorSearchForm(request.form)
 
-    program_courses = ProgramCourse.query.filter_by(program_id=program_id).all()
-    course_list = [(k.program_course_id, k.courseName) for k in program_courses]
+    results = []
+    search_string = search.data['search']
 
-    form = CourseForm()
+    if search_string:
+        if search.data['select'] == 'Course Code':
+            qry = db.session.query(StudentPost).filter(StudentPost.post_course_code.contains(search_string)).order_by(StudentPost.date_posted.desc())
 
-    form.course_options.choices = course_list
+            results = qry.all()
 
-    if request.method == 'GET':
-        return render_template('studentCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
+        elif search.data['select'] == 'Course Name':
+            qry = db.session.query(StudentPost).filter(StudentPost.post_course.contains(search_string)).order_by(StudentPost.date_posted.desc())
 
-    if request.method == 'POST':
+            results = qry.all()
+        elif search.data['select'] == 'User Name':
+            qry = db.session.query(StudentPost).filter(
+                StudentPost.author.contains(search_string)).order_by(StudentPost.date_posted.desc())
 
-        course_picked = form.course_options.data
+            results = qry.all()
+        else:
+            qry = db.session.query(RoomPost)
+            results = qry.all()
+    else:
+        qry = db.session.query(RoomPost)
+        results = qry.all()
 
-        this_course = ProgramCourse.query.filter_by(program_course_id=course_picked).first()
-        this_user = User.query.filter_by(username=current_user.username).first()
-        user_course = UserCourses(user_id=this_user.id, course_name=this_course.courseName,
-                                    course_id=this_course.program_course_id, course_code=this_course.courseCode)
-        db.session.add(user_course)
-        db.session.commit()
+    if not results:
+        flash('No results found!')
+        return redirect('/allstudentposts')
+    else:
+        # display results
+        student_posts = results
+        # table.border = True
 
-        return redirect(url_for('student_courses', program_id=program_id))
+        return render_template('studentPosts.html', this_user=this_user, student_posts=student_posts, role_name=role_name, t_status=t_status, search_form=search_form)
 
-    return render_template('studentCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
 
+############################################################################################################
+##
+# PROFILE PAGES
+##
+############################################################################################################
 
-# tutor courses page accessed from profile programs
-@app.route("/tutor_courses/<int:program_id>", methods=['GET', 'POST'])
-def tutor_courses(program_id):
 
-    this_user = User.query.filter_by(username=current_user.username).first()
-    this_tutor = Tutor.query.filter_by(user_id=this_user.id).first()
-    u_courses = TutorCourses.query.filter_by(user_id=this_user.id).order_by(TutorCourses.tutor_course_id.desc()).all()
-    this_program = Program.query.filter_by(program_id=program_id).first()
+# Edit User Email used in profile
+@app.route('/editUserProfile', methods=['POST'])
+def editUserProfile():
+    user_edit = User.query.filter_by(id=request.form['id']).first()
 
-    t_status = "not sure"
+    user_edit.email = request.form['email']
 
-    if this_user.role == 'S':
-        role_name = "Student"
+    db.session.commit()
 
-        if Tutor.query.filter_by(user_id=this_user.id).first():
-            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
-            t_status = tutor.tutor_status
+    return jsonify({'result': 'success'})
 
-    elif this_user.role == 'T':
-        role_name = "Tutor"
-        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
-        t_status = tutor.tutor_status
 
-    elif this_user.role == 'A':
-        role_name = "Admin"
-        t_status = "Admin"
-
-
-    # program = Program.query.filter_by(program_name=program_name).first()
-    program_courses = ProgramCourse.query.filter_by(program_id=program_id).all()
-    course_list = [(k.program_course_id, k.courseName) for k in program_courses]
-
-    form = CourseForm()
-
-    form.course_options.choices = course_list
-
-    if request.method == 'GET':
-        return render_template('tutorCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
-
-    if request.method == 'POST':
-        course_picked = form.course_options.data
-
-        this_course = ProgramCourse.query.filter_by(program_course_id=course_picked).first()
-        this_user = User.query.filter_by(username=current_user.username).first()
-        tutor_course = TutorCourses(user_id=this_user.id, course_name=this_course.courseName,
-                                    course_id=this_course.program_course_id, course_code=this_course.courseCode)
-        db.session.add(tutor_course)
-        db.session.commit()
-
-        return redirect(url_for('tutor_courses', program_id=program_id))
-
-    return render_template('tutorCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
-
-
-# tutor application program pick page
-@app.route("/application_begin", methods=['GET', 'POST'])
-def application_begin():
-
-    this_user = User.query.filter_by(username=current_user.username).first()
-
-    t_status = "not sure"
-    available_programs = Program.query.all()
-    program_list = [(k.program_id, k.programName) for k in available_programs]
-    form1 = ProgramForm()
-    form1.program_options.choices = program_list
-
-    if request.method == 'POST':
-        program_picked = form1.program_options.data
-        this_program = Program.query.filter_by(program_id=program_picked).first()
-        program_courses = ProgramCourse.query.filter_by(program_id=program_picked).all()
-
-        return redirect(url_for('application_courses', program_id=program_picked))
-
-    if this_user.role == 'S':
-        role_name = "Student"
-
-        if Tutor.query.filter_by(user_id=this_user.id).first():
-            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
-            t_status = tutor.tutor_status
-
-    elif this_user.role == 'T':
-        role_name = "Tutor"
-        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
-        t_status = tutor.tutor_status
-
-    elif this_user.role == 'A':
-        role_name = "Admin"
-        t_status = "Admin"
-
-    return render_template('applicationBegin.html', username=current_user.username, this_user=this_user, form1=form1, role_name=role_name, t_status=t_status)
-
-
-# tutor application courses accessed from application begin page
-@app.route("/application_courses/<int:program_id>", methods=['GET', 'POST'])
-def application_courses(program_id):
-
-    this_user = User.query.filter_by(username=current_user.username).first()
-    this_tutor = Tutor.query.filter_by(user_id=this_user.id).first()
-    u_courses = TutorCourses.query.filter_by(user_id=this_user.id).order_by(TutorCourses.tutor_course_id.desc()).all()
-
-    this_program = Program.query.filter_by(program_id=program_id).first()
-
-    t_status = "not sure"
-
-    if this_user.role == 'S':
-        role_name = "Student"
-
-        if Tutor.query.filter_by(user_id=this_user.id).first():
-            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
-            t_status = tutor.tutor_status
-
-    elif this_user.role == 'T':
-        role_name = "Tutor"
-        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
-        t_status = tutor.tutor_status
-
-    elif this_user.role == 'A':
-        role_name = "Admin"
-        t_status = "Admin"
-
-
-    # program = Program.query.filter_by(program_name=program_name).first()
-    program_courses = ProgramCourse.query.filter_by(program_id=program_id).all()
-    course_list = [(k.program_course_id, k.courseName) for k in program_courses]
-
-    form = CourseForm()
-
-    form.course_options.choices = course_list
-
-    if request.method == 'GET':
-        return render_template('applicationCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
-
-    if request.method == 'POST':
-        course_picked = form.course_options.data
-
-        this_course = ProgramCourse.query.filter_by(program_course_id=course_picked).first()
-        this_user = User.query.filter_by(username=current_user.username).first()
-        tutor_course = TutorCourses(user_id=this_user.id, course_name=this_course.courseName,
-                                    course_id=this_course.program_course_id, course_code=this_course.courseCode)
-        db.session.add(tutor_course)
-        db.session.commit()
-
-        return redirect(url_for('application_courses', program_id=program_id))
-
-    return render_template('applicationCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
-
-
-# route for home page - displays links to profile, find tutors, community forums. etc
-@app.route("/home", methods=['GET', 'POST'])
-def home():
-    date_stamp = strftime('%A, %B %d', localtime())
-    this_user = User.query.filter_by(username=current_user.username).first()
-
-    online_users = User.query.filter_by(status=1, role="T").all()
-
-    t_status = "not sure"
-
-    if this_user.role == 'S':
-        posts = RoomPost.query.filter_by(type="Offer").filter_by(visible=True).order_by(
-            RoomPost.date_posted.desc()).all()
-        role_name = "Student"
-
-        if Tutor.query.filter_by(user_id=this_user.id).first():
-            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
-            t_status = tutor.tutor_status
-
-    elif this_user.role == 'T':
-        posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
-        role_name = "Tutor"
-        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
-        t_status = tutor.tutor_status
-
-    elif this_user.role == 'A':
-        posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
-        role_name = "Admin"
-        t_status = "Admin"
-
-    offerhelp = RoomPost.query.filter_by(type="Offer").filter_by(visible=True).order_by(
-        RoomPost.date_posted.desc()).all()
-    askforhelp = StudentPost.query.order_by(StudentPost.date_posted.desc()).all()
-
-    return render_template('home_page.html', username=current_user.username, role=current_user.role,
-                           date_stamp=date_stamp,
-                           online_users=online_users, posts=posts, offerhelp=offerhelp, askforhelp=askforhelp,
-                           role_name=role_name, this_user=this_user, t_status=t_status)
-
-
-# route for chat - displays public rooms and form to join(create rooms)
-@app.route("/private_session/", methods=['GET', 'POST'])
-def private_chat():
-    date_stamp = strftime('%A, %B %d', localtime())
-    connected_stamp = strftime('%I : %M %p', localtime())
-    this_user = User.query.filter_by(username=current_user.username).first()
-
-    role_name = this_user.role
-
-    roomName = session.get('roomName')
-    authorName = session.get('author')
-
-    message_object = Message.query.filter_by(room=roomName).order_by(Message.id.asc()).all()
-    room_files = RoomUpload.query.filter_by(room_name=roomName).all()
-    room_object = RoomPost.query.filter_by(room_title=roomName).first()
-
-    roomVisible = room_object.visible
-
-    print(roomVisible)
-
-    file_form = FileUploadForm()
-
-    if file_form.validate_on_submit():
-        file = request.files[file_form.file.name]
-        newFile = RoomUpload(file_name=file.filename, room_name=roomName, username=current_user.username,
-                             data=file.read())
-        db.session.add(newFile)
-        db.session.commit()
-        return redirect(url_for('private_chat'))
-
-    return render_template('private_chat.html', username=current_user.username, date_stamp=date_stamp,
-                           roomName=roomName, message_object=message_object,
-                           authorName=authorName, connected_stamp=connected_stamp, file_form=file_form,
-                           room_files=room_files, room=room_object, this_user=this_user, role_name=role_name,
-                           roomVisible=roomVisible)
-
-
-# tutor/student updates aboutMe profile section
+# User Updates 'About Me' Profile Section
 @app.route('/update_aboutme', methods=['POST', 'GET'])
 def update_aboutme():
 
@@ -1101,7 +1225,7 @@ def update_aboutme():
     return render_template('aboutMe.html', user_object=user_object, username=current_user.username)
 
 
-# route for personal profile
+# Personal Profile Page / Edit Your Profile Page
 @app.route("/profile/", methods=['GET', 'POST'])
 def profile():
     user_object = User.query.filter_by(username=current_user.username).first()
@@ -1205,10 +1329,16 @@ def profile():
                            status=status, t_status=t_status, about_me=about_me, ts_form=ts_form, setdbstatus=setdbstatus, student_posts=student_posts, posts=posts, user_courses=user_courses, tutor_courses=tutor_courses)
 
 
-#
-# public profile accessed by users from online user links.
-#
+# Download a User-Uploaded File on Profile Page
+@app.route('/download/<string:dl_name>/')
+def download(dl_name):
+    # file_data = FileUpload.query.first()
+    file_data = FileUpload.query.filter_by(file_name=dl_name).first()
 
+    return send_file(BytesIO(file_data.data), attachment_filename=file_data.file_name, as_attachment=True)
+
+
+# Public Profile Page - pub_profile.html
 @app.route("/profile/<username>", methods=['GET', 'POST'])
 def pub_profile(username):
     thisUser = current_user.username
@@ -1282,13 +1412,194 @@ def pub_profile(username):
                            this_user=this_user, student_posts=student_posts, user_courses=user_courses, pub_role_name=pub_role_name, t_status=t_status)
 
 
-# gets profile pics
+# Gets Profile Pics
 @app.route('/uploads/pictures/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOADED_PHOTOS_DEST'], filename)
 
 
-# download room file from chat page
+# Profile Page - Choose a Program
+@app.route("/profile_programs", methods=['GET', 'POST'])
+def profile_programs():
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    t_status = "not sure"
+
+    available_programs = Program.query.all()
+
+    program_list = [(k.program_id, k.programName) for k in available_programs]
+    form1 = ProgramForm()
+
+    form1.program_options.choices = program_list
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+        if request.method == 'POST':
+            program_picked = form1.program_options.data
+            this_program = Program.query.filter_by(program_id=program_picked).first()
+
+            program_courses = ProgramCourse.query.filter_by(program_id=program_picked).all()
+
+            return redirect(url_for('student_courses', program_id=program_picked))
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+        if request.method == 'POST':
+            program_picked = form1.program_options.data
+            this_program = Program.query.filter_by(program_id=program_picked).first()
+            program_courses = ProgramCourse.query.filter_by(program_id=program_picked).all()
+
+            return redirect(url_for('tutor_courses', program_id=program_picked))
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
+
+    return render_template('profilePrograms.html', username=current_user.username, this_user=this_user, form1=form1, role_name=role_name, t_status=t_status)
+
+
+# Profile Page - Add Courses (student)
+@app.route("/student_courses/<int:program_id>", methods=['GET', 'POST'])
+def student_courses(program_id):
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    this_tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+
+    u_courses = UserCourses.query.filter_by(user_id=this_user.id).order_by(UserCourses.user_course_id.desc()).all()
+
+    this_program = Program.query.filter_by(program_id=program_id).first()
+    t_status = "not sure"
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
+
+    # program = Program.query.filter_by(program_name=program_name).first()
+
+    program_courses = ProgramCourse.query.filter_by(program_id=program_id).all()
+    course_list = [(k.program_course_id, k.courseName) for k in program_courses]
+
+    form = CourseForm()
+
+    form.course_options.choices = course_list
+
+    if request.method == 'GET':
+        return render_template('studentCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
+
+    if request.method == 'POST':
+
+        course_picked = form.course_options.data
+
+        this_course = ProgramCourse.query.filter_by(program_course_id=course_picked).first()
+        this_user = User.query.filter_by(username=current_user.username).first()
+        user_course = UserCourses(user_id=this_user.id, course_name=this_course.courseName,
+                                    course_id=this_course.program_course_id, course_code=this_course.courseCode)
+        db.session.add(user_course)
+        db.session.commit()
+
+        return redirect(url_for('student_courses', program_id=program_id))
+
+    return render_template('studentCourses.html', username=current_user.username, this_user=this_user, form=form, role_name=role_name, t_status=t_status, u_courses=u_courses, this_program=this_program)
+
+
+# Profile Page - Deletes User Uploads
+@app.route('/deleteUserFile', methods=['POST'])
+def deleteUserFile():
+    file = FileUpload.query.filter_by(username=current_user.username, file_name=request.form['id']).first()
+
+    db.session.delete(file)
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+
+# Profile Page - Deletes User Course
+@app.route('/deleteUserCourse', methods=['POST'])
+def deleteUserCourse():
+
+    user = User.query.filter_by(username=current_user.username).first()
+    user_id = user.id
+    user_course = UserCourses.query.filter_by(user_id=user_id, user_course_id=request.form['id']).first()
+    db.session.delete(user_course)
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+
+######################################################
+##
+# PROGRAMS, COURSES, etc
+##
+######################################################
+
+
+############################################################################################################
+##
+#  PRIVATE CHAT PAGE
+##
+############################################################################################################
+
+
+# Private Chat Page
+@app.route("/private_session/", methods=['GET', 'POST'])
+def private_chat():
+    date_stamp = strftime('%A, %B %d', localtime())
+    connected_stamp = strftime('%I : %M %p', localtime())
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    role_name = this_user.role
+
+    roomName = session.get('roomName')
+    authorName = session.get('author')
+
+    message_object = Message.query.filter_by(room=roomName).order_by(Message.id.asc()).all()
+    room_files = RoomUpload.query.filter_by(room_name=roomName).all()
+    room_object = RoomPost.query.filter_by(room_title=roomName).first()
+
+    roomVisible = room_object.visible
+
+    print(roomVisible)
+
+    file_form = FileUploadForm()
+
+    if file_form.validate_on_submit():
+        file = request.files[file_form.file.name]
+        newFile = RoomUpload(file_name=file.filename, room_name=roomName, username=current_user.username,
+                             data=file.read())
+        db.session.add(newFile)
+        db.session.commit()
+        return redirect(url_for('private_chat'))
+
+    return render_template('private_chat.html', username=current_user.username, date_stamp=date_stamp,
+                           roomName=roomName, message_object=message_object,
+                           authorName=authorName, connected_stamp=connected_stamp, file_form=file_form,
+                           room_files=room_files, room=room_object, this_user=this_user, role_name=role_name,
+                           roomVisible=roomVisible)
+
+
+# Private Chat Page - Download Files
 @app.route('/download_room/<string:dl_name>/')
 def room_download(dl_name):
     # file_data = FileUpload.query.first()ffd
@@ -1297,28 +1608,7 @@ def room_download(dl_name):
     return send_file(BytesIO(file_data.data), attachment_filename=file_data.file_name, as_attachment=True)
 
 
-# download user file on profile page
-@app.route('/download/<string:dl_name>/')
-def download(dl_name):
-    # file_data = FileUpload.query.first()
-    file_data = FileUpload.query.filter_by(file_name=dl_name).first()
-
-    return send_file(BytesIO(file_data.data), attachment_filename=file_data.file_name, as_attachment=True)
-
-
-# download tutor credentials
-@app.route('/credentials/<string:dl_name>/')
-def download_cred(dl_name):
-    # file_data = FileUpload.query.first()
-    file_data = Tutor.query.filter_by(credentials_file_name=dl_name).first()
-
-    return send_file(BytesIO(file_data.credentials_file_data), attachment_filename=file_data.credentials_file_name,
-                     as_attachment=True)
-
-
-## admin portal functions
-
-# admin view chatlog for each room admin portal
+# Admin Portal - View Chat Log for Each Room
 @app.route('/chat_log/<int:room_id>', methods=['GET', 'POST'])
 def chat_log(room_id):
     if session["userRole"] != "A":
@@ -1334,7 +1624,7 @@ def chat_log(room_id):
                            message_object=message_object)
 
 
-# delete chat logs for room admin portal
+# Admin Portal - Delete Chat Logs for Rooms
 @app.route('/deleteLogs', methods=['POST'])
 def deleteLogs():
     room = RoomPost.query.filter_by(id=request.form['id']).first()
@@ -1346,7 +1636,7 @@ def deleteLogs():
     return jsonify({'result': 'success'})
 
 
-# delete roomuploads for rooms used in admin
+# Admin Portal - delete Room Uploads for Rooms
 @app.route('/deleteRoomUploads', methods=['POST'])
 def deleteRoomUploads():
     room = RoomPost.query.filter_by(id=request.form['id']).first()
@@ -1357,11 +1647,12 @@ def deleteRoomUploads():
     return jsonify({'result': 'success'})
 
 
-# update room used in admin
+# Admin Portal - Update Room
 @app.route('/updateRoom', methods=['POST'])
 def updateRoom():
     room = RoomPost.query.filter_by(id=request.form['id']).first()
 
+    room.title = request.form['name']
     room.room_title = request.form['title']
     room.content = request.form['content']
     # room.date_posted = date_time = datetime.now()
@@ -1369,10 +1660,10 @@ def updateRoom():
 
     db.session.commit()
 
-    return jsonify({'result': 'success', "room_title": room.room_title})
+    return jsonify({'result': 'success', "room_name": room.room_title})
 
 
-# update roomprofile?
+# Admin Portal - Update Room Profile?
 @app.route('/updateRoomProfile', methods=['POST'])
 def updateRoomProfile():
     room = RoomPost.query.filter_by(id=request.form['id']).first()
@@ -1388,247 +1679,11 @@ def updateRoomProfile():
     return jsonify({'result': 'success'})
 
 
-# edit user email used in profile
-@app.route('/editUserProfile', methods=['POST'])
-def editUserProfile():
-    user_edit = User.query.filter_by(id=request.form['id']).first()
-
-    user_edit.email = request.form['email']
-
-    db.session.commit()
-
-    return jsonify({'result': 'success'})
-
-
-# delete room admin portal
-@app.route('/deleteRoom', methods=['POST'])
-def deleteRoom():
-    room = RoomPost.query.filter_by(id=request.form['id']).first()
-    db.session.delete(room)
-    db.session.commit()
-    db.session.query(RoomComment).filter_by(room_id=room.id).delete()
-    db.session.commit()
-    db.session.query(RoomUpload).filter_by(room_name=room.title).delete()
-    db.session.commit()
-    db.session.query(Message).filter_by(room=room.title).delete()
-    db.session.commit()
-
-    return jsonify({'result': 'success'})
-
-
-# delete comments on room pages from admin portal
-@app.route('/deleteRoomComments', methods=['POST'])
-def deleteRoomComments():
-    room = RoomPost.query.filter_by(id=request.form['id']).first()
-
-    # delete all messages by room title
-    db.session.query(RoomComment).filter_by(room_id=room.id).delete()
-    db.session.commit()
-
-    return jsonify({'result': 'success'})
-
-
-# deletes community forum posts
-@app.route('/deletePost', methods=['POST'])
-def deletePost():
-    post = StudentPost.query.filter_by(id=request.form['id']).first()
-    db.session.delete(post)
-    db.session.commit()
-    db.session.query(PostComment).filter_by(post_id=post.id).delete()
-    db.session.commit()
-
-    return jsonify({'result': 'success'})
-
-
-# updates community forums posts
-@app.route('/updatePost', methods=['POST'])
-def updatePost():
-    post = StudentPost.query.filter_by(id=request.form['id']).first()
-
-    post.title = request.form['title']
-    post.content = request.form['content']
-    # room.date_posted = date_time = datetime.now()
-    post.date_posted = datetime.now()
-
-    db.session.commit()
-
-    # return jsonify({'result': 'success', "post_title": post.title})
-
-    return jsonify({'result': 'success'})
-
-
-# delete community forum post comments
-@app.route('/deletePostComments', methods=['POST'])
-def deletePostComments():
-    post = StudentPost.query.filter_by(id=request.form['id']).first()
-
-    # delete all messages by room title
-    db.session.query(PostComment).filter_by(post_id=post.id).delete()
-    db.session.commit()
-
-    return jsonify({'result': 'success'})
-
-
-# deletes userupload used in profile
-@app.route('/deleteUserFile', methods=['POST'])
-def deleteUserFile():
-    file = FileUpload.query.filter_by(username=current_user.username, file_name=request.form['id']).first()
-
-    db.session.delete(file)
-    db.session.commit()
-
-    return jsonify({'result': 'success'})
-
-
-# deletes user_course used in profile
-@app.route('/deleteUserCourse', methods=['POST'])
-def deleteUserCourse():
-
-    user = User.query.filter_by(username=current_user.username).first()
-    user_id = user.id
-    user_course = UserCourses.query.filter_by(user_id=user_id, user_course_id=request.form['id']).first()
-    db.session.delete(user_course)
-    db.session.commit()
-
-    return jsonify({'result': 'success'})
-
-
-# deletes tutor used in profile and tutor application.
-@app.route('/deleteTutorCourse', methods=['POST'])
-def deleteTutorCourse():
-
-    user = User.query.filter_by(username=current_user.username).first()
-    user_id = user.id
-    tutor_course = TutorCourses.query.filter_by(user_id=user_id, tutor_course_id=request.form['id']).first()
-    db.session.delete(tutor_course)
-    db.session.commit()
-
-    return jsonify({'result': 'success'})
-
-
-# adds tutor_courses used in tutor_application and tutor profile
-@app.route('/addTutorCourse', methods=['POST'])
-def addTutorCourse():
-
-    user = User.query.filter_by(username=current_user.username).first()
-    user_id = user.id
-    this_course = ProgramCourse.query.filter_by(courseName=request.form['course_name']).first()
-    tutor_course = TutorCourses(user_id=user_id, course_name=this_course.courseName,
-                              course_id=this_course.program_course_id, course_code=this_course.courseCode)
-    db.session.add(tutor_course)
-    db.session.commit()
-
-    return jsonify({'result': 'success'})
-
-
-# deletes tutor_courses used in tutor application and profile
-@app.route('/clearTutorCourses', methods=['POST'])
-def clearTutorCourses():
-
-    user = User.query.filter_by(username=current_user.username).first()
-    user_id = user.id
-
-    db.session.query(TutorCourses).filter_by(user_id=user_id).delete()
-    db.session.commit()
-
-    return jsonify({'result': 'success'})
-
-
-# edit users admin portal
-@app.route('/editUser', methods=['POST'])
-def editUser():
-    user_edit = User.query.filter_by(id=request.form['id']).first()
-
-    user_edit.username = request.form['username']
-    user_edit.firstname = request.form['firstname']
-    user_edit.lastname = request.form['lastname']
-    user_edit.email = request.form['email']
-
-    db.session.commit()
-
-    return jsonify({'result': 'success'})
-
-
-# delete user admin portal
-@app.route('/deleteUser', methods=['POST'])
-def deleteUser():
-    user = User.query.filter_by(id=request.form['id']).first()
-
-    #deletes all trace of users
-    db.session.query(RoomPost).filter_by(author=user.username).delete()
-    db.session.commit()
-    db.session.query(StudentPost).filter_by(author=user.username).delete()
-    db.session.commit()
-    db.session.query(PostComment).filter_by(comment_author=user.username).delete()
-    db.session.commit()
-    db.session.query(RoomComment).filter_by(comment_author=user.username).delete()
-    db.session.commit()
-    db.session.query(FileUpload).filter_by(username=user.username).delete()
-    db.session.commit()
-
-    if user.role == "T":
-        tutor = Tutor.query.filter_by(user_id=user.id).first()
-        db.session.delete(tutor)
-        db.session.commit()
-
-        db.session.delete(user)
-        db.session.commit()
-
-    elif user.role == "S":
-        student = Student.query.filter_by(user_id=user.id).first()
-        db.session.delete(student)
-        db.session.commit()
-
-        db.session.delete(user)
-        db.session.commit()
-
-    return jsonify({'result': 'success'})
-
-
-# admin approves tutor
-@app.route('/approveTutor', methods=['POST'])
-def approveTutor():
-    user = User.query.filter_by(id=request.form['id']).first()
-    tutor = Tutor.query.filter_by(user_id=user.id).first()
-    user.role = "T"
-    tutor.tutor_status = "approved"
-    db.session.commit()
-
-    student = Student.query.filter_by(user_id=user.id).first()
-    db.session.delete(student)
-    db.session.commit()
-
-    return jsonify({'result': 'success'})
-
-
-# admin denies tutor
-@app.route('/denyTutor', methods=['POST'])
-def denyTutor():
-    user = User.query.filter_by(id=request.form['id']).first()
-
-    tutor = Tutor.query.filter_by(user_id=user.id).first()
-    tutor.application_comments = request.form['comments']
-    tutor.tutor_status = "denied"
-    db.session.commit()
-
-    return jsonify({'result': 'success'})
-
-
-# deletes tutor application redirects to new application
-@app.route('/deleteApplication', methods=['POST'])
-def deleteApplication():
-    user = User.query.filter_by(username=current_user.username).first()
-
-    db.session.query(TutorCourses).filter_by(user_id=user.id).delete()
-    db.session.commit()
-
-    tutor = Tutor.query.filter_by(user_id=user.id).first()
-    db.session.delete(tutor)
-    db.session.commit()
-
-    return redirect(url_for('application_begin'))
-
-# tutor chat room controls
+############################################################################################################
+##
+# PRIVATE CHAT - TUTOR CONTROLS
+##
+############################################################################################################
 
 
 # makes room private used in chat and admin portal
@@ -1661,11 +1716,12 @@ def publicRoom():
     return jsonify({'result': 'success'})
 
 
-#
-###
-### private_chat socket io functions - private_chat.html file
+############################################################################################################
 ##
-#
+# PRIVATE CHAT FUNCTIONS - private_chat.html
+##
+############################################################################################################
+
 
 # when user sends message
 @socketio.on('message')
@@ -1744,12 +1800,12 @@ def close_room(data):
     room = session.get('roomName')
     print('Tutor ' + current_user.username + ' has closed Room: ' + room + '.')
 
-#
-###
-### error pages 403, 404, 405, 500
-##
-#
 
+############################################################################################################
+##
+# ERROR PAGES
+##
+############################################################################################################
 
 # 403 status explicitly
 @app.errorhandler(403)
@@ -1777,6 +1833,13 @@ def method_not_allowed(error):
 def internal_server_error(error):
 
     return render_template('500.html'), 500
+
+
+############################################################################################################
+##
+# MISC
+##
+############################################################################################################
 
 
 ## CHANGE ME AT DEPLOY
