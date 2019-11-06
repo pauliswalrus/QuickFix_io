@@ -265,21 +265,6 @@ def denyTutor():
     return jsonify({'result': 'success'})
 
 
-# Delete Tutor Application (redirects to new application)
-@app.route('/deleteApplication', methods=['POST'])
-def deleteApplication():
-    user = User.query.filter_by(username=current_user.username).first()
-
-    db.session.query(TutorCourses).filter_by(user_id=user.id).delete()
-    db.session.commit()
-
-    tutor = Tutor.query.filter_by(user_id=user.id).first()
-    db.session.delete(tutor)
-    db.session.commit()
-
-    return redirect(url_for('application_begin'))
-
-
 # Manage Users
 @app.route("/users", methods=['GET', 'POST'])
 def all_users():
@@ -377,6 +362,60 @@ def deleteRoom():
     db.session.query(RoomUpload).filter_by(room_name=room.title).delete()
     db.session.commit()
     db.session.query(Message).filter_by(room=room.title).delete()
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+
+# Admin Portal - Update Room
+@app.route('/updateRoom', methods=['POST'])
+def updateRoom():
+    room = RoomPost.query.filter_by(id=request.form['id']).first()
+
+    room.room_title = request.form['title']
+    room.content = request.form['content']
+    # room.date_posted = date_time = datetime.now()
+    room.date_posted = datetime.now()
+
+    db.session.commit()
+
+    return jsonify({'result': 'success', "room_title": room.room_title})
+
+
+# Admin Portal - View Chat Log for Each Room
+@app.route('/chat_log/<int:room_id>', methods=['GET', 'POST'])
+def chat_log(room_id):
+    if session["userRole"] != "A":
+        return "You are not an authorized admin please go back"
+
+    room = RoomPost.query.filter_by(id=room_id).first()
+
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    message_object = Message.query.filter_by(room=room.room_title).order_by(Message.id.desc()).all()
+
+    return render_template('chat_log.html', room=room, username=current_user.username, this_user=this_user,
+                           message_object=message_object)
+
+
+# Admin Portal - Delete Chat Logs for Rooms
+@app.route('/deleteLogs', methods=['POST'])
+def deleteLogs():
+    room = RoomPost.query.filter_by(id=request.form['id']).first()
+
+    # delete all messages by room title
+    db.session.query(Message).filter_by(room=room.room_title).delete()
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+
+# Admin Portal - delete Room Uploads for Rooms
+@app.route('/deleteRoomUploads', methods=['POST'])
+def deleteRoomUploads():
+    room = RoomPost.query.filter_by(id=request.form['id']).first()
+
+    db.session.query(RoomUpload).filter_by(room_name=room.room_title).delete()
     db.session.commit()
 
     return jsonify({'result': 'success'})
@@ -533,6 +572,21 @@ def check_application(user_id):
     this_tutor = Tutor.query.filter_by(user_id=app_user.id).first()
 
     return render_template("check_application.html", this_user=this_user, this_tutor=this_tutor, role_name=role_name, t_status=t_status, tutor_courses=tutor_courses, app_user=app_user)
+
+
+# Delete Tutor Application (accessed by applicant in in check_application.html page after re-applying)
+@app.route('/deleteApplication', methods=['POST'])
+def deleteApplication():
+    user = User.query.filter_by(username=current_user.username).first()
+
+    db.session.query(TutorCourses).filter_by(user_id=user.id).delete()
+    db.session.commit()
+
+    tutor = Tutor.query.filter_by(user_id=user.id).first()
+    db.session.delete(tutor)
+    db.session.commit()
+
+    return redirect(url_for('application_begin'))
 
 
 # Add Tutor Courses (used in tutor_application and tutor profile)
@@ -1606,61 +1660,6 @@ def room_download(dl_name):
     file_data = RoomUpload.query.filter_by(file_name=dl_name).first()
 
     return send_file(BytesIO(file_data.data), attachment_filename=file_data.file_name, as_attachment=True)
-
-
-# Admin Portal - View Chat Log for Each Room
-@app.route('/chat_log/<int:room_id>', methods=['GET', 'POST'])
-def chat_log(room_id):
-    if session["userRole"] != "A":
-        return "You are not an authorized admin please go back"
-
-    room = RoomPost.query.filter_by(id=room_id).first()
-
-    this_user = User.query.filter_by(username=current_user.username).first()
-
-    message_object = Message.query.filter_by(room=room.room_title).order_by(Message.id.desc()).all()
-
-    return render_template('chat_log.html', room=room, username=current_user.username, this_user=this_user,
-                           message_object=message_object)
-
-
-# Admin Portal - Delete Chat Logs for Rooms
-@app.route('/deleteLogs', methods=['POST'])
-def deleteLogs():
-    room = RoomPost.query.filter_by(id=request.form['id']).first()
-
-    # delete all messages by room title
-    db.session.query(Message).filter_by(room=room.room_title).delete()
-    db.session.commit()
-
-    return jsonify({'result': 'success'})
-
-
-# Admin Portal - delete Room Uploads for Rooms
-@app.route('/deleteRoomUploads', methods=['POST'])
-def deleteRoomUploads():
-    room = RoomPost.query.filter_by(id=request.form['id']).first()
-
-    db.session.query(RoomUpload).filter_by(room_name=room.room_title).delete()
-    db.session.commit()
-
-    return jsonify({'result': 'success'})
-
-
-# Admin Portal - Update Room
-@app.route('/updateRoom', methods=['POST'])
-def updateRoom():
-    room = RoomPost.query.filter_by(id=request.form['id']).first()
-
-    room.room_title = request.form['title']
-    room.content = request.form['content']
-    # room.date_posted = date_time = datetime.now()
-    room.date_posted = datetime.now()
-
-    db.session.commit()
-
-    return jsonify({'result': 'success', "room_title": room.room_title})
-
 
 
 # Admin Portal - Update Room Profile?
