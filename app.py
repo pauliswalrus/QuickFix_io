@@ -367,7 +367,7 @@ def deleteRoom():
     return jsonify({'result': 'success'})
 
 
-# Admin Portal - Update Room
+# Update Room
 @app.route('/updateRoom', methods=['POST'])
 def updateRoom():
     room = RoomPost.query.filter_by(id=request.form['id']).first()
@@ -382,7 +382,7 @@ def updateRoom():
     return jsonify({'result': 'success', "room_title": room.room_title})
 
 
-# Admin Portal - View Chat Log for Each Room
+# View Chat Log for Room
 @app.route('/chat_log/<int:room_id>', methods=['GET', 'POST'])
 def chat_log(room_id):
     if session["userRole"] != "A":
@@ -398,7 +398,7 @@ def chat_log(room_id):
                            message_object=message_object)
 
 
-# Admin Portal - Delete Chat Logs for Rooms
+# Delete Chat Logs for Rooms
 @app.route('/deleteLogs', methods=['POST'])
 def deleteLogs():
     room = RoomPost.query.filter_by(id=request.form['id']).first()
@@ -410,7 +410,7 @@ def deleteLogs():
     return jsonify({'result': 'success'})
 
 
-# Admin Portal - delete Room Uploads for Rooms
+# Delete Room Uploads for Rooms
 @app.route('/deleteRoomUploads', methods=['POST'])
 def deleteRoomUploads():
     room = RoomPost.query.filter_by(id=request.form['id']).first()
