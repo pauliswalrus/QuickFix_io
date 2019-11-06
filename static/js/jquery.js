@@ -5,15 +5,20 @@ QuickFix:
 General js. functions file
 Author: Austin Paul, Emma Hobden
 
-Admin portal functions
-
+Date: Nov 6.
 
 */
 
 $(document).ready(function () {
 
+//MARK : Start of Admin Portal Functions
 
-    //update room
+    /*
+    Admin Room management functions
+    admin_room.html functions
+     */
+
+    //update room - admin
     $('.updateButton').on('click', function () {
 
         var room_id = $(this).attr('room_id');
@@ -38,36 +43,37 @@ $(document).ready(function () {
 
         });
 
-    })
+    });
 
-        //update room
-    $('.updateButtonProfile').on('click', function () {
+
+    //delete room - admin
+    $('.deleteButton').on('click', function () {
 
         var room_id = $(this).attr('room_id');
 
         var name = $('#nameInput' + room_id).val();
 
-        var title = $('#titleInput' + room_id).val()
+        var r = confirm("Delete Room?");
+
+        if (r === true) {
+
+            req = $.ajax({
+                url: '/deleteRoom',
+                type: 'POST',
+                data: {name: name, id: room_id}
+
+            });
+            alert("Room Deleted!");
+            location.reload();
+
+        } else {
+            //nothing happens
+        }
+
+    });
 
 
-        req = $.ajax({
-            url: '/updateRoomProfile',
-            type: 'POST',
-            data: {name: name, title: title, id: room_id}
-
-        });
-
-        req.done(function (data) {
-
-            $('#roomSection' + room_id).fadeOut(1000).fadeIn(1000);
-            $('#memberNumber' + room_id).text(data.room_name);
-
-        });
-
-    })
-
-
-    //make room private - private chat
+    //make room private - admin
     $('.privateButtonAdmin').on('click', function () {
 
         let room_id = $(this).attr('room_id');
@@ -79,18 +85,12 @@ $(document).ready(function () {
             type: 'POST',
             data: {name: name, id: room_id}
         });
-        alert("This Room is Private!")
+        alert("This Room is Private!");
         location.reload();
-        // $('#memberNumber' + room_id).text(data.roo);
-        // // $('#privateButton'+room_id).fadeOut(200);
-        // // $('#publicButton'+room_id).fadeIn(200);
-        //
-        // $('#roomSection'+room_id).fadeOut(1000).fadeIn(1000);
 
+    });
 
-    })
-
-    //public room - private chat
+    //make room public - admin
     $('.publicButtonAdmin').on('click', function () {
 
         var room_id = $(this).attr('room_id');
@@ -102,50 +102,99 @@ $(document).ready(function () {
             data: {name: name, id: room_id}
 
         });
-        alert("This Room is Public!")
+        alert("This Room is Public!");
         location.reload();
-        // $('#privateButton'+room_id).fadeIn(200);
-        // $('#publicButton'+room_id).fadeOut(200);
-        //
-        // $('#roomSection'+room_id).fadeOut(1000).fadeIn(1000);
 
-    })
+    });
 
-    //delete room
-    $('.deletePost').on('click', function () {
 
-        var post_id = $(this).attr('post_id');
+    //delete chat logs
+    $('.deleteLogs').on('click', function () {
 
-        var r = confirm("Delete Post?");
+        var room_id = $(this).attr('room_id');
+
+        var r = confirm("Delete Chat Logs?");
 
         if (r === true) {
 
             req = $.ajax({
-                url: '/deletePost',
+                url: '/deleteLogs',
                 type: 'POST',
-                data: {id: post_id}
+                data: {id: room_id}
 
             });
-            alert("Post Deleted!")
-            location.reload();
+            alert("Chat Log Cleared!");
+            $('#roomSection' + room_id).fadeOut(1000).fadeIn(1000);
+        } else {
+            //nothing happens
+        }
+
+    });
+
+    //delete room post comments - admin
+    $('.deleteRoomComments').on('click', function () {
+
+        var room_id = $(this).attr('room_id');
+
+        var r = confirm("Clear Room Comments?");
+
+        if (r === true) {
+
+            req = $.ajax({
+                url: '/deleteRoomComments',
+                type: 'POST',
+                data: {id: room_id}
+
+            });
+            alert("Comments Deleted!");
+            $('#roomSection' + room_id).fadeOut(1000).fadeIn(1000);
+
+        } else {
+            //nothing happens
+        }
+
+    });
+
+
+    //delete room files/uploads - admin
+    $('.deleteRoomUploads').on('click', function () {
+
+        var room_id = $(this).attr('room_id');
+
+        var r = confirm("Delete Room Uploads?");
+
+        if (r === true) {
+
+            req = $.ajax({
+                url: '/deleteRoomUploads',
+                type: 'POST',
+                data: {id: room_id}
+
+            });
+            alert("Room Uploads Cleared!");
+            $('#roomSection' + room_id).fadeOut(1000).fadeIn(1000);
 
         } else {
 
-            //nothing happens
-
         }
 
-    })
+
+    });
 
 
-    //update room
+    /*
+    Admin Post management functions
+    admin_posts.html functions
+     */
+
+    //update community forum post - admin
     $('.updatePost').on('click', function () {
 
         var post_id = $(this).attr('post_id');
 
         var title = $('#titleInput' + post_id).val();
 
-         var content = $('#contentInput' + post_id).val();
+        var content = $('#contentInput' + post_id).val();
 
 
         req = $.ajax({
@@ -162,9 +211,36 @@ $(document).ready(function () {
 
         });
 
-    })
+    });
 
-        //delete room
+
+    //delete community forum post
+    $('.deletePost').on('click', function () {
+
+        var post_id = $(this).attr('post_id');
+
+        var r = confirm("Delete Post?");
+
+        if (r === true) {
+
+            req = $.ajax({
+                url: '/deletePost',
+                type: 'POST',
+                data: {id: post_id}
+
+            });
+            alert("Post Deleted!");
+            location.reload();
+
+        } else {
+
+            //nothing happens
+
+        }
+
+    });
+
+    //delete community forum post comments - admin
     $('.deletePostComments').on('click', function () {
 
         var post_id = $(this).attr('post_id');
@@ -179,8 +255,8 @@ $(document).ready(function () {
                 data: {id: post_id}
 
             });
-            alert("Comments Deleted!")
-            location.reload();
+            alert("Comments Deleted!");
+            $('#roomSection' + post_id).fadeOut(1000).fadeIn(1000);
 
         } else {
 
@@ -188,101 +264,22 @@ $(document).ready(function () {
 
         }
 
-    })
+    });
 
 
+    /*
+    Admin Tutor approval functions
+    admin.html functions
+     */
 
-    $('.deleteUserFile').on('click', function () {
-
-        var file_id = $(this).attr('file_id');
-
-        var r = confirm("Delete File?");
-
-        if (r == true) {
-
-            req = $.ajax({
-                url: '/deleteUserFile',
-                type: 'POST',
-                data: {id: file_id}
-
-            });
-            alert("File Deleted!")
-            location.reload();
-
-        } else {
-
-            //nothing happens
-
-        }
-
-    })
-
-
-    //delete room
-    $('.deleteButton').on('click', function () {
-
-        var room_id = $(this).attr('room_id');
-
-        var name = $('#nameInput' + room_id).val();
-
-        var r = confirm("Delete Room?");
-
-        if (r == true) {
-
-            req = $.ajax({
-                url: '/deleteRoom',
-                type: 'POST',
-                data: {name: name, id: room_id}
-
-            });
-            alert("Room Deleted!")
-            location.reload();
-
-        } else {
-
-            //nothing happens
-
-        }
-
-    })
-
-
-            //delete room
-    $('.deleteRoomComments').on('click', function () {
-
-        var room_id = $(this).attr('room_id');
-
-        var r = confirm("Clear Room Comments?");
-
-        if (r == true) {
-
-            req = $.ajax({
-                url: '/deleteRoomComments',
-                type: 'POST',
-                data: {id: room_id}
-
-            });
-            alert("Comments Deleted!")
-            location.reload();
-
-        } else {
-
-            //nothing happens
-
-        }
-
-    })
-
-    //approve tutor
+    //approve tutor - admin
     $('.approveTutor').on('click', function () {
 
         var user_id = $(this).attr('user_id');
 
-
         var r = confirm("Approve Tutor?");
 
-        if (r == true) {
-
+        if (r === true) {
 
             req = $.ajax({
                 url: '/approveTutor',
@@ -290,14 +287,14 @@ $(document).ready(function () {
                 data: {id: user_id}
 
             });
-            alert("Tutor Approved!")
+            alert("Tutor Approved!");
             location.reload();
 
         } else {
             //nothing happens
         }
 
-    })
+    });
 
 
     //deny tutor
@@ -308,7 +305,7 @@ $(document).ready(function () {
 
         var r = confirm("Deny This Tutor?");
 
-        if (r == true) {
+        if (r === true) {
 
             req = $.ajax({
                 url: '/denyTutor',
@@ -316,7 +313,7 @@ $(document).ready(function () {
                 data: {id: user_id, comments: comments}
 
             });
-            alert("Tutor Denied!")
+            alert("Tutor Denied!");
             location.reload();
 
 
@@ -324,53 +321,15 @@ $(document).ready(function () {
             //nothing happens
         }
 
+    });
 
-    })
-
-    //delete user
-    $('.deleteUser').on('click', function () {
-
-        var user_id = $(this).attr('user_id');
-        var r = confirm("Delete User?");
-
-        if (r == true) {
+    /*
+    Admin User management functions
+    all_users.html functions
+     */
 
 
-            req = $.ajax({
-                url: '/deleteUser',
-                type: 'POST',
-                data: {id: user_id}
-
-            });
-            alert("User Deleted!")
-            location.reload();
-        } else {
-            //nothing happens
-        }
-
-    })
-
-    //open edit user
-    $('.editUser').on('click', function () {
-
-        var user_id = $(this).attr('user_id');
-
-        $('.modal_editUser').show();
-
-
-    })
-
-    //close edit user
-    $('.closeWindow').on('click', function () {
-
-        var user_id = $(this).attr('user_id');
-
-        $('.modal_editUser').hide();
-
-
-    })
-
-    //edit user
+    //edit user - admin
     $('.editUserForm').on('click', function () {
 
         var user_id = $(this).attr('user_id');
@@ -380,7 +339,6 @@ $(document).ready(function () {
         var username = $('#userName' + user_id).val();
         var email = $('#email' + user_id).val();
         var role = $('#role' + user_id).val();
-
 
         req = $.ajax({
             url: '/editUser',
@@ -392,71 +350,43 @@ $(document).ready(function () {
         alert("User Edited!");
         location.reload();
 
-    })
+    });
 
-    //delete chat logs
-    $('.deleteLogs').on('click', function () {
+    //delete user - admin
+    $('.deleteUser').on('click', function () {
 
-        var room_id = $(this).attr('room_id');
+        var user_id = $(this).attr('user_id');
+        var r = confirm("Delete User?");
 
-        var r = confirm("Delete Chat Logs?");
-
-        if (r == true) {
+        if (r === true) {
 
             req = $.ajax({
-                url: '/deleteLogs',
+                url: '/deleteUser',
                 type: 'POST',
-                data: {id: room_id}
+                data: {id: user_id}
 
             });
-            alert("Chat Log Cleared!");
-            $('#roomSection' + room_id).fadeOut(1000).fadeIn(1000);
+            alert("User Deleted!");
+            location.reload();
         } else {
-
             //nothing happens
         }
 
+    });
 
-    })
-
-    //delete chat logs
-    $('.deleteRoomUploads').on('click', function () {
-
-        var room_id = $(this).attr('room_id');
-
-        var r = confirm("Delete Room Uploads?");
-
-        if (r == true) {
-
-            req = $.ajax({
-                url: '/deleteRoomUploads',
-                type: 'POST',
-                data: {id: room_id}
-
-            });
-            alert("Room Uploads Cleared!");
-            $('#roomSection' + room_id).fadeOut(1000).fadeIn(1000);
-
-        } else {
-
-        }
+//MARK : End of Admin Portal Functions
 
 
-    })
-
-    //temp solution refresh page
-    $('.refreshRoomUploads').on('click', function () {
-
-        location.reload();
-
-
-    })
+    /*
+    Delete Tutor Application functions
+    check_application.html functions
+     */
 
     $('.deleteApplication').on('click', function () {
 
         var r = confirm("Re Apply?");
 
-        if (r == true) {
+        if (r === true) {
 
             req = $.ajax({
                 url: '/deleteApplication',
@@ -473,9 +403,14 @@ $(document).ready(function () {
 
         }
 
-    })
+    });
 
-    //make room private - private chat
+    /*
+    Chat Room functions
+    private_chat.html functions
+     */
+
+    //make room private - used by tutor
     $('.privateButton').on('click', function () {
 
         var room_id = $(this).attr('room_id');
@@ -488,15 +423,14 @@ $(document).ready(function () {
             data: {name: name, id: room_id}
 
         });
-        alert("This Room is Private!")
+        alert("This Room is Private!");
         $('.privateButton').hide();
         $('.publicButton').show();
 
 
+    });
 
-    })
-
-    //public room - private chat
+    //make room private - used by tutor
     $('.publicButton').on('click', function () {
 
         var room_id = $(this).attr('room_id');
@@ -508,15 +442,52 @@ $(document).ready(function () {
             data: {name: name, id: room_id}
 
         });
-        alert("This Room is Public!")
+        alert("This Room is Public!");
         $('.publicButton').hide();
         $('.privateButton').show();
 
+    });
 
-    })
+    //temp solution refresh page to show updated room uploads
+    $('.refreshRoomUploads').on('click', function () {
 
-    // for private profile page
-    //edit user
+        location.reload();
+
+    });
+
+
+    /*
+    Personal Profile functions
+    profile.html functions
+     */
+
+
+    //delete user files/upload from profile
+    $('.deleteUserFile').on('click', function () {
+
+        var file_id = $(this).attr('file_id');
+
+        var r = confirm("Delete File?");
+
+        if (r === true) {
+
+            req = $.ajax({
+                url: '/deleteUserFile',
+                type: 'POST',
+                data: {id: file_id}
+
+            });
+            alert("File Deleted!");
+            location.reload();
+
+        } else {
+            //nothing happens
+        }
+
+    });
+
+
+    //edit user email from profile
     $('.editUserProfile').on('click', function () {
 
         var user_id = $(this).attr('user_id');
@@ -533,18 +504,33 @@ $(document).ready(function () {
         alert("Email Updated Successfully!");
         location.reload();
 
-    })
+    });
 
 
-     // for private profile page
-    //edit user
+    /*
+    Program, UserCourse and TutorCourse functions
+    Used in a few html pages see comments.
+    Mostly used on profile.html and userCourses.html, tutorCourses.html, etc
+     */
+
+
+    //sets program to filter courses by used on user profile and tutor application pages
+    //used in profilePrograms.html and applicationBegin.html
+    $('.setProgram').on('click',function () {
+
+        var program_name = $('#program_name option:selected').text();
+
+    });
+
+
+    //delete user course on user profile - used in studentCourses.html
     $('.deleteUserCourse').on('click', function () {
 
         var course_id = $(this).attr('course_id');
 
         var r = confirm("Delete Course?");
 
-        if (r == true) {
+        if (r === true) {
 
             req = $.ajax({
                 url: '/deleteUserCourse',
@@ -556,21 +542,21 @@ $(document).ready(function () {
             location.reload();
 
         } else {
-
             //nothing happens
-
         }
 
-    })
+    });
 
 
+    //delete tutor course on user profile and tutor application - used in profile.html and tutorCourses.html
+    // and applicationCourses.html
     $('.deleteTutorCourse').on('click', function () {
 
         var course_id = $(this).attr('course_id');
 
         var r = confirm("Delete Course?");
 
-        if (r == true) {
+        if (r === true) {
 
             req = $.ajax({
                 url: '/deleteTutorCourse',
@@ -582,178 +568,88 @@ $(document).ready(function () {
             location.reload();
 
         } else {
-
             //nothing happens
-
         }
 
+    });
 
-
-    })
-
-
-         // for private profile page
-    //edit user
-    $('.addTutorCourse').on('click', function () {
-
-        var course_id = $(this).attr('course_id');
-
-        var course_name = $('#tutorcourse option:selected').text();
-        // var r = confirm("Delete Course?");
-            req = $.ajax({
-                url: '/addTutorCourse',
-                type: 'POST',
-                data: {course_name: course_name}
-
-            });
-
-            req.done(function (data) {
-            window.location.reload(true);
-            });
-
-
-        })
-
-        $('.clearTutorCourses').on('click', function () {
-
-        // var r = confirm("Delete Course?");
-
-            req = $.ajax({
-                url: '/clearTutorCourses',
-                type: 'POST',
-
-            });
-
-            req.done(function () {
-            window.location.reload(true);
-            });
-
-    })
-
-
-    $('.setProgram').on('click',function () {
-
-
-    var program_name = $('#program_name option:selected').text();
-
-
-    })
-
-    //
-    // $('.resetPosts').on('click',function () {
-    //
-    //         req = $.ajax({
-    //             url: '/allstudentposts',
-    //             type: 'POST',
-    //
-    //         });
-    //
-    //
-    //
-    // })
 
 
 });
 
+/*
 
-//
-//    $('#fade').css('background-color', '#E46D4E');
-//    $('#fade').css('color', 'white');
-//
-//    $('#fade').fadeOut(500);
-//    $('#fade').fadeIn(500);
-//    $('#fade').fadeOut(500);
-//
-//    $('#fade2').css('background-color', '#E46D4E');
-//    $('#fade2').css('color', 'white');
-//
-//
-// $('#fade').on('click', function() {
-//     $('#fade').fadeOut(1000);
-//     $('#fade').fadeIn(1000);
-// });
-//
-// $('#send_message').on('click', function() {
-//     $('#fade2').fadeIn(500);
-//     $('#fade2').fadeOut(500);
-//     $('#fade2').fadeIn(500);
-
-// });
+DONT NO DELETE BELOW UNSURE!
 
 
-//
-//
-//     req = $.ajax({
-//         url: '/refreshRoomUploads',
-//         type: 'POST',
-//         data: {name: room_name}
-//
-//     });
-//
-//     req.done(function(data) {
-//
-//
-//
-//      alert("Room Uploads Updated!!");
-//     $('#file_list').fadeOut(1000).fadeIn(1000);
-//
-//
-// });
+    //unsure edit user modal functions
 
 
-//  alert("Room Uploads Updated!!");
-// $('#file_list').fadeOut(1000).fadeIn(1000);
+    // //open edit user
+    // $('.editUser').on('click', function () {
+    //
+    //     var user_id = $(this).attr('user_id');
+    //
+    //     $('.modal_editUser').show();
+    //
+    //
+    // });
+    //
+    // //close edit user
+    // $('.closeWindow').on('click', function () {
+    //
+    //     var user_id = $(this).attr('user_id');
+    //
+    //     $('.modal_editUser').hide();
+    //
+    //
+    // });
 
 
-//
-// $('.uploadRoomFile').on('click',function () {
-//
-//     var formData = new FormData();
-//     formData.append('file', $('input[type=file]')[0].files[0]);
-//
-//
-//     req = $.ajax({
-//             url: '/uploadRoomFile',
-//             type: 'POST',
-//             data: {file_data: formData}
-//     });
-//         alert("uploaded!");
-//
-//
-//
-// })
+    // //temp solution refresh page
+    // $('.refreshRoomUploads').on('click', function () {
+    //     location.reload();
+    //
+    // });
 
-// $('form').on('submit', function(event) {
-//
-// 	$.ajax({
-// 		data : {
-// 			name : $('#nameInput').val(),
-// 			email : $('#emailInput').val()
-// 		},
-// 		type : 'POST',
-// 		url : '/process'
-// 	})
-// 	.done(function(data) {
-//
-// 		if (data.error) {
-// 			$('#errorAlert').text(data.error).show();
-// 			$('#successAlert').hide();
-// 		}
-// 		else {
-// 			$('#successAlert').text(data.name).show();
-// 			$('#errorAlert').hide();
-// 		}
-//
-// 	});
-//
-// 	event.preventDefault();
-//
-// });
-//
-// $('.setProgram').on('click',function () {
-//
-//     var program_id = $(this).attr('.program_id');
-//
-//         alert(program_id);
-//
-// })
+
+
+    //unsure tutor/course functions
+
+    // $('.addTutorCourse').on('click', function () {
+    //
+    //     var course_id = $(this).attr('course_id');
+    //
+    //     var course_name = $('#tutorcourse option:selected').text();
+    //     // var r = confirm("Delete Course?");
+    //         req = $.ajax({
+    //             url: '/addTutorCourse',
+    //             type: 'POST',
+    //             data: {course_name: course_name}
+    //
+    //         });
+    //
+    //         req.done(function (data) {
+    //         window.location.reload(true);
+    //         });
+    //
+    //
+    // });
+    //
+    // $('.clearTutorCourses').on('click', function () {
+    //
+    //     // var r = confirm("Delete Course?");
+    //
+    //         req = $.ajax({
+    //             url: '/clearTutorCourses',
+    //             type: 'POST',
+    //
+    //         });
+    //
+    //         req.done(function () {
+    //         window.location.reload(true);
+    //         });
+    //
+    // });
+
+*/
