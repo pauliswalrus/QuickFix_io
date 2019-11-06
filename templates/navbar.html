@@ -24,8 +24,6 @@
         $('#navCheck').hide();
         $('#navRoom').hide();
         $('#navAdmin').hide();
-        {#$('#roomsContent').hide();#}
-        {#$('#roomsHeading').hide();#}
 
         if (userRole === 'Student') {
 
@@ -144,60 +142,5 @@
     {% block content %}
     {% endblock %}
 
-{#<script>#}
-{##}
-{#    let userRole = "{{ role_name }}";#}
-{##}
-{#    let tutorStatus = "{{ t_status }}";#}
-{##}
-{#    window.onload = function (event) {#}
-{##}
-{#        document.getElementById("navCheck").style.display = "none";#}
-{#        document.getElementById("navRoom").style.display = "none";#}
-{#        document.getElementById("navAdmin").style.display = "none";#}
-{##}
-{#        if (userRole == 'Student') {#}
-{##}
-{#            if (tutorStatus == 'pending') {#}
-{##}
-{#                document.getElementById("navApply").style.display = "none";#}
-{#                document.getElementById("navCheck").style.display = "block";#}
-{##}
-{#            } else if (tutorStatus == 'approved') {#}
-{##}
-{#                document.getElementById("navApply").style.display = "none";#}
-{#                document.getElementById("navCheck").style.display = "none";#}
-{#                document.getElementById("navRoom").style.display = "block";#}
-{##}
-{#            } else if (tutorStatus == 'denied') {#}
-{##}
-{#                document.getElementById("navApply").style.display = "none";#}
-{#                document.getElementById("navCheck").style.display = "block";#}
-{##}
-{#            }#}
-{##}
-{#        } else if (userRole == 'Tutor') {#}
-{##}
-{#            document.getElementById("navApply").style.display = "none";#}
-{#            document.getElementById("navCheck").style.display = "none";#}
-{#            document.getElementById("navRoom").style.display = "block";#}
-{##}
-{#        } else if (userRole == 'Admin') {#}
-{##}
-{##}
-{#            document.getElementById("navRoom").style.display = "none";#}
-{#            document.getElementById("navApply").style.display = "none";#}
-{#            document.getElementById("navCheck").style.display = "none";#}
-{#            document.getElementById("navAdmin").style.display = "block";#}
-{#        }#}
-{##}
-{##}
-{#    }#}
-{##}
-{##}
-{##}
-
-{##}
-{#</script>#}
 </body>
 </html>

@@ -21,7 +21,6 @@
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
             integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
 
-    <script src="{{ url_for('static', filename='js/chat_page.js') }}"></script>
 
     <script src="https://kit.fontawesome.com/2f55668b75.js" crossorigin="anonymous"></script>
 
@@ -124,28 +123,6 @@
                     {% endfor %}
 
                 </div>
-
-
-                {#                <button type="button" id="button_close" class="btn btn-light">Close Room</button>#}
-
-                {#                <input type="text" id="nameInput{{ room.id }}" value="{{ room.room_title }}" readonly hidden/>#}
-                {#                <button id="privateButton" class="btn btn-danger privateButton" room_id="{{ room.id }}">Make Room#}
-                {#                    Private#}
-                {#                </button>#}
-                {#                <button id="publicButton" class="btn btn-success publicButton" room_id="{{ room.id }}">Make Room#}
-                {#                    Public#}
-                {#                </button>#}
-
-                {#                <hr>#}
-
-                {#                <button class="btn btn-primary refreshRoomUploads" room_name="{{ roomName }}">Update File</button>#}
-                {#                <div id="file_list">#}
-                {#                    {% for file in room_files %}#}
-                {#                        <a href="{{ url_for('room_download', dl_name=file.file_name) }}">#}
-                {#                            <h5>{{ file.file_name }} </h5></a>#}
-                {#                    {% endfor %}#}
-                {##}
-                {#                </div>#}
 
 
             </div>
@@ -391,37 +368,20 @@
 <script>
     window.onload = function () {
 
-        {#document.getElementById('button_close').style.display = "none";#}
-        {#document.getElementById('tutorControls_heading').style.display = "none";#}
-
-        {#document.getElementById('privateButton').style.display = "none";#}
-        {#document.getElementById('publicButton').style.display = "none";#}
-
         let objDiv = document.getElementById("display-message-section");
         objDiv.scrollTop = objDiv.scrollHeight;
 
-        {##}
-        {#//limits the private room button to the author of the room#}
-        {#let roomAuth = '{{ authorName }}';#}
-        {##}
-        {#var roomVisible = '{{ roomVisible }}';#}
-        {##}
-        {##}
-        {#if (roomAuth === username) {#}
-        {##}
-        {#    document.getElementById('button_close').style.display = "block";#}
-        {#    document.getElementById('tutorControls_heading').style.display = "block";#}
-        {##}
-        {#    if (roomVisible === "True") {#}
-        {##}
-        {#        document.getElementById('privateButton').style.display = "block";#}
-        {##}
-        {#    } else if (roomVisible === "False") {#}
-        {##}
-        {#        document.getElementById('publicButton').style.display = "block";#}
-        {#    }#}
-        {##}
-        {##}
+
+
+        let msg = document.querySelector('#user_message');
+        msg.addEventListener('keyup', event => {
+        event.preventDefault();
+        if (event.keyCode === 13) {
+            document.querySelector('#send_message').click();
+        }
+
+    })
+
 
 
 
@@ -433,143 +393,3 @@
 </html>
 
 
-{#    <div id="leftColumn">#}
-{#        Room Information:#}
-{#        <div id="currDate">{{ date_stamp }}</div>#}
-{#        <div id="roomCreator">Created By: {{ authorName }}</div>#}
-{#        <div id="joined-stamp">Joined at {{ connected_stamp }}</div>#}
-{##}
-{#        <hr>#}
-{##}
-{#        <!-- To Do: Add Javascript to hide close room if student-->#}
-{#        <button type="button" id="button_leave" class="btn btn-light">Leave Room</button>#}
-{#        <button type="button" id="button_close" class="btn btn-light">Close Room</button>#}
-{##}
-{#        <input type="text" id="nameInput{{ room.id }}" value="{{ room.room_title }}" readonly hidden/>#}
-{#        <button id="privateButton" class="btn btn-danger privateButton" room_id="{{ room.id }}">Make Room Private</button>#}
-{#        <button id="publicButton" class="btn btn-success publicButton" room_id="{{ room.id }}">Make Room Public</button>#}
-{##}
-{#        <hr>#}
-{#        <button class="btn btn-primary refreshRoomUploads" room_name="{{ roomName }}">Update File</button>#}
-{#        <div id="file_list" >#}
-{#        {% for file in room_files %}#}
-{#            <a href="{{ url_for('room_download', dl_name=file.file_name) }}">#}
-{#                <h5>{{ file.file_name }} </h5></a>#}
-{#        {% endfor %}#}
-{##}
-{#        </div>#}
-{#    </div>#}
-{##}
-{##}
-{#    <div id="rightColumn">#}
-{##}
-{#        <div id="display-message-section">#}
-{##}
-{##}
-{#            {% for msg in message_object %}#}
-{##}
-{#                {% if msg.username == username %}#}
-{##}
-{#                <p class="my-msg">#}
-{#                    <img src="{{ url_for('uploaded_file', filename=this_user.user_photo) }}" height="50px" width="50px" class="profilePic_sm"/>#}
-{#                    <span class="my-username">{{ msg.username }}</span>#}
-{#                    <span class="timestamp">{{ msg.timestamp }}</span>#}
-{#                    <br>#}
-{#                    <span class="my-msg">{{ msg.message }}</span>#}
-{#                </p>#}
-{##}
-{#                {% else %}#}
-{##}
-{#                <p class="others-msg">#}
-{#                    <img src="{{ url_for('uploaded_file', filename=this_user.user_photo) }}" height="50px" width="50px" class="profilePic_sm"/>#}
-{#                    <span class="other-username">{{ msg.username }}</span>#}
-{#                    <span class="other-timestamp">{{ msg.timestamp }}</span>#}
-{#                    <br>#}
-{#                    <span class="others-msg">{{ msg.message }}</span>#}
-{#                </p>#}
-{##}
-{#                {% endif %}#}
-{##}
-{##}
-{#            {% endfor %}#}
-{##}
-{##}
-{#        </div>#}
-{##}
-{#        <div id="input-area">#}
-{#            <button class="fas fa-paperclip" id="uploadNewDocs"></button>#}
-{#            <button class="btn btn-info" id="uploadNewDocs">[+]</button>#}
-{#            <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">#}
-{#            <button type="submit" id="send_message">SEND</button>#}
-{#        </div>#}
-{##}
-{##}
-{#        <div id="upload">#}
-{#            <span class="closeWindow" onclick="testClose()">&times;</span><br>#}
-{##}
-{#            <form method="post" enctype="multipart/form-data">#}
-{#                {{ file_form.hidden_tag() }}#}
-{#                {{ file_form.file }}#}
-{#                <button id="file_upload" type=submit class="btn btn-info" title="Submit">Add New File</button>#}
-{#                {{ file_form.csrf_token }}#}
-{#            </form>#}
-{#        </div>#}
-{##}
-{##}
-{#    </div>#}
-
-
-{#<div class="container">#}
-{#	<br><br><br><br>#}
-{#	<form class="form-inline">#}
-{#	  <div class="form-group">#}
-{#	    <label class="sr-only" for="emailInput">Email address</label>#}
-{#	    <input type="email" class="form-control" id="emailInput" placeholder="Email">#}
-{#	  </div>#}
-{#	  <div class="form-group">#}
-{#	    <label class="sr-only" for="nameInput">Name</label>#}
-{#	    <input type="text" class="form-control" id="nameInput" placeholder="First Name">#}
-{#	  </div>#}
-{#	  <button type="submit" class="btn btn-default">Submit</button>#}
-{#	</form>#}
-{#	<br>#}
-{#	<div id="successAlert" class="alert alert-success" role="alert" style="display:none;"></div>#}
-{#	<div id="errorAlert" class="alert alert-danger" role="alert" style="display:none;"></div>#}
-{#</div>#}
-
-
-{##}
-{#        <div id="upload">#}
-{#            <span class="closeWindow" onclick="testClose()">&times;</span><br>#}
-{##}
-{#            <form id="uploadForm" method="post" enctype="multipart/form-data" name="uploadForm">#}
-{#                <input type="file" id="file_id" class="file" name="file" required />#}
-{##}
-{#            <input id="file_upload" type="button" class="uploadRoomFile" >Add New File</input>#}
-{#                </form>#}
-{#        </div>#}
-{##}
-
-
-{##}
-{##}
-{#// Get the modal#}
-{#let modal = document.getElementsByClassName('modal');#}
-{#ffff#}
-{#// When the user clicks the button, open the modal#}
-{#btn[0].onclick = function () {#}
-{#    modal[0].style.display = "block";#}
-{##}
-{##}
-{#span[1].onclick = function () {#}
-{#    modal[1].style.display = "none";#}
-{##}
-
-
-{#        //hides close room and private button from student user#}
-{#let uRole = '{{ role_name }}';#}
-{#   if (uRole == 'S') {#}
-{#        document.getElementById('button_close').style.display = "none";#}
-{#        document.getElementById('privateButton').style.display = "none";#}
-{#        document.getElementById('publicButton').style.display = "none";#}
-{#    }#}

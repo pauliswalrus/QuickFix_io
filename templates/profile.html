@@ -590,68 +590,6 @@
             }
         }
  </script>
-        {#let uRole = '{{ role_name }}';#}
-        {##}
-        {#let tStatus = '{{ t_status }}';#}
-        {##}
-        {#window.onload = function (event) {#}
-        {##}
-        {#    document.getElementById('checkApp').style.display = "none";#}
-        {#    document.getElementById('adminPortal').style.display = "none";#}
-        {##}
-        {#    document.getElementById('myPosts').style.display = "none";#}
-        {#    document.getElementById('myRooms').style.display = "none";#}
-        {##}
-        {#    if (uRole == 'Student') {#}
-        {##}
-        {#        document.getElementById('myPosts').style.display = "block";#}
-        {#        document.getElementById('myRooms').style.display = "none";#}
-        {##}
-        {#        document.getElementById('roomPost').style.display = "none";#}
-        {#        document.getElementById('adminPortal').style.display = "none";#}
-        {##}
-        {#        if (tStatus == 'pending') {#}
-        {#            document.getElementById('tutorApply').style.display = "none";#}
-        {#            document.getElementById('roomPost').style.display = "none";#}
-        {#            document.getElementById('checkApp').style.display = "block";#}
-        {##}
-        {#        } else if (tStatus == 'approved') {#}
-        {#            document.getElementById('tutorApply').style.display = "none";#}
-        {#            document.getElementById('checkApp').style.display = "none";#}
-        {#        } else if (tStatus == 'denied') {#}
-        {#            document.getElementById('checkApp').style.display = "block";#}
-        {#            document.getElementById('tutorApply').style.display = "none";#}
-        {#            document.getElementById('roomPost').style.display = "none";#}
-        {#        }#}
-        {##}
-        {#    } else if (uRole == 'Tutor') {#}
-        {#        document.getElementById('myPosts').style.display = "none";#}
-        {#        document.getElementById('myRooms').style.display = "block";#}
-        {##}
-        {#        document.getElementById('userCourses').style.display = "none";#}
-        {##}
-        {#        document.getElementById('studentPost').style.display = "none";#}
-        {#        document.getElementById('tutorApply').style.display = "none";#}
-        {#        document.getElementById('adminPortal').style.display = "none";#}
-        {#        document.getElementById('checkApp').style.display = "none";#}
-        {##}
-        {#    } else if (uRole == 'Admin') {#}
-        {##}
-        {#        document.getElementById('myPosts').style.display = "none";#}
-        {#        document.getElementById('myRooms').style.display = "none";#}
-        {#        document.getElementById('userCourses').style.display = "none";#}
-        {##}
-        {#        document.getElementById('studentPost').style.display = "none";#}
-        {#        document.getElementById('tutorApply').style.display = "none";#}
-        {#        document.getElementById('adminPortal').style.display = "block";#}
-        {#        document.getElementById('checkApp').style.display = "none";#}
-        {#    }#}
-        {##}
-        {##}
-
-
-{#    </script>#}
-
 
 {% endblock %}
 </body>

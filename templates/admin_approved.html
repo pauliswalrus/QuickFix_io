@@ -73,60 +73,6 @@
 
                 </div><!-- end panel-body class -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{#                    <div class="panel-heading">#}
-{#                        <h3 class="panel-title">#}
-{#                            <span id="memberNumber">#}
-{#                                <a href="{{ url_for('pub_profile', username=tutor.username) }}">Tutor {{ tutor.tutor_id }} : {{ tutor.username|upper }} </a>#}
-{#                            </span>#}
-{#                        </h3>#}
-{#                    </div>#}
-{##}
-{#                    <div class="panel-body">#}
-{##}
-{#                        <div class="form-inline">#}
-{##}
-{#                            <div class="form-group">#}
-{#                                <label for="tutorName">Name: </label>#}
-{#                                <span id="tutorName">{{ tutor.firstname }} {{ tutor.lastname }}</span>#}
-{#                            </div>#}
-{##}
-{#                            <br>#}
-{##}
-{#                            <div class="form-group">#}
-{#                                <label for="aboutTutor">Reason: </label>#}
-{#                                <span id="aboutTutor">{{ tutor.about_tutor }}</span>#}
-{#                            </div>#}
-{##}
-{#                            <br>#}
-{##}
-{#                            <div class="form-group">#}
-{#                                <b>Credentials:</b> <a#}
-{#                                    href="{{ url_for('download_cred', dl_name=tutor.credentials_file_name) }}">{{ tutor.credentials_file_name }}</a>#}
-{#                            </div>#}
-{##}
-{#                            <div class="form-group">#}
-{#                                <label for="approved">Application Comments: </label>#}
-{#                                <span id="approved">{{ tutor.application_comments }}</span>#}
-{#                            </div>#}
-{##}
-{#                        </div> <!-- end form-inline class -->#}
-{##}
-{#                    </div><!-- end panel-body class -->#}
-
                 </div><!-- end tutorSection ID -->
 
             {% endfor %}
@@ -158,29 +104,3 @@
 </body>
 </html>
 
-
-{#                            <b>Name:</b> {{ user.firstname }} {{ user.lastname }} <br>#}
-{#                            <b>Username:</b> {{ user.username }} <br>#}
-{#                            <b>Email:</b> {{ user.email }}<br>#}
-{#                            <b>Role:</b> {{ user.role }}<br>#}
-{##}
-{#                            <button class="btn btn-warning editUser" id="editUser" user_id="{{ user.id }}">Edit</button>#}
-{#                            <button class="btn btn-danger deleteUser" user_id="{{ user.id }}">Delete</button>#}
-
-
-{#                              <label for="userRole{{ user.id }}">Role: </label><br>#}
-{#                              <input type="text" class="form-control" id="userRole" value="{{ user.role }}"><br>#}
-{#                              <label for="userEmail{{ user.id }}">Email: </label><br>#}
-{#                              <input type="text" class="form-control" id="userEmail" value="{{ user.email }}"><br>#}
-
-{#                            <div id="upload">#}
-{##}
-{#                                <span class="closeWindow" onclick="testClose()">&times;</span><br>#}
-{#                                <form method="post" enctype="multipart/form-data">#}
-{#                                    {{ file_form.hidden_tag() }}#}
-{#                                    {{ file_form.file }}#}
-{#                                    <button id="file_upload" type=submit class="btn btn-info" title="Submit">Add New File</button>#}
-{#                                    {{ file_form.csrf_token }}#}
-{#                                </form>#}
-{##}
-{#                            </div>#}
