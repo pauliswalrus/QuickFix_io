@@ -1,7 +1,14 @@
-/* e.stopImmediatePropagation();
-e.stopPropagation;
+/*
 
-Admin portal functions */
+QuickFix:
+
+General js. functions file
+Author: Austin Paul, Emma Hobden
+
+Admin portal functions
+
+
+*/
 
 $(document).ready(function () {
 
@@ -11,7 +18,7 @@ $(document).ready(function () {
 
         var room_id = $(this).attr('room_id');
 
-        var name = $('#nameInput' + room_id).val();
+        // var name = $('#nameInput' + room_id).val();
 
         var title = $('#titleInput' + room_id).val();
 
@@ -20,14 +27,14 @@ $(document).ready(function () {
         req = $.ajax({
             url: '/updateRoom',
             type: 'POST',
-            data: {name: name, title: title, content: content, id: room_id}
+            data: {title: title, content: content, id: room_id}
 
         });
 
         req.done(function (data) {
 
             $('#roomSection' + room_id).fadeOut(1000).fadeIn(1000);
-            $('#memberNumber' + room_id).text(data.room_name);
+            $('#memberNumber' + room_id).text(data.room_title);
 
         });
 
