@@ -2,9 +2,11 @@
 
 QuickFix_io Capstone Project
 
-Nov 3 Presentation Build 1.03
+Nov 6 PostPres1 Build 1.05
 
 Post-presentation bug fixes and comment cleanup
+
+Major comment purge
 
 deployed at:
 
