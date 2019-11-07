@@ -50,7 +50,154 @@
         }
 
 
+        $('.deleteUserFile').on('click', function () {
+
+        var file_id = $(this).attr('file_id');
+
+        var r = confirm("Delete File?");
+
+        if (r === true) {
+
+            req = $.ajax({
+                url: '/deleteUserFile',
+                type: 'POST',
+                data: {id: file_id}
+
+            });
+            alert("File Deleted!");
+            location.reload();
+
+        } else {
+            //nothing happens
+        }
+
+    });
+
+
+    $('.editUserProfile').on('click', function () {
+
+        var user_id = $(this).attr('user_id');
+
+        var email = $('#email'+user_id).val();
+
+        req = $.ajax({
+            url: '/editUserProfile',
+            type: 'POST',
+            data: {email: email, id: user_id}
+
         });
+
+        alert("Email Updated Successfully!");
+        location.reload();
+
+    });
+
+
+
+    $('.deleteUserCourseProfile').on('click', function () {
+
+        var course_id = $(this).attr('course_id');
+
+        var r = confirm("Delete Course?");
+
+        if (r === true) {
+
+            req = $.ajax({
+                url: '/deleteUserCourse',
+                type: 'POST',
+                data: {id: course_id}
+
+            });
+            alert("Course Deleted!")
+            location.reload();
+
+        } else {
+            //nothing happens
+        }
+
+    });
+
+
+    $('.deleteTutorCourseProfile').on('click', function () {
+
+        var course_id = $(this).attr('course_id');
+
+        var r = confirm("Delete Course?");
+
+        if (r === true) {
+
+            req = $.ajax({
+                url: '/deleteTutorCourse',
+                type: 'POST',
+                data: {id: course_id}
+
+            });
+            alert("Course Deleted!")
+            location.reload();
+
+        } else {
+            //nothing happens
+        }
+
+    });
+
+
+    $('.deleteRoomProfile').on('click', function () {
+
+        var room_id = $(this).attr('room_id');
+
+        var name = $('#nameInput' + room_id).val();
+
+        var r = confirm("Delete Room?");
+
+        if (r === true) {
+
+            req = $.ajax({
+                url: '/deleteRoom',
+                type: 'POST',
+                data: {name: name, id: room_id}
+
+            });
+            alert("Room Deleted!");
+            location.reload();
+
+        } else {
+            //nothing happens
+        }
+
+    });
+
+
+        //delete community forum post
+    $('.deletePostProfile').on('click', function () {
+
+        var post_id = $(this).attr('post_id');
+
+        var r = confirm("Delete Post?");
+
+        if (r === true) {
+
+            req = $.ajax({
+                url: '/deletePost',
+                type: 'POST',
+                data: {id: post_id}
+
+            });
+            alert("Post Deleted!");
+            location.reload();
+
+        } else {
+
+            //nothing happens
+
+        }
+
+    });
+
+
+
+
+    }); //end of document.ready jq
 
 
 </script>
@@ -294,7 +441,7 @@
                                 <td>{{ course.course_id }}</td>
                                 <td>{{ course.course_code }}</td>
                                 <td>{{ course.course_name }}</td>
-                                <td><button class="btn btn-danger deleteUserCourse" course_id="{{ course.user_course_id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
+                                <td><button class="btn btn-danger deleteUserCourseProfile" course_id="{{ course.user_course_id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
                             </tr>
                             </tbody>
                         {% endfor %}
@@ -339,7 +486,7 @@
                                 <td>{{ course.course_id }}</td>
                                 <td>{{ course.course_code }}</td>
                                 <td>{{ course.course_name }}</td>
-                                <td><button class="btn btn-danger deleteTutorCourse" course_id="{{ course.tutor_course_id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
+                                <td><button class="btn btn-danger deleteTutorCourseProfile" course_id="{{ course.tutor_course_id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
                             </tr>
                             </tbody>
                         {% endfor %}
@@ -396,7 +543,7 @@
                                 <td>{{ room.post_course_code }}</td>
                                 <td>{{ room.post_course }}</td>
                                 <td>{{ room.date_posted.strftime('%B %d, %Y') }}</td>
-                                <td><button class="btn btn-danger deletePost" post_id="{{ room.id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
+                                <td><button class="btn btn-danger deletePostProfile" post_id="{{ room.id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
                             </tr>
                             </tbody>
                         {% endfor %}
@@ -453,7 +600,7 @@
                                 <td>{{ room.room_course }}</td>
                                 <td>{{ room.visible }}</td>
                                 <td>{{ room.date_posted.strftime('%B %d, %Y') }}</td>
-                                <td><button class="btn btn-danger deleteButton" room_id="{{ room.id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
+                                <td><button class="btn btn-danger deleteRoomProfile" room_id="{{ room.id }}"><i class="glyphicon glyphicon-trash"></i></button></td>
                             </tr>
                             </tbody>
                         {% endfor %}

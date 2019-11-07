@@ -11,6 +11,42 @@
 
     <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+
+
+    <script>
+
+    $(document).ready(function () {
+
+
+        $('.deleteTutorCourse_App').on('click', function () {
+
+        var course_id = $(this).attr('course_id');
+
+        var r = confirm("Delete Course?");
+
+        if (r === true) {
+
+            req = $.ajax({
+                url: '/deleteTutorCourse',
+                type: 'POST',
+                data: {id: course_id}
+
+            });
+            alert("Course Deleted!")
+            location.reload();
+
+        } else {
+            //nothing happens
+        }
+
+    });
+
+
+
+    }); //end of document.ready jq
+
+
+</script>
 </head>
 
 <body>
@@ -108,7 +144,7 @@
                                     <td>{{ c.course_code }}</td>
                                     <td>{{ c.course_name }}</td>
                                     <td>
-                                        <button class="btn btn-danger deleteTutorCourse"
+                                        <button class="btn btn-danger deleteTutorCourse_App"
                                                 course_id="{{ c.tutor_course_id }}"><i
                                                 class="glyphicon glyphicon-trash"></i></button>
                                     </td>

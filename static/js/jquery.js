@@ -455,58 +455,6 @@ $(document).ready(function () {
 
     });
 
-
-    /*
-    Personal Profile functions
-    profile.html functions
-     */
-
-
-    //delete user files/upload from profile
-    $('.deleteUserFile').on('click', function () {
-
-        var file_id = $(this).attr('file_id');
-
-        var r = confirm("Delete File?");
-
-        if (r === true) {
-
-            req = $.ajax({
-                url: '/deleteUserFile',
-                type: 'POST',
-                data: {id: file_id}
-
-            });
-            alert("File Deleted!");
-            location.reload();
-
-        } else {
-            //nothing happens
-        }
-
-    });
-
-
-    //edit user email from profile
-    $('.editUserProfile').on('click', function () {
-
-        var user_id = $(this).attr('user_id');
-
-        var email = $('#email'+user_id).val();
-
-        req = $.ajax({
-            url: '/editUserProfile',
-            type: 'POST',
-            data: {email: email, id: user_id}
-
-        });
-
-        alert("Email Updated Successfully!");
-        location.reload();
-
-    });
-
-
     /*
     Program, UserCourse and TutorCourse functions
     Used in a few html pages see comments.
@@ -522,56 +470,6 @@ $(document).ready(function () {
 
     });
 
-
-    //delete user course on user profile - used in studentCourses.html
-    $('.deleteUserCourse').on('click', function () {
-
-        var course_id = $(this).attr('course_id');
-
-        var r = confirm("Delete Course?");
-
-        if (r === true) {
-
-            req = $.ajax({
-                url: '/deleteUserCourse',
-                type: 'POST',
-                data: {id: course_id}
-
-            });
-            alert("Course Deleted!")
-            location.reload();
-
-        } else {
-            //nothing happens
-        }
-
-    });
-
-
-    //delete tutor course on user profile and tutor application - used in profile.html and tutorCourses.html
-    // and applicationCourses.html
-    $('.deleteTutorCourse').on('click', function () {
-
-        var course_id = $(this).attr('course_id');
-
-        var r = confirm("Delete Course?");
-
-        if (r === true) {
-
-            req = $.ajax({
-                url: '/deleteTutorCourse',
-                type: 'POST',
-                data: {id: course_id}
-
-            });
-            alert("Course Deleted!")
-            location.reload();
-
-        } else {
-            //nothing happens
-        }
-
-    });
 
 
 
@@ -651,5 +549,9 @@ DONT NO DELETE BELOW UNSURE!
     //         });
     //
     // });
+
+
+
+
 
 */
