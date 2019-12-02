@@ -98,6 +98,9 @@
                 <div id="joined-stamp">Joined at {{ connected_stamp }}</div>
 
 
+                <div><a href="{{ url_for('download_log', room_name=room.room_title)}}">Chat Log</a></div>
+
+
 
                 <div class="roomInfoHeading" id="tutorControls_heading"><br><br>Tutor Controls</div>
                 <br>
@@ -220,7 +223,7 @@
 
 <script type="text/javascript">
     const username = `{{ username }}`;
-    const mesage_object = `{{ message_object }}`
+    const mesage_object = `{{ message_object }}`;
     const roomname = `{{ roomName }}`;
 </script>
 <script type="text/javascript">
@@ -245,8 +248,8 @@
 
 
         //sets up socketio for chat_join.html page
-
-        let room = `{{ roomName }}`;
+        {##}
+        {#let room = `{{ roomName }}`;#}
         joinRoom(`{{ roomName }}`);
 
         //Displays incoming messages
@@ -258,7 +261,7 @@
             const br = document.createElement('br'); // <br> tag
 
 
-            if (data.username == username) {
+            if (data.username === username) {
 
                 p.setAttribute("class", "my-msg"); // <p class="my-msg"></p>
 
@@ -333,20 +336,11 @@
         };
 
 
-        //leave room
-        function leaveRoom(room) {
-            socket.emit('leave', {'username': username, 'room': roomname});
-
-            window.location.href = "{{ url_for('home') }}";
-
-        }
 
         //join room
         function joinRoom(room) {
             socket.emit('join', {'username': username, 'room': roomname});
             document.querySelector('#room-name').innerHTML = room;
-            {#document.querySelector('#display-message-section').innerHTML = '';#}
-            //document.querySelector('#user_message').focus();
         }
 
 

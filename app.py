@@ -28,6 +28,7 @@ socketio = SocketIO(app)
 # used for profile photos
 photos = UploadSet('photos', IMAGES)
 app.config['UPLOADED_PHOTOS_DEST'] = 'uploads/pictures'
+app.config['TEXT_LOGS'] = 'uploads/logs'
 configure_uploads(app, photos)
 
 # creates and inits Login
@@ -389,10 +390,24 @@ def chat_log(room_id):
         return "You are not an authorized admin please go back"
 
     room = RoomPost.query.filter_by(id=room_id).first()
-
     this_user = User.query.filter_by(username=current_user.username).first()
+    message_object = Message.query.filter_by(room=room.room_title).order_by(Message.id.asc()).all()
 
-    message_object = Message.query.filter_by(room=room.room_title).order_by(Message.id.desc()).all()
+    ##timestamp of log
+    # log_stamp = strftime('%b-%d %I:%M%p', localtime())
+
+    #opens new or appends to file with room name and log_stampe
+    # f = open("uploads/logs/"+this_user.username+"_"+room.room_title+"_"+log_stamp+".txt", "a+")
+
+    #new line for each message
+    # for i in message_object:
+    #     f.write(i.username+" : "+i.message+" : "+i.room+" : "+i.created_at+"\r\n")
+    # f.close()
+
+    # f1 = open("uploads/logs/"+room.room_title+"log.txt", "r")
+    #
+    # for x in f1:
+    #     print(x)
 
     return render_template('chat_log.html', room=room, username=current_user.username, this_user=this_user,
                            message_object=message_object)
@@ -852,6 +867,7 @@ def room(room_id):
     comments = RoomComment.query.filter_by(room_id=room_id).order_by(RoomComment.date_posted.desc()).all()
     comment_form = CommentForm()
 
+    #sets session variables - used again in private_chat
     session['roomName'] = room.room_title
     session['userName'] = current_user.username
     session['author'] = room.author
@@ -1625,6 +1641,7 @@ def private_chat():
 
     role_name = this_user.role
 
+    #assigned in room route - lobby
     roomName = session.get('roomName')
     authorName = session.get('author')
 
@@ -1633,8 +1650,6 @@ def private_chat():
     room_object = RoomPost.query.filter_by(room_title=roomName).first()
 
     roomVisible = room_object.visible
-
-    print(roomVisible)
 
     file_form = FileUploadForm()
 
@@ -1656,10 +1671,35 @@ def private_chat():
 # Private Chat Page - Download Files
 @app.route('/download_room/<string:dl_name>/')
 def room_download(dl_name):
-    # file_data = FileUpload.query.first()ffd
     file_data = RoomUpload.query.filter_by(file_name=dl_name).first()
 
     return send_file(BytesIO(file_data.data), attachment_filename=file_data.file_name, as_attachment=True)
+
+
+# Private Chat Log - Download TXT File of Chat Log
+@app.route('/download_log/<string:room_name>')
+def download_log(room_name):
+
+    log_stamp = strftime('%b-%d-%Y_%I:%M%p_%Z', localtime())
+    room = RoomPost.query.filter_by(room_title=room_name).first()
+    this_user = User.query.filter_by(username=current_user.username).first()
+    message_object = Message.query.filter_by(room=room.room_title).order_by(Message.id.asc()).all()
+
+    # opens new or appends to file with room name and log_stampe
+    f = open("uploads/logs/" + this_user.username + "_" + room.room_title + "_" + log_stamp + ".txt", "a+")
+    # new line for each message and empty line
+    for i in message_object:
+        f.write(i.username + " : " + i.message + " : " + i.room + " : " + i.created_at + "\r\n")
+        f.write("\r\n")
+    f.close()
+
+    file_string = "uploads/logs/" + this_user.username + "_" + room.room_title + "_" + log_stamp + ".txt"
+
+    # f_ready = open(file_string, "r")
+
+    return send_file(filename_or_fp=file_string, as_attachment=True)
+
+    #return send_from_directory(app.config['TEXT_LOGS'], filename=file_string, as_attachment=True)
 
 
 # Admin Portal - Update Room Profile?
@@ -1721,27 +1761,27 @@ def publicRoom():
 ##
 ############################################################################################################
 
-
+# date format changed
 # when user sends message
 @socketio.on('message')
 def message(data):
     room = session.get('roomName')
     message_time = strftime('%I:%M%p %m-%d-%Y', localtime())
+    message_time = strftime('%b-%d-%Y %I:%M%p %Z', localtime())
     message = Message(message=data['msg'], username=data['username'], room=data['room'], created_at=message_time)
     db.session.add(message)
     db.session.commit()
 
-    send({'msg': data['msg'], 'username': data['username'], 'time_stamp': strftime('%b-%d %I:%M%p', localtime())},
+    send({'msg': data['msg'], 'username': data['username'], 'time_stamp': strftime('%b-%d-%Y %I:%M%p %Z', localtime())},
          room=data['room'])
 
 
-# ran when joining room
+# when joining room
 @socketio.on('join')
 def join(data):
     room = session.get('roomName')
-    # join_room(data['room'])
     join_room(room)
-    # message_object = Message.query.filter_by(room='room').all()
+    #console log
     print('Connection on ' + data['room'] + ' with user ' + current_user.username + ' has been established')
     send({'msg': data['username'] + " has joined the " + data['room'] + " room."}, room=data['room'])
 
@@ -1750,9 +1790,8 @@ def join(data):
 @socketio.on('upload')
 def upload(data):
     room = session.get('roomName')
-    # join_room(data['room'])
     join_room(room)
-    # message_object = Message.query.filter_by(room='room').all()
+    #console log
     print(current_user.username + ' uploaded a file to ' + data['room'] + " room")
     send({'msg': data['username'] + " sent a file to the " + data['room'] + " room."}, room=data['room'])
 
@@ -1761,10 +1800,9 @@ def upload(data):
 @socketio.on('private')
 def private(data):
     room = session.get('roomName')
-    # join_room(data['room'])
     join_room(room)
-    # message_object = Message.query.filter_by(room='room').all()
     print(current_user.username + ' has now started a private session in room' + data['room'])
+    #console log
     send({'msg': "Tutor " + data['username'] + " has now made the " + data['room'] + " room private."},
          room=data['room'])
 
@@ -1773,9 +1811,8 @@ def private(data):
 @socketio.on('public')
 def public(data):
     room = session.get('roomName')
-    # join_room(data['room'])
     join_room(room)
-    # message_object = Message.query.filter_by(room='room').all()
+    #console log
     print(current_user.username + ' has now ended a private session in room' + data['room'])
     send({'msg': "Tutor " + data['username'] + " has now made the " + data['room'] + " room public."},
          room=data['room'])
@@ -1786,8 +1823,8 @@ def public(data):
 def leave(data):
     room = session.get('roomName')
     leave_room(room)
-    # leave_room(data['room'])
     session['roomName'] = " "
+    #console log
     print('Connection on ' + data['room'] + ' with user ' + current_user.username + ' has been lost')
     send({'msg': data['username'] + " has left the " + data['room'] + " room."}, room=data['room'])
 
@@ -1795,7 +1832,6 @@ def leave(data):
 # when tutor closes room
 @socketio.on('close_room')
 def close_room(data):
-    # room = data['room']
     room = session.get('roomName')
     print('Tutor ' + current_user.username + ' has closed Room: ' + room + '.')
 
