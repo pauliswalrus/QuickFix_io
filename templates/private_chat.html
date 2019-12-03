@@ -103,17 +103,6 @@
                 <div id="roomCreator">Created By: {{ authorName }}</div>
                 <div id="joined-stamp">Joined at {{ connected_stamp }}</div>
 
-{#            <div id="userPhotoUpload">#}
-{#                <button id="myBtn" class="myBtn uploadPhotoButton"><i class="glyphicon glyphicon-camera"></i></button>#}
-{#            </div>#}
-
-
-{#                <div><a href="{{ url_for('download_log')}}">Chat Log</a></div>#}
-{##}
-{#                <button id="checkRoom" class="btn btn-success checkRoom">Check Room#}
-{#                </button>#}
-
-
 
                 <div class="roomInfoHeading" id="tutorControls_heading"><br><br>Tutor Controls</div>
                 <br>
@@ -329,27 +318,37 @@
         document.querySelector('#button_leave').onclick = () => {
 
 
-            //show div upload on button click uploadNewDocs
-            let ratings = document.getElementById('myModal');
-            ratings.style.display = "block";
+            let roomAuth = '{{ authorName }}';
 
-            let span = document.getElementById('closeRatings');
-
-            span.onclick = function () {
-
-            ratings.style.display = "none";
-
-            };
-
-            document.querySelector('#goHome').onclick = () => {
+            //if room author leaves room just goes home else brings up ratingsform
+            if (roomAuth === username) {
 
                 socket.emit('leave', {'username': username, 'room': roomname});
                 socket.disconnect();
                 window.location.href = "{{ url_for('home') }}";
+            } else {
+
+                //sets ratingsform modal to visible
+                let ratings = document.getElementById('myModal');
+                ratings.style.display = "block";
+
+                let span = document.getElementById('closeRatings');
+
+                span.onclick = function () {
+
+                    ratings.style.display = "none";
+
+                };
+
+                document.querySelector('#goHome').onclick = () => {
+
+                    socket.emit('leave', {'username': username, 'room': roomname});
+                    socket.disconnect();
+                    window.location.href = "{{ url_for('home') }}";
 
 
-            };
-
+                };
+            }
         };
 
 
