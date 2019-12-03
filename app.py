@@ -1677,7 +1677,7 @@ def room_download(dl_name):
 
 
 # Private Chat Log - Download TXT File of Chat Log
-@app.route('/download_log/<string:room_name>')
+@app.route('/download_log/<string:room_name>', methods=['GET', 'POST'])
 def download_log(room_name):
 
     log_stamp = strftime('%b-%d-%Y_%I:%M%p_%Z', localtime())
@@ -1687,6 +1687,7 @@ def download_log(room_name):
 
     # opens new or appends to file with room name and log_stampe
     f = open("uploads/logs/" + this_user.username + "_" + room.room_title + "_" + log_stamp + ".txt", "a+")
+
     # new line for each message and empty line
     for i in message_object:
         f.write(i.username + " : " + i.message + " : " + i.room + " : " + i.created_at + "\r\n")
@@ -1694,6 +1695,8 @@ def download_log(room_name):
     f.close()
 
     file_string = "uploads/logs/" + this_user.username + "_" + room.room_title + "_" + log_stamp + ".txt"
+
+    # return redirect(url_for("home"))
 
     # f_ready = open(file_string, "r")
 
@@ -1761,7 +1764,7 @@ def publicRoom():
 ##
 ############################################################################################################
 
-# date format changed
+# date format changed added timezone
 # when user sends message
 @socketio.on('message')
 def message(data):

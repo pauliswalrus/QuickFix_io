@@ -308,9 +308,36 @@
 
         // on button click - leave the room
         document.querySelector('#button_leave').onclick = () => {
-            socket.emit('leave', {'username': username, 'room': roomname});
-            socket.disconnect();
-            window.location.href = "{{ url_for('home') }}";
+
+
+            if (confirm("Would you like to download a copy of today's session?")) {
+
+            {#window.location.href = "{{ url_for('download_log', room_name=room.room_title)}}";#}
+            {#socket.emit('leave', {'username': username, 'room': roomname});#}
+            {#socket.disconnect();#}
+
+                if (confirm("Please leave a review ")) {
+
+                    window.location.href = "{{ url_for('download_log', room_name=room.room_title)}}";
+                    socket.emit('leave', {'username': username, 'room': roomname});
+                    socket.disconnect();
+
+                } else {
+
+                    socket.emit('leave', {'username': username, 'room': roomname});
+                    socket.disconnect();
+                    window.location.href = "{{ url_for('home') }}";
+
+                }
+
+
+            } else {
+
+                socket.emit('leave', {'username': username, 'room': roomname});
+                socket.disconnect();
+                window.location.href = "{{ url_for('home') }}";
+
+            }
         };
 
 

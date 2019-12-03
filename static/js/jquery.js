@@ -448,6 +448,22 @@ $(document).ready(function () {
 
     });
 
+
+        //make room private - used by tutor
+    // $('.chatLog').on('click', function () {
+    //
+    //     var room_id = $(this).attr('room_id');
+    //     var name = $('#nameInput' + room_id).val();
+    //
+    //     req = $.ajax({
+    //         url: '/download_log',
+    //         type: 'POST',
+    //         data: {name: name, id: room_id}
+    //
+    //     });
+    //
+    // });
+
     //temp solution refresh page to show updated room uploads
     $('.refreshRoomUploads').on('click', function () {
 
