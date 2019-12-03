@@ -5,7 +5,7 @@ QuickFix:
 General js. functions file
 Author: Austin Paul, Emma Hobden
 
-Date: Nov 6.
+Date: DEC 3.
 
 */
 
@@ -500,7 +500,7 @@ $(document).ready(function () {
 
         // var room_id = $(this).attr('room_id');
 
-        var r = confirm("Delete Room Files?");
+        var r = confirm("Delete Chat Log?");
 
         if (r === true) {
 

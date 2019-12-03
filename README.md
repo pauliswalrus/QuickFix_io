@@ -2,11 +2,14 @@
 
 QuickFix_io Capstone Project
 
-Nov 6 PostPres1 Build 1.05
+DEC 3 VC PITCH Build
 
-Post-presentation bug fixes and comment cleanup
+VC Pitch Build
 
-Major comment purge
+- K.Forest suggestion added (txt file of chat_log)
+- Ratings form at end of convo
+- More Tutor controls added to private_chat.html
+- R.Smith suggestion added (time_stamp bug fix -- add timezone to stamp)
 
 deployed at:
 

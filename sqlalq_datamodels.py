@@ -5,9 +5,9 @@ from __init__ import app
 
 
 ###     AUTHOR: AUSTIN PAUL, EMMA HOBDEN, HALEY WALBOURNE
-###     DATE: OCT NOV 3
+###     DATE: DEC 3
 ###     QUICKFIX_IO DIRTYBITS
-###     PRESENTATION BUILD DEPLOYED AT
+###     VC PITCH BUILD DEPLOYED AT
 ###     quickfix-io.herokuapp.com
 
 db = SQLAlchemy(app)

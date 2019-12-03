@@ -31,11 +31,13 @@
             $('#privateButton').hide();
             $('#publicButton').hide();
             $('#downloadLog').hide();
+            $('#deleteLogsChat').hide();
             $('.ratingSubmitted').hide();
 
             if (roomAuth === username) {
                 $('#tutorControls_heading').show();
                 $('#downloadLog').show();
+                $('#deleteLogsChat').show();
                 $('.deleteRoomUploadsChat').show();
 
                 if (roomVisible === 'True') {
@@ -87,7 +89,7 @@
                 <div id="joined-stamp">Joined at {{ connected_stamp }}</div>
 
 
-                <div class="roomInfoHeading" id="tutorControls_heading"><br><br>Tutor Controls</div>
+                <div class="roomInfoHeading" id="tutorControls_heading"><br>Tutor Controls</div>
                 <br>
                 <button type="button" id="button_close" class="btn btn-light">Close Room</button>
                 <input type="text" id="nameInput{{ room.id }}" value="{{ room.room_title }}" readonly hidden/>
@@ -123,7 +125,7 @@
                 </button>
             </div>
 
-                <br><br>
+                <br>
                 <div class="roomInfoHeading">Room Files</div>
                 <br>
                 <button class="btn btn-primary refreshRoomUploads" room_name="{{ roomName }}">Update Files</button>

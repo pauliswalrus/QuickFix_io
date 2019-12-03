@@ -7,9 +7,9 @@ from sqlalq_datamodels import User, FileUpload, RoomPost, choice_query
 
 
 ###     AUTHOR: AUSTIN PAUL, EMMA HOBDEN, HALEY WALBOURNE
-###     DATE: NOV 3
+###     DATE: DEC 3
 ###     QUICKFIX_IO DIRTYBITS
-###     BUILD DEPLOYED AT
+###     VC PITCH BUILD DEPLOYED AT
 ###     quickfix-io.herokuapp.com
 
 

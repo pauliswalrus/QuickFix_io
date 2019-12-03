@@ -17,7 +17,8 @@ from sqlalq_datamodels import *
 ##
 # AUTHOR: AUSTIN PAUL, EMMA HOBDEN, HALEY WALBOURNE
 # QUICKFIX_IO DIRTYBITS
-# PRESENTATION 1 BUILD DEPLOYED AT
+# DATE: DEC 3
+# VC PITCH BUILD DEPLOYED AT
 # quickfix-io.herokuapp.com
 ##
 ############################################################################################################
@@ -1433,7 +1434,7 @@ def pub_profile(username):
         role_name = "Tutor"
 
     elif this_role == "A":
-        posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
+        posts = RoomPost.query.filter_by(author=username, visible=True).order_by(RoomPost.date_posted.desc()).all()
         t_status = "Admin"
         role_name = "Admin"
 
@@ -1463,10 +1464,12 @@ def pub_profile(username):
         student_posts = StudentPost.query.filter_by(author=username).order_by(StudentPost.date_posted.desc()).all()
         pub_role_name = "Student"
     elif pub_role == "T":
-        posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
+        #posts = RoomPost.query.filter(author=username).order_by(RoomPost.date_posted.desc()).all()
+        posts = db.session.query(RoomPost).filter(RoomPost.author == username, RoomPost.visible == True).order_by(RoomPost.date_posted.desc()).all()
         pub_role_name = "Tutor"
     elif pub_role == "A":
-        posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
+        #posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
+        posts = db.session.query(RoomPost).filter(RoomPost.author == username, RoomPost.visible == True).order_by(RoomPost.date_posted.desc()).all()
         pub_role_name = "Admin"
 
     if status == 0:
@@ -1528,7 +1531,7 @@ def profile_programs():
             this_program = Program.query.filter_by(program_id=program_picked).first()
             program_courses = ProgramCourse.query.filter_by(program_id=program_picked).all()
 
-            return redirect(url_for('tutor_courses', program_id=program_picked))
+            return redirect(url_for('student_courses', program_id=program_picked))
 
     elif this_user.role == 'A':
         role_name = "Admin"
@@ -1722,16 +1725,19 @@ def submitRating():
     tutor.tutor_score = old_tutor_score+int(this_rating)
     db.session.commit()
 
-    print(old_tutor_sessions)
-    print(old_tutor_score)
+    #print(old_tutor_sessions)
+    #print(old_tutor_score)
 
     updated_tutor = Tutor.query.filter_by(user_id=tutor_user.id).first()
 
     new_tutor_sessions = updated_tutor.tutor_sessions
     new_tutor_score = updated_tutor.tutor_score
 
-    print(new_tutor_sessions)
-    print(new_tutor_score)
+    tutor_rating = (new_tutor_score/new_tutor_sessions)
+
+    #print(new_tutor_sessions)
+    #print(new_tutor_score)
+    print(round(tutor_rating, 2))
 
     # print(this_rating)
 
@@ -1747,18 +1753,7 @@ def submitRating():
     return jsonify({'result': 'success', 'session_rating': this_rating})
 
 
-# Delete Room Uploads for Rooms used by Tutor
-@app.route('/deleteRoomUploadsChat', methods=['POST'])
-def deleteRoomUploadsChat():
-    room_title = session.get('roomName')
-
-    db.session.query(RoomUpload).filter_by(room_name=room_title).delete()
-    db.session.commit()
-
-    return jsonify({'result': 'success'})
-
-
-# Delete Room Uploads for Rooms used by Tutor
+# # Delete Room Uploads for Rooms used by Tutor
 # @app.route('/deleteRoomUploadsChat', methods=['POST'])
 # def deleteRoomUploadsChat():
 #     room_title = session.get('roomName')
@@ -1768,20 +1763,31 @@ def deleteRoomUploadsChat():
 #
 #     return jsonify({'result': 'success'})
 
-# Admin Portal - Update Room Profile?
-@app.route('/updateRoomProfile', methods=['POST'])
-def updateRoomProfile():
-    room = RoomPost.query.filter_by(id=request.form['id']).first()
 
-    room.title = request.form['name']
-    room.room_title = request.form['title']
-    room.content = request.form['content']
-    # room.date_posted = date_time = datetime.now()
-    room.date_posted = datetime.now()
-
-    db.session.commit()
-
-    return jsonify({'result': 'success'})
+# # Delete Room ChatLog by Tutor
+# @app.route('/deleteLogsChat', methods=['POST'])
+# def deleteLogsChat():
+#     room_title = session.get('roomName')
+#
+#     db.session.query(Message).filter_by(room=room_title).delete()
+#     db.session.commit()
+#
+#     return jsonify({'result': 'success'})
+#
+# # Admin Portal - Update Room Profile?
+# @app.route('/updateRoomProfile', methods=['POST'])
+# def updateRoomProfile():
+#     room = RoomPost.query.filter_by(id=request.form['id']).first()
+#
+#     room.title = request.form['name']
+#     room.room_title = request.form['title']
+#     room.content = request.form['content']
+#     # room.date_posted = date_time = datetime.now()
+#     room.date_posted = datetime.now()
+#
+#     db.session.commit()
+#
+#     return jsonify({'result': 'success'})
 
 
 ############################################################################################################
@@ -1831,6 +1837,27 @@ def publicRoom():
 
     return jsonify({'result': 'success'})
 
+# Delete Room Uploads for Rooms used by Tutor
+@app.route('/deleteRoomUploadsChat', methods=['POST'])
+def deleteRoomUploadsChat():
+    room_title = session.get('roomName')
+
+    db.session.query(RoomUpload).filter_by(room_name=room_title).delete()
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+
+# Delete Room ChatLog by Tutor
+@app.route('/deleteLogsChat', methods=['POST'])
+def deleteLogsChat():
+    room_title = session.get('roomName')
+
+    db.session.query(Message).filter_by(room=room_title).delete()
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
 
 ############################################################################################################
 ##
@@ -1843,7 +1870,7 @@ def publicRoom():
 @socketio.on('message')
 def message(data):
     room = session.get('roomName')
-    message_time = strftime('%I:%M%p %m-%d-%Y', localtime())
+    #message_time = strftime('%I:%M%p %m-%d-%Y', localtime())
     message_time = strftime('%b-%d-%Y %I:%M%p %Z', localtime())
     message = Message(message=data['msg'], username=data['username'], room=data['room'], created_at=message_time)
     db.session.add(message)
