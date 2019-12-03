@@ -1323,6 +1323,8 @@ def profile():
 
     t_status = "not sure"
 
+    tutor_rating = 0
+
     posts = RoomPost.query.filter_by(author=this_user.username).order_by(RoomPost.date_posted.desc()).all()
     student_posts = StudentPost.query.filter_by(author=this_user.username).order_by(StudentPost.date_posted.desc()).all()
     user_courses = UserCourses.query.filter_by(user_id=this_user.id).order_by(UserCourses.user_course_id.desc()).all()
@@ -1340,12 +1342,25 @@ def profile():
     elif role == "T":
         role_name = "Tutor"
         posts = RoomPost.query.filter_by(author=this_user.username).order_by(RoomPost.date_posted.desc()).all()
+
         tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        tutor_sessions = tutor.tutor_sessions
+        tutor_score = tutor.tutor_score
+
+        tutor_rating_raw = (tutor_score/tutor_sessions)
+        tutor_rating = (round(tutor_rating_raw, 2))
         t_status = tutor.tutor_status
 
 
     elif role == "A":
         role_name = "Admin"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        tutor_sessions = tutor.tutor_sessions
+        tutor_score = tutor.tutor_score
+
+        tutor_rating_raw = (tutor_score / tutor_sessions)
+        tutor_rating = (round(tutor_rating_raw, 2))
+        t_status = tutor.tutor_status
 
     room_posts = RoomPost.query.filter_by(author=current_user.username).order_by(RoomPost.date_posted.desc()).all()
 
@@ -1397,7 +1412,7 @@ def profile():
     return render_template('profile.html', username=current_user.username, image_fp=image_fp,
                            status_string=status_string, room_posts=room_posts, role_name=role_name, file_form=file_form,
                            user_files=user_files, image_form=image_form, user_object=user_object, this_user=this_user,
-                           status=status, t_status=t_status, about_me=about_me, ts_form=ts_form, setdbstatus=setdbstatus, student_posts=student_posts, posts=posts, user_courses=user_courses, tutor_courses=tutor_courses)
+                           status=status, t_status=t_status, about_me=about_me, ts_form=ts_form, setdbstatus=setdbstatus, student_posts=student_posts, posts=posts, user_courses=user_courses, tutor_courses=tutor_courses, tutor_rating=tutor_rating)
 
 
 # Download a User-Uploaded File on Profile Page
@@ -1420,6 +1435,8 @@ def pub_profile(username):
     this_role = this_user.role
     t_status = "not sure"
 
+    tutor_rating = 0
+
     user_courses = UserCourses.query.filter_by(user_id=user_object.id).order_by(UserCourses.user_course_id.desc()).all()
 
     if this_role == "S":
@@ -1438,6 +1455,7 @@ def pub_profile(username):
         t_status = "Admin"
         role_name = "Admin"
 
+
     image_form = ImageUploadForm()
 
     if image_form.validate_on_submit():
@@ -1455,6 +1473,7 @@ def pub_profile(username):
     status = user_object.status
     pub_role = user_object.role
     about_me = user_object.about_me
+    pub_id = user_object.id
 
     posts = RoomPost.query.filter_by(author=username, visible=True).order_by(RoomPost.date_posted.desc()).all()
 
@@ -1467,6 +1486,17 @@ def pub_profile(username):
         #posts = RoomPost.query.filter(author=username).order_by(RoomPost.date_posted.desc()).all()
         posts = db.session.query(RoomPost).filter(RoomPost.author == username, RoomPost.visible == True).order_by(RoomPost.date_posted.desc()).all()
         pub_role_name = "Tutor"
+
+        tutor = Tutor.query.filter_by(user_id=pub_id).first()
+        tutor_sessions = tutor.tutor_sessions
+        tutor_score = tutor.tutor_score
+        try:
+            tutor_rating_raw = (tutor_score / tutor_sessions)
+        except ZeroDivisionError:
+            tutor_rating_raw = 0
+
+        tutor_rating = (round(tutor_rating_raw, 2))
+
     elif pub_role == "A":
         #posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
         posts = db.session.query(RoomPost).filter(RoomPost.author == username, RoomPost.visible == True).order_by(RoomPost.date_posted.desc()).all()
@@ -1482,7 +1512,7 @@ def pub_profile(username):
     return render_template('pub_profile.html', thisUser=thisUser, username=username, firstname=firstname,
                            lastname=lastname, email=email, status_string=status_string, posts=posts,
                            role_name=role_name, about_me=about_me, image_form=image_form, user_object=user_object, user_files=user_files,
-                           this_user=this_user, student_posts=student_posts, user_courses=user_courses, pub_role_name=pub_role_name, t_status=t_status)
+                           this_user=this_user, student_posts=student_posts, user_courses=user_courses, pub_role_name=pub_role_name, t_status=t_status, tutor_rating=tutor_rating)
 
 
 # Gets Profile Pics

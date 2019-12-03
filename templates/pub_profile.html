@@ -25,6 +25,7 @@
     {#$('#studentPublic').hide();#}
     $('#tutorPublic').hide();
     $('#mStatus').hide();
+    $('#mRating').hide();
 
         var role = `{{ pub_role_name }}`;
 
@@ -32,6 +33,7 @@
 
                 $('#tutorPublic').show();
                 $('#mStatus').show();
+                $('#mRating').show();
 
         }
 
@@ -60,6 +62,7 @@
             <div id="mRole">Role: {{ pub_role_name }}</div>
             <div id="mEmail">Email: {{ email }}</div>
             <div id="mStatus">Status: <b>{{ status_string }}</b></div>
+            <div id="mRating">Rating: <b>{{ tutor_rating }}/5</b></div>
         </div>
 
 
