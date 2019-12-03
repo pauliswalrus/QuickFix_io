@@ -9,61 +9,41 @@
     <title> QuickFix Chat: {{ roomName }}</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/private_chat.css') }}">
-    {#    <link rel="stylesheet" href="{{ url_for('static', filename='css/austins_private_jq.css') }}">#}
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
-
     <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
-
     <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
-
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
             integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
-
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://kit.fontawesome.com/2f55668b75.js" crossorigin="anonymous"></script>
 
-
+    <!-- Script that runs when page loads - hide/show elements based on user role -->
     <script>
 
         $(document).ready(function () {
-
             let roomAuth = '{{ authorName }}';
             var roomVisible = '{{ roomVisible }}';
 
             $('#button_close').hide();
             $('#tutorControls_heading').hide();
-             $('.deleteRoomUploadsChat').hide();
-
-
+            $('.deleteRoomUploadsChat').hide();
             $('#privateButton').hide();
             $('#publicButton').hide();
-
             $('#downloadLog').hide();
-
             $('.ratingSubmitted').hide();
 
             if (roomAuth === username) {
-
                 $('#tutorControls_heading').show();
                 $('#downloadLog').show();
                 $('.deleteRoomUploadsChat').show();
 
-
                 if (roomVisible === 'True') {
-
                     $('#privateButton').show()
-
                 } else if (roomVisible === 'False') {
                     $('#publicButton').show();
-
                 }
-
-
             }
-
-
         });
 
     </script>
@@ -111,24 +91,37 @@
                 <br>
                 <button type="button" id="button_close" class="btn btn-light">Close Room</button>
                 <input type="text" id="nameInput{{ room.id }}" value="{{ room.room_title }}" readonly hidden/>
+
+
+
+            <div class="makeCenter">
+
                 <button id="privateButton" class="btn btn-danger privateButton" room_id="{{ room.id }}">Make Room
                     Private
                 </button>
 
-                <button id="publicButton" class="btn btn-success publicButton" room_id="{{ room.id }}">Make Room
-                    Public
+
+                <button id="publicButton" class="btn btn-success publicButton" room_id="{{ room.id }}">
+                    Make Room Public
                 </button>
 
-                <a id="downloadLog" href="{{ url_for('download_log') }}" >
+                <br><br>
+
+                <a id="downloadLog" href="{{ url_for('download_log') }}">
                     <button class="btn btn-primary chatLog">Download Chat Log</button>
                 </a>
-                <br>
 
-                <button id="deleteRoomUploadsChat" class="btn btn-success deleteRoomUploadsChat">Delete Room Files
+                <br><br>
+
+                <button id="deleteRoomUploadsChat" class="btn btn-danger deleteRoomUploadsChat">
+                    Delete Room Files
                 </button>
 
-                <button id="deleteLogsChat" class="btn btn-success deleteLogsChat">Delete Chat Log
+                <br><br>
+
+                <button id="deleteLogsChat" class="btn btn-danger deleteLogsChat">Delete Chat Log
                 </button>
+            </div>
 
                 <br><br>
                 <div class="roomInfoHeading">Room Files</div>
@@ -192,23 +185,24 @@
                     </div>
 
 
-
                     <div class="col-sm-10 padding-0">
                         <div id="type_msg">
-                            <input type="text" class="type_msg" id="user_message" placeholder="Type here..." autocomplete="off">
+                            <input type="text" class="type_msg" id="user_message" placeholder="Type here..."
+                                   autocomplete="off">
                         </div>
                     </div>
 
 
                     <div class="col-sm-1 padding-0">
                         <div id="button_send">
-                        <button class="btn btn-warning glyphicon glyphicon-send" type="submit" id="send_message"></button>
+                            <button class="btn btn-warning glyphicon glyphicon-send" type="submit"
+                                    id="send_message"></button>
                         </div>
                     </div>
 
                 </div> <!-- end row type msg -->
 
-{#                original type msg, upload, send msg
+                {#                original type msg, upload, send msg
                 <div id="input-area">
                     <button class="fas fa-paperclip" id="uploadNewDocs"></button>
                     <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">
@@ -242,31 +236,29 @@
     const username = `{{ username }}`;
     const mesage_object = `{{ message_object }}`;
     const roomname = `{{ roomName }}`;
-</script>
-<script type="text/javascript">
+
 
     //show div upload on button click uploadNewDocs
     let uploadForm = document.getElementById('upload');
     let button = document.getElementById('uploadNewDocs');
 
+    // show upload form on button click
     button.onclick = function () {
         uploadForm.style.display = "block";
     }
 
+    // hides upload form on window close
     function testClose() {
-
         uploadForm.style.display = "none";
     }
 
+
 </script>
+
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', () => {
+
         var socket = io.connect('http://' + document.domain + ':' + location.port);
-
-
-        //sets up socketio for chat_join.html page
-        {##}
-        {#let room = `{{ roomName }}`;#}
         joinRoom(`{{ roomName }}`);
 
         //Displays incoming messages
@@ -361,40 +353,38 @@
         };
 
 
+        //if (confirm("Would you like to download a copy of today's session?")) {
+
+        {# <button id="privateButton" class="btn btn-danger privateButton" room_id="{{ room.id }}">Make Room#}
+        {#    Private#}
+        {#</button>#}
+
+        {#window.location.href = "{{ url_for('download_log', room_name=room.room_title)}}";#}
+        {#socket.emit('leave', {'username': username, 'room': roomname});#}
+        {#socket.disconnect();#}
+
+        //if (confirm("Please leave a review ")) {
+
+        {#//window.location.href = "{{ url_for('download_log')}}";#}
+        //socket.emit('leave', {'username': username, 'room': roomname});
+        //socket.disconnect();
+
+        //} else {
+
+        //socket.emit('leave', {'username': username, 'room': roomname});
+        //socket.disconnect();
+        {#//window.location.href = "{{ url_for('home') }}";#}
+
+        //}
 
 
-            //if (confirm("Would you like to download a copy of today's session?")) {
+        //} else {
 
-                {# <button id="privateButton" class="btn btn-danger privateButton" room_id="{{ room.id }}">Make Room#}
-                {#    Private#}
-                {#</button>#}
+        //socket.emit('leave', {'username': username, 'room': roomname});
+        //socket.disconnect();
+        {#//window.location.href = "{{ url_for('home') }}";#}
 
-            {#window.location.href = "{{ url_for('download_log', room_name=room.room_title)}}";#}
-            {#socket.emit('leave', {'username': username, 'room': roomname});#}
-            {#socket.disconnect();#}
-
-                //if (confirm("Please leave a review ")) {
-
-                    {#//window.location.href = "{{ url_for('download_log')}}";#}
-                    //socket.emit('leave', {'username': username, 'room': roomname});
-                    //socket.disconnect();
-
-                //} else {
-
-                    //socket.emit('leave', {'username': username, 'room': roomname});
-                    //socket.disconnect();
-                    {#//window.location.href = "{{ url_for('home') }}";#}
-
-                //}
-
-
-            //} else {
-
-                //socket.emit('leave', {'username': username, 'room': roomname});
-                //socket.disconnect();
-                {#//window.location.href = "{{ url_for('home') }}";#}
-
-            //}
+        //}
         //};
         // on button click - makes rooms private
         document.querySelector('#privateButton').onclick = () => {
@@ -418,7 +408,6 @@
         };
 
 
-
         //join room
         function joinRoom(room) {
             socket.emit('join', {'username': username, 'room': roomname});
@@ -426,7 +415,7 @@
         }
 
 
-            // Scroll chat window down
+        // Scroll chat window down
         function scrollDownChatWindow() {
             const chatWindow = document.querySelector("#display-message-section");
             chatWindow.scrollTop = chatWindow.scrollHeight;
@@ -448,72 +437,88 @@
         objDiv.scrollTop = objDiv.scrollHeight;
 
 
-
         let msg = document.querySelector('#user_message');
         msg.addEventListener('keyup', event => {
-        event.preventDefault();
-        if (event.keyCode === 13) {
-            document.querySelector('#send_message').click();
-        }
+            event.preventDefault();
+            if (event.keyCode === 13) {
+                document.querySelector('#send_message').click();
+            }
 
-    })
-
-
+        })
 
 
     }
 </script>
 
 
-<!-- UPLOAD NEW PROFILE PIC Modal -->
-    <div id="myModal" class="modal">
-        <!-- Modal content -->
-        <div class="modal-content">
-            <span id="closeRatings">&times;</span>
-            <h3>Thank you for using QuickFix</h3>
-            <br>
-            <div class="ratingsForm">
+<!-- RATE TUTOR Modal -->
+<div id="myModal" class="modal">
 
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span id="closeRatings">&times;</span>
+
+        <div class="ratingsForm">
+
+            <h3>Thank you for using QuickFix!</h3> <br>
             <h4>How did {{ authorName }} do today?</h4>
-            <form method="post">
-                <input type="radio" name="rating" value=1 > 1
-                <input type="radio" name="rating" value=2> 2
-                <input type="radio" name="rating" value=3 checked> 3
-                <input type="radio" name="rating" value=4> 4
-                <input type="radio" name="rating" value=5> 5
 
-{#                <button class="btn btn-success submitRating">Submit</button>#}
+            <br><br>
 
+            <div class="ratingSelect">
+                <ul>
+                    <li>Not At All Helpful</li>
+                    <li>Slightly Helpful</li>
+                    <li>Moderately Helpful</li>
+                    <li>Very Helpful</li>
+                    <li>Extremely Helpful</li>
+                </ul>
+            </div>
+
+            <form method="post" class="ratingSelect">
+
+                <ul>
+                    <li>1<input type="radio" name="rating" value=1></li>
+                    <li>2<input type="radio" name="rating" value=2></li>
+                    <li>3<input type="radio" name="rating" value=3 checked></li>
+                    <li>4<input type="radio" name="rating" value=4></li>
+                    <li>5<input type="radio" name="rating" value=5></li>
+                </ul>
+
+                {#                    1<input type="radio" name="rating" value=1>#}
+                {#                    2<input type="radio" name="rating" value=2>#}
+                {#                    3<input type="radio" name="rating" value=3 checked>#}
+                {#                    4<input type="radio" name="rating" value=4>#}
+                {#                    5<input type="radio" name="rating" value=5>#}
             </form>
 
-            <input type="button" class="btn btn-success submitRating" value="Submit Rating"/>
-            </div>
-
-            <div class="ratingSubmitted">
-                <h4>"Your feedback is appreciated!"</h4>
-            </div>
             <br>
 
-{#            <h3>#}
-{#                <a id="leaveRating" href="{{ url_for('download_log') }}" >#}
-{#                    <button class="btn btn-success leaveRating">Submit Rating</button>#}
-{#                </a>#}
-{#            </h3>#}
+            <input type="button" class="btn btn-success submitRating" value="Submit Rating"/>
 
-            <h3>
-                <a id="downloadLog" href="{{ url_for('download_log') }}" >
-                    <button class="btn btn-warning chatLog">Download Chat Log</button>
-                </a>
+            <br><br>
 
-                <a id="goHome" href="{{ url_for('home') }}" >
-                    <button class="btn btn-primary chatLog">Return Home</button>
-                </a>
-            </h3>
+        </div><!-- end ratings form div -->
 
-
+        <div class="ratingSubmitted makeCenter">
+            <h4>"Your feedback is appreciated!"</h4>
         </div>
-    </div> <!-- End Profile Pic Modal Div -->
+        <br>
 
+
+        <div class="makeCenter">
+            <a id="downloadLog" href="{{ url_for('download_log') }}">
+                <button class="btn btn-warning chatLog">Download Chat Log</button>
+            </a>
+
+            <a id="goHome" href="{{ url_for('home') }}">
+                <button class="btn btn-primary chatLog">Return Home</button>
+            </a>
+        </div>
+
+
+    </div>
+</div> <!-- End rate tutor Modal Div -->
 
 
 </body>

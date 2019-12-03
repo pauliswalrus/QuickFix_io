@@ -389,3 +389,58 @@ body {
 }
 
 
+
+
+/* styles the x to close the rate tutor window */
+#closeRatings {
+      color: #aaaaaa;
+  float: right;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+#closeRatings:hover,
+#closeRatings:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ratingsForm {
+    text-align: center;
+
+}
+
+.ratingSelect {
+    text-align: center;
+    width: 80%;
+    /*border: 2px solid red;*/
+    margin-left: 10%;
+    margin-right: 10%;
+    padding: 0;
+}
+
+input[type="radio"] {
+    width: 18%;
+    text-align: center;
+}
+
+
+ul {
+    list-style-type: none;
+     margin: 0; /* To remove default bottom margin */
+    padding: 0; /* To remove default left padding */
+}
+
+li {
+    display: inline-block;
+    width: 19%;
+    text-align: center;
+     margin: 0; /* To remove default bottom margin */
+    padding: 0; /* To remove default left padding */
+    /*border: 1px solid blue;*/
+}
+
+.makeCenter {
+    text-align: center;
+}
