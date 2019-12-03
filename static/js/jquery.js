@@ -468,6 +468,62 @@ $(document).ready(function () {
 
     });
 
+    $('.deleteRoomUploadsChat').on('click', function () {
+
+        // var room_id = $(this).attr('room_id');
+
+        var r = confirm("Delete Room Files?");
+
+        if (r === true) {
+
+            req = $.ajax({
+                url: '/deleteRoomUploadsChat',
+                type: 'POST',
+                // data: {id: room_id}
+
+            });
+            req.done(function (data) {
+            alert("Room Files Cleared!");
+
+            window.location.reload(true);
+            // $('#roomSection' + room_id).fadeOut(1000).fadeIn(1000);
+            });
+
+        } else {
+
+        }
+
+
+    });
+
+    $('.deleteLogsChat').on('click', function () {
+
+        // var room_id = $(this).attr('room_id');
+
+        var r = confirm("Delete Room Files?");
+
+        if (r === true) {
+
+            req = $.ajax({
+                url: '/deleteLogsChat',
+                type: 'POST',
+                // data: {id: room_id}
+
+            });
+            req.done(function (data) {
+            alert("Chat Cleared!");
+
+            window.location.reload(true);
+            // $('#roomSection' + room_id).fadeOut(1000).fadeIn(1000);
+            });
+
+        } else {
+
+        }
+
+
+    });
+
     $('.submitRating').on('click', function() {
 
         var ratingValue = $("input[name='rating']:checked").val();

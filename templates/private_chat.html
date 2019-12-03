@@ -34,6 +34,7 @@
 
             $('#button_close').hide();
             $('#tutorControls_heading').hide();
+             $('.deleteRoomUploadsChat').hide();
 
 
             $('#privateButton').hide();
@@ -47,6 +48,8 @@
 
                 $('#tutorControls_heading').show();
                 $('#downloadLog').show();
+                $('.deleteRoomUploadsChat').show();
+
 
                 if (roomVisible === 'True') {
 
@@ -119,7 +122,13 @@
                 <a id="downloadLog" href="{{ url_for('download_log') }}" >
                     <button class="btn btn-primary chatLog">Download Chat Log</button>
                 </a>
+                <br>
 
+                <button id="deleteRoomUploadsChat" class="btn btn-success deleteRoomUploadsChat">Delete Room Files
+                </button>
+
+                <button id="deleteLogsChat" class="btn btn-success deleteLogsChat">Delete Chat Log
+                </button>
 
                 <br><br>
                 <div class="roomInfoHeading">Room Files</div>

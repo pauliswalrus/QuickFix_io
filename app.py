@@ -1746,6 +1746,28 @@ def submitRating():
 
     return jsonify({'result': 'success', 'session_rating': this_rating})
 
+
+# Delete Room Uploads for Rooms used by Tutor
+@app.route('/deleteRoomUploadsChat', methods=['POST'])
+def deleteRoomUploadsChat():
+    room_title = session.get('roomName')
+
+    db.session.query(RoomUpload).filter_by(room_name=room_title).delete()
+    db.session.commit()
+
+    return jsonify({'result': 'success'})
+
+
+# Delete Room Uploads for Rooms used by Tutor
+# @app.route('/deleteRoomUploadsChat', methods=['POST'])
+# def deleteRoomUploadsChat():
+#     room_title = session.get('roomName')
+#
+#     db.session.query(RoomUpload).filter_by(room_name=room_title).delete()
+#     db.session.commit()
+#
+#     return jsonify({'result': 'success'})
+
 # Admin Portal - Update Room Profile?
 @app.route('/updateRoomProfile', methods=['POST'])
 def updateRoomProfile():
