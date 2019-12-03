@@ -50,6 +50,8 @@ class Tutor(db.Model):
     tutor_status = db.Column(db.String(25))
     application_comments = db.Column(db.Text)
     tutor_courses = db.Column(db.ARRAY(db.Text))
+    tutor_sessions = db.Column(db.Integer)
+    tutor_score = db.Column(db.Integer)
 
 
 class UserCourses(db.Model):

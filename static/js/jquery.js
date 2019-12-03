@@ -449,6 +449,49 @@ $(document).ready(function () {
     });
 
 
+    //checks status
+    $('.checkRoom').on('click', function () {
+
+        // var room_id = $(this).attr('room_id');
+
+        req = $.ajax({
+            url: '/checkRoom',
+            type: 'POST',
+            // data: {id: room_id}
+
+        });
+
+        req.done(function (data) {
+            alert(data.room_status);
+
+        });
+
+    });
+
+    $('.submitRating').on('click', function() {
+
+        var ratingValue = $("input[name='rating']:checked").val();
+        // alert(ratingValue);
+
+        req = $.ajax({
+            url: '/submitRating',
+            type: 'POST',
+            data: {ratingValue: ratingValue}
+
+        });
+
+        req.done(function (data) {
+            $('.ratingsForm').hide();
+            $('.ratingSubmitted').show();
+            // alert(data.session_rating);
+
+
+        });
+
+
+    })
+
+
         //make room private - used by tutor
     // $('.chatLog').on('click', function () {
     //

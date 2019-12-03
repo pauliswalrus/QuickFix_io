@@ -35,12 +35,18 @@
             $('#button_close').hide();
             $('#tutorControls_heading').hide();
 
+
             $('#privateButton').hide();
             $('#publicButton').hide();
+
+            $('#downloadLog').hide();
+
+            $('.ratingSubmitted').hide();
 
             if (roomAuth === username) {
 
                 $('#tutorControls_heading').show();
+                $('#downloadLog').show();
 
                 if (roomVisible === 'True') {
 
@@ -69,7 +75,7 @@
 
         <!-- Row 1 Col 1-->
         <div class="col-sm-1">
-            <button type="button" id="button_leave" class="btn btn-warning">Leave Room</button>
+            <button type="button" id="button_leave" class="btn btn-warning leaveRoom">Leave Room</button>
         </div> <!-- end Row 1 Col 1-->
 
         <!-- Row 1 Col 2-->
@@ -97,8 +103,15 @@
                 <div id="roomCreator">Created By: {{ authorName }}</div>
                 <div id="joined-stamp">Joined at {{ connected_stamp }}</div>
 
+{#            <div id="userPhotoUpload">#}
+{#                <button id="myBtn" class="myBtn uploadPhotoButton"><i class="glyphicon glyphicon-camera"></i></button>#}
+{#            </div>#}
 
-                <div><a href="{{ url_for('download_log', room_name=room.room_title)}}">Chat Log</a></div>
+
+{#                <div><a href="{{ url_for('download_log')}}">Chat Log</a></div>#}
+{##}
+{#                <button id="checkRoom" class="btn btn-success checkRoom">Check Room#}
+{#                </button>#}
 
 
 
@@ -109,14 +122,20 @@
                 <button id="privateButton" class="btn btn-danger privateButton" room_id="{{ room.id }}">Make Room
                     Private
                 </button>
+
                 <button id="publicButton" class="btn btn-success publicButton" room_id="{{ room.id }}">Make Room
                     Public
                 </button>
 
+                <a id="downloadLog" href="{{ url_for('download_log') }}" >
+                    <button class="btn btn-primary chatLog">Download Chat Log</button>
+                </a>
+
+
                 <br><br>
                 <div class="roomInfoHeading">Room Files</div>
                 <br>
-                <button class="btn btn-primary refreshRoomUploads" room_name="{{ roomName }}">Update File</button>
+                <button class="btn btn-primary refreshRoomUploads" room_name="{{ roomName }}">Update Files</button>
                 <br><br>
                 <div id="file_list">
                     {% for file in room_files %}
@@ -310,37 +329,65 @@
         document.querySelector('#button_leave').onclick = () => {
 
 
-            if (confirm("Would you like to download a copy of today's session?")) {
+            //show div upload on button click uploadNewDocs
+            let ratings = document.getElementById('myModal');
+            ratings.style.display = "block";
 
-            {#window.location.href = "{{ url_for('download_log', room_name=room.room_title)}}";#}
-            {#socket.emit('leave', {'username': username, 'room': roomname});#}
-            {#socket.disconnect();#}
+            let span = document.getElementById('closeRatings');
 
-                if (confirm("Please leave a review ")) {
+            span.onclick = function () {
 
-                    window.location.href = "{{ url_for('download_log', room_name=room.room_title)}}";
-                    socket.emit('leave', {'username': username, 'room': roomname});
-                    socket.disconnect();
+            ratings.style.display = "none";
 
-                } else {
+            };
 
-                    socket.emit('leave', {'username': username, 'room': roomname});
-                    socket.disconnect();
-                    window.location.href = "{{ url_for('home') }}";
-
-                }
-
-
-            } else {
+            document.querySelector('#goHome').onclick = () => {
 
                 socket.emit('leave', {'username': username, 'room': roomname});
                 socket.disconnect();
                 window.location.href = "{{ url_for('home') }}";
 
-            }
+
+            };
+
         };
 
 
+
+
+            //if (confirm("Would you like to download a copy of today's session?")) {
+
+                {# <button id="privateButton" class="btn btn-danger privateButton" room_id="{{ room.id }}">Make Room#}
+                {#    Private#}
+                {#</button>#}
+
+            {#window.location.href = "{{ url_for('download_log', room_name=room.room_title)}}";#}
+            {#socket.emit('leave', {'username': username, 'room': roomname});#}
+            {#socket.disconnect();#}
+
+                //if (confirm("Please leave a review ")) {
+
+                    {#//window.location.href = "{{ url_for('download_log')}}";#}
+                    //socket.emit('leave', {'username': username, 'room': roomname});
+                    //socket.disconnect();
+
+                //} else {
+
+                    //socket.emit('leave', {'username': username, 'room': roomname});
+                    //socket.disconnect();
+                    {#//window.location.href = "{{ url_for('home') }}";#}
+
+                //}
+
+
+            //} else {
+
+                //socket.emit('leave', {'username': username, 'room': roomname});
+                //socket.disconnect();
+                {#//window.location.href = "{{ url_for('home') }}";#}
+
+            //}
+        //};
         // on button click - makes rooms private
         document.querySelector('#privateButton').onclick = () => {
             socket.emit('private', {'username': username, 'room': roomname});
@@ -408,6 +455,57 @@
 
     }
 </script>
+
+
+<!-- UPLOAD NEW PROFILE PIC Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span id="closeRatings">&times;</span>
+            <h3>Thank you for using QuickFix</h3>
+            <br>
+            <div class="ratingsForm">
+
+            <h4>How did {{ authorName }} do today?</h4>
+            <form method="post">
+                <input type="radio" name="rating" value=1 > 1
+                <input type="radio" name="rating" value=2> 2
+                <input type="radio" name="rating" value=3 checked> 3
+                <input type="radio" name="rating" value=4> 4
+                <input type="radio" name="rating" value=5> 5
+
+{#                <button class="btn btn-success submitRating">Submit</button>#}
+
+            </form>
+
+            <input type="button" class="btn btn-success submitRating" value="Submit Rating"/>
+            </div>
+
+            <div class="ratingSubmitted">
+                <h4>"Your feedback is appreciated!"</h4>
+            </div>
+            <br>
+
+{#            <h3>#}
+{#                <a id="leaveRating" href="{{ url_for('download_log') }}" >#}
+{#                    <button class="btn btn-success leaveRating">Submit Rating</button>#}
+{#                </a>#}
+{#            </h3>#}
+
+            <h3>
+                <a id="downloadLog" href="{{ url_for('download_log') }}" >
+                    <button class="btn btn-warning chatLog">Download Chat Log</button>
+                </a>
+
+                <a id="goHome" href="{{ url_for('home') }}" >
+                    <button class="btn btn-primary chatLog">Return Home</button>
+                </a>
+            </h3>
+
+
+        </div>
+    </div> <!-- End Profile Pic Modal Div -->
+
 
 
 </body>

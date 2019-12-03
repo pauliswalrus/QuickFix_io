@@ -1677,16 +1677,20 @@ def room_download(dl_name):
 
 
 # Private Chat Log - Download TXT File of Chat Log
-@app.route('/download_log/<string:room_name>', methods=['GET', 'POST'])
-def download_log(room_name):
+@app.route('/download_log/', methods=['GET', 'POST'])
+def download_log():
 
+    room_name = session.get('roomName')
+    # time stamp of log
     log_stamp = strftime('%b-%d-%Y_%I:%M%p_%Z', localtime())
+    # room based on room session
     room = RoomPost.query.filter_by(room_title=room_name).first()
+    tutor = room.author
     this_user = User.query.filter_by(username=current_user.username).first()
     message_object = Message.query.filter_by(room=room.room_title).order_by(Message.id.asc()).all()
 
     # opens new or appends to file with room name and log_stampe
-    f = open("uploads/logs/" + this_user.username + "_" + room.room_title + "_" + log_stamp + ".txt", "a+")
+    f = open("uploads/logs/" + this_user.username + "_" + room.author + "_" + room.room_title + "_" + log_stamp + ".txt", "a+")
 
     # new line for each message and empty line
     for i in message_object:
@@ -1694,16 +1698,53 @@ def download_log(room_name):
         f.write("\r\n")
     f.close()
 
-    file_string = "uploads/logs/" + this_user.username + "_" + room.room_title + "_" + log_stamp + ".txt"
-
-    # return redirect(url_for("home"))
-
+    file_string = "uploads/logs/" + this_user.username + "_" + room.author + "_" + room.room_title + "_" + log_stamp + ".txt"
     # f_ready = open(file_string, "r")
 
     return send_file(filename_or_fp=file_string, as_attachment=True)
 
     #return send_from_directory(app.config['TEXT_LOGS'], filename=file_string, as_attachment=True)
 
+# submitRating
+@app.route('/submitRating', methods=['GET', 'POST'])
+def submitRating():
+    tutor_name = session.get('author')
+    tutor_user = User.query.filter_by(username=tutor_name).first()
+    tutor = Tutor.query.filter_by(user_id=tutor_user.id).first()
+
+    old_tutor_sessions = tutor.tutor_sessions
+    old_tutor_score = tutor.tutor_score
+
+    this_rating = request.form['ratingValue']
+
+    tutor.tutor_sessions = old_tutor_sessions+1
+    db.session.commit()
+    tutor.tutor_score = old_tutor_score+int(this_rating)
+    db.session.commit()
+
+    print(old_tutor_sessions)
+    print(old_tutor_score)
+
+    updated_tutor = Tutor.query.filter_by(user_id=tutor_user.id).first()
+
+    new_tutor_sessions = updated_tutor.tutor_sessions
+    new_tutor_score = updated_tutor.tutor_score
+
+    print(new_tutor_sessions)
+    print(new_tutor_score)
+
+    # print(this_rating)
+
+    # new_tutor_session = tutor.tutor_sessions+1
+    # db.session.commit()
+
+
+
+
+    # status = room.visible
+    # print(status)
+
+    return jsonify({'result': 'success', 'session_rating': this_rating})
 
 # Admin Portal - Update Room Profile?
 @app.route('/updateRoomProfile', methods=['POST'])
@@ -1727,10 +1768,21 @@ def updateRoomProfile():
 ##
 ############################################################################################################
 
+# checks room status in chat
+@app.route('/checkRoom', methods=['GET', 'POST'])
+def checkRoom():
+    roomSession = session.get('roomName')
+    room = RoomPost.query.filter_by(room_title=roomSession).first()
+    status = room.visible
+    print(status)
+
+    return jsonify({'result': 'success', 'room_status': status})
 
 # makes room private used in chat and admin portal
 @app.route('/privateRoom', methods=['POST'])
 def privateRoom():
+
+    roomSession = session.get('roomName')
     room = RoomPost.query.filter_by(id=request.form['id']).first()
     room.visible = False
     db.session.commit()
