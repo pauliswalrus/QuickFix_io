@@ -1346,8 +1346,11 @@ def profile():
         tutor = Tutor.query.filter_by(user_id=this_user.id).first()
         tutor_sessions = tutor.tutor_sessions
         tutor_score = tutor.tutor_score
+        try:
+            tutor_rating_raw = (tutor_score / tutor_sessions)
+        except ZeroDivisionError:
+            tutor_rating_raw = 0
 
-        tutor_rating_raw = (tutor_score/tutor_sessions)
         tutor_rating = (round(tutor_rating_raw, 2))
         t_status = tutor.tutor_status
 
@@ -1357,8 +1360,11 @@ def profile():
         tutor = Tutor.query.filter_by(user_id=this_user.id).first()
         tutor_sessions = tutor.tutor_sessions
         tutor_score = tutor.tutor_score
+        try:
+            tutor_rating_raw = (tutor_score / tutor_sessions)
+        except ZeroDivisionError:
+            tutor_rating_raw = 0
 
-        tutor_rating_raw = (tutor_score / tutor_sessions)
         tutor_rating = (round(tutor_rating_raw, 2))
         t_status = tutor.tutor_status
 
@@ -1486,7 +1492,6 @@ def pub_profile(username):
         #posts = RoomPost.query.filter(author=username).order_by(RoomPost.date_posted.desc()).all()
         posts = db.session.query(RoomPost).filter(RoomPost.author == username, RoomPost.visible == True).order_by(RoomPost.date_posted.desc()).all()
         pub_role_name = "Tutor"
-
         tutor = Tutor.query.filter_by(user_id=pub_id).first()
         tutor_sessions = tutor.tutor_sessions
         tutor_score = tutor.tutor_score
@@ -1501,6 +1506,15 @@ def pub_profile(username):
         #posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
         posts = db.session.query(RoomPost).filter(RoomPost.author == username, RoomPost.visible == True).order_by(RoomPost.date_posted.desc()).all()
         pub_role_name = "Admin"
+        tutor = Tutor.query.filter_by(user_id=pub_id).first()
+        tutor_sessions = tutor.tutor_sessions
+        tutor_score = tutor.tutor_score
+        try:
+            tutor_rating_raw = (tutor_score / tutor_sessions)
+        except ZeroDivisionError:
+            tutor_rating_raw = 0
+
+        tutor_rating = (round(tutor_rating_raw, 2))
 
     if status == 0:
         status_string = "Offline"
