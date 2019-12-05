@@ -17,7 +17,7 @@ quickfix-io.herokuapp.com
 
 Authors:
 Austin Paul, Emma Hobden, 
-Haley Walbourne, Sarthak Jain
+Haley Walbourne
 
 Team DBits
 
