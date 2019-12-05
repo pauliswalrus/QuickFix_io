@@ -812,7 +812,6 @@ def allrooms():
     if request.method == 'POST':
         return search_results(search_form)
 
-
     if this_user.role == 'S':
         role_name = "Student"
 
@@ -830,7 +829,6 @@ def allrooms():
         t_status = "Admin"
 
     # room_posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
-
 
     room_posts = db.session.query(User.user_photo, RoomPost.room_course, RoomPost.room_title,
                                        RoomPost.author, RoomPost.title, RoomPost.date_posted,
@@ -1357,16 +1355,16 @@ def profile():
 
     elif role == "A":
         role_name = "Admin"
-        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
-        tutor_sessions = tutor.tutor_sessions
-        tutor_score = tutor.tutor_score
-        try:
-            tutor_rating_raw = (tutor_score / tutor_sessions)
-        except ZeroDivisionError:
-            tutor_rating_raw = 0
-
-        tutor_rating = (round(tutor_rating_raw, 2))
-        t_status = tutor.tutor_status
+        # tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        # tutor_sessions = tutor.tutor_sessions
+        # tutor_score = tutor.tutor_score
+        # try:
+        #     tutor_rating_raw = (tutor_score / tutor_sessions)
+        # except ZeroDivisionError:
+        #     tutor_rating_raw = 0
+        #
+        # tutor_rating = (round(tutor_rating_raw, 2))
+        # t_status = tutor.tutor_status
 
     room_posts = RoomPost.query.filter_by(author=current_user.username).order_by(RoomPost.date_posted.desc()).all()
 
@@ -1506,15 +1504,15 @@ def pub_profile(username):
         #posts = RoomPost.query.filter_by(author=username).order_by(RoomPost.date_posted.desc()).all()
         posts = db.session.query(RoomPost).filter(RoomPost.author == username, RoomPost.visible == True).order_by(RoomPost.date_posted.desc()).all()
         pub_role_name = "Admin"
-        tutor = Tutor.query.filter_by(user_id=pub_id).first()
-        tutor_sessions = tutor.tutor_sessions
-        tutor_score = tutor.tutor_score
-        try:
-            tutor_rating_raw = (tutor_score / tutor_sessions)
-        except ZeroDivisionError:
-            tutor_rating_raw = 0
-
-        tutor_rating = (round(tutor_rating_raw, 2))
+        # tutor = Tutor.query.filter_by(user_id=pub_id).first()
+        # tutor_sessions = tutor.tutor_sessions
+        # tutor_score = tutor.tutor_score
+        # try:
+        #     tutor_rating_raw = (tutor_score / tutor_sessions)
+        # except ZeroDivisionError:
+        #     tutor_rating_raw = 0
+        #
+        # tutor_rating = (round(tutor_rating_raw, 2))
 
     if status == 0:
         status_string = "Offline"
@@ -1689,8 +1687,10 @@ def private_chat():
     role_name = this_user.role
 
     #assigned in room route - lobby
+    #session bug!
     roomName = session.get('roomName')
     authorName = session.get('author')
+    #userName = session.get('userName')
 
     message_object = Message.query.filter_by(room=roomName).order_by(Message.id.asc()).all()
     room_files = RoomUpload.query.filter_by(room_name=roomName).all()
@@ -1751,6 +1751,7 @@ def download_log():
     return send_file(filename_or_fp=file_string, as_attachment=True)
 
     #return send_from_directory(app.config['TEXT_LOGS'], filename=file_string, as_attachment=True)
+
 
 # submitRating
 @app.route('/submitRating', methods=['GET', 'POST'])
@@ -1850,6 +1851,7 @@ def checkRoom():
 
     return jsonify({'result': 'success', 'room_status': status})
 
+
 # makes room private used in chat and admin portal
 @app.route('/privateRoom', methods=['POST'])
 def privateRoom():
@@ -1880,6 +1882,7 @@ def publicRoom():
     db.session.commit()
 
     return jsonify({'result': 'success'})
+
 
 # Delete Room Uploads for Rooms used by Tutor
 @app.route('/deleteRoomUploadsChat', methods=['POST'])

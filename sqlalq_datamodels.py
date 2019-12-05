@@ -49,7 +49,6 @@ class Tutor(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users_new.id'))
     tutor_status = db.Column(db.String(25))
     application_comments = db.Column(db.Text)
-    tutor_courses = db.Column(db.ARRAY(db.Text))
     tutor_sessions = db.Column(db.Integer)
     tutor_score = db.Column(db.Integer)
 

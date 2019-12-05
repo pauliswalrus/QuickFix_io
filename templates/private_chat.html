@@ -128,7 +128,7 @@
                 <br>
                 <div class="roomInfoHeading">Room Files</div>
                 <br>
-                <button class="btn btn-primary refreshRoomUploads" room_name="{{ roomName }}">Update Files</button>
+                <button class="btn btn-primary refreshRoomUploads">Update Files</button>
                 <br><br>
                 <div id="file_list">
                     {% for file in room_files %}
@@ -203,14 +203,6 @@
                     </div>
 
                 </div> <!-- end row type msg -->
-
-                {#                original type msg, upload, send msg
-                <div id="input-area">
-                    <button class="fas fa-paperclip" id="uploadNewDocs"></button>
-                    <input type="text" id="user_message" placeholder="Type here..." autocomplete="off">
-                    <button type="submit" id="send_message">SEND</button>
-                </div><!-- end input-area -->
-#}
 
 
                 <div id="upload">

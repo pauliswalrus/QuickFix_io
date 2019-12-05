@@ -545,7 +545,7 @@ $(document).ready(function () {
         });
 
 
-    })
+    });
 
 
         //make room private - used by tutor
@@ -566,7 +566,9 @@ $(document).ready(function () {
     //temp solution refresh page to show updated room uploads
     $('.refreshRoomUploads').on('click', function () {
 
-        location.reload();
+        //location.reload();
+
+        window.location.reload(true);
 
     });
 

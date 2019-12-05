@@ -11,6 +11,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'Replace later'
 
 #db connect to postgress - changes at deployment
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://qotdqbrkicixgz:fbb6c132f1f8841a4f89a33178683b0792c5444cf35e578596a0170f7764ea35@ec2-174-129-220-12.compute-1.amazonaws.com:5432/d158l9bo7mprq0'
-
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://fipsywozuktmiq:a80571a707b328ffc69b488a26efb377dd0dc9c978097aa2e4492467ff750243@ec2-174-129-220-12.compute-1.amazonaws.com:5432/d158l9bo7mprq0'
+# new URI - postgres://fipsywozuktmiq:a80571a707b328ffc69b488a26efb377dd0dc9c978097aa2e4492467ff750243@ec2-174-129-220-12.compute-1.amazonaws.com:5432/d158l9bo7mprq0
 #deploy set to:
