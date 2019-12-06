@@ -547,6 +547,13 @@ $(document).ready(function () {
 
     });
 
+    // $('.chatLog').on('click', function () {
+    //
+    //     //location.reload();
+    //
+    //     window.location.reload(true);
+    //
+    // });
 
         //make room private - used by tutor
     // $('.chatLog').on('click', function () {

@@ -856,7 +856,7 @@ def all_tutors():
     if request.method == 'POST':
         return tutor_search_results(search_form_tutor)
 
-    tutors_approved = db.session.query(User.firstname, User.lastname, User.username, User.user_photo, Tutor.user_id, Tutor.tutor_id,
+    tutors_approved = db.session.query(User.firstname, User.lastname, User.username, User.user_photo, User.status, Tutor.user_id, Tutor.tutor_id,
                                        Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name,
                                        Tutor.application_comments, Tutor.tutor_score, Tutor.tutor_sessions).filter(User.id == Tutor.user_id,
                                                                           Tutor.tutor_status == 'approved').order_by(

@@ -89,11 +89,9 @@
             <a id="navApply" href="{{ url_for('application_begin') }}">Apply To Be a Tutor</a>
             <a id="navCheck" href="{{ url_for('check_application', user_id=this_user.id) }}">Check Application</a>
 
-            <hr>
             <a id="navRoom" href="{{ url_for('add_room') }}">Create New Room</a>
             <a id="navAdmin" href="{{ url_for('admin') }}">Admin Portal</a>
 
-            <hr>
 
 {#            <span id="navApply"><a href="{{ url_for('application_begin') }}">Apply To Be a Tutor</a></span>#}
 
@@ -114,7 +112,7 @@
 {#            </span>#}
 
 {#            <hr>#}
-
+            <hr>
             <a href="{{ url_for('profile') }}">Settings</a>
 {#            <a href="#">Contact</a>#}
             <a href="{{ url_for('logout') }}">Logout</a>
