@@ -144,6 +144,14 @@ class TutorSearchForm(FlaskForm):
     search = StringField('Search For Room', validators=[InputRequired])
 
 
+class AllTutorSearchForm(FlaskForm):
+    choices = [('Course Code', 'Course Code'),
+               ('Course Name', 'Course Name'),
+               ('User Name', 'User Name')]
+    select = SelectField('Search For Tutor:', choices=choices)
+    search = StringField('Search For Tutor', validators=[InputRequired])
+
+
 class ForumSearchForm(FlaskForm):
     choices = [('Course Code', 'Course Code'),
                ('Course Name', 'Course Name'),

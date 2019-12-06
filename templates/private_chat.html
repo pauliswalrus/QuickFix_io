@@ -85,7 +85,7 @@
                 <div class="roomInfoHeading">Room Information</div>
                 <br>
                 <div id="currDate">{{ date_stamp }}</div>
-                <div id="roomCreator">Created By: {{ authorName }}</div>
+                <div id="roomCreator">Created by: <a href="{{ url_for('pub_profile', username=room.author) }}" target=_blank>{{ authorName }}</a></div>
                 <div id="joined-stamp">Joined at {{ connected_stamp }}</div>
 
 

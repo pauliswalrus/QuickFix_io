@@ -14,36 +14,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
 
-    <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>
-
-    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
-
-    <script>
-
-    $(document).ready(function () {
-
-        $('#reApp').hide();
-
-        var this_user = `{{ this_user }}`;
-
-        var app_user = `{{ app_user }}`;
-
-        if (this_user === app_user) {
-
-            $('#reApp').show();
-
-
-        } else {
-
-
-
-        }
-
-
-        });
-
-
-</script>
+{#    <script type="text/javascript" src="//code.jquery.com/jquery-3.2.1.min.js"></script>#}
+{##}
+{#    <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>#}
+{##}
+{#    <script>#}
+{##}
+{#    $(document).ready(function () {#}
+{##}
+{#        $('#reApp').hide();#}
+{##}
+{#        var this_user = `{{ this_user }}`;#}
+{##}
+{#        var app_user = `{{ app_user }}`;#}
+{##}
+{#        if (this_user === app_user) {#}
+{##}
+{#            $('#reApp').show();#}
+{##}
+{##}
+{#        } else {#}
+{##}
+{##}
+{##}
+{#        }#}
+{##}
+{##}
+{#        });#}
+{##}
+{##}
+{#</script>#}
 </head>
 <body>
 {% extends "navbar.html" %}
@@ -51,7 +51,7 @@
 
 <div id="main-section">
 
-     <div id="tutorSection{{ this_tutor.user_id }}" class="panel panel-default">
+     <div id="tutorSection" class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">APPROVED TUTOR: <span> {{ this_tutor.username|upper }} </span> </h3>
         </div>
@@ -66,9 +66,8 @@
               <br>
                 <label>Courses: </label><br>
                 {% for t in tutor_courses %}
-                <span id="statusTutor">{{ t.course_code|upper }} {{ t.course_name|upper }}, </span><br>
-                {% endfor %}
-            <br>
+                <span id="statusTutor">{{ t.course_code|upper }} : {{ t.course_name|upper }}, </span><br>
+                {% endfor %} <br>
 {#             <label>Credentials:</label> <a href="{{ url_for('download_cred', dl_name=this_tutor.credentials_file_name) }}">{{ this_tutor.credentials_file_name }}</a>#}
 {#             <br>#}
             <label>Ratings:</label> {{ tutor_sessions }}

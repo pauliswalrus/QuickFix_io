@@ -851,10 +851,10 @@ def all_tutors():
 
     t_status = "not sure"
 
-    # search_form = TutorSearchForm(request.form)
-    #
-    # if request.method == 'POST':
-    #     return room_search_results(search_form)
+    search_form_tutor = AllTutorSearchForm(request.form)
+
+    if request.method == 'POST':
+        return tutor_search_results(search_form_tutor)
 
     tutors_approved = db.session.query(User.firstname, User.lastname, User.username, User.user_photo, Tutor.user_id, Tutor.tutor_id,
                                        Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name,
@@ -885,7 +885,88 @@ def all_tutors():
     #                                    RoomPost.content, RoomPost.id, RoomPost.room_code).filter(RoomPost.author == User.username, RoomPost.visible == True).order_by(
     #     RoomPost.date_posted.desc()).all()
 
-    return render_template('allTutors.html', this_user=this_user, role_name=role_name, t_status=t_status, tutors_approved=tutors_approved)
+    return render_template('allTutors.html', this_user=this_user, role_name=role_name, t_status=t_status, search_form_tutor=search_form_tutor, tutors_approved=tutors_approved)
+
+
+# Searches all Tutors page not working - commented out for now
+@app.route('/tutor_results')
+def tutor_search_results(search):
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    t_status = "not sure"
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
+
+    search_form_tutor = AllTutorSearchForm(request.form)
+
+    results = []
+    search_string = search.data['search']
+
+    if search_string:
+        if search.data['select'] == 'Course Code':
+
+            qry = db.session.query(User.firstname, User.lastname, User.username, User.user_photo,
+                                               Tutor.user_id, Tutor.tutor_id,
+                                               Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name,
+                                               Tutor.application_comments, Tutor.tutor_score,
+                                               Tutor.tutor_sessions).filter(User.id == Tutor.user_id, TutorCourses.course_code.contains(search_string)).order_by(
+                Tutor.tutor_sessions.desc()).all()
+
+            results = qry.all()
+
+        elif search.data['select'] == 'Course Name':
+            qry = db.session.query(User.firstname, User.lastname, User.username, User.user_photo,
+                                   Tutor.user_id, Tutor.tutor_id,
+                                   Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name,
+                                   Tutor.application_comments, Tutor.tutor_score,
+                                   Tutor.tutor_sessions).filter(User.id == Tutor.user_id,
+                                                                TutorCourses.user_id == User.id,
+                                                                TutorCourses.course_name.contains(
+                                                                    search_string)).order_by(
+                Tutor.tutor_sessions.desc()).all()
+
+            results = qry.all()
+
+        elif search.data['select'] == 'User Name':
+            qry = db.session.query(User.firstname, User.lastname, User.username, User.user_photo,
+                                   Tutor.user_id, Tutor.tutor_id,
+                                   Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name,
+                                   Tutor.application_comments, Tutor.tutor_score,
+                                   Tutor.tutor_sessions).filter(User.id == Tutor.user_id,
+                                                                User.username.contains(
+                                                                    search_string)).order_by(
+                Tutor.tutor_sessions.desc()).all()
+
+            results = qry.all()
+        else:
+            qry = db.session.query(Tutor)
+            results = qry.all()
+    else:
+        qry = db.session.query(Tutor).filter(Tutor.tutor_status)
+        results = qry.all()
+
+    if not results:
+        flash('No results found!')
+        return redirect('/all_tutors')
+    else:
+        # display results
+        tutors_approved = results
+
+        return render_template('allTutors.html', this_user=this_user, tutors_approved=tutors_approved, role_name=role_name, t_status=t_status, search_form_tutor=search_form_tutor)
 
 
 # tutor_details of specifc Tutor from all_tutors
@@ -1073,6 +1154,9 @@ def room_search_results(search):
     results = []
     search_string = search.data['search']
 
+    #search_string_cap = search_string.capitalize()
+    #print(search_string)
+
     if search_string:
         if search.data['select'] == 'Course Code':
             # qry = db.session.query(User.user_photo, RoomPost).filter(RoomPost.room_code.contains(search_string))
@@ -1085,7 +1169,9 @@ def room_search_results(search):
             results = qry.all()
 
         elif search.data['select'] == 'Course Name':
+
             qry = db.session.query(RoomPost).filter(RoomPost.room_course.contains(search_string))
+            #search_string_cap = search_string.capitalize()
 
             qry = db.session.query(User.user_photo, RoomPost.room_course, RoomPost.room_title,
                                    RoomPost.author, RoomPost.title, RoomPost.date_posted,
