@@ -116,6 +116,12 @@ def new_student():
         user_added = User.query.filter_by(username=username).first()
         user_id = user_added.id
 
+        user_course = UserCourses(user_id=user_id, course_name="General",
+                                  course_id=10001, course_code="GENERAL101")
+
+        db.session.add(user_course)
+        db.session.commit()
+
         # add student to db
         student = Student(user_id=user_id)
         db.session.add(student)
@@ -801,8 +807,8 @@ def deleteTutorCourse():
 
 
 # View All Public Tutor Rooms
-@app.route('/allrooms', methods=['GET', 'POST'])
-def allrooms():
+@app.route('/open_rooms', methods=['GET', 'POST'])
+def open_rooms():
     this_user = User.query.filter_by(username=current_user.username).first()
 
     t_status = "not sure"
@@ -810,7 +816,7 @@ def allrooms():
     search_form = TutorSearchForm(request.form)
 
     if request.method == 'POST':
-        return search_results(search_form)
+        return room_search_results(search_form)
 
     if this_user.role == 'S':
         role_name = "Student"
@@ -836,6 +842,97 @@ def allrooms():
         RoomPost.date_posted.desc()).all()
 
     return render_template('tutorPosts.html', this_user=this_user, room_posts=room_posts, role_name=role_name, t_status=t_status, search_form=search_form)
+
+
+# View All Approved Tutors
+@app.route('/all_tutors', methods=['GET', 'POST'])
+def all_tutors():
+    this_user = User.query.filter_by(username=current_user.username).first()
+
+    t_status = "not sure"
+
+    # search_form = TutorSearchForm(request.form)
+    #
+    # if request.method == 'POST':
+    #     return room_search_results(search_form)
+
+    tutors_approved = db.session.query(User.firstname, User.lastname, User.username, User.user_photo, Tutor.user_id, Tutor.tutor_id,
+                                       Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name,
+                                       Tutor.application_comments, Tutor.tutor_score, Tutor.tutor_sessions).filter(User.id == Tutor.user_id,
+                                                                          Tutor.tutor_status == 'approved').order_by(
+        Tutor.tutor_sessions.desc()).all()
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
+
+    # room_posts = RoomPost.query.order_by(RoomPost.date_posted.desc()).all()
+
+    # room_posts = db.session.query(User.user_photo, RoomPost.room_course, RoomPost.room_title,
+    #                                    RoomPost.author, RoomPost.title, RoomPost.date_posted,
+    #                                    RoomPost.content, RoomPost.id, RoomPost.room_code).filter(RoomPost.author == User.username, RoomPost.visible == True).order_by(
+    #     RoomPost.date_posted.desc()).all()
+
+    return render_template('allTutors.html', this_user=this_user, role_name=role_name, t_status=t_status, tutors_approved=tutors_approved)
+
+
+# tutor_details of specifc Tutor from all_tutors
+@app.route('/tutor_details/<int:user_id>', methods=['GET', 'POST'])
+def tutor_details(user_id):
+
+    this_user = User.query.filter_by(id=current_user.id).first()
+    app_user = User.query.filter_by(id=user_id).first()
+
+    tutor_courses = TutorCourses.query.filter_by(user_id=app_user.id).all()
+
+    t_status = "not sure"
+
+    if this_user.role == 'S':
+        role_name = "Student"
+
+        if Tutor.query.filter_by(user_id=this_user.id).first():
+            tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+            t_status = tutor.tutor_status
+
+    elif this_user.role == 'T':
+        role_name = "Tutor"
+        tutor = Tutor.query.filter_by(user_id=this_user.id).first()
+        t_status = tutor.tutor_status
+
+    elif this_user.role == 'A':
+        role_name = "Admin"
+        t_status = "Admin"
+
+    t1 = Tutor.query.filter_by(user_id=app_user.id).first()
+
+    tutor_score = t1.tutor_score
+    tutor_sessions = t1.tutor_sessions
+
+    try:
+        tutor_rating_raw = (tutor_score / tutor_sessions)
+    except ZeroDivisionError:
+        tutor_rating_raw = 0
+
+    tutor_rating = (round(tutor_rating_raw, 2))
+
+    this_tutor = db.session.query(User.firstname, User.lastname, User.username, User.user_photo, Tutor.user_id, Tutor.tutor_id,
+                     Tutor.about_tutor, Tutor.tutor_status, Tutor.credentials_file_name,
+                     Tutor.application_comments).filter(
+        User.id == Tutor.user_id, User.id == app_user.id).first()
+
+    return render_template("tutor_details.html", this_user=this_user, this_tutor=this_tutor, role_name=role_name, t_status=t_status, tutor_courses=tutor_courses, tutor_sessions=tutor_sessions, tutor_rating=tutor_rating, app_user=app_user)
 
 
 # View a Specific Tutor Room (lobby)
@@ -943,15 +1040,15 @@ def add_room():
         db.session.add(new_room)
         db.session.commit()
 
-        return redirect(url_for('home'))
+        return redirect(url_for('open_rooms'))
 
     return render_template('addNewRoom.html', username=current_user.username, post_form=post_form,
                            user_object=user_object, this_user=this_user, t_status=t_status, role_name=role_name)
 
 
 # Find a Tutor Page - Search for a Room
-@app.route('/results')
-def search_results(search):
+@app.route('/room_results')
+def room_search_results(search):
     this_user = User.query.filter_by(username=current_user.username).first()
     t_status = "not sure"
 
@@ -1015,7 +1112,7 @@ def search_results(search):
 
     if not results:
         flash('No results found!')
-        return redirect('/allrooms')
+        return redirect('/open_rooms')
     else:
         # display results
         room_posts = results
@@ -1032,8 +1129,8 @@ def search_results(search):
 
 
 # View all Community Forums Posts
-@app.route('/allstudentposts', methods=['GET', 'POST'])
-def allstudentposts():
+@app.route('/community_forums', methods=['GET', 'POST'])
+def community_forums():
     this_user = User.query.filter_by(username=current_user.username).first()
 
     t_status = "not sure"
@@ -1065,8 +1162,8 @@ def allstudentposts():
 
 
 # View a Specific Community Forum Post
-@app.route('/studentpost/<int:studentpost_id>', methods=['GET', 'POST'])
-def studentpost(studentpost_id):
+@app.route('/forum_post/<int:studentpost_id>', methods=['GET', 'POST'])
+def forum_post(studentpost_id):
 
     stdpost = StudentPost.query.filter_by(id=studentpost_id).one()
 
@@ -1109,15 +1206,15 @@ def studentpost(studentpost_id):
         db.session.add(comment_post)
         db.session.commit()
 
-        return redirect(url_for('studentpost', studentpost_id=post_id))
+        return redirect(url_for('forum_post', studentpost_id=post_id))
 
     return render_template('viewStudentPost.html', post=stdpost, username=current_user.username,
                            comment_form=comment_form, comments=comments, this_user=this_user, t_status=t_status, role_name=role_name)
 
 
 # Add a New Community Forum Post
-@app.route('/add_student_post', methods=['GET', 'POST'])
-def add_student_post():
+@app.route('/add_forum_post', methods=['GET', 'POST'])
+def add_forum_post():
     post_form = StudentPostForm()
 
     user_object = User.query.filter_by(username=current_user.username)
@@ -1153,7 +1250,7 @@ def add_student_post():
             db.session.add(blog_post)
             db.session.commit()
 
-            return redirect(url_for('home'))
+            return redirect(url_for('community_forums'))
 
         if Tutor.query.filter_by(user_id=this_user.id).first():
             tutor = Tutor.query.filter_by(user_id=this_user.id).first()
@@ -1189,7 +1286,7 @@ def add_student_post():
             db.session.add(blog_post)
             db.session.commit()
 
-            return redirect(url_for('home'))
+            return redirect(url_for('community_forums'))
 
     elif this_user.role == 'A':
         role_name = "Admin"
@@ -1250,7 +1347,7 @@ def forum_search_results(search):
 
     if not results:
         flash('No results found!')
-        return redirect('/allstudentposts')
+        return redirect('/community_forums')
     else:
         # display results
         student_posts = results
@@ -1488,6 +1585,7 @@ def pub_profile(username):
         pub_role_name = "Student"
     elif pub_role == "T":
         #posts = RoomPost.query.filter(author=username).order_by(RoomPost.date_posted.desc()).all()
+        student_posts = StudentPost.query.filter_by(author=username).order_by(StudentPost.date_posted.desc()).all()
         posts = db.session.query(RoomPost).filter(RoomPost.author == username, RoomPost.visible == True).order_by(RoomPost.date_posted.desc()).all()
         pub_role_name = "Tutor"
         tutor = Tutor.query.filter_by(user_id=pub_id).first()

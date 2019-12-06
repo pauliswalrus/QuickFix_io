@@ -81,30 +81,39 @@
 
         <div id="menu" style="display:none">
 
-            <a href="{{ url_for('allrooms') }}">Find a Tutor</a>
-            <a href="{{ url_for('allstudentposts') }}">Community Forums</a>
+            <a href="{{ url_for('open_rooms') }}">Find An Available Tutor</a>
+            <a href="{{ url_for('all_tutors') }}">All Tutors</a>
+            <a href="{{ url_for('community_forums') }}">Community Forums</a>
+            <a href="{{ url_for('add_forum_post') }}">Create New Post</a>
+
+            <a id="navApply" href="{{ url_for('application_begin') }}">Apply To Be a Tutor</a>
+            <a id="navCheck" href="{{ url_for('check_application', user_id=this_user.id) }}">Check Application</a>
+
+            <hr>
+            <a id="navRoom" href="{{ url_for('add_room') }}">Create New Room</a>
+            <a id="navAdmin" href="{{ url_for('admin') }}">Admin Portal</a>
 
             <hr>
 
-            <span id="navApply"><a href="{{ url_for('application_begin') }}">Apply To Be a Tutor</a></span>
+{#            <span id="navApply"><a href="{{ url_for('application_begin') }}">Apply To Be a Tutor</a></span>#}
 
-            <span id="navCheck">
-                <a href="{{ url_for('check_application', user_id=this_user.id) }}">Check Application Status</a>
-            </span>
+{#            <span id="navCheck">#}
+{#                <a href="{{ url_for('check_application', user_id=this_user.id) }}">Check Application Status</a>#}
+{#            </span>#}
 
-            <span id="navRoom" >
-                <a href="{{ url_for('add_room') }}">Create New Room</a>
-            </span>
+{#            <span id="navRoom" >#}
+{#                <a href="{{ url_for('add_room') }}">Create New Room</a>#}
+{#            </span>#}
 
-            <span id="navPost">
-                <a href="{{ url_for('add_student_post') }}">Create Community Forum Post</a>
-            </span>
+{#            <span id="navPost">#}
+{#                <a href="{{ url_for('add_forum_post') }}">Create Community Forum Post</a>#}
+{#            </span>#}
 
-            <span id="navAdmin">
-                <a href="{{ url_for('admin') }}">Admin Portal</a>
-            </span>
+{#            <span id="navAdmin">#}
+{#                <a href="{{ url_for('admin') }}">Admin Portal</a>#}
+{#            </span>#}
 
-            <hr>
+{#            <hr>#}
 
             <a href="{{ url_for('profile') }}">Settings</a>
 {#            <a href="#">Contact</a>#}

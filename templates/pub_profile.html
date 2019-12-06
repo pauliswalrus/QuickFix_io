@@ -124,7 +124,7 @@
                         {% for room in student_posts %}
                             <tbody>
                             <tr>
-                                <td><a href="{{ url_for('studentpost', studentpost_id=room.id) }}">{{ room.title }}</a></td>
+                                <td><a href="{{ url_for('forum_post', studentpost_id=room.id) }}">{{ room.title }}</a></td>
                                 <td>{{ room.post_course_code }}</td>
                                 <td>{{ room.post_course }}</td>
                                 <td>{{ room.date_posted.strftime('%B %d, %Y') }}</td>
@@ -141,7 +141,7 @@
 
 
 {#                    {% for room in student_posts %}#}
-{#                        <div id="linkType"><a href="{{ url_for('studentpost', studentpost_id=room.id) }}">#}
+{#                        <div id="linkType"><a href="{{ url_for('forum_post', studentpost_id=room.id) }}">#}
 {#                            <h5>[{{ room.type|upper }}] {{ room.title }}#}
 {#                                - {{ room.date_posted.strftime('%B %d, %Y') }}</h5>#}
 {#                        </a></div>#}

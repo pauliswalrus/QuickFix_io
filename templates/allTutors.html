@@ -66,17 +66,17 @@
                         {% endif %}
                     {% endwith %}
 
-                    <form method="POST" action="">
-                        {{ search_form.csrf_token }}
-                        {{ search_form.select(class_='form-control filter_type') }}<br>
-                        {{ search_form.search(class_='form-control filter_string', placeholder='Search Rooms') }} <br>
-                        <input type="submit" class="btn btn-primary" value="Search">
-                        <a href="{{ url_for('open_rooms') }}">
-                            <input type="" class="btn btn-warning" value="Reset Values">
-                        </a><a href="{{ url_for('add_room') }}">
-                            <input type="" id="createRoom" class="btn btn-primary create_new" value="Create New Room">
-                        </a>
-                    </form>
+{#                    <form method="POST" action="">#}
+{#                        {{ search_form.csrf_token }}#}
+{#                        {{ search_form.select(class_='form-control filter_type') }}<br>#}
+{#                        {{ search_form.search(class_='form-control filter_string', placeholder='Search Rooms') }} <br>#}
+{#                        <input type="submit" class="btn btn-primary" value="Search">#}
+{#                        <a href="{{ url_for('open_rooms') }}">#}
+{#                            <input type="" class="btn btn-warning" value="Reset Values">#}
+{#                        </a><a href="{{ url_for('add_room') }}">#}
+{#                            <input type="" id="createRoom" class="btn btn-primary create_new" value="Create New Room">#}
+{#                        </a>#}
+{#                    </form>#}
 
                     <br><br>
 
@@ -86,7 +86,7 @@
             <!-- Row 2 -->
             <div class="row title1">
                 <div class="col-sm-12">
-                    <span class="title2">Open Rooms</span>
+                    <span class="title2">All QuickFix Tutors</span>
                 </div>
             </div> <!-- end row 2 -->
 
@@ -95,32 +95,33 @@
 
         <div id="bottom_container">
             <!-- for every tutor room, create 3 new rows -->
-            {% for room in room_posts %}
+            {% for tutor in tutors_approved %}
 
                 <div class="row_a_container">
                 <div class="row row_a">
 
                     <div class="col-sm-2">
                         <div id="userPhoto">
-                            <img src="{{ url_for('uploaded_file', filename=room.user_photo) }}" height="100px" width="100px" class="profilePic"/>
+                            <img src="{{ url_for('uploaded_file', filename=tutor.user_photo) }}" height="100px" width="100px" class="profilePic"/>
                         </div>
 
                     </div><!-- end row_a col 1 -->
 
                     <div class="col-sm-8">
                         <span class="showRoomTitle">
-                            <a href="{{ url_for('room', room_id=room.id) }}" class="showRoomTitle">{{ room.room_title }}</a>
+                            <a href="{{ url_for('pub_profile', username=tutor.username) }}" class="showRoomTitle">{{ tutor.username }} </a>
+{#                            <a href="{{ url_for('room', room_id=room.id) }}" class="showRoomTitle">{{ room.room_title }}</a>#}
                         </span><br>
-                        <span class="showCourse">Course: {{ room.room_course }}</span><br>
-                        <span>Course Code: {{ room.room_code }}</span><br>
-                        <span class="showAuthor"> posted by
-                            <a href="{{ url_for('pub_profile', username=room.author) }}">{{ room.author }}</a>
+                        <span class="showCourse">Name: {{ tutor.firstname }} {{ tutor.lastname }}</span><br>
+                        <span>TutorID: {{ tutor.tutor_id }}</span><br>
+                        <span class="showAuthor">
+                             <a href="{{ url_for('tutor_details', user_id=tutor.user_id) }}"> View Details</a>
                         </span>
-                        <span class="showTime">at {{ room.date_posted.strftime('%I' ':' '%M %p') }}</span>
+{#                        <span class="showTime">at time </span>#}
                     </div>
 
                     <div class="col-sm-2 postDate">
-                        <span class="showDate">{{ room.date_posted.strftime('%b %d, %Y') }}</span>
+                        <span class="showDate">Ratings: {{ tutor.tutor_sessions }} </span>
                     </div>
 
                 </div> <!-- end row a -->

@@ -517,7 +517,7 @@
     <!-- ------------------------------------------------ Row 7 - Posts -------------------------------------------- -->
     <div class="row">
         <div class="col-sm-12">
-            <p class="subheading">My Posts <a href="{{ url_for('add_student_post') }}">Add New Post</a></p>
+            <p class="subheading">My Posts <a href="{{ url_for('add_forum_post') }}">Add New Post</a></p>
         </div>
     </div>
 
@@ -544,7 +544,7 @@
                         {% for room in student_posts %}
                             <tbody>
                             <tr>
-                                <td><a href="{{ url_for('studentpost', studentpost_id=room.id) }}">{{ room.title }}</a></td>
+                                <td><a href="{{ url_for('forum_post', studentpost_id=room.id) }}">{{ room.title }}</a></td>
                                 <td>{{ room.post_course_code }}</td>
                                 <td>{{ room.post_course }}</td>
                                 <td>{{ room.date_posted.strftime('%B %d, %Y') }}</td>
