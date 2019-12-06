@@ -4,11 +4,8 @@
 
 /* Styles the main-section div which holds all page content */
 #main-section {
-    /*padding: 10px 5px 10px 5px;*/
     width: 100%;
-    /*height: calc(100% - 80px);*/
     height: 100%;
-    /*border: 2px solid purple;*/
 
 }
 
@@ -20,13 +17,7 @@
 .row {
     margin-left: auto !important;
     margin-right: auto !important;
-    /*border: 1px solid red;*/
-    /*margin-left: auto !important;*/
-    /*margin-right: auto !important;*/
     padding: 15px !important;
-
-    /*width: 90% !important;*/
-    /*margin: 10px 5% 10px 5% !important;*/
 }
 
 
@@ -45,7 +36,6 @@
 }
 
 #left_col {
-    /*background-color: pink;*/
     padding: 10px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     height: calc(100% - 80px);
@@ -53,10 +43,6 @@
     overflow-x: scroll;
 }
 
-#right_col {
-    /*height: 100%;*/
-
-}
 
 .roomInfoHeading {
     font-size: 1.8em !important;
@@ -99,65 +85,22 @@
 /* Styles the div where user types msg */
 #type_msg {
     width: 100%;
-    /*border: 2px solid blue;*/
-    /*color: darkslategray;*/
-    /*height: 40px;*/
-    /*width: 80%;*/
 }
 
+/* Styles the input where user types msg */
 .type_msg {
     width: 100%;
     height: 38px;
-    /*margin-top: 0;*/
-    /*margin-bottom: 0;*/
-
-
 }
 
 
 
-
+/* Applied to anything where padding is not wanted */
 .padding-0 {
     padding-right: 1 !important;
     padding-left: 1 !important;
     margin: 0;
-    /*border: 1px solid green;*/
 }
-
-
-
-/* Styles the button to send a msg */
-#button_send {
-    /*color: white;*/
-    /*background-color: slategray;*/
-    /*width: 10%;*/
-    /*height: 40px;*/
-    /*float: right;*/
-    /*border-style: none;*/
-}
-
-
-
-/* ---------------------------------------------------- GENERAL ---------------------------------------------------- */
-html, body {
-    /*height:100%;*/
-}
-/* Styles the body of the page */
-body {
-    /*background-image: url('../images/teamChat2.png');*/
-    /*background-size: cover;*/
-}
-
-
-
-
-
-/* -------------------------------------------------- LEFT COLUMN -------------------------------------------------- */
-
-
-
-
-/* -------------------------------------------------- RIGHT COLUMN ------------------------------------------------- */
 
 
 
@@ -166,80 +109,8 @@ body {
     width: 100%;
     height: 80%;
     overflow-y: auto; /*Make  this section scrollable */
-
     padding: 5px;
-    /*background-color: #F2F3F7;*/
 }
-
-/*!* Styles the div that holds the type msg & send msg & upload docs button *!*/
-/*#input-area {*/
-/*    bottom: 0;*/
-/*    width: 100%;*/
-/*    margin-top: 10px;*/
-/*}*/
-
-
-
-
-
-
-
-
-
-/*!* Styles button that opens the upload form *!*/
-/*#uploadNewDocs {*/
-/*    width: 40px;*/
-/*    height: 40px;*/
-/*    color: white;*/
-/*    background-color: slategray;*/
-/*    float: left;*/
-/*    border-style: none;*/
-/*    font-size: 1.5em;*/
-/*}*/
-
-/*#uploadNewDocs:hover {*/
-/*    color: #888888;*/
-/*}*/
-
-/*!* Styles the div where user types msg *!*/
-/*#user_message {*/
-/*    color: darkslategray;*/
-/*    height: 40px;*/
-/*    width: 80%;*/
-/*}*/
-
-/*!* Styles the button to send a msg *!*/
-/*#send_message {*/
-/*    color: white;*/
-/*    background-color: slategray;*/
-/*    width: 10%;*/
-/*    height: 40px;*/
-/*    float: right;*/
-/*    border-style: none;*/
-/*}*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* Styles the window that holds upload docs form - hidden as default */
 #upload {
@@ -276,8 +147,45 @@ body {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+/* CURRENT USER */
+
+.my_profilePic_sm {
+    float: right;
+    border-radius: 30px;
+}
+
+#my_nameTime {
+    text-align: right;
+    margin-right: 10px;
+}
+
+/* Current user's message bubble */
+.my_message_line {
+    color: #395065;
+    text-align: right;
+    border: 2px solid #E8EAEF;
+    background-color: #E8EAEF;
+    border-radius: 20px 20px 0px 20px;
+    padding: 10px;
+
+    width: 55%;
+    margin-left: 38%;
+    margin-right: 7%;
+
+}
+
 /* Current user's username in chat */
-.my-username {
+.my_username {
     font-weight: bold;
     font-size: 1.4em;
     color: #395065;
@@ -285,22 +193,83 @@ body {
 }
 
 /* Current user's msg timestamp */
-.timestamp {
+.my_timestamp {
     color: #395065;
     font-size: 0.7em;
 }
 
+/* Current user's msg  */
+.my_message {
+    padding: 10px;
+}
+
+
+
+
+
+/* OTHER USER */
+
+.other_profilePic_sm {
+    float: left;
+    border-radius: 30px;
+}
+
+#other_nameTime {
+    text-align: left;
+    margin-left: 10px;
+}
+
 /* Current user's message bubble */
-.my-msg {
+.other_message_line {
     color: #395065;
     text-align: left;
     border: 2px solid #E8EAEF;
     background-color: #E8EAEF;
     border-radius: 20px 20px 20px 0px;
-    padding-left: 10px;
+    padding: 10px;
+
     width: 55%;
-    margin-right: 40%;
+    margin-right: 38%;
+    margin-left: 7%;
+
 }
+
+/* Current user's username in chat */
+.other_username {
+    font-weight: bold;
+    font-size: 1.4em;
+    color: #395065;
+    padding-left: 5px;
+}
+
+/* Current user's msg timestamp */
+.other_timestamp {
+    color: #395065;
+    font-size: 0.7em;
+}
+
+/* Current user's msg  */
+.other_message {
+    padding: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Other user's username in chat */
 .other-username {
@@ -319,14 +288,25 @@ body {
 /* Other user's message bubble */
 .others-msg {
     color: #395065;
-    text-align: right;
+    text-align: left;
     border: 2px solid #F2F3F7;
     background-color: #F2F3F7;
-    border-radius: 20px 20px 0px 20px;
-    padding-right: 10px;
+    border-radius: 20px 20px 20px 0px;
+    padding: 10px;
     width: 55%;
-    margin-left: 40%;
+    margin-right: 40%;
 }
+
+
+
+
+
+
+
+
+
+
+
 
 
 #privateButton {
@@ -444,3 +424,21 @@ li {
 .makeCenter {
     text-align: center;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1919,11 +1919,11 @@ def message(data):
     room = session.get('roomName')
     #message_time = strftime('%I:%M%p %m-%d-%Y', localtime())
     message_time = strftime('%b-%d-%Y %I:%M%p %Z', localtime())
-    message = Message(message=data['msg'], username=data['username'], room=data['room'], created_at=message_time)
+    message = Message(message=data['msg'], username=data['username'], room=data['room'], created_at=message_time, user_photo=current_user.user_photo)
     db.session.add(message)
     db.session.commit()
 
-    send({'msg': data['msg'], 'username': data['username'], 'time_stamp': strftime('%b-%d-%Y %I:%M%p %Z', localtime())},
+    send({'msg': data['msg'], 'username': data['username'], 'user_photo': current_user.user_photo, 'time_stamp': strftime('%b-%d-%Y %I:%M%p %Z', localtime())},
          room=data['room'])
 
 

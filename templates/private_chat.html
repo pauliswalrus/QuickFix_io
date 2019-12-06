@@ -55,22 +55,22 @@
 
 <div id="main-section">
 
-    <!-- Row 1 - Room Name-->
+    <!-- Row 1 - Room Name -->
     <div class="row row1">
 
-        <!-- Row 1 Col 1-->
+        <!-- Col 1-->
         <div class="col-sm-1">
             <button type="button" id="button_leave" class="btn btn-warning leaveRoom">Leave Room</button>
-        </div> <!-- end Row 1 Col 1-->
+        </div>
 
-        <!-- Row 1 Col 2-->
+        <!-- Col 2-->
         <div class="col-sm-11">
             <div id="chatWindowHeader">
                 <div id="room-name">
                     {{ roomName }}
                 </div>
             </div>
-        </div> <!-- end Row 1 Col 2-->
+        </div>
 
     </div><!-- end Row 1 - Room Name-->
 
@@ -78,7 +78,7 @@
     <!-- Row 2 -->
     <div class="row row2">
 
-        <!-- Row 2 Col 1 - Left Column -->
+        <!-- Col 1 - Left Column -->
         <div class="col-sm-4">
             <div id="left_col">
 
@@ -144,39 +144,57 @@
 
         </div>
 
-        <!-- Row 2 Col 2 - Chat Window -->
+        <!-- Col 2 - Chat Window -->
         <div class="col-sm-8">
             <div id="right_col">
-                <div id="display-message-section">
 
+                <div id="display-message-section">
+{# <img src="{{ url_for('uploaded_file', filename=this_user.user_photo) }}" height="50px" width="50px" class="profilePic_sm"/>#}
+{# <img src="{{ url_for('uploaded_file', filename=this_user.user_photo) }}" height="50px" width="50px" class="profilePic_sm"/>#}
 
                     {% for msg in message_object %}
 
                         {% if msg.username == username %}
 
-                            <p class="my-msg">
-                                {#                    <img src="{{ url_for('uploaded_file', filename=this_user.user_photo) }}" height="50px" width="50px" class="profilePic_sm"/>#}
-                                <span class="my-username">{{ msg.username }}</span>
-                                <span class="timestamp">{{ msg.created_at }}</span>
-                                <br>
-                                <span class="my-msg">{{ msg.message }}</span>
+                            <div id="my_nameTime">
+                                <span class="my_timestamp">{{ msg.created_at }}</span>
+                                <span class="my_username">{{ msg.username }}</span>
+                            </div>
+
+                            <img src="{{ url_for('uploaded_file', filename=msg.user_photo) }}" height="50px" width="50px" class="my_profilePic_sm"/>
+
+                            <p class="my_message_line">
+                                <span class="my_message">{{ msg.message }}</span>
                             </p>
 
                         {% else %}
 
-                            <p class="others-msg">
-                                {#                    <img src="{{ url_for('uploaded_file', filename=this_user.user_photo) }}" height="50px" width="50px" class="profilePic_sm"/>#}
-                                <span class="other-username">{{ msg.username }}</span>
-                                <span class="other-timestamp">{{ msg.created_at }}</span>
-                                <br>
-                                <span class="others-msg">{{ msg.message }}</span>
+                            <div id="other_nameTime">
+                                <span class="other_username">{{ msg.username }}</span>
+                                <span class="other_timestamp">{{ msg.created_at }}</span>
+                            </div>
+
+                            <img src="{{ url_for('uploaded_file', filename=msg.user_photo) }}" height="50px" width="50px" class="other_profilePic_sm"/>
+
+                            <p class="other_message_line">
+                                <span class="other_message">{{ msg.message }}</span>
                             </p>
+
+
+{#                            <p class="others-msg">#}
+{#                                <span class="othersInitials">{{ msg.username.0 }}</span>#}
+{#                                <span class="other-username">{{ msg.username }}</span>#}
+{#                                <span class="other-timestamp">{{ msg.created_at }}</span>#}
+{#                                <br>#}
+{#                                <span class="others-msg">{{ msg.message }}</span>#}
+{#                            </p>#}
 
                         {% endif %}
 
                     {% endfor %}
 
                 </div><!-- end display-message-section div -->
+
 
                 <div class="row row_typeMsg no-gutters">
 
@@ -189,22 +207,21 @@
 
                     <div class="col-sm-10 padding-0">
                         <div id="type_msg">
-                            <input type="text" class="type_msg" id="user_message" placeholder="Type here..."
-                                   autocomplete="off">
+                            <input type="text" class="type_msg" id="user_message" placeholder="Type here..." autocomplete="off">
                         </div>
                     </div>
 
 
                     <div class="col-sm-1 padding-0">
                         <div id="button_send">
-                            <button class="btn btn-warning glyphicon glyphicon-send" type="submit"
-                                    id="send_message"></button>
+                            <button class="btn btn-warning glyphicon glyphicon-send" type="submit" id="send_message"></button>
                         </div>
                     </div>
 
                 </div> <!-- end row type msg -->
 
 
+                <!-- Upload Documents Pop Up Window -->
                 <div id="upload">
                     <span class="closeWindow" onclick="testClose()">&times;</span><br>
 
@@ -230,6 +247,7 @@
     const username = `{{ username }}`;
     const mesage_object = `{{ message_object }}`;
     const roomname = `{{ roomName }}`;
+    const this_user_photo = `{{ this_user }}`;
 
 
     //show div upload on button click uploadNewDocs
@@ -258,38 +276,91 @@
         //Displays incoming messages
         socket.on('message', data => {
 
-            const p = document.createElement('p'); // <p> tag
+            // define variables for current user
+            const div_nameTime = document.createElement('div'); // <div> tag
             const span_username = document.createElement('span'); // <span> tag
             const span_timestamp = document.createElement('span'); // <span> tag
-            const br = document.createElement('br'); // <br> tag
+            const img = document.createElement('img'); // <img> tag
+            const p_msg_line = document.createElement('p'); // <p> tag
+            const span_msg = document.createElement('span'); // <span> tag
+
+            // define variables for other users
+            const div_nameTime_other = document.createElement('div'); // <div> tag
+            const span_username_other = document.createElement('span'); // <span> tag
+            const span_timestamp_other = document.createElement('span'); // <span> tag
+            const img_other = document.createElement('img'); // <img> tag
+            const p_msg_line_other = document.createElement('p'); // <p> tag
+            const span_msg_other = document.createElement('span'); // <span> tag
 
 
             if (data.username === username) {
 
-                p.setAttribute("class", "my-msg"); // <p class="my-msg"></p>
+                div_nameTime.setAttribute("id", "my_nameTime");
+                    span_timestamp.setAttribute("class", "my_timestamp");
+                    span_timestamp.innerHTML = data.time_stamp;
+                    span_username.setAttribute("class", "my_username");
+                    span_username.innerHTML = data.username;
+                div_nameTime.innerHTML = span_username.outerHTML + span_timestamp.outerHTML;
 
-                span_username.setAttribute("class", "my-username"); // <span class="my-username"></span>
-                span_username.innerHTML = data.username; // <span class="my-username"> { username } </span>
+                img.setAttribute("class", "my_profilePic_sm");
+                //img.src = msg.user_photo;
+                {#img.innerHTML = data.user_photo;#}
+                 {#<img src="{{ url_for('uploaded_file', filename=msg.user_photo) }}" height="50px" width="50px" class="my_profilePic_sm"/>#}
 
-                span_timestamp.setAttribute("class", "timestamp"); // <span class="timestamp"></span>
-                span_timestamp.innerHTML = data.time_stamp; // <span class="timestamp"> { timestamp } </span>
 
-                p.innerHTML = span_username.outerHTML + span_timestamp.outerHTML + br.outerHTML + data.msg; // add username, timestamp, line break and message to the <p> tag
-                //p.innerHTML = span_username.outerHTML + br.outerHTML + data.msg + br.outerHTML + span_timestamp.outerHTML;
-                document.querySelector('#display-message-section').append(p); // append <p> tag to message section
-                //console.log(`Message received: ${data}`)
+                p_msg_line.setAttribute("class", "my_message_line");
+                    span_msg.setAttribute("class", "my_message");
+                    span_msg.innerHTML = data.msg;
+                p_msg_line.innerHTML = span_msg.outerHTML;
+
+                document.querySelector('#display-message-section').append(div_nameTime);
+                document.querySelector('#display-message-section').append(img);
+                document.querySelector('#display-message-section').append(p_msg_line);
+
+                {#p.setAttribute("class", "my-msg"); // <p class="my-msg"></p>#}
+                {##}
+                {#span_username.setAttribute("class", "my-username"); // <span class="my-username"></span>#}
+                {#span_username.innerHTML = data.username; // <span class="my-username"> { username } </span>#}
+                {##}
+                {#span_timestamp.setAttribute("class", "timestamp"); // <span class="timestamp"></span>#}
+                {#span_timestamp.innerHTML = data.time_stamp; // <span class="timestamp"> { timestamp } </span>#}
+                {##}
+                {#p.innerHTML = span_username.outerHTML + span_timestamp.outerHTML + br.outerHTML + data.msg; // add username, timestamp, line break and message to the <p> tag#}
+                {#document.querySelector('#display-message-section').append(p); // append <p> tag to message section#}
 
             } else if (typeof data.username !== 'undefined') {
-                p.setAttribute("class", "others-msg");
 
-                span_username.setAttribute("class", "other-username");
-                span_username.innerText = data.username;
+                div_nameTime_other.setAttribute("id", "other_nameTime");
+                    span_timestamp_other.setAttribute("class", "other_timestamp");
+                    span_timestamp_other.innerHTML = data.time_stamp;
+                    span_username_other.setAttribute("class", "other_username");
+                    span_username_other.innerHTML = data.username;
+                div_nameTime_other.innerHTML = span_username_other.outerHTML + span_timestamp_other.outerHTML;
 
-                span_timestamp.setAttribute("class", "other-timestamp");
-                span_timestamp.innerText = data.time_stamp;
+                img_other.setAttribute("class", "other_profilePic_sm");
+                img_other.innerHTML = data.user_photo;
 
-                p.innerHTML = span_timestamp.outerHTML + span_username.outerHTML + br.outerHTML + data.msg;
-                document.querySelector('#display-message-section').append(p);
+                p_msg_line_other.setAttribute("class", "other_message_line");
+                    span_msg_other.setAttribute("class", "other_message");
+                    span_msg_other.innerHTML = data.msg;
+                p_msg_line_other.innerHTML = span_msg_other.outerHTML;
+
+                document.querySelector('#display-message-section').append(div_nameTime_other);
+                document.querySelector('#display-message-section').append(img_other);
+                document.querySelector('#display-message-section').append(p_msg_line_other);
+
+
+
+                {#p.setAttribute("class", "others-msg");#}
+                {##}
+                {#span_username.setAttribute("class", "other-username");#}
+                {#span_username.innerText = data.username;#}
+                {##}
+                {#span_timestamp.setAttribute("class", "other-timestamp");#}
+                {#span_timestamp.innerText = data.time_stamp;#}
+                {##}
+                {#p.innerHTML = span_timestamp.outerHTML + span_username.outerHTML + br.outerHTML + data.msg;#}
+                {#document.querySelector('#display-message-section').append(p);#}
 
                 //p.innerHTML = span_timestamp.outerHTML + span_username + br.outerHTML + data.msg;
             } else {
