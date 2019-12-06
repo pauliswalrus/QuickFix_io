@@ -5,7 +5,7 @@ QuickFix_io Capstone Project
 DEC 6 Capstone Fair Build
 
 - private_chat messages now show user profile photos
-- all_tutors section added
+- all_tutors section added to nav
 - minor refactor/tweaks
 - General course added at registration:
     new users can now make forum posts immediately
