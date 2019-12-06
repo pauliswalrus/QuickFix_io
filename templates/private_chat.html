@@ -303,9 +303,16 @@
                 div_nameTime.innerHTML = span_username.outerHTML + span_timestamp.outerHTML;
 
                 img.setAttribute("class", "my_profilePic_sm");
+                img.width = 50;
+                img.height = 50;
+                img_patch = "/uploads/pictures/";
+                img_string = data.user_photo;
+                img.src = img_patch+img_string;
+
+
                 //img.src = msg.user_photo;
                 {#img.innerHTML = data.user_photo;#}
-                 {#<img src="{{ url_for('uploaded_file', filename=msg.user_photo) }}" height="50px" width="50px" class="my_profilePic_sm"/>#}
+                {# <img src="{{ url_for('uploaded_file', filename=msg.user_photo) }}" height="50px" width="50px" class="my_profilePic_sm"/>#}
 
 
                 p_msg_line.setAttribute("class", "my_message_line");
@@ -338,7 +345,12 @@
                 div_nameTime_other.innerHTML = span_username_other.outerHTML + span_timestamp_other.outerHTML;
 
                 img_other.setAttribute("class", "other_profilePic_sm");
-                img_other.innerHTML = data.user_photo;
+                img_other.width = 50;
+                img_other.height = 50;
+                img_other_patch = "/uploads/pictures/";
+                img_other_string = data.user_photo;
+                img_other.src = img_other_patch+img_other_string;
+                //img_other.innerHTML = data.user_photo;
 
                 p_msg_line_other.setAttribute("class", "other_message_line");
                     span_msg_other.setAttribute("class", "other_message");
